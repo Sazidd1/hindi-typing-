@@ -11,12 +11,20 @@ export type TypingResult = {
   seconds: number;
 };
 
+const HINDI_MAP: Record<string, string> = {
+  'f':'ि', 'j':'र', 'd':'क', 'k':'ा', 's':'े', 'l':'स', 'a':'ं', ';':'य', 'g':'ह', 
+  'h':'ी', 'r':'त', 'u':'न', 'e':'म', 'i':'प', 'w':'ू', 'o':'व', 'q':'ु', 'p':'च', 
+  't':'ज', 'y':'ल', 'c':'ब', 'n':'द', 'x':'ग', 'm':'उ', 'v':'अ', 'z':'्र', ',':'ए', 
+  '.':'ण्', '/':'ध्'
+};
+
 export function TypingArena({
   text,
   title,
   subtitle,
   timeLimit,
   showKeyboard = true,
+  isParagraphMode = false,
   onComplete,
 }: {
   text: string;
@@ -24,6 +32,7 @@ export function TypingArena({
   subtitle?: string;
   timeLimit?: number;
   showKeyboard?: boolean;
+  isParagraphMode?: boolean;
   onComplete?: (result: TypingResult) => void;
 }) {
   const chars = useMemo(() => Array.from(text), [text]);
@@ -109,11 +118,27 @@ export function TypingArena({
   function handleChange(value: string) {
     if (finished) return;
     if (startedAt === null) setStartedAt(Date.now());
-    const next = Array.from(value).slice(0, chars.length);
+    
+    // Map physical English keystrokes to Hindi chars if OS keyboard is English
+    const mappedValue = Array.from(value).map(ch => HINDI_MAP[ch] || ch).join('');
+    const next = Array.from(mappedValue).slice(0, chars.length);
+
+    // Strict Rule 1: Backspace is disabled
+    if (next.length < typedChars.length) return;
+
     if (next.length > typedChars.length) {
       const idx = next.length - 1;
-      if (next[idx] !== chars[idx]) setErrors((e) => e + 1);
+      // In Bubble Mode (not paragraph), block on wrong character
+      if (!isParagraphMode && next[idx] !== chars[idx]) {
+        setErrors((e) => e + 1);
+        return; // Do not accept the wrong character
+      }
+      // In Paragraph Mode, allow wrong character but count error
+      if (isParagraphMode && next[idx] !== chars[idx]) {
+        setErrors((e) => e + 1);
+      }
     }
+    
     setTyped(next.join(""));
   }
 
@@ -171,11 +196,87 @@ export function TypingArena({
 
       {/* Tile Typing Area */}
       <div 
-        className="relative mx-auto w-fit min-w-[50%] min-h-[140px] cursor-text rounded-3xl p-4 sm:p-6 bg-white/40 border border-white/60 shadow-[0_8px_30px_rgb(0,0,0,0.04)] backdrop-blur-xl transition-all duration-300 group dark:bg-black/20 dark:border-white/10 overflow-hidden"
+        className="relative mx-auto w-fit min-w-[50%] min-h-[140px] cursor-text rounded-3xl p-4 sm:p-6 bg-white/60 border border-white/80 shadow-[0_8px_30px_rgb(0,0,0,0.06)] backdrop-blur-xl transition-all duration-300 group overflow-hidden"
         onClick={() => inputRef.current?.focus()}
       >
         <div className="flex flex-col gap-y-4 sm:gap-y-5 w-full items-center overflow-x-auto custom-scrollbar">
           {(() => {
+            if (isParagraphMode) {
+              const _dependentVowels = new Set([
+                  '\u093E', '\u093F', '\u0940', '\u0941', '\u0942', '\u0947', '\u0948', '\u094B', '\u094C', '\u0943', '\u0902', '\u0901', '\u0903', '\u094D', '\u093C'
+              ]);
+              const _isDependentVowelSign = (s: string) => {
+                  if (!s || s.length === 0) return false;
+                  if (s.startsWith('ि') || s.startsWith('\u094D')) return true;
+                  for (let i = 0; i < s.length; i++) {
+                      if (_dependentVowels.has(s[i])) return true;
+                  }
+                  return false;
+              };
+              const _buildDisplayOrder = (hindiParts: string[]) => {
+                  const order = [];
+                  const buffer = [];
+                  for (let ki = 0; ki < hindiParts.length; ki++) {
+                      if (_isDependentVowelSign(hindiParts[ki]) && order.length === 0) {
+                          buffer.push(ki);
+                      } else {
+                          order.push(ki);
+                          if (!_isDependentVowelSign(hindiParts[ki])) {
+                              for (const bki of buffer) order.push(bki);
+                              buffer.length = 0;
+                          }
+                      }
+                  }
+                  for (const bki of buffer) order.push(bki);
+                  return order;
+              };
+
+              let globalIndex = 0;
+              return (
+                <div className="w-full text-2xl sm:text-[28px] leading-[2.2] text-left font-hindi select-none flex flex-wrap gap-x-3 gap-y-2 px-2">
+                  {words.map((word, wIdx) => {
+                    const isLastWordTotal = wIdx === words.length - 1;
+                    const wordChars = Array.from(word);
+                    const charsWithSpace = isLastWordTotal ? wordChars : [...wordChars, " "];
+                    
+                    // Assign global indices to characters in their true typing order
+                    const mappedChars = charsWithSpace.map((ch, idxInWord) => {
+                      const i = globalIndex++;
+                      const typedCh = typedChars[i];
+                      const isCurrent = i === typedChars.length;
+                      const state = typedCh === undefined ? "pending" : typedCh === ch ? "correct" : "wrong";
+                      return { ch, cIdx: idxInWord, isCurrent, state };
+                    });
+
+                    // Build display order for this word (reordering 'ि' after its consonant)
+                    const displayOrder = _buildDisplayOrder(mappedChars.map(m => m.ch));
+
+                    return (
+                      <div key={wIdx} className="whitespace-pre">
+                        {displayOrder.map((displayIdx) => {
+                          const { ch, cIdx, isCurrent, state } = mappedChars[displayIdx];
+                          return (
+                            <span
+                              key={cIdx}
+                              className={cn(
+                                "transition-colors duration-200",
+                                isCurrent && "text-[#F59E0B] underline decoration-2 underline-offset-4",
+                                state === "correct" && !isCurrent && "text-[#16A34A]",
+                                state === "wrong" && !isCurrent && "text-[#EF4444]",
+                                state === "pending" && !isCurrent && "text-[#B8C1CC]"
+                              )}
+                            >
+                              {ch}
+                            </span>
+                          );
+                        })}
+                      </div>
+                    );
+                  })}
+                </div>
+              );
+            }
+
             let globalIndex = pageStartCharIndex;
             const rows = [];
             for (let i = 0; i < visibleWords.length; i += 2) {
@@ -202,22 +303,22 @@ export function TypingArena({
                         <div
                           key={cIdx}
                           className={cn(
-                            "flex items-center justify-center rounded-xl bg-white shadow-sm transition-all duration-150 dark:bg-black/40 shrink-0",
+                            "flex items-center justify-center rounded-xl bg-white shadow-sm border border-slate-100 transition-all duration-200 shrink-0",
                             isSpace ? "w-14 sm:w-16" : "size-11 sm:size-12",
                             
-                            state === "pending" && !isCurrent && "border border-border/60 text-foreground",
-                            isCurrent && "border-2 border-primary z-10 shadow-[0_4px_14px_rgba(59,130,246,0.2)] text-primary scale-105",
-                            state === "correct" && !isCurrent && "border border-success/30 bg-success/5 text-success",
-                            state === "wrong" && !isCurrent && "border-2 border-danger bg-danger/10 text-danger",
+                            state === "pending" && !isCurrent && "border border-border/60 text-[#B8C1CC]",
+                            isCurrent && "border-2 border-[#F59E0B] z-10 shadow-[0_4px_14px_rgba(245,158,11,0.2)] text-[#F59E0B] scale-105",
+                            state === "correct" && !isCurrent && "border border-[#16A34A]/30 bg-[#16A34A]/5 text-[#16A34A]",
+                            state === "wrong" && !isCurrent && "border-2 border-[#EF4444] bg-[#EF4444]/10 text-[#EF4444]",
                           )}
                         >
                           {isSpace ? (
                             <span className={cn(
                               "text-[9px] sm:text-[10px] font-bold uppercase tracking-widest",
-                              state === "pending" ? "text-muted-foreground/50" :
-                              state === "correct" ? "text-success/70" :
-                              state === "wrong" ? "text-danger" :
-                              "text-primary"
+                              state === "pending" ? "text-[#B8C1CC]/70" :
+                              state === "correct" ? "text-[#16A34A]/70" :
+                              state === "wrong" ? "text-[#EF4444]" :
+                              "text-[#F59E0B]"
                             )}>
                               Space
                             </span>

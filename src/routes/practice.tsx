@@ -32,7 +32,12 @@ function PracticePage() {
 
   return (
     <div className="w-full">
-      <TypingArena text={active.text} title={active.title} subtitle={active.hindiTitle} />
+      <TypingArena 
+        text={active.text} 
+        title={active.title} 
+        subtitle={active.hindiTitle} 
+        isParagraphMode={["ch11", "ch22", "ch23", "ch24"].includes(active.slug)}
+      />
     </div>
   );
 }

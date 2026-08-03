@@ -19,7 +19,7 @@ export function AppShell({ children }: { children: ReactNode }) {
 
   return (
     <div className="surface-grid min-h-screen">
-      <header className="sticky top-0 z-50 border-b border-white/50 bg-white/60 backdrop-blur-xl">
+      <header className="sticky top-0 z-50 border-b border-white/50 bg-white/60 backdrop-blur-xl shadow-sm">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-3">
           <Link to="/" className="flex items-center gap-2.5">
             <span
@@ -107,7 +107,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                   key={item.to}
                   to={item.to}
                   onClick={() => setOpen(false)}
-                  className="rounded-lg px-3 py-2.5 text-sm font-medium text-foreground hover:bg-accent"
+                  className="rounded-lg px-3 py-2.5 text-sm font-medium text-slate-400 hover:text-slate-100 hover:bg-[#1E293B] transition-colors"
                 >
                   {item.label}
                 </Link>
