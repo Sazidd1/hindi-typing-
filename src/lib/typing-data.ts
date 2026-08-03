@@ -1,0 +1,168 @@
+export type Finger =
+  | "l-pinky" | "l-ring" | "l-middle" | "l-index"
+  | "r-index" | "r-middle" | "r-ring" | "r-pinky" | "thumb";
+
+export const fingerLabels: Record<Finger, string> = {
+  "l-pinky": "बायाँ कनिष्ठा",
+  "l-ring": "बायाँ अनामिका",
+  "l-middle": "बायाँ मध्यमा",
+  "l-index": "बायाँ तर्जनी",
+  "r-index": "दायाँ तर्जनी",
+  "r-middle": "दायाँ मध्यमा",
+  "r-ring": "दायाँ अनामिका",
+  "r-pinky": "दायाँ कनिष्ठा",
+  thumb: "अंगूठा",
+};
+
+export const fingerColors: Record<Finger, string> = {
+  "l-pinky": "oklch(0.62 0.19 300)",
+  "l-ring": "oklch(0.62 0.18 265)",
+  "l-middle": "oklch(0.65 0.16 232)",
+  "l-index": "oklch(0.66 0.14 200)",
+  "r-index": "oklch(0.66 0.15 165)",
+  "r-middle": "oklch(0.68 0.16 140)",
+  "r-ring": "oklch(0.72 0.15 95)",
+  "r-pinky": "oklch(0.7 0.17 55)",
+  thumb: "oklch(0.6 0.05 258)",
+};
+
+export type KeyDef = {
+  /** physical key label (English) */
+  en: string;
+  /** Hindi (Remington GAIL) character produced */
+  hi: string;
+  shift?: string;
+  finger: Finger;
+  width?: number;
+};
+
+/** Hindi Remington (GAIL) style keyboard layout */
+export const keyboardRows: KeyDef[][] = [
+  [
+    { en: "`", hi: "ॊ", finger: "l-pinky" },
+    { en: "1", hi: "1", shift: "?", finger: "l-pinky" },
+    { en: "2", hi: "2", shift: "'", finger: "l-ring" },
+    { en: "3", hi: "3", shift: "”", finger: "l-middle" },
+    { en: "4", hi: "4", shift: "र्", finger: "l-index" },
+    { en: "5", hi: "5", shift: "%", finger: "l-index" },
+    { en: "6", hi: "6", shift: "ट्ट", finger: "r-index" },
+    { en: "7", hi: "7", shift: "ट्ठ", finger: "r-index" },
+    { en: "8", hi: "8", shift: "ड्ड", finger: "r-middle" },
+    { en: "9", hi: "9", shift: "(", finger: "r-ring" },
+    { en: "0", hi: "0", shift: ")", finger: "r-pinky" },
+    { en: "-", hi: "ः", shift: "ऋ", finger: "r-pinky" },
+    { en: "=", hi: "ृ", shift: "+", finger: "r-pinky" },
+    { en: "⌫", hi: "", finger: "r-pinky", width: 2 },
+  ],
+  [
+    { en: "Tab", hi: "", finger: "l-pinky", width: 1.6 },
+    { en: "Q", hi: "ृ", shift: "ॄ", finger: "l-pinky" },
+    { en: "W", hi: "ूं", shift: "ॅ", finger: "l-ring" },
+    { en: "E", hi: "म", shift: "म्", finger: "l-middle" },
+    { en: "R", hi: "त", shift: "त्", finger: "l-index" },
+    { en: "T", hi: "ज", shift: "ज्", finger: "l-index" },
+    { en: "Y", hi: "ल", shift: "ल्", finger: "r-index" },
+    { en: "U", hi: "न", shift: "न्", finger: "r-index" },
+    { en: "I", hi: "प", shift: "प्", finger: "r-middle" },
+    { en: "O", hi: "व", shift: "व्", finger: "r-ring" },
+    { en: "P", hi: "च", shift: "च्", finger: "r-pinky" },
+    { en: "[", hi: "ख", shift: "ख्", finger: "r-pinky" },
+    { en: "]", hi: "थ", shift: "थ्", finger: "r-pinky" },
+    { en: "\\", hi: "ॉ", shift: "|", finger: "r-pinky", width: 1.4 },
+  ],
+  [
+    { en: "Caps", hi: "", finger: "l-pinky", width: 1.9 },
+    { en: "A", hi: "ि", shift: "अ", finger: "l-pinky" },
+    { en: "S", hi: "स", shift: "श", finger: "l-ring" },
+    { en: "D", hi: "क", shift: "क्", finger: "l-middle" },
+    { en: "F", hi: "ब", shift: "ब्", finger: "l-index" },
+    { en: "G", hi: "ह", shift: "ह्", finger: "l-index" },
+    { en: "H", hi: "ी", shift: "ई", finger: "r-index" },
+    { en: "J", hi: "र", shift: "ऱ", finger: "r-index" },
+    { en: "K", hi: "ा", shift: "आ", finger: "r-middle" },
+    { en: "L", hi: "द", shift: "द्", finger: "r-ring" },
+    { en: ";", hi: "ो", shift: "ओ", finger: "r-pinky" },
+    { en: "'", hi: "ट", shift: "ठ", finger: "r-pinky" },
+    { en: "Enter", hi: "", finger: "r-pinky", width: 2.1 },
+  ],
+  [
+    { en: "Shift", hi: "", finger: "l-pinky", width: 2.4 },
+    { en: "Z", hi: "्र", shift: "र्", finger: "l-pinky" },
+    { en: "X", hi: "ग", shift: "ग्", finger: "l-ring" },
+    { en: "C", hi: "ए", shift: "ऐ", finger: "l-middle" },
+    { en: "V", hi: "अ", shift: "आ", finger: "l-index" },
+    { en: "B", hi: "इ", shift: "ई", finger: "l-index" },
+    { en: "N", hi: "ड", shift: "ढ", finger: "r-index" },
+    { en: "M", hi: "ु", shift: "उ", finger: "r-index" },
+    { en: ",", hi: "ॅ", shift: ",", finger: "r-middle" },
+    { en: ".", hi: "।", shift: ".", finger: "r-ring" },
+    { en: "/", hi: "य", shift: "य्", finger: "r-pinky" },
+    { en: "Shift", hi: "", finger: "r-pinky", width: 2.4 },
+  ],
+  [{ en: "Space", hi: " ", finger: "thumb", width: 10 }],
+];
+
+const charIndex: Record<string, { key: KeyDef; shift: boolean }> = {};
+for (const row of keyboardRows) {
+  for (const key of row) {
+    if (key.hi && !charIndex[key.hi]) charIndex[key.hi] = { key, shift: false };
+    if (key.shift && !charIndex[key.shift]) charIndex[key.shift] = { key, shift: true };
+  }
+}
+
+export function lookupChar(ch: string) {
+  return charIndex[ch];
+}
+
+export type Lesson = {
+  slug: string;
+  title: string;
+  hindiTitle: string;
+  description: string;
+  level: "शुरुआती" | "मध्यम" | "उन्नत";
+  keys: string;
+  minutes: number;
+  text: string;
+};
+
+export const lessons: Lesson[] = [
+  { slug: 'ch1', title: 'Ch 1', hindiTitle: 'ि र', description: 'Home Row', level: 'शुरुआती', keys: 'ि र', minutes: 3, text: 'रिरि िििि रिरि िररर रिरि रिरर ररिि िरिर रिरर िरिर िििर िरिर रररर िररि ररिर िररि ररिर ररिर रररर ििरर ििरर ििरि िरिि िररि िररर ररिि िििि िररर िररर िररर िररि ििरि ररिि ििरर ििरर िििर ििरर ररिर रिरि रििि' },
+  { slug: 'ch2', title: 'Ch 2', hindiTitle: 'क ा', description: 'Home Row', level: 'शुरुआती', keys: 'क ा', minutes: 3, text: 'कााा ााका ाााा कााा कााक काका कााक काका ाकाा ाकाा ककाा ाकाा कककक काकक काका ाकाक ाकाक ााका ााका ााकक काका ाकाक ााकक ाााक कााक कााा ाााक काका कााक ाााा ाकाक कााक ाााा ाकाक ााकक ााकक ाकका कककक ाकका ाकाक' },
+  { slug: 'ch3', title: 'Ch 3', hindiTitle: 'े स', description: 'Home Row', level: 'शुरुआती', keys: 'े स', minutes: 3, text: 'ेससस ेेेे ससेस ससेस सससस ेससस सससे ससेस सेसे ेससस ेेसस सेेे ेससस सससे ेसेस ेेेे ससेस ससेे ेेसे सेेस ेेेस सससस सससे ेेेे ेसेे ेससे ससेे ेेेे ससेस ेसेस ेससस सेसस ेेेे ससेे ेेेे ेेेस ससेस ेेसस ेेसे ेसेस' },
+  { slug: 'ch4', title: 'Ch 4', hindiTitle: 'ं य', description: 'Home Row', level: 'शुरुआती', keys: 'ं य', minutes: 3, text: 'यययय यंयं ंयंय ंंंं यंयय ययंं ंंयं ंंंय ंंंय ंयंय ंययय ययंं यययय यंंय यंयय ंययं ंंंय ययंं ंंयय यययं यंयय ंंयय ंयंय ययंं यययं यंंय ंंयय ययंय ंंंं ंंंय ंंयय यययय यंंं ययंं ंययय यययं ंयंय यंयं यंयय ंयंं' },
+  { slug: 'ch5', title: 'Ch 5', hindiTitle: 'ं े क ि', description: 'Home Row', level: 'शुरुआती', keys: 'ं े क ि', minutes: 3, text: 'िेकि ककिे िंिक ेंंि ककके किकं ंिें ंेकक ंेेक िककं ििके ंकंि िककि िििे ेंिं कंिं ेेंि ेकेि ििंक किकि िंंक ककिे िंिि केंे ककेक ंकिक ििेक ककेे िकंं िकेि ककिं कंंक ेेें कंंि िंंक ंंकि ेकिि ेेिि ंिेे िकेक' },
+  { slug: 'ch6', title: 'Ch 6', hindiTitle: 'र ा स य', description: 'Home Row', level: 'शुरुआती', keys: 'र ा स य', minutes: 3, text: 'यसरर ाारर सासा ाससस ररयय ाराा यसास ासास ारयस ाययय सयाय ायसस रससा रााय सररा ाररय सससय सारर सयाय ाारय सययस ाासस यााय ससरा ायया यारा ायरय ररयस ाससा यसार ाससा रयसर सारय ाायस ससरर सससय ारसा ससाा सररस यसाय' },
+  { slug: 'ch7', title: 'Ch 7', hindiTitle: 'ह ी', description: 'Home Row', level: 'शुरुआती', keys: 'ह ी', minutes: 3, text: 'ीहीह ीहीी हहीी ीहही ीहही ीहही हीही ीीहह ीीीी हीीह हीीह हीही ीीहह हहही ीीीह ीीहह हीहह ीीहह हीहह ीहीी हीीह हहही हीही ीीीी ीीहह हीीी हहहह ीहहह ीीहह ीीही ीहहह ीीीी हहीी हीही ीीहह ीहीी हहीह ीहहह ीीीी हहीह' },
+  { slug: 'ch8', title: 'Ch 8', hindiTitle: 'ं े क ि ह', description: 'Home Row', level: 'शुरुआती', keys: 'ं े क ि ह', minutes: 3, text: 'ंेंक कहंे ेििि ंिहक िकंे िंिे ेंेे िंकह हिकक िंिि िकहे ंिकि हेेक िकके ंहेह ेंहि ेकंक हहहह ंंेे ंकहं हंंह हहंे हकहं ेिेक हिेे िकहं ेकंह ेकहं ंििं हंहे ंिंह िििे ििकि कहिह हकेे ेंिि िककक ेेकह हेेे किंक' },
+  { slug: 'ch9', title: 'Ch 9', hindiTitle: 'र ा स य ी', description: 'Home Row', level: 'शुरुआती', keys: 'र ा स य ी', minutes: 3, text: 'यरयस रससा ायरी ाीार रसीय सयरय ायसर ारया ासीस ीारा रीरस ययीर ारसा ीसीर यीास ययीस सररस रयीर साार ााीी यसयय ााीर ाायय सीरय यररा राीा ययसर ररसस रसरय सयरर ीरीय ीासस यीीस ासयस ीारय सरसस सयरी सीीय यायय ीयया' },
+  { slug: 'ch10', title: 'Ch 10', hindiTitle: 'होम रो', description: 'Home Row', level: 'शुरुआती', keys: 'होम रो', minutes: 3, text: 'हयेे यीेस कीरि िहकक रासं ाेें सारह ररेर ककसह ाससह ींिक ेाेि ीेहह िीरे ंीसस ेहिे ासहह ांिं याकं कंिस हेरा साका ायरर सरसे करीी कीरा सेां कहिि सरयं हहसे राकर यंीि हेिं ासेि हंेी हीरं हीयी िहिा कसाि ीेरस' },
+  { slug: 'ch11', title: 'Ch 11', hindiTitle: 'शब्द अभ्यास', description: 'Home Row', level: 'शुरुआती', keys: 'शब्द अभ्यास', minutes: 3, text: 'करे राेया सारे िकराया सह सहारा िकराये काेसाें रहा िसयाराें ये कार रह साह केसर की रस िकस करा सही काेस राे सकें िकये हां करें राेक सा ही सर िकया यहीं कही सका हाें सीसे साहस िक सारी कसे' },
+  { slug: 'ch12', title: 'Ch 12', hindiTitle: 'त न', description: 'Top Row', level: 'शुरुआती', keys: 'त न', minutes: 3, text: 'नननन नतनन ततनन तनतन नतनत तननत ततनन तननत ततनत नतनन नननन नननन ततनत तततत नततन तनतन नततन तनतत तततन तनतन ननतन तततत नततन तततन नननत नननत नतनन तननत ननतन ननतत ननतत ततनन नतनत नतनत ननतन ननतन नततत तततन नननत नततत' },
+  { slug: 'ch13', title: 'Ch 13', hindiTitle: 'म प', description: 'Top Row', level: 'शुरुआती', keys: 'म प', minutes: 3, text: 'मममम पममम मपमप पपपप पपमप पपमम पममम मममप पपमप मममप पपपम पपमप पमपप मममम ममपप पमपप ममपप पपपम ममपप पपमप मपपप मममप मपपम पपपम पममप पपमम मपमम पपमम ममपप मपमम मपमम ममपप पममप पपमप मपमप ममपम मममप मममप पममप पपमम' },
+  { slug: 'ch14', title: 'Ch 14', hindiTitle: 'ू व', description: 'Top Row', level: 'शुरुआती', keys: 'ू व', minutes: 3, text: 'ववूव वूवव ूववू ूववू ूवूव ववूव वूवव ूवूू वववू ववूू ूवूव ववूू वूवव ववूव ूूवू वूूव ूूवव ूवूू वववू ूवूव वववू वववव वूूव वववव ववूव वूूू वूूू ववूू वूवू ूवूू ूूवव ूूवू ूवूव ूूवव ूवूव ूूवू वूवू ूवूू वूवू ूववू' },
+  { slug: 'ch15', title: 'Ch 15', hindiTitle: 'ु च', description: 'Top Row', level: 'शुरुआती', keys: 'ु च', minutes: 3, text: 'ुचचच चुुु चचचच ुुचच चचचच चचचु चचुच ुचचु ुचचच चचुच ुचुच चुचच ुुचु चुचच चचचु चुचच चचुच ुचुु चुुु चचुु चुुु चचुु ुुचच ुुुच चचुु ुुचु चचुच ुुचु चुचु चचचु ुुचच चुचु ुचचच ुचचच ुचचच ुुचु चुचच ुुचच ुचुच चुुु' },
+  { slug: 'ch16', title: 'Ch 16', hindiTitle: 'ु ू म त', description: 'Top Row', level: 'शुरुआती', keys: 'ु ू म त', minutes: 3, text: 'तततम तुूु ूतुु ूुुू मुतम तततू मुूू ममुू मुूत मूूत ूतुू ूममम ुुुत तूमू ुतुु तुतू ूमतू मममम ूतुु मततम ममूु तमूम ममतम ुुुत ततूम तमूू तमूु ततुू ूतमम मुूू ूतूू ूतुम ुूुू ततुम ूतूत तूुु ूूतत ूूमू ूूूू ुुुत' },
+  { slug: 'ch17', title: 'Ch 17', hindiTitle: 'न प व च', description: 'Top Row', level: 'शुरुआती', keys: 'न प व च', minutes: 3, text: 'नचचव पनचप नपवव नचवप वचवव पववच पनचव पवचप चवनप पवपच नपवव चववच पववव वपचव नपनन नववव पवनन वनचव चनवप चचनच वनवच चवपच नचचच पवचव ववनप पपपन चचनच ववनन पनचप पपपच वचवप चनवव पनपच वनपच वचचव चचचप वपनच चपपव ननचव वपनन' },
+  { slug: 'ch18', title: 'Ch 18', hindiTitle: 'ज ल', description: 'Top Row', level: 'शुरुआती', keys: 'ज ल', minutes: 3, text: 'जलजज ललजल लजजज लजजल लजजल लजजज जललल जलजज लजजल लजलज जजजज लजजल जजजज जजजज ललजल लजलल लजजल ललजज ललजल जजलल जललज जजलज ललजज जलजज लललज लललज जजलज जजलज जजजज जललज लललल लजजल जजलल लजलल जजलल जललल जजजल जलजज लललज जलजल' },
+  { slug: 'ch19', title: 'Ch 19', hindiTitle: 'ु ू म त ज', description: 'Top Row', level: 'शुरुआती', keys: 'ु ू म त ज', minutes: 3, text: 'ूततु ममूज ुतूज ूुजू ुुूज ुूूु तजतु जूूु ुतुज ूुतज मूजु ूतूत ूतूत ततूज तमुु मूतज जुजज मजुज जमजु ुतुु ममजम तुतज जजमत ुूजम तुुज तुूम जतूज जजमु मूुु मजमज तजुम ुततु जजतु ुजतम ुमजम जूजत जजूत जूजू तुतत मूमू' },
+  { slug: 'ch20', title: 'Ch 20', hindiTitle: 'ल न प व च', description: 'Top Row', level: 'शुरुआती', keys: 'ल न प व च', minutes: 3, text: 'चचवच नलपन ववनल वनवप नचवच वपलल वलवप नवनच वनवप नवपप लवनन पनपव पपवन वलचप नननल ननवप नवलन लपनल लचपप नलपप लचनप नवचव वलनप ललपप नपनप चवनव पनचच वनवन ललचन ललवन लचपन नचपप लपवप ननलव वचलल नवलच वचवच लवनच नननप लननन' },
+  { slug: 'ch21', title: 'Ch 21', hindiTitle: 'टॉप रो', description: 'Top Row', level: 'शुरुआती', keys: 'टॉप रो', minutes: 3, text: 'मवचु मपजल चनपु ूमूच जपवू वजलु ममुू तमनव पूलन जचजु लनूल ूवपल जूजत जमतत जुजत नपमल ननलन तुनन ननूज ूचजल ूतलव पलुल जतमन वतपत मववु जुूम नचुल नततु जचमू पचलम तचमव ववपल तजवम वजचु तलुप लचचप नलतच जपचत मवलल चनूव' },
+  { slug: 'ch22', title: 'Ch 22', hindiTitle: 'अभ्यास 1', description: 'Mixed', level: 'शुरुआती', keys: 'अभ्यास 1', minutes: 3, text: 'काम राम नाम जल पवन समय कहा िनयम िपता चाय पानी जीवन माला पूजा सुमन कमल महल नमक चमन पालक मकान सामान चना नया चुप पुल मूल चूक सच पास सजा रात मजा राज कल हार जीत पीला नीला काला सीना' },
+  { slug: 'ch23', title: 'Ch 23', hindiTitle: 'अभ्यास 2', description: 'Mixed', level: 'शुरुआती', keys: 'अभ्यास 2', minutes: 3, text: 'सीना काला नीला पीला जीत हार कल राज मजा रात सजा पास सच चूक मूल पुल चुप नया चना सामान मकान पालक चमन नमक महल कमल सुमन पूजा माला जीवन पानी चाय िपता िनयम कहा समय पवन जल नाम राम काम' },
+  { slug: 'ch24', title: 'Ch 24', hindiTitle: 'अभ्यास 3', description: 'Mixed', level: 'शुरुआती', keys: 'अभ्यास 3', minutes: 3, text: 'जल चुप मूल काम नीला पवन सुमन पालक मकान कहा राज सच पानी राम चना माला हार काला पूजा नया नमक सामान सजा पीला रात पुल चमन सीना िपता कमल महल िनयम चाय नाम मजा जीत चूक समय पास कल' },
+  { slug: 'ch25', title: 'Ch 25', hindiTitle: 'अ उ', description: 'Bottom Row', level: 'शुरुआती', keys: 'अ उ', minutes: 3, text: 'अअउअ उअअउ अअअअ अउउअ अउउअ उउअउ उअअअ अउउउ उउउउ अउउउ अउअउ उउअउ अउउउ अअउउ अउअउ अउउउ अअअउ अउअउ उअउअ अअउअ उअउअ अअअउ अउअअ उउअउ अअअउ उउअउ उउअउ अअअअ उउअअ उअउअ उउअउ अअअअ अअअअ अउअउ उअउउ अअउउ उउउअ अउअअ अउअअ अउउउ' },
+  { slug: 'ch26', title: 'Ch 26', hindiTitle: 'ब ए', description: 'Bottom Row', level: 'शुरुआती', keys: 'ब ए', minutes: 3, text: 'एबबब बबएब बएबए बएबब बएबए बबबब बएबए एएएए एबबए एएबब एबएब बबएए बबएए एएएए बएबए एबएए एएएब एबएब एबएए बएएए एबबए बबएब एएएए बएएए एबबए बएबए एएएए एएएब बबबब बबबए एएएब एएबए एबएए बबबए एएबए एबएब एएबए बबएए एबएब बबएए' },
+  { slug: 'ch27', title: 'Ch 27', hindiTitle: 'ग ण्', description: 'Bottom Row', level: 'शुरुआती', keys: 'ग ण्', minutes: 3, text: 'गगण्ग ण्गगण् गण्ण्ग गगण्ण् ण्गण्ग ण्ण्ण्ण् ण्गगण् गण्ण्ग ण्ण्गग गण्ण्ण् ण्गण्ण् ण्ण्गग ण्ण्गण् गगगग ण्गगण् ण्गगग गण्ण्ण् ण्गण्ग गण्ण्ण् ण्ण्गण् गण्ण्ण् गण्गग गण्ण्ग गण्ण्ग ण्गगग गण्गण् गण्गण् गगगण् गण्ण्ण् गण्गण् ण्गगण् गगगण् गण्ण्ण् गगण्ण् ण्ण्गग गगण्ग गण्ण्ग ण्ण्गण् ण्ण्ण्ग गगगग' },
+  { slug: 'ch28', title: 'Ch 28', hindiTitle: '्र ध्', description: 'Bottom Row', level: 'शुरुआती', keys: '्र ध्', minutes: 3, text: 'ध्ध््रध् ्र्र्रध् ध््रध््र ध््र्रध् ्र्र्र्र ध्ध््रध् ध्ध्ध्ध् ध््र्र्र ध्ध्ध््र ्र्र्र्र ध््रध््र ्रध्ध््र ्र्रध््र ्र्रध््र ध्ध्ध््र ्र्रध््र ्र्रध्ध् ध््रध्ध् ध््रध््र ध्ध््र्र ध््रध््र ्र्रध््र ्र्रध््र ्र्र्र्र ध्ध््रध् ध्ध््र्र ्र्र्र्र ध््र्रध् ्र्र्र्र ्र्र्र्र ्रध्ध्ध् ्रध्ध्ध् ्रध्ध्ध् ्र्रध्ध् ध््र्रध् ध्ध््रध् ्र्र्रध् ध््रध््र ्रध्ध््र ्र्र्रध्' },
+];
+
+export const speedTexts = [
+  "जीवन में सफलता पाने के लिए निरंतर अभ्यास और धैर्य आवश्यक है। जो व्यक्ति प्रतिदिन थोड़ा समय अपने लक्ष्य को देता है वह एक दिन अवश्य आगे बढ़ता है।",
+  "हिंदी हमारी राजभाषा है और इसे सहजता से लिखना हर विद्यार्थी के लिए लाभदायक है। टाइपिंग की गति बढ़ाने के लिए सही उंगलियों का प्रयोग सबसे महत्वपूर्ण है।",
+  "समय सबसे मूल्यवान संपत्ति है। जो इसका सदुपयोग करता है वह अपने जीवन में नई ऊँचाइयों को छूता है और दूसरों के लिए प्रेरणा बनता है।",
+];
+
+export const accuracyTexts = [
+  "शुद्धता गति से अधिक महत्वपूर्ण होती है, क्योंकि एक भी त्रुटि पूरे वाक्य का अर्थ बदल सकती है। इसलिए धीरे किंतु सही टाइप करें।",
+  "परिश्रम का कोई विकल्प नहीं है; ध्यानपूर्वक किया गया कार्य सदैव उत्तम परिणाम देता है और आत्मविश्वास को बढ़ाता है।",
+];
