@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Gauge, RotateCcw, Target, Timer, TriangleAlert, Trophy } from "lucide-react";
+import { Gauge, RotateCcw, Target, Timer, TriangleAlert, Trophy, Play } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { HindiKeyboard } from "@/components/typing/HindiKeyboard";
 import { useAuth } from "@/lib/auth";
@@ -38,11 +38,13 @@ export function TypingArena({
   const chars = useMemo(() => Array.from(text), [text]);
   const [typed, setTyped] = useState("");
   const [startedAt, setStartedAt] = useState<number | null>(null);
+  const [isPaused, setIsPaused] = useState(false);
   const [elapsed, setElapsed] = useState(0);
   const [errors, setErrors] = useState(0);
   const [finished, setFinished] = useState(false);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const completedRef = useRef(false);
+  const lastActiveTimeRef = useRef<number | null>(null);
   const { currentUser } = useAuth();
 
   const typedChars = useMemo(() => Array.from(typed), [typed]);
@@ -60,6 +62,7 @@ export function TypingArena({
   const reset = useCallback(() => {
     setTyped("");
     setStartedAt(null);
+    setIsPaused(false);
     setElapsed(0);
     setErrors(0);
     setFinished(false);
@@ -71,13 +74,38 @@ export function TypingArena({
     reset();
   }, [text, reset]);
 
+  const togglePause = useCallback(() => {
+    if (finished) return;
+    if (startedAt === null) {
+      setStartedAt(Date.now());
+      inputRef.current?.focus();
+      return;
+    }
+    setIsPaused(p => {
+      if (p) {
+        setTimeout(() => inputRef.current?.focus(), 10);
+      }
+      return !p;
+    });
+  }, [startedAt, finished]);
+
   useEffect(() => {
-    if (startedAt === null || finished) return;
+    if (startedAt === null || finished || isPaused) {
+      lastActiveTimeRef.current = null;
+      return;
+    }
+    
+    lastActiveTimeRef.current = Date.now();
     const id = window.setInterval(() => {
-      setElapsed((Date.now() - startedAt) / 1000);
+      const now = Date.now();
+      if (lastActiveTimeRef.current !== null) {
+        const delta = (now - lastActiveTimeRef.current) / 1000;
+        setElapsed((prev) => prev + delta);
+        lastActiveTimeRef.current = now;
+      }
     }, 100);
     return () => window.clearInterval(id);
-  }, [startedAt, finished]);
+  }, [startedAt, finished, isPaused]);
 
   useEffect(() => {
     if (finished || completedRef.current) return;
@@ -120,6 +148,7 @@ export function TypingArena({
   function handleChange(value: string) {
     if (finished) return;
     if (startedAt === null) setStartedAt(Date.now());
+    if (isPaused) setIsPaused(false);
     
     // Map physical English keystrokes to Hindi chars if OS keyboard is English
     const mappedValue = Array.from(value).map(ch => HINDI_MAP[ch] || ch).join('');
@@ -356,6 +385,11 @@ export function TypingArena({
           ref={inputRef}
           value={typed}
           onChange={(e) => handleChange(e.target.value)}
+          onKeyDown={() => {
+            if (isPaused) {
+              setIsPaused(false);
+            }
+          }}
           spellCheck={false}
           autoComplete="off"
           autoCorrect="off"
@@ -364,13 +398,30 @@ export function TypingArena({
           className="absolute inset-0 size-full resize-none rounded-3xl bg-transparent p-12 text-transparent caret-transparent outline-none z-10"
         />
 
-        {!startedAt && !finished && (
+        {(!startedAt && !finished) && !isPaused && (
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-20">
             <span className="rounded-full bg-background/90 px-4 py-2 text-sm font-semibold text-foreground backdrop-blur-md shadow-md border border-border">
               Click anywhere to start typing
             </span>
           </div>
         )}
+
+        {/* Minimal Premium Pause Overlay */}
+        <div 
+          className={cn(
+            "absolute inset-0 z-20 flex items-center justify-center rounded-3xl transition-all duration-200 pointer-events-none",
+            isPaused && !finished ? "bg-primary/10 backdrop-blur-[2px] opacity-100" : "bg-primary/0 backdrop-blur-none opacity-0"
+          )}
+        >
+          <span 
+            className={cn(
+              "text-[18px] sm:text-[20px] font-semibold text-primary drop-shadow-sm transition-all duration-200 animate-pulse",
+              isPaused && !finished ? "scale-100 opacity-100" : "scale-95 opacity-0"
+            )}
+          >
+            ⌨️ Press any key to resume
+          </span>
+        </div>
 
         {/* Cinematic Completion Screen */}
         {finished && (
@@ -463,14 +514,23 @@ export function TypingArena({
 
           {/* Pause Button */}
           <button 
-            onClick={reset}
-            className="w-full bg-[#1a1b1e] hover:bg-black text-white rounded-xl py-4 flex items-center justify-center gap-2 font-semibold transition-colors shadow-sm"
+            onClick={togglePause}
+            disabled={finished}
+            className={cn(
+              "w-full hover:bg-black text-white rounded-xl py-4 flex items-center justify-center gap-2 font-semibold transition-colors shadow-sm",
+              isPaused ? "bg-primary text-primary-foreground hover:bg-primary/90" : "bg-[#1a1b1e]",
+              finished && "opacity-50 cursor-not-allowed"
+            )}
           >
-            <div className="flex gap-1 items-center">
-              <span className="w-1.5 h-3.5 bg-white/90 rounded-sm"></span>
-              <span className="w-1.5 h-3.5 bg-white/90 rounded-sm"></span>
-            </div>
-            Pause Session
+            {isPaused || startedAt === null ? (
+              <Play className="size-4 fill-current" />
+            ) : (
+              <div className="flex gap-1 items-center">
+                <span className="w-1.5 h-3.5 bg-white/90 rounded-sm"></span>
+                <span className="w-1.5 h-3.5 bg-white/90 rounded-sm"></span>
+              </div>
+            )}
+            {startedAt === null ? "Start Session" : isPaused ? "Resume Session" : "Pause Session"}
           </button>
         </div>
 
