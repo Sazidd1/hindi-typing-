@@ -39,12 +39,15 @@ export function TypingArena({
   const [typed, setTyped] = useState("");
   const [startedAt, setStartedAt] = useState<number | null>(null);
   const [isPaused, setIsPaused] = useState(false);
+  const [isFocusMode, setIsFocusMode] = useState(false);
+  const [showExitButton, setShowExitButton] = useState(false);
   const [elapsed, setElapsed] = useState(0);
   const [errors, setErrors] = useState(0);
   const [finished, setFinished] = useState(false);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const completedRef = useRef(false);
   const lastActiveTimeRef = useRef<number | null>(null);
+  const mouseTimeoutRef = useRef<number | null>(null);
   const { currentUser } = useAuth();
 
   const typedChars = useMemo(() => Array.from(typed), [typed]);
@@ -88,6 +91,47 @@ export function TypingArena({
       return !p;
     });
   }, [startedAt, finished]);
+
+  useEffect(() => {
+    if (!isFocusMode) {
+      setShowExitButton(false);
+      return;
+    }
+    
+    setShowExitButton(true);
+    
+    const handleMouseMove = () => {
+      setShowExitButton(true);
+      if (mouseTimeoutRef.current) {
+        window.clearTimeout(mouseTimeoutRef.current);
+      }
+      mouseTimeoutRef.current = window.setTimeout(() => {
+        setShowExitButton(false);
+      }, 2500);
+    };
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setIsFocusMode(false);
+      }
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('keydown', handleKeyDown);
+    
+    // Initial hide timeout
+    mouseTimeoutRef.current = window.setTimeout(() => {
+      setShowExitButton(false);
+    }, 2500);
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('keydown', handleKeyDown);
+      if (mouseTimeoutRef.current) {
+        window.clearTimeout(mouseTimeoutRef.current);
+      }
+    };
+  }, [isFocusMode]);
 
   useEffect(() => {
     if (startedAt === null || finished || isPaused) {
@@ -212,10 +256,22 @@ export function TypingArena({
   }
 
   return (
-    <div className="mx-auto w-[98%] max-w-[1300px] flex flex-col lg:flex-row gap-6 lg:gap-8 items-start animate-in fade-in slide-in-from-bottom-4 duration-700 px-2 sm:px-4">
-      
-      {/* Left Side: Typing Area & Keyboard */}
-      <div className="flex-1 w-full space-y-4 sm:space-y-6">
+    <>
+      {/* Focus Mode Exit Button */}
+      <button
+        onClick={() => setIsFocusMode(false)}
+        className={cn(
+          "fixed top-6 right-6 z-50 rounded-full bg-secondary/80 backdrop-blur-md px-6 py-2.5 text-sm font-semibold text-foreground shadow-lg border border-border transition-all duration-300",
+          isFocusMode && showExitButton ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4 pointer-events-none"
+        )}
+      >
+        Exit Focus (ESC)
+      </button>
+
+      <div className="mx-auto w-[98%] max-w-[1300px] flex flex-col lg:flex-row gap-6 lg:gap-8 items-start animate-in fade-in slide-in-from-bottom-4 duration-700 px-2 sm:px-4">
+        
+        {/* Left Side: Typing Area & Keyboard */}
+        <div className="flex-1 w-full space-y-4 sm:space-y-6">
 
       {/* Tile Typing Area */}
       <div 
@@ -464,14 +520,22 @@ export function TypingArena({
       </div>
 
       {/* Preserved Keyboard Component */}
-      <div className="pt-2 mx-auto w-full max-w-[850px]">
+      <div className={cn(
+        "mx-auto w-full max-w-[850px] transition-all duration-300 ease-in-out",
+        isFocusMode ? "h-0 opacity-0 overflow-hidden m-0 p-0" : "pt-2 h-auto opacity-100"
+      )}>
         {showKeyboard && <HindiKeyboard nextChar={nextChar} />}
       </div>
 
       </div> {/* Close Left Side */}
 
       {/* Right Side: Live Session Stats Panel */}
-      <div className="w-full lg:w-[320px] shrink-0 space-y-4 sm:space-y-6 mt-6 lg:mt-0">
+      <div className={cn(
+        "shrink-0 transition-all duration-300 ease-in-out",
+        isFocusMode 
+          ? "w-0 h-0 opacity-0 overflow-hidden m-0 p-0" 
+          : "w-full lg:w-[320px] space-y-4 sm:space-y-6 mt-6 lg:mt-0 opacity-100"
+      )}>
         <div className="bg-secondary/30 rounded-[2rem] p-6 sm:p-8 shadow-sm border border-border/40 flex flex-col gap-6">
           <h3 className="text-xl font-semibold tracking-tight text-foreground">Live Session</h3>
           
@@ -535,7 +599,10 @@ export function TypingArena({
         </div>
 
         {/* Focus Mode Toggle */}
-        <div className="bg-background rounded-[2rem] p-6 sm:p-8 shadow-sm border border-border/40 flex items-center justify-between cursor-pointer hover:bg-secondary/20 transition-colors">
+        <div 
+          onClick={() => setIsFocusMode(true)}
+          className="bg-background rounded-[2rem] p-6 sm:p-8 shadow-sm border border-border/40 flex items-center justify-between cursor-pointer hover:bg-secondary/20 transition-colors"
+        >
            <div className="flex flex-col gap-0.5">
              <span className="font-semibold text-sm text-foreground">Focus Mode</span>
              <span className="text-[11px] text-muted-foreground font-medium">Hide all UI distractions</span>
@@ -547,6 +614,7 @@ export function TypingArena({
         </div>
       </div>
     </div>
+    </>
   );
 }
 
