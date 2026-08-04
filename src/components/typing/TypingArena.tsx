@@ -48,6 +48,7 @@ export function TypingArena({
   const completedRef = useRef(false);
   const lastActiveTimeRef = useRef<number | null>(null);
   const mouseTimeoutRef = useRef<number | null>(null);
+  const cursorTimeoutRef = useRef<number | null>(null);
   const { currentUser } = useAuth();
 
   const typedChars = useMemo(() => Array.from(typed), [typed]);
@@ -98,9 +99,15 @@ export function TypingArena({
       return;
     }
     
-    setShowExitButton(true);
+    setShowExitButton(false);
     
     const handleMouseMove = () => {
+      document.body.classList.remove('hide-cursor-active');
+      if (cursorTimeoutRef.current) window.clearTimeout(cursorTimeoutRef.current);
+      cursorTimeoutRef.current = window.setTimeout(() => {
+        document.body.classList.add('hide-cursor-active');
+      }, 2000);
+
       setShowExitButton(true);
       if (mouseTimeoutRef.current) {
         window.clearTimeout(mouseTimeoutRef.current);
@@ -119,18 +126,31 @@ export function TypingArena({
     window.addEventListener('mousemove', handleMouseMove);
     window.addEventListener('keydown', handleKeyDown);
     
-    // Initial hide timeout
-    mouseTimeoutRef.current = window.setTimeout(() => {
-      setShowExitButton(false);
-    }, 2500);
+    // Initial hide timeout for cursor
+    cursorTimeoutRef.current = window.setTimeout(() => {
+      document.body.classList.add('hide-cursor-active');
+    }, 2000);
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('keydown', handleKeyDown);
+      document.body.classList.remove("focus-mode-active");
+      document.body.classList.remove("hide-cursor-active");
       if (mouseTimeoutRef.current) {
         window.clearTimeout(mouseTimeoutRef.current);
       }
+      if (cursorTimeoutRef.current) {
+        window.clearTimeout(cursorTimeoutRef.current);
+      }
     };
+  }, [isFocusMode]);
+
+  useEffect(() => {
+    if (isFocusMode) {
+      document.body.classList.add("focus-mode-active");
+    } else {
+      document.body.classList.remove("focus-mode-active");
+    }
   }, [isFocusMode]);
 
   useEffect(() => {
@@ -268,14 +288,38 @@ export function TypingArena({
         Exit Focus (ESC)
       </button>
 
-      <div className="mx-auto w-[98%] max-w-[1300px] flex flex-col lg:flex-row gap-6 lg:gap-8 items-start animate-in fade-in slide-in-from-bottom-4 duration-700 px-2 sm:px-4">
+      <style>{`
+        body.focus-mode-active header, body.focus-mode-active footer {
+          max-height: 0 !important;
+          padding-top: 0 !important;
+          padding-bottom: 0 !important;
+          opacity: 0 !important;
+          overflow: hidden !important;
+          border: none !important;
+          margin: 0 !important;
+        }
+        header, footer {
+          transition: all 0.3s ease-in-out !important;
+        }
+        body.hide-cursor-active, body.hide-cursor-active * {
+          cursor: none !important;
+        }
+      `}</style>
+
+      <div className={cn(
+        "mx-auto w-[98%] max-w-[1300px] flex flex-col lg:flex-row gap-6 lg:gap-8 animate-in fade-in slide-in-from-bottom-4 duration-700 px-2 sm:px-4 transition-all duration-300",
+        isFocusMode ? "items-center justify-center min-h-[85vh]" : "items-start min-h-0"
+      )}>
         
         {/* Left Side: Typing Area & Keyboard */}
         <div className="flex-1 w-full space-y-4 sm:space-y-6">
 
       {/* Tile Typing Area */}
       <div 
-        className="relative mx-auto w-full max-w-[850px] min-h-[140px] cursor-text rounded-3xl p-4 sm:p-6 bg-white/60 border border-white/60 shadow-sm backdrop-blur-xl transition-all duration-300 group overflow-hidden"
+        className={cn(
+          "relative mx-auto w-full min-h-[140px] cursor-text rounded-3xl p-4 sm:p-6 bg-white/60 border border-white/60 shadow-sm backdrop-blur-xl transition-all duration-300 group overflow-hidden",
+          isFocusMode ? "max-w-[1000px]" : "max-w-[850px]"
+        )}
         onClick={() => inputRef.current?.focus()}
       >
         <div className="flex flex-col gap-y-4 sm:gap-y-5 w-full items-center overflow-x-auto custom-scrollbar p-2">
@@ -312,7 +356,10 @@ export function TypingArena({
 
               let globalIndex = 0;
               return (
-                <div className="w-full text-2xl sm:text-[28px] leading-[2.2] text-left font-hindi select-none flex flex-wrap gap-x-3 gap-y-2 px-2">
+                <div className={cn(
+                  "w-full text-left font-hindi select-none flex flex-wrap gap-x-3 gap-y-2 px-2 transition-all duration-300",
+                  isFocusMode ? "text-[28px] sm:text-[32px] leading-[2.5]" : "text-2xl sm:text-[28px] leading-[2.2]"
+                )}>
                   {words.map((word, wIdx) => {
                     const isLastWordTotal = wIdx === words.length - 1;
                     const wordChars = Array.from(word);
@@ -382,8 +429,10 @@ export function TypingArena({
                         <div
                           key={cIdx}
                           className={cn(
-                            "flex items-center justify-center rounded-xl bg-white shadow-sm border border-slate-100 transition-all duration-200 shrink-0",
-                            isSpace ? "w-14 sm:w-16" : "size-11 sm:size-12",
+                            "flex items-center justify-center rounded-xl bg-white shadow-sm border border-slate-100 transition-all duration-300 shrink-0",
+                            isSpace 
+                              ? (isFocusMode ? "w-16 sm:w-20" : "w-14 sm:w-16") 
+                              : (isFocusMode ? "size-12 sm:size-14" : "size-11 sm:size-12"),
                             
                             state === "pending" && !isCurrent && "border border-border/60 text-[#94A3B8]",
                             isCurrent && "outline outline-[2.5px] outline-offset-[2.5px] outline-[#F59E0B] border-transparent z-10 shadow-[0_4px_14px_rgba(245,158,11,0.2)] text-[#F59E0B] scale-105",
@@ -393,7 +442,8 @@ export function TypingArena({
                         >
                           {isSpace ? (
                             <span className={cn(
-                              "text-[9px] sm:text-[10px] font-bold uppercase tracking-widest",
+                              "font-bold uppercase tracking-widest transition-all duration-300",
+                              isFocusMode ? "text-[10px] sm:text-[11px]" : "text-[9px] sm:text-[10px]",
                               state === "pending" ? "text-[#94A3B8]" :
                               state === "correct" ? "text-[#16A34A]/70" :
                               state === "wrong" ? "text-[#EF4444]" :
@@ -402,7 +452,10 @@ export function TypingArena({
                               Space
                             </span>
                           ) : (
-                            <span className="font-hindi text-xl sm:text-2xl font-bold">
+                            <span className={cn(
+                              "font-hindi font-bold transition-all duration-300",
+                              isFocusMode ? "text-2xl sm:text-[28px]" : "text-xl sm:text-2xl"
+                            )}>
                               {ch}
                             </span>
                           )}
