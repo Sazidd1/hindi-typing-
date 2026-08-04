@@ -208,85 +208,85 @@ function LessonsPage() {
         ))}
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3 animate-rise-in" style={{ animationDelay: "200ms" }}>
+      <div className="grid gap-4 sm:gap-5 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-6 animate-rise-in" style={{ animationDelay: "200ms" }}>
         {filteredItems.map((item, i) => {
           const Icon = item.icon;
           const isCompleted = item.progress === 100;
           
           return (
-            <GlassCard key={item.slug} className="group flex h-full flex-col p-6 hover:border-primary/40">
+            <div key={item.slug} className="group flex flex-col p-3.5 sm:p-4 rounded-[22px] bg-gradient-to-br from-[#EAF6FF] to-[#E0F2FE] border border-black/5 shadow-[0_4px_20px_rgb(0,0,0,0.03)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] transition-all duration-200 hover:-translate-y-[3px]">
               <div className="flex items-start justify-between">
                 <div 
-                  className={`flex size-14 items-center justify-center rounded-2xl transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-3 ${
+                  className={`flex size-9 items-center justify-center rounded-full transition-transform duration-300 ${
                     isCompleted 
-                      ? "bg-success/15 text-success" 
-                      : "bg-gradient-to-br from-primary to-accent-blue text-primary-foreground shadow-lg shadow-primary/20"
+                      ? "bg-green-100 text-green-600" 
+                      : "bg-blue-100 text-blue-600"
                   }`}
                 >
-                  {isCompleted ? <CheckCircle className="size-7" /> : <Icon className="size-7" />}
+                  {isCompleted ? <CheckCircle className="size-4.5" /> : <Icon className="size-4.5" />}
                 </div>
                 
-                <div className="flex flex-col items-end gap-2.5">
-                  <span className={`rounded-full px-3.5 py-1 text-[10px] font-bold uppercase tracking-wider ${
-                    item.level === "शुरुआती" ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400" :
-                    item.level === "मध्यम" ? "bg-amber-100 text-amber-700 dark:bg-amber-500/20 dark:text-amber-400" :
-                    "bg-rose-100 text-rose-700 dark:bg-rose-500/20 dark:text-rose-400"
+                <div className="flex flex-col items-end gap-1">
+                  <span className={`rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider ${
+                    item.level === "शुरुआती" ? "bg-emerald-100/80 text-emerald-700" :
+                    item.level === "मध्यम" ? "bg-amber-100/80 text-amber-700" :
+                    "bg-rose-100/80 text-rose-700"
                   }`}>
                     {item.level}
                   </span>
                   {item.type === "lesson" && (
-                    <span className="text-xs font-bold text-muted-foreground">
-                      Module {String(i + 1).padStart(2, "0")}
+                    <span className="text-[10px] font-bold text-slate-400">
+                      Mod {String(i + 1).padStart(2, "0")}
                     </span>
                   )}
                 </div>
               </div>
               
-              <div className="mt-6 flex-1">
-                <h3 className="text-xl font-bold text-foreground group-hover:text-primary transition-colors">{item.title}</h3>
-                <p className="font-hindi text-[15px] font-semibold text-primary mb-2.5">{item.hindiTitle}</p>
-                <p className="font-hindi text-sm text-muted-foreground line-clamp-2 leading-relaxed">{item.description}</p>
+              <div className="mt-2.5 flex-1">
+                <h3 className="text-xs font-bold text-slate-800 transition-colors line-clamp-1">{item.title}</h3>
+                <p className="font-hindi text-lg sm:text-xl font-bold text-blue-600 mt-0.5 line-clamp-1">{item.hindiTitle}</p>
+                <p className="font-hindi text-[11px] text-slate-500 line-clamp-1 mt-0.5">{item.description}</p>
               </div>
 
-              <div className="mt-7 flex flex-wrap gap-2 text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
-                <span className="flex items-center gap-1.5 rounded-lg bg-secondary/60 px-2.5 py-1.5">
-                  ⏱ {item.minutes} min
+              <div className="mt-2 flex flex-wrap gap-2 text-[10px] font-bold uppercase tracking-wider text-slate-500">
+                <span className="flex items-center gap-1 bg-white/40 px-2 py-1 rounded-md">
+                  ⏱ {item.minutes}m
                 </span>
-                <span className="flex items-center gap-1.5 rounded-lg bg-secondary/60 px-2.5 py-1.5 font-hindi">
+                <span className="flex items-center gap-1 font-hindi bg-white/40 px-2 py-1 rounded-md">
                   ⌨ {item.keys}
                 </span>
               </div>
 
-              <div className="mt-6 space-y-2">
-                <div className="flex justify-between text-[11px] font-bold uppercase tracking-wider">
-                  <span className="text-muted-foreground">Completion</span>
-                  <span className={isCompleted ? "text-success" : "text-foreground"}>{item.progress}%</span>
+              <div className="mt-2.5 space-y-1">
+                <div className="flex justify-between text-[9px] font-bold uppercase tracking-wider">
+                  <span className="text-slate-400">Progress</span>
+                  <span className={isCompleted ? "text-green-600" : "text-slate-700"}>{item.progress}%</span>
                 </div>
-                <div className="h-1.5 w-full overflow-hidden rounded-full bg-secondary">
+                <div className="h-1.5 w-full overflow-hidden rounded-full bg-black/5">
                   <div 
                     className={`h-full rounded-full transition-all duration-1000 ${
-                      isCompleted ? "bg-success" : "bg-primary"
+                      isCompleted ? "bg-green-500" : "bg-blue-500"
                     }`}
                     style={{ width: `${item.progress}%` }}
                   />
                 </div>
               </div>
 
-              <div className="mt-7">
+              <div className="mt-2.5">
                 <Link
                   to={item.path as any}
                   search={item.search as any}
-                  className={`inline-flex w-full items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-bold transition-all ${
+                  className={`flex w-full items-center justify-center gap-1.5 rounded-xl px-3 py-2 text-[11px] font-bold transition-colors ${
                     isCompleted
-                      ? "bg-success/10 text-success hover:bg-success/20"
-                      : "bg-secondary text-secondary-foreground hover:bg-primary hover:text-primary-foreground hover:shadow-[0_8px_16px_-6px_var(--color-primary)] hover:-translate-y-0.5"
+                      ? "bg-green-500 text-white hover:bg-green-600"
+                      : "bg-blue-600 text-white hover:bg-blue-700 shadow-sm"
                   }`}
                 >
-                  {isCompleted ? "Practice Again" : item.progress > 0 ? "Continue Lesson" : "Start Lesson"} 
-                  <ArrowRight className="size-4" />
+                  {isCompleted ? "Practice Again" : item.progress > 0 ? "Continue" : "Start Lesson"} 
+                  <ArrowRight className="size-3.5" />
                 </Link>
               </div>
-            </GlassCard>
+            </div>
           );
         })}
       </div>
