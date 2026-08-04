@@ -8,9 +8,15 @@ export function HindiKeyboard({ nextChar }: { nextChar?: string | undefined }) {
   const finger = nextChar === " " ? "thumb" : target?.key.finger;
 
   return (
-    <div className="glass-strong rounded-3xl p-4 md:p-5 mx-auto w-full">
+    <div className="glass-strong rounded-3xl p-6 sm:p-8 mx-auto w-full border border-white/60 shadow-sm">
       <div className="flex flex-col gap-1.5 sm:gap-2 w-full">
-        {keyboardRows.map((row, ri) => (
+        {keyboardRows.map((row, ri) => {
+          let rowColor = "#94A3B8"; // Default premium soft gray for number and space rows
+          if (ri === 1) rowColor = "#60A5FA"; // Top Row (Soft Blue)
+          if (ri === 2) rowColor = "#34D399"; // Home Row (Soft Emerald Green)
+          if (ri === 3) rowColor = "#F59E0B"; // Bottom Row (Soft Amber/Orange)
+
+          return (
           <div key={ri} className="flex w-full gap-1.5 sm:gap-2">
             {row.map((key, ki) => {
               const isActive = activeKey === key.en;
@@ -21,7 +27,7 @@ export function HindiKeyboard({ nextChar }: { nextChar?: string | undefined }) {
                   style={{
                     flexGrow: key.width ?? 1,
                     flexBasis: `${(key.width ?? 1) * 2.25}rem`,
-                    borderBottomColor: fingerColors[key.finger],
+                    borderBottomColor: rowColor,
                   }}
                   className={cn(
                     "relative flex h-10 sm:h-11 flex-col items-center justify-center rounded-lg border border-b-2 border-white/70 bg-white/75 px-1 transition-all duration-200",
@@ -52,7 +58,8 @@ export function HindiKeyboard({ nextChar }: { nextChar?: string | undefined }) {
               );
             })}
           </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

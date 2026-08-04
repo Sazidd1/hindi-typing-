@@ -190,10 +190,10 @@ export function TypingArena({
 
       {/* Tile Typing Area */}
       <div 
-        className="relative mx-auto w-full max-w-[850px] min-h-[140px] cursor-text rounded-3xl p-4 sm:p-6 bg-white/60 border border-white/80 shadow-[0_8px_30px_rgb(0,0,0,0.06)] backdrop-blur-xl transition-all duration-300 group overflow-hidden"
+        className="relative mx-auto w-full max-w-[850px] min-h-[140px] cursor-text rounded-3xl p-4 sm:p-6 bg-white/60 border border-white/60 shadow-sm backdrop-blur-xl transition-all duration-300 group overflow-hidden"
         onClick={() => inputRef.current?.focus()}
       >
-        <div className="flex flex-col gap-y-4 sm:gap-y-5 w-full items-center overflow-x-auto custom-scrollbar">
+        <div className="flex flex-col gap-y-4 sm:gap-y-5 w-full items-center overflow-x-auto custom-scrollbar p-2">
           {(() => {
             if (isParagraphMode) {
               const _dependentVowels = new Set([
@@ -257,7 +257,7 @@ export function TypingArena({
                                 isCurrent && "text-[#F59E0B] underline decoration-2 underline-offset-4",
                                 state === "correct" && !isCurrent && "text-[#16A34A]",
                                 state === "wrong" && !isCurrent && "text-[#EF4444]",
-                                state === "pending" && !isCurrent && "text-[#B8C1CC]"
+                                state === "pending" && !isCurrent && "text-[#94A3B8]"
                               )}
                             >
                               {ch}
@@ -300,8 +300,8 @@ export function TypingArena({
                             "flex items-center justify-center rounded-xl bg-white shadow-sm border border-slate-100 transition-all duration-200 shrink-0",
                             isSpace ? "w-14 sm:w-16" : "size-11 sm:size-12",
                             
-                            state === "pending" && !isCurrent && "border border-border/60 text-[#B8C1CC]",
-                            isCurrent && "border-2 border-[#F59E0B] z-10 shadow-[0_4px_14px_rgba(245,158,11,0.2)] text-[#F59E0B] scale-105",
+                            state === "pending" && !isCurrent && "border border-border/60 text-[#94A3B8]",
+                            isCurrent && "outline outline-[2.5px] outline-offset-[2.5px] outline-[#F59E0B] border-transparent z-10 shadow-[0_4px_14px_rgba(245,158,11,0.2)] text-[#F59E0B] scale-105",
                             state === "correct" && !isCurrent && "border border-[#16A34A]/30 bg-[#16A34A]/5 text-[#16A34A]",
                             state === "wrong" && !isCurrent && "border-2 border-[#EF4444] bg-[#EF4444]/10 text-[#EF4444]",
                           )}
@@ -309,7 +309,7 @@ export function TypingArena({
                           {isSpace ? (
                             <span className={cn(
                               "text-[9px] sm:text-[10px] font-bold uppercase tracking-widest",
-                              state === "pending" ? "text-[#B8C1CC]/70" :
+                              state === "pending" ? "text-[#94A3B8]" :
                               state === "correct" ? "text-[#16A34A]/70" :
                               state === "wrong" ? "text-[#EF4444]" :
                               "text-[#F59E0B]"
@@ -337,7 +337,7 @@ export function TypingArena({
 
                   {/* Spacer equal to approx 1 word width */}
                   {row.length > 1 && (
-                    <div className="w-[80px] sm:w-[120px] shrink-0" />
+                    <div className="w-[60px] sm:w-[90px] shrink-0" />
                   )}
 
                   {/* Right Word */}
@@ -420,56 +420,51 @@ export function TypingArena({
       </div> {/* Close Left Side */}
 
       {/* Right Side: Live Session Stats Panel */}
-      <div className="w-full lg:w-[320px] shrink-0 space-y-4 mt-6 lg:mt-0">
-        <div className="bg-secondary/40 rounded-[2rem] p-6 shadow-sm border border-border/50 flex flex-col gap-6">
-          <h3 className="text-xl font-bold text-foreground">Live Session</h3>
+      <div className="w-full lg:w-[320px] shrink-0 space-y-4 sm:space-y-6 mt-6 lg:mt-0">
+        <div className="bg-secondary/30 rounded-[2rem] p-6 sm:p-8 shadow-sm border border-border/40 flex flex-col gap-6">
+          <h3 className="text-xl font-semibold tracking-tight text-foreground">Live Session</h3>
           
           {/* 2x2 Grid */}
           <div className="grid grid-cols-2 gap-3">
              {/* Speed */}
              <div className="bg-background rounded-2xl p-4 shadow-sm border border-border/40 flex flex-col gap-1">
                <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Speed</span>
-               <div className="flex items-baseline gap-1">
-                 <span className="text-3xl font-bold text-primary">{wpm}</span>
-                 <span className="text-xs font-bold text-muted-foreground">WPM</span>
+               <div className="flex items-center gap-1">
+                 <span className="text-[28px] font-semibold tracking-tight text-primary">{wpm}</span>
+                 <span className="text-[13px] font-semibold text-muted-foreground">WPM</span>
                </div>
              </div>
              {/* Accuracy */}
              <div className="bg-background rounded-2xl p-4 shadow-sm border border-border/40 flex flex-col gap-1">
                <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Accuracy</span>
-               <div className="flex items-baseline gap-1">
-                 <span className="text-3xl font-bold text-success">{accuracy}</span>
-                 <span className="text-xs font-bold text-muted-foreground">%</span>
+               <div className="flex items-center gap-1">
+                 <span className="text-[28px] font-semibold tracking-tight text-success">{accuracy}</span>
+                 <span className="text-[13px] font-semibold text-muted-foreground">%</span>
                </div>
              </div>
              {/* Time */}
              <div className="bg-background rounded-2xl p-4 shadow-sm border border-border/40 flex flex-col gap-1">
                <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Time</span>
-               <div className="flex items-baseline gap-1">
-                 <span className="text-2xl font-bold text-foreground">{formatTime(elapsed)}</span>
+               <div className="flex items-center gap-1">
+                 <span className="text-[22px] font-semibold tracking-tight text-foreground">{formatTime(elapsed)}</span>
                </div>
              </div>
              {/* Streak */}
              <div className="bg-background rounded-2xl p-4 shadow-sm border border-border/40 flex flex-col gap-1">
                <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Streak</span>
-               <div className="flex items-baseline gap-1">
-                 <span className="text-2xl font-bold text-orange-500">{currentStreak}</span>
-                 <span className="text-lg">🔥</span>
+               <div className="flex items-center gap-1">
+                 <span className="text-[22px] font-semibold tracking-tight text-orange-500">{currentStreak}</span>
+                 <span className="text-[20px]">🔥</span>
                </div>
              </div>
           </div>
 
-          {/* Chart Placeholder */}
-          <div className="bg-background rounded-2xl p-4 h-32 flex items-end justify-between gap-1.5 shadow-sm border border-border/40 overflow-hidden">
-            {[40, 55, 45, 75, 65, 90, 85].map((h, i) => (
-              <div key={i} className="w-full bg-primary rounded-t-sm transition-all duration-500" style={{ height: `${h}%`, opacity: 0.3 + (i * 0.1) }}></div>
-            ))}
-          </div>
+
 
           {/* Pause Button */}
           <button 
             onClick={reset}
-            className="w-full bg-[#1a1b1e] hover:bg-black text-white rounded-xl py-4 flex items-center justify-center gap-2 font-semibold transition-colors shadow-md"
+            className="w-full bg-[#1a1b1e] hover:bg-black text-white rounded-xl py-4 flex items-center justify-center gap-2 font-semibold transition-colors shadow-sm"
           >
             <div className="flex gap-1 items-center">
               <span className="w-1.5 h-3.5 bg-white/90 rounded-sm"></span>
@@ -480,9 +475,9 @@ export function TypingArena({
         </div>
 
         {/* Focus Mode Toggle */}
-        <div className="bg-background rounded-[2rem] p-5 shadow-sm border border-border/40 flex items-center justify-between cursor-pointer hover:bg-secondary/20 transition-colors">
-           <div className="flex flex-col">
-             <span className="font-bold text-sm text-foreground">Focus Mode</span>
+        <div className="bg-background rounded-[2rem] p-6 sm:p-8 shadow-sm border border-border/40 flex items-center justify-between cursor-pointer hover:bg-secondary/20 transition-colors">
+           <div className="flex flex-col gap-0.5">
+             <span className="font-semibold text-sm text-foreground">Focus Mode</span>
              <span className="text-[11px] text-muted-foreground font-medium">Hide all UI distractions</span>
            </div>
            {/* Toggle Switch */}
