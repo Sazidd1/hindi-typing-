@@ -47,11 +47,13 @@ export function TypingArena({
 
   const typedChars = useMemo(() => Array.from(typed), [typed]);
   const correctCount = typedChars.filter((c, i) => c === chars[i]).length;
-  const accuracy = typedChars.length
-    ? Math.max(0, Math.round((correctCount / typedChars.length) * 100))
+  const totalAttempted = isParagraphMode ? typedChars.length : typedChars.length + errors;
+  const accuracy = totalAttempted > 0
+    ? Math.max(0, Math.round((correctCount / totalAttempted) * 100))
     : 100;
-  const minutes = elapsed / 60;
-  const wpm = minutes > 0 ? Math.max(0, Math.round(correctCount / 5 / minutes)) : 0;
+  // Use a minimum of 1 second (1/60 min) for WPM to avoid huge spikes in the first few ms
+  const minutes = Math.max(elapsed, 1) / 60;
+  const wpm = startedAt !== null ? Math.max(0, Math.round(correctCount / 5 / minutes)) : 0;
   const progress = Math.min(100, Math.round((typedChars.length / chars.length) * 100));
   const remaining = timeLimit ? Math.max(0, timeLimit - elapsed) : null;
 
@@ -72,8 +74,8 @@ export function TypingArena({
   useEffect(() => {
     if (startedAt === null || finished) return;
     const id = window.setInterval(() => {
-      setElapsed(Math.floor((Date.now() - startedAt) / 1000));
-    }, 200);
+      setElapsed((Date.now() - startedAt) / 1000);
+    }, 100);
     return () => window.clearInterval(id);
   }, [startedAt, finished]);
 
@@ -185,18 +187,10 @@ export function TypingArena({
       
       {/* Left Side: Typing Area & Keyboard */}
       <div className="flex-1 w-full space-y-4 sm:space-y-6">
-        
-        {/* Progress Line */}
-        <div className="h-1.5 w-full overflow-hidden rounded-full bg-secondary/50 shadow-inner">
-          <div
-            className="h-full rounded-full transition-all duration-300 ease-out"
-            style={{ width: `${progress}%`, background: "var(--gradient-primary)" }}
-          />
-        </div>
 
       {/* Tile Typing Area */}
       <div 
-        className="relative mx-auto w-fit min-w-[50%] min-h-[140px] cursor-text rounded-3xl p-4 sm:p-6 bg-white/60 border border-white/80 shadow-[0_8px_30px_rgb(0,0,0,0.06)] backdrop-blur-xl transition-all duration-300 group overflow-hidden"
+        className="relative mx-auto w-full max-w-[850px] min-h-[140px] cursor-text rounded-3xl p-4 sm:p-6 bg-white/60 border border-white/80 shadow-[0_8px_30px_rgb(0,0,0,0.06)] backdrop-blur-xl transition-all duration-300 group overflow-hidden"
         onClick={() => inputRef.current?.focus()}
       >
         <div className="flex flex-col gap-y-4 sm:gap-y-5 w-full items-center overflow-x-auto custom-scrollbar">
@@ -419,7 +413,7 @@ export function TypingArena({
       </div>
 
       {/* Preserved Keyboard Component */}
-      <div className="pt-2 mx-auto max-w-[850px]">
+      <div className="pt-2 mx-auto w-full max-w-[850px]">
         {showKeyboard && <HindiKeyboard nextChar={nextChar} />}
       </div>
 
@@ -502,7 +496,8 @@ export function TypingArena({
 }
 
 function formatTime(total: number) {
-  const m = Math.floor(total / 60);
-  const s = total % 60;
+  const t = Math.floor(total);
+  const m = Math.floor(t / 60);
+  const s = t % 60;
   return `${m}:${String(s).padStart(2, "0")}`;
 }

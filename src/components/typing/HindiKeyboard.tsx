@@ -8,10 +8,10 @@ export function HindiKeyboard({ nextChar }: { nextChar?: string | undefined }) {
   const finger = nextChar === " " ? "thumb" : target?.key.finger;
 
   return (
-    <div className="glass-strong rounded-3xl p-4 md:p-5 mx-auto w-fit">
-      <div className="flex flex-col gap-1 overflow-x-auto">
+    <div className="glass-strong rounded-3xl p-4 md:p-5 mx-auto w-full">
+      <div className="flex flex-col gap-1.5 sm:gap-2 w-full">
         {keyboardRows.map((row, ri) => (
-          <div key={ri} className="flex min-w-max gap-1">
+          <div key={ri} className="flex w-full gap-1.5 sm:gap-2">
             {row.map((key, ki) => {
               const isActive = activeKey === key.en;
               const isShiftHint = needsShift && key.en === "Shift";
