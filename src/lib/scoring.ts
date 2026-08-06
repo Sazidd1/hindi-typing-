@@ -15,3 +15,86 @@ export function calculateXP(wpm: number, accuracy: number, errors: number): numb
 }
 
 export const DEFAULT_TARGET_WPM = 20;
+
+export type ValidationResult = {
+  isValid: boolean;
+  wpm: number;
+  accuracy: number;
+  correctCharacters: number;
+  totalAttempted: number;
+  grade: Grade | null;
+  xp: number;
+  reason?: string;
+};
+
+export function validateSession(
+  typedChars: string[],
+  expectedChars: string[],
+  elapsedSeconds: number,
+  recordedErrors: number,
+  isParagraphMode: boolean
+): ValidationResult {
+  // 1. Recalculate strictly matching correct characters (index-by-index)
+  let correctCount = 0;
+  for (let i = 0; i < typedChars.length; i++) {
+    if (typedChars[i] === expectedChars[i]) {
+      correctCount++;
+    }
+  }
+
+  // 2. WPM Calculation
+  let minutes = elapsedSeconds / 60;
+  // Prevent divide-by-zero
+  if (minutes <= 0) minutes = 0.001;
+  
+  let wpm = Math.max(0, Math.round((correctCount / 5) / minutes));
+
+  // 3. Accuracy Calculation
+  // Total attempted is based strictly on typed characters plus any blocked errors
+  const totalAttempted = isParagraphMode 
+    ? Math.max(typedChars.length, expectedChars.length > 0 && typedChars.length === expectedChars.length ? typedChars.length : 0) 
+    : typedChars.length + recordedErrors;
+    
+  let accuracy = totalAttempted > 0 
+    ? Math.max(0, Math.round((correctCount / totalAttempted) * 100))
+    : 0;
+
+  // 4. Session Validation Rules
+  let isValid = true;
+  let reason = undefined;
+
+  if (elapsedSeconds < 5) {
+    isValid = false;
+    reason = "Session time too short (minimum 5s required).";
+  } else if (wpm > 200) {
+    isValid = false;
+    reason = "Unrealistic WPM detected.";
+  } else if (accuracy < 70 && typedChars.length >= expectedChars.length) {
+    isValid = false;
+    reason = "Accuracy below 70%.";
+  }
+
+  // 5. Output Validation Result
+  if (!isValid) {
+    return {
+      isValid,
+      wpm: 0,
+      accuracy: 0,
+      correctCharacters: correctCount,
+      totalAttempted,
+      grade: null,
+      xp: 0,
+      reason
+    };
+  }
+
+  return {
+    isValid,
+    wpm,
+    accuracy,
+    correctCharacters: correctCount,
+    totalAttempted,
+    grade: calculateGrade(wpm, accuracy, DEFAULT_TARGET_WPM),
+    xp: calculateXP(wpm, accuracy, recordedErrors),
+  };
+}

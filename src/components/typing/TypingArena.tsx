@@ -5,7 +5,7 @@ import { HindiKeyboard } from "@/components/typing/HindiKeyboard";
 import { useAuth } from "@/lib/auth";
 import { lessons } from "@/lib/typing-data";
 import { Link } from "@tanstack/react-router";
-import { calculateGrade, calculateXP, DEFAULT_TARGET_WPM } from "@/lib/scoring";
+import { calculateGrade, calculateXP, DEFAULT_TARGET_WPM, validateSession } from "@/lib/scoring";
 import { ChapterMasteryModal } from "@/components/typing/ChapterMasteryModal";
 
 export type TypingResult = {
@@ -60,14 +60,16 @@ export function TypingArena({
   const { currentUser } = useAuth();
 
   const typedChars = useMemo(() => Array.from(typed), [typed]);
-  const correctCount = typedChars.filter((c, i) => c === chars[i]).length;
-  const totalAttempted = isParagraphMode ? typedChars.length : typedChars.length + errors;
-  const accuracy = totalAttempted > 0
-    ? Math.max(0, Math.round((correctCount / totalAttempted) * 100))
-    : 100;
-  // Use a minimum of 1 second (1/60 min) for WPM to avoid huge spikes in the first few ms
-  const minutes = Math.max(elapsed, 1) / 60;
-  const wpm = startedAt !== null ? Math.max(0, Math.round(correctCount / 5 / minutes)) : 0;
+
+  const validation = validateSession(
+    typedChars,
+    chars,
+    elapsed,
+    errors,
+    !!isParagraphMode
+  );
+
+  const { wpm, accuracy, correctCharacters, totalAttempted } = validation;
   const progress = Math.min(100, Math.round((typedChars.length / chars.length) * 100));
   const remaining = timeLimit ? Math.max(0, timeLimit - elapsed) : null;
 
@@ -94,9 +96,13 @@ export function TypingArena({
         if (saved.typed && saved.typed.length > 0) {
           if (saved.typed.length < text.length) {
              setTyped(saved.typed);
+             if (saved.elapsed) setElapsed(saved.elapsed);
+             if (saved.errors) setErrors(saved.errors);
           } else {
              // If they already finished this saved session, starting again should be fresh
              setTyped("");
+             setElapsed(0);
+             setErrors(0);
           }
         }
       } catch (e) {}
@@ -200,27 +206,35 @@ export function TypingArena({
     if (finished || completedRef.current) return;
     const timeUp = timeLimit != null && elapsed >= timeLimit && startedAt !== null;
     const done = typedChars.length >= chars.length && chars.length > 0;
+    
     if (timeUp || done) {
+      // Final rigid validation check
+      const finalValidation = validateSession(
+        typedChars,
+        chars,
+        elapsed,
+        errors,
+        !!isParagraphMode
+      );
+
       completedRef.current = true;
       setFinished(true);
       
-      // Save enhanced result history to local storage
-      if (currentUser) {
+      // Save enhanced result history to local storage ONLY if valid
+      if (currentUser && finalValidation.isValid) {
         try {
           const key = "results_" + currentUser;
           const existing = JSON.parse(localStorage.getItem(key) || "[]");
           const date = new Date();
           const dateString = `${date.getDate()} ${date.toLocaleString('default', { month: 'short' })}`;
-          const grade = calculateGrade(wpm, accuracy, DEFAULT_TARGET_WPM);
-          const xp = calculateXP(wpm, accuracy, errors);
           const newResult = { 
             date: dateString, 
             lessonSlug: lessonSlug || "unknown",
-            wpm: wpm,
-            accuracy: accuracy,
+            wpm: finalValidation.wpm,
+            accuracy: finalValidation.accuracy,
             errors: errors,
-            grade: grade,
-            xp: xp
+            grade: finalValidation.grade,
+            xp: finalValidation.xp
           };
           localStorage.setItem(key, JSON.stringify([newResult, ...existing].slice(0, 50)));
         } catch (e) {
@@ -228,7 +242,12 @@ export function TypingArena({
         }
       }
 
-      onComplete?.({ wpm, accuracy, errors, seconds: elapsed });
+      onComplete?.({ 
+        wpm: finalValidation.wpm, 
+        accuracy: finalValidation.accuracy, 
+        errors, 
+        seconds: elapsed 
+      });
     }
   }, [
     elapsed,
@@ -257,15 +276,21 @@ export function TypingArena({
     if (next.length < typedChars.length) return;
 
     if (next.length > typedChars.length) {
-      const idx = next.length - 1;
-      // In Bubble Mode (not paragraph), block on wrong character
-      if (!isParagraphMode && next[idx] !== chars[idx]) {
-        setErrors((e) => e + 1);
-        return; // Do not accept the wrong character
+      const addedChars = next.slice(typedChars.length);
+      let newErrors = 0;
+      
+      // Check every single newly added character (handles pasting/multiple keys)
+      for (let i = 0; i < addedChars.length; i++) {
+        const globalI = typedChars.length + i;
+        if (addedChars[i] !== chars[globalI]) {
+          newErrors++;
+        }
       }
-      // In Paragraph Mode, allow wrong character but count error
-      if (isParagraphMode && next[idx] !== chars[idx]) {
-        setErrors((e) => e + 1);
+
+      if (newErrors > 0) {
+        setErrors((e) => e + newErrors);
+        // In Bubble Mode (not paragraph), block completely on ANY wrong character
+        if (!isParagraphMode) return; 
       }
     }
     
@@ -324,6 +349,8 @@ export function TypingArena({
     const stateToSave = {
       ...existing,
       typed,
+      elapsed, // Save elapsed time to prevent WPM boost on reload
+      errors,  // Save errors to maintain true accuracy on reload
       progress: Math.max(existing.progress || 0, isCompleted ? 100 : currentProgress),
       completed: existing.completed || isCompleted,
     };
@@ -583,6 +610,9 @@ export function TypingArena({
             wpm={wpm}
             accuracy={accuracy}
             errors={errors}
+            isValid={validation.isValid}
+            grade={validation.grade}
+            xp={validation.xp}
             nextLessonSlug={nextLesson?.slug}
             onPracticeAgain={reset}
           />

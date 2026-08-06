@@ -11,23 +11,21 @@ interface ChapterMasteryModalProps {
   wpm: number;
   accuracy: number;
   errors: number;
+  isValid: boolean;
+  grade: Grade | null;
+  xp: number;
   nextLessonSlug?: string | null | undefined;
   onPracticeAgain: () => void;
 }
 
-export function ChapterMasteryModal({ wpm, accuracy, errors, nextLessonSlug, onPracticeAgain }: ChapterMasteryModalProps) {
+export function ChapterMasteryModal({ 
+  wpm, accuracy, errors, isValid, grade, xp, nextLessonSlug, onPracticeAgain 
+}: ChapterMasteryModalProps) {
   const safeWpm = Number.isFinite(wpm) ? wpm : 0;
   const safeAccuracy = Number.isFinite(accuracy) ? accuracy : 0;
   const safeErrors = Number.isFinite(errors) ? errors : 0;
   
-  const [grade, setGrade] = useState<Grade>("C");
-  const [xp, setXp] = useState(0);
-  const targetCompleted = safeWpm >= DEFAULT_TARGET_WPM;
-
-  useEffect(() => {
-    setGrade(calculateGrade(safeWpm, safeAccuracy, DEFAULT_TARGET_WPM));
-    setXp(calculateXP(safeWpm, safeAccuracy, safeErrors));
-  }, [safeWpm, safeAccuracy, safeErrors]);
+  const targetCompleted = isValid && safeWpm >= DEFAULT_TARGET_WPM && safeAccuracy >= 70;
 
   const modalContent = (
     <div
@@ -67,15 +65,22 @@ export function ChapterMasteryModal({ wpm, accuracy, errors, nextLessonSlug, onP
           </div>
           <div className="flex items-center gap-3">
             <h2 className="text-2xl font-extrabold text-slate-800 tracking-tight">Chapter Mastery</h2>
-            <span className={cn(
-              "px-3 py-1 text-sm font-bold rounded-full leading-none shadow-sm",
-              grade === "A+" && "bg-gradient-to-r from-purple-500 to-indigo-500 text-white",
-              grade === "A" && "bg-gradient-to-r from-emerald-400 to-emerald-500 text-white",
-              grade === "B" && "bg-blue-500 text-white",
-              grade === "C" && "bg-slate-400 text-white"
-            )}>
-              Grade {grade}
-            </span>
+            {grade && (
+              <span className={cn(
+                "px-3 py-1 text-sm font-bold rounded-full leading-none shadow-sm",
+                grade === "A+" && "bg-gradient-to-r from-purple-500 to-indigo-500 text-white",
+                grade === "A" && "bg-gradient-to-r from-emerald-400 to-emerald-500 text-white",
+                grade === "B" && "bg-blue-500 text-white",
+                grade === "C" && "bg-slate-400 text-white"
+              )}>
+                Grade {grade}
+              </span>
+            )}
+            {!isValid && (
+              <span className="px-3 py-1 text-sm font-bold rounded-full leading-none shadow-sm bg-rose-500 text-white">
+                Invalid
+              </span>
+            )}
           </div>
         </div>
 
@@ -128,7 +133,12 @@ export function ChapterMasteryModal({ wpm, accuracy, errors, nextLessonSlug, onP
                 "text-[13px] font-semibold",
                 targetCompleted ? "text-emerald-600" : "text-orange-600"
               )}>
-                {targetCompleted ? "Target Completed!" : "Keep practicing to hit the target"}
+                {targetCompleted 
+                  ? "Target Completed!" 
+                  : !isValid 
+                    ? "Session Invalid. Too short or too many mistakes."
+                    : "Keep practicing to hit the target"
+                }
               </p>
             </div>
           </div>
@@ -143,7 +153,7 @@ export function ChapterMasteryModal({ wpm, accuracy, errors, nextLessonSlug, onP
 
         {/* Action Buttons */}
         <div className="flex flex-col gap-2.5 mt-2 relative z-10">
-          {nextLessonSlug && (
+          {nextLessonSlug && isValid && (
             <Link
               to={"/practice" as any}
               search={{ lesson: nextLessonSlug } as any}
