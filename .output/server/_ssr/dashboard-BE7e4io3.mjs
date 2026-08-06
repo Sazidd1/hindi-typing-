@@ -1,6 +1,6 @@
 import { n as require_jsx_runtime } from "../_libs/react+tanstack__react-query.mjs";
 import { t as cn } from "./utils-C_uf36nf.mjs";
-import { C as Award, a as Star, g as Flame, h as Gauge, i as Target, r as Trophy, t as Zap, v as Clock } from "../_libs/lucide-react.mjs";
+import { E as Award, _ as Flame, a as Star, g as Gauge, i as Target, r as Trophy, t as Zap, y as Clock } from "../_libs/lucide-react.mjs";
 import { n as SectionTitle, t as GlassCard } from "./GlassCard-DkZiCYPI.mjs";
 import { t as StatCard } from "./StatCard-iKT8oSZl.mjs";
 import { a as CartesianGrid, i as Area, n as YAxis, o as ResponsiveContainer, r as XAxis, s as Tooltip, t as AreaChart } from "../_libs/recharts+[...].mjs";

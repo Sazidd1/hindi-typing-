@@ -1,10 +1,10 @@
 import { i as __toESM } from "../_runtime.mjs";
 import { n as require_jsx_runtime, r as require_react } from "../_libs/react+tanstack__react-query.mjs";
 import { t as useAuth } from "./auth-zFGTrjhs.mjs";
-import { h as Gauge, i as Target, r as Trophy, x as CalendarDays } from "../_libs/lucide-react.mjs";
+import { g as useNavigate } from "../_libs/@tanstack/react-router+[...].mjs";
+import { g as Gauge, i as Target, r as Trophy, w as CalendarDays } from "../_libs/lucide-react.mjs";
 import { n as SectionTitle, t as GlassCard } from "./GlassCard-DkZiCYPI.mjs";
 import { t as StatCard } from "./StatCard-iKT8oSZl.mjs";
-import { g as useNavigate } from "../_libs/@tanstack/react-router+[...].mjs";
 //#region node_modules/.nitro/vite/services/ssr/assets/profile-k71Zchlt.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();

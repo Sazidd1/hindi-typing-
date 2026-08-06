@@ -1,6 +1,6 @@
 import { n as require_jsx_runtime } from "../_libs/react+tanstack__react-query.mjs";
 import { t as cn } from "./utils-C_uf36nf.mjs";
-import { _ as Crown, p as Medal, r as Trophy } from "../_libs/lucide-react.mjs";
+import { p as Medal, r as Trophy, v as Crown } from "../_libs/lucide-react.mjs";
 import { n as SectionTitle, t as GlassCard } from "./GlassCard-DkZiCYPI.mjs";
 //#region node_modules/.nitro/vite/services/ssr/assets/leaderboard-BQHNDzH7.js
 var import_jsx_runtime = require_jsx_runtime();

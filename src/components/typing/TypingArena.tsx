@@ -1,8 +1,12 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Gauge, RotateCcw, Target, Timer, TriangleAlert, Trophy, Play } from "lucide-react";
+import { Gauge, RotateCcw, Target, Timer, TriangleAlert, Trophy, Play, ArrowRight, List } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { HindiKeyboard } from "@/components/typing/HindiKeyboard";
 import { useAuth } from "@/lib/auth";
+import { lessons } from "@/lib/typing-data";
+import { Link } from "@tanstack/react-router";
+import { calculateGrade, calculateXP, DEFAULT_TARGET_WPM } from "@/lib/scoring";
+import { ChapterMasteryModal } from "@/components/typing/ChapterMasteryModal";
 
 export type TypingResult = {
   wpm: number;
@@ -198,14 +202,24 @@ export function TypingArena({
       completedRef.current = true;
       setFinished(true);
       
-      // Save result to local storage
+      // Save enhanced result history to local storage
       if (currentUser) {
         try {
           const key = "results_" + currentUser;
           const existing = JSON.parse(localStorage.getItem(key) || "[]");
           const date = new Date();
           const dateString = `${date.getDate()} ${date.toLocaleString('default', { month: 'short' })}`;
-          const newResult = { date: dateString, wpm: `${wpm} WPM`, acc: `${accuracy}%` };
+          const grade = calculateGrade(wpm, accuracy, DEFAULT_TARGET_WPM);
+          const xp = calculateXP(wpm, accuracy, errors);
+          const newResult = { 
+            date: dateString, 
+            lessonSlug: lessonSlug || "unknown",
+            wpm: wpm,
+            accuracy: accuracy,
+            errors: errors,
+            grade: grade,
+            xp: xp
+          };
           localStorage.setItem(key, JSON.stringify([newResult, ...existing].slice(0, 50)));
         } catch (e) {
           console.error("Failed to save result", e);
@@ -258,6 +272,9 @@ export function TypingArena({
 
   const nextChar = chars[typedChars.length];
   
+  const currentLessonIndex = lessons.findIndex((l) => l.slug === lessonSlug);
+  const nextLesson = currentLessonIndex !== -1 && currentLessonIndex < lessons.length - 1 ? lessons[currentLessonIndex + 1] : null;
+
   // Group into words for the tile layout
   const words = useMemo(() => text.split(" "), [text]);
 
@@ -577,43 +594,15 @@ export function TypingArena({
           </span>
         </div>
 
-        {/* Cinematic Completion Screen */}
+        {/* Premium Chapter Mastery Modal */}
         {finished && (
-          <div className="absolute inset-0 z-30 flex flex-col items-center justify-center gap-6 rounded-3xl bg-background/95 p-8 backdrop-blur-xl animate-in zoom-in-95 duration-500">
-            <div className="flex size-20 items-center justify-center rounded-full bg-gradient-to-br from-primary/20 to-accent-blue/20">
-              <Trophy className="size-10 text-primary drop-shadow-md" />
-            </div>
-            
-            <div className="text-center space-y-2">
-              <h3 className="text-2xl font-bold text-foreground">Session Complete!</h3>
-              <p className="text-muted-foreground font-hindi">{subtitle}</p>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4 w-full max-w-sm">
-              <div className="flex flex-col items-center justify-center rounded-2xl bg-secondary/50 p-4">
-                <span className="text-sm font-bold uppercase tracking-wider text-muted-foreground">Speed</span>
-                <span className="text-3xl font-bold text-primary">{wpm} <span className="text-lg">WPM</span></span>
-              </div>
-              <div className="flex flex-col items-center justify-center rounded-2xl bg-secondary/50 p-4">
-                <span className="text-sm font-bold uppercase tracking-wider text-muted-foreground">Accuracy</span>
-                <span className="text-3xl font-bold text-success">{accuracy}%</span>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-6 text-sm font-semibold text-muted-foreground mt-2">
-              <span>Time: {formatTime(elapsed)}</span>
-              <span className="size-1 rounded-full bg-border"></span>
-              <span>Errors: <span className="text-danger">{errors}</span></span>
-            </div>
-
-            <button
-              onClick={reset}
-              className="mt-4 inline-flex items-center gap-2 rounded-full px-8 py-3.5 text-base font-bold text-primary-foreground shadow-lg transition-all hover:scale-105 hover:shadow-primary/30"
-              style={{ background: "var(--gradient-primary)" }}
-            >
-              <RotateCcw className="size-5" /> Practice Again
-            </button>
-          </div>
+          <ChapterMasteryModal 
+            wpm={wpm}
+            accuracy={accuracy}
+            errors={errors}
+            nextLessonSlug={nextLesson?.slug}
+            onPracticeAgain={reset}
+          />
         )}
       </div>
 
@@ -674,7 +663,7 @@ export function TypingArena({
 
 
 
-          {/* Pause Button */}
+          {/* Action Button */}
           <button 
             onClick={togglePause}
             disabled={finished}
@@ -684,7 +673,9 @@ export function TypingArena({
               finished && "opacity-50 cursor-not-allowed"
             )}
           >
-            {isPaused || startedAt === null ? (
+            {finished ? (
+              <Trophy className="size-4" />
+            ) : isPaused || startedAt === null ? (
               <Play className="size-4 fill-current" />
             ) : (
               <div className="flex gap-1 items-center">
@@ -692,7 +683,7 @@ export function TypingArena({
                 <span className="w-1.5 h-3.5 bg-white/90 rounded-sm"></span>
               </div>
             )}
-            {startedAt === null ? "Start Session" : isPaused ? "Resume Session" : "Pause Session"}
+            {finished ? "Session Complete" : startedAt === null ? "Start Session" : isPaused ? "Resume Session" : "Pause Session"}
           </button>
         </div>
 

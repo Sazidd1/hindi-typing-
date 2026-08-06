@@ -245,6 +245,43 @@ var CircleCheckBig = createLucideIcon("circle-check-big", [["path", {
 * This source code is licensed under the ISC license.
 * See the LICENSE file in the root directory of this source tree.
 */
+var CircleCheck = createLucideIcon("circle-check", [["circle", {
+	cx: "12",
+	cy: "12",
+	r: "10",
+	key: "1mglay"
+}], ["path", {
+	d: "m9 12 2 2 4-4",
+	key: "dzmm74"
+}]]);
+/**
+* @license lucide-react v0.575.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
+var CircleX = createLucideIcon("circle-x", [
+	["circle", {
+		cx: "12",
+		cy: "12",
+		r: "10",
+		key: "1mglay"
+	}],
+	["path", {
+		d: "m15 9-6 6",
+		key: "1uzhvr"
+	}],
+	["path", {
+		d: "m9 9 6 6",
+		key: "z0biqf"
+	}]
+]);
+/**
+* @license lucide-react v0.575.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
 var Clock = createLucideIcon("clock", [["circle", {
 	cx: "12",
 	cy: "12",
@@ -338,6 +375,24 @@ var Keyboard = createLucideIcon("keyboard", [
 		key: "18n3k1"
 	}]
 ]);
+/**
+* @license lucide-react v0.575.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
+var Lock = createLucideIcon("lock", [["rect", {
+	width: "18",
+	height: "11",
+	x: "3",
+	y: "11",
+	rx: "2",
+	ry: "2",
+	key: "1w4ew1"
+}], ["path", {
+	d: "M7 11V7a5 5 0 0 1 10 0v4",
+	key: "fwvmzm"
+}]]);
 /**
 * @license lucide-react v0.575.0 - ISC
 *
@@ -589,4 +644,4 @@ var Zap = createLucideIcon("zap", [["path", {
 	key: "1xq2db"
 }]]);
 //#endregion
-export { Award as C, BookOpen as S, Crown as _, Star as a, ChartColumn as b, ShieldCheck as c, Play as d, Menu as f, Flame as g, Gauge as h, Target as i, Search as l, Keyboard as m, X as n, Sparkles as o, Medal as p, Trophy as r, Shuffle as s, Zap as t, RotateCcw as u, Clock as v, ArrowRight as w, CalendarDays as x, CircleCheckBig as y };
+export { ChartColumn as C, ArrowRight as D, Award as E, CircleCheckBig as S, BookOpen as T, Flame as _, Star as a, CircleX as b, ShieldCheck as c, Play as d, Menu as f, Gauge as g, Keyboard as h, Target as i, Search as l, Lock as m, X as n, Sparkles as o, Medal as p, Trophy as r, Shuffle as s, Zap as t, RotateCcw as u, Crown as v, CalendarDays as w, CircleCheck as x, Clock as y };
