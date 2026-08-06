@@ -41,7 +41,9 @@ export function TypingArena({
   isParagraphMode?: boolean;
   onComplete?: (result: TypingResult) => void;
 }) {
-  const chars = useMemo(() => Array.from(text), [text]);
+  // Ensure text always ends with a space so the final word gets a space bubble
+  const normalizedText = useMemo(() => text.trim() + " ", [text]);
+  const chars = useMemo(() => Array.from(normalizedText), [normalizedText]);
   const [typed, setTyped] = useState("");
   const [startedAt, setStartedAt] = useState<number | null>(null);
   const [isPaused, setIsPaused] = useState(false);
@@ -283,7 +285,7 @@ export function TypingArena({
     let curr = 0;
     for (let i = 0; i < words.length; i++) {
       starts.push(curr);
-      curr += words[i].length + (i === words.length - 1 ? 0 : 1);
+      curr += words[i].length + 1; // Every word now has a trailing space
     }
     return starts;
   }, [words]);
@@ -419,13 +421,12 @@ export function TypingArena({
               let globalIndex = 0;
               return (
                 <div className={cn(
-                  "w-full text-left font-hindi select-none flex flex-wrap gap-x-3 gap-y-2 px-2 transition-all duration-300",
+                  "w-full text-left font-hindi select-none flex flex-wrap gap-y-2 px-2 transition-all duration-300",
                   isFocusMode ? "text-[28px] sm:text-[32px] leading-[2.5]" : "text-2xl sm:text-[28px] leading-[2.2]"
                 )}>
                   {words.map((word, wIdx) => {
-                    const isLastWordTotal = wIdx === words.length - 1;
                     const wordChars = Array.from(word);
-                    const charsWithSpace = isLastWordTotal ? wordChars : [...wordChars, " "];
+                    const charsWithSpace = [...wordChars, " "];
                     
                     // Assign global indices to characters in their true typing order
                     const mappedChars = charsWithSpace.map((ch, idxInWord) => {
@@ -448,6 +449,7 @@ export function TypingArena({
                               key={cIdx}
                               className={cn(
                                 "transition-colors duration-200",
+                                ch === " " && "inline-block w-[0.5em]",
                                 isCurrent && "text-[#F59E0B] underline decoration-2 underline-offset-4",
                                 state === "correct" && !isCurrent && "text-[#16A34A]",
                                 state === "wrong" && !isCurrent && "text-[#EF4444]",
@@ -466,89 +468,70 @@ export function TypingArena({
             }
 
             let globalIndex = pageStartCharIndex;
-            const rows = [];
-            for (let i = 0; i < visibleWords.length; i += 2) {
-              rows.push(visibleWords.slice(i, i + 2));
-            }
 
-            return rows.map((row, rIdx) => {
-              const renderWord = (word: string, wIdxInRow: number) => {
-                const actualWordIdx = startWordIdx + (rIdx * 2) + wIdxInRow;
-                const isLastWordTotal = actualWordIdx === words.length - 1;
-                const wordChars = Array.from(word);
-                const charsWithSpace = isLastWordTotal ? wordChars : [...wordChars, " "];
-                
-                return (
-                  <div key={wIdxInRow} className="flex gap-1.5 sm:gap-2 shrink-0">
-                    {charsWithSpace.map((ch, cIdx) => {
-                      const i = globalIndex++;
-                      const typedCh = typedChars[i];
-                      const isCurrent = i === typedChars.length;
-                      const state = typedCh === undefined ? "pending" : typedCh === ch ? "correct" : "wrong";
-                      const isSpace = ch === " ";
-                      
-                      return (
-                        <div
-                          key={cIdx}
-                          className={cn(
-                            "flex items-center justify-center rounded-xl bg-white shadow-sm border border-slate-100 transition-all duration-300 shrink-0",
-                            isSpace 
-                              ? (isFocusMode ? "w-16 sm:w-20" : "w-14 sm:w-16") 
-                              : (isFocusMode ? "size-12 sm:size-14" : "size-11 sm:size-12"),
-                            
-                            state === "pending" && !isCurrent && "border border-border/60 text-[#94A3B8]",
-                            isCurrent && "outline outline-[2.5px] outline-offset-[2.5px] outline-[#F59E0B] border-transparent z-10 shadow-[0_4px_14px_rgba(245,158,11,0.2)] text-[#F59E0B] scale-105",
-                            state === "correct" && !isCurrent && "border border-[#16A34A]/30 bg-[#16A34A]/5 text-[#16A34A]",
-                            state === "wrong" && !isCurrent && "border-2 border-[#EF4444] bg-[#EF4444]/10 text-[#EF4444]",
-                          )}
-                        >
-                          {isSpace ? (
-                            <span className={cn(
-                              "font-bold uppercase tracking-widest transition-all duration-300",
-                              isFocusMode ? "text-[10px] sm:text-[11px]" : "text-[9px] sm:text-[10px]",
-                              state === "pending" ? "text-[#94A3B8]" :
-                              state === "correct" ? "text-[#16A34A]/70" :
-                              state === "wrong" ? "text-[#EF4444]" :
-                              "text-[#F59E0B]"
-                            )}>
-                              Space
-                            </span>
-                          ) : (
-                            <span className={cn(
-                              "font-hindi font-bold transition-all duration-300",
-                              isFocusMode ? "text-2xl sm:text-[28px]" : "text-xl sm:text-2xl"
-                            )}>
-                              {ch}
-                            </span>
-                          )}
-                        </div>
-                      );
-                    })}
-                  </div>
-                );
-              };
-
+            const renderWord = (word: string, wIdxInPage: number) => {
+              const wordChars = Array.from(word);
+              const charsWithSpace = [...wordChars, " "];
+              
               return (
-                <div key={rIdx} className="flex flex-row items-center justify-center w-max mx-auto px-2 shrink-0">
-                  {/* Left Word */}
-                  <div className="flex shrink-0">
-                    {row.length > 0 && renderWord(row[0], 0)}
-                  </div>
-
-                  {/* Spacer equal to approx 1 word width */}
-                  {row.length > 1 && (
-                    <div className="w-[60px] sm:w-[90px] shrink-0" />
-                  )}
-
-                  {/* Right Word */}
-                  {row.length > 1 && (
-                    <div className="flex shrink-0">
-                      {renderWord(row[1], 1)}
-                    </div>
-                  )}
+                <div className="flex gap-1.5 sm:gap-2 shrink-0">
+                  {charsWithSpace.map((ch, cIdx) => {
+                    const i = globalIndex++;
+                    const typedCh = typedChars[i];
+                    const isCurrent = i === typedChars.length;
+                    const state = typedCh === undefined ? "pending" : typedCh === ch ? "correct" : "wrong";
+                    const isSpace = ch === " ";
+                    
+                    return (
+                      <div
+                        key={cIdx}
+                        className={cn(
+                          "flex items-center justify-center rounded-xl bg-white shadow-sm border border-slate-100 transition-all duration-300 shrink-0",
+                          isSpace 
+                            ? (isFocusMode ? "w-16 sm:w-20" : "w-14 sm:w-16") 
+                            : (isFocusMode ? "size-12 sm:size-14" : "size-11 sm:size-12"),
+                          
+                          state === "pending" && !isCurrent && "border border-border/60 text-[#94A3B8]",
+                          isCurrent && "outline outline-[2.5px] outline-offset-[2.5px] outline-[#F59E0B] border-transparent z-10 shadow-[0_4px_14px_rgba(245,158,11,0.2)] text-[#F59E0B] scale-105",
+                          state === "correct" && !isCurrent && "border border-[#16A34A]/30 bg-[#16A34A]/5 text-[#16A34A]",
+                          state === "wrong" && !isCurrent && "border-2 border-[#EF4444] bg-[#EF4444]/10 text-[#EF4444]",
+                        )}
+                      >
+                        {isSpace ? (
+                          <span className={cn(
+                            "font-bold uppercase tracking-widest transition-all duration-300",
+                            isFocusMode ? "text-[10px] sm:text-[11px]" : "text-[9px] sm:text-[10px]",
+                            state === "pending" ? "text-[#94A3B8]" :
+                            state === "correct" ? "text-[#16A34A]/70" :
+                            state === "wrong" ? "text-[#EF4444]" :
+                            "text-[#F59E0B]"
+                          )}>
+                            Space
+                          </span>
+                        ) : (
+                          <span className={cn(
+                            "font-hindi font-bold transition-all duration-300",
+                            isFocusMode ? "text-2xl sm:text-[28px]" : "text-xl sm:text-2xl"
+                          )}>
+                            {ch}
+                          </span>
+                        )}
+                      </div>
+                    );
+                  })}
                 </div>
               );
-            });
+            };
+
+            return (
+              <div className="grid grid-cols-2 gap-x-[60px] sm:gap-x-[90px] gap-y-4 sm:gap-y-5 w-max mx-auto px-2">
+                {visibleWords.map((word, wIdx) => (
+                  <div key={wIdx} className="flex justify-start shrink-0">
+                    {renderWord(word, wIdx)}
+                  </div>
+                ))}
+              </div>
+            );
           })()}
         </div>
 

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { Link } from "@tanstack/react-router";
 import { CheckCircle2, RotateCcw, Target, TriangleAlert, Trophy, XCircle, Zap } from "lucide-react";
 import { calculateGrade, calculateXP, DEFAULT_TARGET_WPM, Grade } from "@/lib/scoring";
@@ -28,8 +29,19 @@ export function ChapterMasteryModal({ wpm, accuracy, errors, nextLessonSlug, onP
     setXp(calculateXP(safeWpm, safeAccuracy, safeErrors));
   }, [safeWpm, safeAccuracy, safeErrors]);
 
-  return (
-    <div className="absolute inset-0 z-30 flex items-center justify-center bg-slate-900/40 backdrop-blur-md animate-in fade-in duration-300">
+  const modalContent = (
+    <div
+      style={{
+        position: "fixed",
+        inset: 0,
+        zIndex: 9999,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "rgba(15, 23, 42, 0.12)",
+      }}
+      className="animate-in fade-in duration-300"
+    >
       <div className="relative w-[90%] max-w-[480px] bg-white rounded-[28px] p-8 shadow-2xl animate-in zoom-in-95 duration-300 overflow-hidden flex flex-col gap-6">
         
         {/* Subtle CSS Particles */}
@@ -160,4 +172,7 @@ export function ChapterMasteryModal({ wpm, accuracy, errors, nextLessonSlug, onP
       </div>
     </div>
   );
+
+  if (typeof document === "undefined") return null;
+  return createPortal(modalContent, document.body);
 }
