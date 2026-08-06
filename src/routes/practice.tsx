@@ -33,6 +33,7 @@ function PracticePage() {
   return (
     <div className="w-full">
       <TypingArena 
+        lessonSlug={active.slug}
         text={active.text} 
         title={active.title} 
         subtitle={active.hindiTitle} 

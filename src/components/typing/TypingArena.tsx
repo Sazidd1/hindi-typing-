@@ -19,6 +19,7 @@ const HINDI_MAP: Record<string, string> = {
 };
 
 export function TypingArena({
+  lessonSlug,
   text,
   title,
   subtitle,
@@ -27,6 +28,7 @@ export function TypingArena({
   isParagraphMode = false,
   onComplete,
 }: {
+  lessonSlug?: string;
   text: string;
   title?: string;
   subtitle?: string;
@@ -76,7 +78,24 @@ export function TypingArena({
 
   useEffect(() => {
     reset();
-  }, [text, reset]);
+    
+    // Auto-restore saved progress on mount or lesson change
+    if (!lessonSlug || !currentUser) return;
+    const savedStr = localStorage.getItem(`lesson_state_${currentUser}_${lessonSlug}`);
+    if (savedStr) {
+      try {
+        const saved = JSON.parse(savedStr);
+        if (saved.typed && saved.typed.length > 0) {
+          if (saved.typed.length < text.length) {
+             setTyped(saved.typed);
+          } else {
+             // If they already finished this saved session, starting again should be fresh
+             setTyped("");
+          }
+        }
+      } catch (e) {}
+    }
+  }, [text, reset, lessonSlug, currentUser]);
 
   const togglePause = useCallback(() => {
     if (finished) return;
@@ -267,6 +286,32 @@ export function TypingArena({
   const endWordIdx = Math.min(startWordIdx + WORDS_PER_PAGE, words.length);
   const visibleWords = words.slice(startWordIdx, endWordIdx);
   const pageStartCharIndex = wordStartIndices[startWordIdx];
+
+  // Auto-save logic
+  useEffect(() => {
+    if (!lessonSlug || !currentUser) return;
+    const totalUnits = isParagraphMode ? words.length : chars.length;
+    const completedUnits = isParagraphMode ? currentWordIndex : typedChars.length;
+    const currentProgress = totalUnits > 0 ? Math.min(100, Math.floor((completedUnits / totalUnits) * 100)) : 0;
+    const isCompleted = typedChars.length >= chars.length && chars.length > 0;
+
+    const key = `lesson_state_${currentUser}_${lessonSlug}`;
+    const existingStr = localStorage.getItem(key);
+    let existing = { progress: 0, completed: false, bestWpm: 0, bestAccuracy: 0 };
+    if (existingStr) {
+      try { existing = JSON.parse(existingStr); } catch (e) {}
+    }
+
+    const stateToSave = {
+      ...existing,
+      typed,
+      progress: Math.max(existing.progress || 0, isCompleted ? 100 : currentProgress),
+      completed: existing.completed || isCompleted,
+    };
+
+    localStorage.setItem(key, JSON.stringify(stateToSave));
+    window.dispatchEvent(new Event('lessonProgressUpdated'));
+  }, [typed, currentUser, lessonSlug, currentWordIndex, typedChars.length, chars.length, isParagraphMode, words.length]);
 
   // Calculate Streak
   let currentStreak = 0;
