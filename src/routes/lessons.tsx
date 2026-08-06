@@ -165,57 +165,65 @@ function LessonsPage() {
         <div className="grid gap-6 lg:grid-cols-2 animate-rise-in" style={{ animationDelay: "100ms" }}>
           <GlassCard className="group relative overflow-hidden bg-gradient-to-br from-primary/10 to-accent-blue/5 border-primary/20 p-0">
             <div className="absolute inset-0 bg-surface-grid opacity-40"></div>
-            <div className="relative p-7 sm:p-9 flex flex-col h-full justify-between">
+            <div className="relative p-4 sm:p-5 flex flex-col h-full justify-between">
               <div>
-                <div className="flex items-center gap-2 mb-5">
-                  <span className="flex items-center gap-1.5 rounded-full bg-primary/20 px-3 py-1.5 text-xs font-bold uppercase tracking-wider text-primary">
-                    <Flame className="size-3.5" /> Daily Challenge
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2">
+                    <span className="flex items-center gap-1 rounded-full bg-primary/20 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-primary">
+                      <Flame className="size-3" /> Daily Challenge
+                    </span>
+                    <span className="text-[10px] font-bold text-muted-foreground">+50 XP</span>
+                  </div>
+                  <span className="flex items-center gap-1 bg-white/40 px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider text-slate-500 leading-none">
+                    ⏱ {dailyChallenge.minutes}m
                   </span>
-                  <span className="text-xs font-bold text-muted-foreground">+50 XP</span>
                 </div>
-                <h3 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">{dailyChallenge.title}</h3>
-                <p className="text-primary font-hindi text-lg font-semibold mb-3">{dailyChallenge.hindiTitle}</p>
-                <p className="text-muted-foreground font-hindi text-sm max-w-md">{dailyChallenge.description}</p>
+                <h3 className="text-lg sm:text-xl font-bold text-foreground mb-1 leading-tight">{dailyChallenge.title}</h3>
+                <p className="text-primary font-hindi text-base font-bold mb-1.5 leading-tight">{dailyChallenge.hindiTitle}</p>
+                <p className="text-muted-foreground font-hindi text-[12px] max-w-md line-clamp-2 leading-snug">{dailyChallenge.description}</p>
               </div>
               
-              <div className="mt-8">
+              <div className="mt-4">
                 <Link
                   to={dailyChallenge.path as any}
                   search={dailyChallenge.search as any}
-                  className="inline-flex items-center gap-2 rounded-full bg-primary px-7 py-3.5 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/30 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-primary/40"
+                  className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-[12px] font-bold text-primary-foreground shadow-sm hover:-translate-y-0.5 hover:shadow-md transition-all"
                 >
-                  Accept Challenge <Play className="size-4 fill-current" />
+                  Accept Challenge <Play className="size-3.5 fill-current" />
                 </Link>
               </div>
             </div>
           </GlassCard>
 
           <GlassCard className="group relative overflow-hidden border-accent-blue/20 p-0">
-            <div className="relative p-7 sm:p-9 flex flex-col h-full justify-between">
+            <div className="relative p-4 sm:p-5 flex flex-col h-full justify-between">
               <div>
-                <div className="flex items-center gap-2 mb-6">
-                  <span className="flex items-center gap-1.5 rounded-full bg-accent-blue/15 px-3 py-1.5 text-xs font-bold uppercase tracking-wider text-accent-blue">
-                    <Star className="size-3.5" /> Recommended
+                <div className="flex items-center justify-between mb-3">
+                  <span className="flex items-center gap-1 rounded-full bg-accent-blue/15 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-accent-blue">
+                    <Star className="size-3" /> Recommended
+                  </span>
+                  <span className="flex items-center gap-1 bg-white/40 px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider text-slate-500 leading-none">
+                    ⏱ {recommendedLesson.minutes}m
                   </span>
                 </div>
-                <div className="flex items-start gap-5">
-                  <div className="flex size-14 shrink-0 items-center justify-center rounded-2xl bg-accent-blue/10 text-accent-blue">
-                    <Keyboard className="size-7" />
+                <div className="flex items-start gap-3">
+                  <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-accent-blue/10 text-accent-blue">
+                    <Keyboard className="size-5" />
                   </div>
-                  <div>
-                    <h3 className="text-xl sm:text-2xl font-bold text-foreground">{recommendedLesson.title}</h3>
-                    <p className="text-muted-foreground font-hindi text-sm mt-1.5">{recommendedLesson.description}</p>
+                  <div className="flex-1">
+                    <h3 className="text-base sm:text-lg font-bold text-foreground leading-tight">{recommendedLesson.title}</h3>
+                    <p className="text-muted-foreground font-hindi text-[12px] mt-0.5 line-clamp-2 leading-snug">{recommendedLesson.description}</p>
                   </div>
                 </div>
               </div>
               
-              <div className="mt-8 space-y-5">
-                <div className="space-y-2.5">
-                  <div className="flex justify-between text-xs font-bold tracking-wide uppercase">
-                    <span className="text-muted-foreground">Progress</span>
+              <div className="mt-4 space-y-3">
+                <div className="space-y-1.5">
+                  <div className="flex justify-between text-[10px] font-bold tracking-wide uppercase items-center leading-none">
+                    <span className="text-slate-400">Progress</span>
                     <span className="text-foreground">{recommendedLesson.progress}%</span>
                   </div>
-                  <div className="h-2 w-full overflow-hidden rounded-full bg-secondary">
+                  <div className="h-1.5 w-full overflow-hidden rounded-full bg-secondary">
                     <div 
                       className="h-full bg-accent-blue transition-all duration-1000 ease-out rounded-full"
                       style={{ width: `${recommendedLesson.progress}%` }}
@@ -226,9 +234,9 @@ function LessonsPage() {
                 <Link
                   to={recommendedLesson.path as any}
                   search={recommendedLesson.search as any}
-                  className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-secondary px-6 py-3.5 text-sm font-semibold text-secondary-foreground transition-all hover:bg-foreground hover:text-background"
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-secondary px-4 py-2.5 text-[12px] font-bold text-secondary-foreground transition-all hover:bg-foreground hover:text-background shadow-sm"
                 >
-                  Continue Learning <ArrowRight className="size-4" />
+                  Continue Learning <ArrowRight className="size-3.5" />
                 </Link>
               </div>
             </div>
