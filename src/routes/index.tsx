@@ -1,8 +1,10 @@
+import { useEffect, useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Award, BarChart3, Gauge, Keyboard, Sparkles, Target } from "lucide-react";
 import { GlassCard, SectionTitle } from "@/components/kit/GlassCard";
 import { HindiKeyboard } from "@/components/typing/HindiKeyboard";
 import { lessons } from "@/lib/typing-data";
+import { useAuth } from "@/lib/auth";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -51,6 +53,47 @@ const features = [
 ];
 
 function Index() {
+  const { currentUser } = useAuth();
+  const [progressData, setProgressData] = useState<Record<string, any>>({});
+
+  useEffect(() => {
+    if (!currentUser) return;
+    
+    const loadData = () => {
+      const data: Record<string, any> = {};
+      for (const l of lessons) {
+         const saved = localStorage.getItem(`lesson_state_${currentUser}_${l.slug}`);
+         if (saved) {
+           try { data[l.slug] = JSON.parse(saved); } catch (e) {}
+         }
+      }
+      setProgressData(data);
+    };
+
+    loadData();
+    window.addEventListener('lessonProgressUpdated', loadData);
+    return () => window.removeEventListener('lessonProgressUpdated', loadData);
+  }, [currentUser]);
+
+  const displayLessons = useMemo(() => {
+    let previousLessonCompleted = true; // First lesson always unlocked
+    
+    return lessons.slice(0, 6).map((baseItem) => {
+      const saved = progressData[baseItem.slug] || { progress: 0, completed: false };
+      const isLocked = !previousLessonCompleted;
+      
+      const item = {
+        ...baseItem,
+        progress: saved.progress || 0,
+        isCompleted: saved.completed || false,
+        isLocked,
+      };
+
+      previousLessonCompleted = item.isCompleted;
+      return item;
+    });
+  }, [progressData]);
+
   return (
     <div className="space-y-20">
       <section className="flex flex-wrap items-center justify-between gap-10 lg:gap-12">
@@ -160,21 +203,41 @@ function Index() {
           subtitle="होम रो से लेकर परीक्षा अभ्यास तक — क्रमबद्ध रूप से आगे बढ़ें।"
         />
         <div className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-          {lessons.slice(0, 6).map((l) => (
-            <Link key={l.slug} to="/practice" search={{ lesson: l.slug }}>
-              <GlassCard className="h-full">
-                <div className="flex items-center justify-between">
-                  <span className="rounded-full bg-primary/10 px-3 py-1 font-hindi text-xs font-semibold text-primary">
-                    {l.level}
-                  </span>
-                  <span className="text-xs text-muted-foreground">{l.minutes} min</span>
+          {displayLessons.map((l) => {
+            const headerBg = l.isCompleted 
+              ? "bg-gradient-to-br from-[#16a34a] to-[#22c55e]"
+              : l.isLocked
+              ? "bg-[#e2e7ef]"
+              : "bg-gradient-to-br from-[#2563eb] to-[#1d4ed8]";
+            
+            const headerTextColor = l.isLocked ? "text-slate-500" : "text-white";
+
+            return (
+              <Link key={l.slug} to="/practice" search={{ lesson: l.slug }}>
+                <div className="group flex flex-col rounded-[16px] overflow-hidden border border-[#e6ebf2] bg-[#ffffff] transition-all duration-200 hover:-translate-y-[3px] hover:shadow-[0_14px_28px_rgba(20,30,60,0.08)] h-full">
+                  {/* HEADER STRIP */}
+                  <div className={`px-[20px] py-[10px] ${headerBg}`}>
+                    <span className={`font-bold text-[11px] uppercase tracking-[0.5px] ${headerTextColor}`}>
+                      {l.title}
+                    </span>
+                  </div>
+                  
+                  {/* BODY (Preserved structure) */}
+                  <div className="p-5 flex-1 flex flex-col">
+                    <div className="flex items-center justify-between">
+                      <span className="rounded-full bg-primary/10 px-3 py-1 font-hindi text-xs font-semibold text-primary">
+                        {l.level}
+                      </span>
+                      <span className="text-xs text-muted-foreground">{l.minutes} min</span>
+                    </div>
+                    <h3 className="mt-4 text-lg font-semibold text-foreground">{l.title}</h3>
+                    <p className="font-hindi text-sm text-primary">{l.hindiTitle}</p>
+                    <p className="mt-2 font-hindi text-sm text-muted-foreground">{l.description}</p>
+                  </div>
                 </div>
-                <h3 className="mt-4 text-lg font-semibold text-foreground">{l.title}</h3>
-                <p className="font-hindi text-sm text-primary">{l.hindiTitle}</p>
-                <p className="mt-2 font-hindi text-sm text-muted-foreground">{l.description}</p>
-              </GlassCard>
-            </Link>
-          ))}
+              </Link>
+            );
+          })}
         </div>
       </section>
 
@@ -191,3 +254,4 @@ function Index() {
     </div>
   );
 }
+
