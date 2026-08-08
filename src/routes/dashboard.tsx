@@ -146,12 +146,14 @@ function DashboardPage() {
     return mistakes;
   }, [validHistory]);
 
-  const weakKeys = useMemo(() => {
+  const weakKeysData = useMemo(() => {
     return Object.entries(aggregateMistakes)
       .sort((a, b) => b[1] - a[1])
       .slice(0, 3)
-      .map(entry => entry[0]);
+      .map(([char, count]) => ({ char, count }));
   }, [aggregateMistakes]);
+
+  const weakKeys = useMemo(() => weakKeysData.map(d => d.char), [weakKeysData]);
 
   // 6. Today's Goal Calculations
   const todayStr = `${new Date().getDate()} ${new Date().toLocaleString('default', { month: 'short' })}`;
@@ -215,61 +217,62 @@ function DashboardPage() {
   const beginnerTotal = useMemo(() => Array.isArray(lessons) ? lessons.filter(l => l && l.level === "शुरुआती").length : 0, []);
   const beginnerCompleted = useMemo(() => Array.isArray(lessons) ? lessons.filter(l => l && l.level === "शुरुआती" && completedSlugs.has(l.slug)).length : 0, [completedSlugs]);
 
-  // 9. Badges
+  const interTotalCount = useMemo(() => Array.isArray(lessons) ? lessons.filter(l => l && l.level === "मध्यम").length : 0, []);
+  const interTotal = interTotalCount > 0 ? interTotalCount : 15;
+  const interCompleted = useMemo(() => Array.isArray(lessons) ? lessons.filter(l => l && l.level === "मध्यम" && completedSlugs.has(l.slug)).length : 0, [completedSlugs]);
+
+  const advTotalCount = useMemo(() => Array.isArray(lessons) ? lessons.filter(l => l && l.level === "उन्नत").length : 0, []);
+  const advTotal = advTotalCount > 0 ? advTotalCount : 10;
+  const advCompleted = useMemo(() => Array.isArray(lessons) ? lessons.filter(l => l && l.level === "उन्नत" && completedSlugs.has(l.slug)).length : 0, [completedSlugs]);
+
+  const tracks = useMemo(() => [
+    {
+      name: "Beginner Track",
+      subName: "शुरुआती पाठ",
+      completed: beginnerCompleted,
+      total: beginnerTotal,
+      color: "bg-success",
+      badgeColor: "text-success bg-success/15 border-success/25",
+    },
+    {
+      name: "Intermediate Track",
+      subName: "मध्यम पाठ",
+      completed: interCompleted,
+      total: interTotal,
+      color: "bg-primary",
+      badgeColor: "text-primary bg-primary/15 border-primary/25",
+    },
+    {
+      name: "Advanced Track",
+      subName: "उन्नत पाठ",
+      completed: advCompleted,
+      total: advTotal,
+      color: "bg-orange-500",
+      badgeColor: "text-orange-600 bg-orange-500/15 border-orange-500/25",
+    },
+  ], [beginnerCompleted, beginnerTotal, interCompleted, interTotal, advCompleted, advTotal]);
+
+  // 9. Badges (4 Primary Badges)
   const badges = useMemo(() => [
     { icon: Flame, title: "7 दिन स्ट्रीक", desc: "लगातार सात दिन अभ्यास", earned: streak >= 7 },
     { icon: Zap, title: "50 WPM क्लब", desc: "50 शब्द प्रति मिनट पार", earned: bestWpm >= 50 },
     { icon: Target, title: "शुद्धता मास्टर", desc: "98% शुद्धता प्राप्त", earned: bestAcc >= 98 },
     { icon: Trophy, title: "परीक्षा तैयार", desc: "परीक्षा पाठ पूर्ण करें", earned: completedSlugs.has("ch25") || completedSlugs.has("ch28") },
-    { icon: Star, title: "100 टेस्ट", desc: "सौ अभ्यास सत्र पूर्ण", earned: validHistory.length >= 100 },
-    { icon: Award, title: "60 WPM क्लब", desc: "60 शब्द प्रति मिनट पार", earned: bestWpm >= 60 },
-  ], [streak, bestWpm, bestAcc, completedSlugs, validHistory.length]);
+  ], [streak, bestWpm, bestAcc, completedSlugs]);
 
   return (
     <div className="space-y-10">
-      {/* 1. Top action buttons */}
-      <div className="flex flex-col sm:flex-row gap-4 justify-between items-center bg-background/50 backdrop-blur-md p-4 rounded-3xl border border-border shadow-sm">
-        <h1 className="text-2xl font-bold font-hindi text-foreground ml-2">Dashboard</h1>
-        <div className="flex gap-3">
-          <button className="flex items-center gap-2 px-4 py-2.5 bg-secondary text-foreground rounded-full text-sm font-semibold hover:bg-secondary/80 transition-colors">
-            <Settings className="size-4" /> <span className="hidden sm:inline">Edit Profile</span>
-          </button>
-          <button className="flex items-center justify-center size-10 shrink-0 bg-secondary text-foreground rounded-full hover:bg-secondary/80 transition-colors">
-            <Bell className="size-4" />
-          </button>
-          <button className="flex items-center gap-2 px-4 py-2.5 bg-primary text-primary-foreground rounded-full text-sm font-semibold hover:bg-primary/90 transition-colors shadow-sm">
-            <Share2 className="size-4" /> <span className="hidden sm:inline">Share</span>
-          </button>
-        </div>
-      </div>
-
-      {/* 2. Profile mini-row */}
-      <GlassCard hover={false} className="flex flex-col gap-6 md:flex-row md:items-center">
-        <span
-          className="flex size-20 items-center justify-center rounded-3xl font-bold text-4xl text-primary-foreground uppercase shadow-sm"
-          style={{ background: "var(--gradient-primary)" }}
-        >
-          {userInitial}
-        </span>
-        <div className="flex-1">
-          <h2 className="font-hindi text-2xl font-semibold text-foreground">{userName}</h2>
-          <p className="text-sm text-muted-foreground mt-0.5">Local Typist</p>
-          <div className="mt-4 flex flex-wrap gap-4 text-sm text-muted-foreground">
-            <span className="inline-flex items-center gap-1.5 font-medium">
-              <CalendarDays className="size-4 text-accent-blue" /> Account Active
-            </span>
-            <span className="inline-flex items-center gap-1.5 font-medium">
-              <Trophy className="size-4 text-primary" /> Tests: {history.length}
-            </span>
-          </div>
-        </div>
-      </GlassCard>
+      <SectionTitle
+        eyebrow="Overview"
+        title="Your typing dashboard"
+        subtitle="आपकी प्रगति एक नज़र में — स्ट्रीक, गति, शुद्धता और उपलब्धियाँ।"
+      />
 
       {/* 3. 4 stat cards */}
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <StatCard icon={Flame} label="Daily streak" value={streak} suffix="days" tone="danger" />
         <StatCard icon={Clock} label="Practice time" value={practiceTimeStr} tone="muted" />
-        <StatCard icon={Gauge} label="Average WPM" value={avgWpm} />
+        <StatCard icon={Gauge} label="Average WPM" value={avgWpm} suffix="WPM" />
         <StatCard icon={Target} label="Accuracy" value={avgAcc} suffix="%" tone="success" />
       </div>
 
@@ -390,58 +393,78 @@ function DashboardPage() {
 
         <div className="flex flex-col gap-6">
           {/* 5. Daily goal card */}
-          <GlassCard hover={false} className="flex-1 flex flex-col justify-between">
+          <GlassCard hover={false} className="flex-1 flex flex-col justify-between p-6">
             <div>
-              <h3 className="text-lg font-semibold text-foreground">Daily goal</h3>
-              <p className="font-hindi text-sm text-muted-foreground mt-1">आज का लक्ष्य: 30 मिनट अभ्यास</p>
-              <div className="mt-6 space-y-5">
+              <div className="flex items-center justify-between">
+                <h3 className="text-lg font-semibold text-foreground">Daily goal</h3>
+                <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider bg-secondary/80 px-2.5 py-1 rounded-full border border-border/50">
+                  Target
+                </span>
+              </div>
+              <p className="font-hindi text-xs font-medium text-muted-foreground mt-0.5">आज का लक्ष्य: 30 मिनट अभ्यास</p>
+              
+              <div className="mt-5 space-y-4">
                 {[
                   { label: "Practice minutes", value: todayPracticeMins, max: 30, tone: "var(--primary)" },
                   { label: "Lessons completed", value: todayLessonsCompleted, max: 5, tone: "var(--accent-blue)" },
                   { label: "Accuracy target", value: todayAvgAcc, max: 98, tone: "var(--success)" },
-                ].map((g) => (
-                  <div key={g.label}>
-                    <div className="flex items-center justify-between text-sm mb-2">
-                      <span className="text-muted-foreground font-medium">{g.label}</span>
-                      <span className="font-semibold text-foreground">
-                        {g.value}/{g.max}
-                      </span>
+                ].map((g) => {
+                  const pct = Math.min(100, Math.round((g.value / g.max) * 100));
+                  return (
+                    <div key={g.label} className="space-y-1.5">
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="text-foreground/90 font-semibold">{g.label}</span>
+                        <span className="font-bold text-foreground tabular-nums bg-secondary/60 px-2 py-0.5 rounded-md border border-border/40">
+                          {g.value}/{g.max}
+                        </span>
+                      </div>
+                      <div className="h-2.5 w-full rounded-full bg-secondary/80 border border-border/40 p-0.5 overflow-hidden">
+                        <div
+                          className="h-full rounded-full transition-all duration-700 ease-out shadow-xs"
+                          style={{
+                            width: `${pct}%`,
+                            background: g.tone,
+                          }}
+                        />
+                      </div>
                     </div>
-                    <div className="h-2 overflow-hidden rounded-full bg-muted">
-                      <div
-                        className="h-full rounded-full transition-all duration-700 ease-out"
-                        style={{
-                          width: `${Math.min(100, (g.value / g.max) * 100)}%`,
-                          background: g.tone,
-                        }}
-                      />
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
-            <div className="mt-8 pt-5 border-t border-border">
-              <Link to="/practice" className="flex items-center justify-center w-full gap-2 px-4 py-3 bg-primary text-primary-foreground font-semibold rounded-xl hover:bg-primary/90 transition-all shadow-md group">
+            <div className="mt-6 pt-4 border-t border-border/60">
+              <Link to="/practice" className="flex items-center justify-center w-full gap-2 px-4 py-2.5 bg-primary text-primary-foreground text-sm font-semibold rounded-xl hover:bg-primary/90 transition-all shadow-sm hover:shadow group">
                 <Play className="size-4 fill-current group-hover:scale-110 transition-transform" /> Continue Lesson
               </Link>
             </div>
           </GlassCard>
 
           {/* 7. Weakest keys card */}
-          <GlassCard hover={false} className="flex flex-col justify-center p-6 border border-border/80">
-            <div className="flex items-center gap-3 text-muted-foreground mb-4">
-              <span className="text-sm font-bold uppercase tracking-widest text-foreground/80">Weakest Keys</span>
+          <GlassCard hover={false} className="flex flex-col justify-between p-5 border border-border/80">
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Weakest Keys</span>
+              {weakKeysData.length > 0 && (
+                <span className="text-[10px] font-bold text-danger bg-danger/10 px-2.5 py-0.5 rounded-full border border-danger/20">
+                  Needs Practice
+                </span>
+              )}
             </div>
-            {weakKeys.length > 0 ? (
-              <div className="flex gap-3">
-                {weakKeys.map(key => (
-                  <span key={key} className="flex size-12 items-center justify-center rounded-xl bg-danger/10 text-2xl font-bold text-danger font-hindi border border-danger/20 shadow-sm">
-                    {key}
-                  </span>
+
+            {weakKeysData.length > 0 ? (
+              <div className="flex flex-wrap items-center gap-3">
+                {weakKeysData.map(({ char, count }) => (
+                  <div key={char} className="flex items-center gap-2.5 bg-danger/10 border border-danger/20 px-3.5 py-2 rounded-2xl transition-transform hover:scale-105">
+                    <span className="font-hindi text-2xl font-bold text-danger leading-none">{char}</span>
+                    <span className="text-[11px] font-bold text-danger/90 tabular-nums bg-white/80 px-2 py-0.5 rounded-lg shadow-2xs border border-danger/15">
+                      {count} {count === 1 ? 'mistake' : 'mistakes'}
+                    </span>
+                  </div>
                 ))}
               </div>
             ) : (
-              <p className="text-sm font-medium text-foreground bg-secondary/50 p-3 rounded-lg border border-border text-center">No major weaknesses yet. Keep typing.</p>
+              <div className="flex min-h-[56px] items-center justify-center rounded-2xl bg-secondary/40 border border-border/40 px-4 py-3 text-center">
+                <p className="text-xs font-medium text-muted-foreground">No major weaknesses yet. Keep typing.</p>
+              </div>
             )}
           </GlassCard>
         </div>
@@ -451,25 +474,50 @@ function DashboardPage() {
          <div className="flex flex-col gap-6">
             {/* 6. Achievements/Badges row */}
             <div>
-              <h3 className="text-lg font-semibold text-foreground mb-4">Achievement badges</h3>
-              <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="text-lg font-semibold text-foreground">Achievement badges</h3>
+                <span className="text-xs font-semibold text-muted-foreground">
+                  {badges.filter(b => b.earned).length}/{badges.length} Unlocked
+                </span>
+              </div>
+              <div className="grid gap-3.5 sm:grid-cols-2">
                 {badges.map((b) => (
                   <GlassCard
                     key={b.title}
-                    className={cn("flex items-center gap-4 transition-all duration-300", !b.earned && "opacity-60 grayscale hover:grayscale-0")}
+                    hover={false}
+                    className={cn(
+                      "flex items-center gap-3.5 p-4 rounded-2xl transition-all duration-300 border",
+                      b.earned
+                        ? "bg-primary/5 border-primary/20 shadow-xs hover:border-primary/40"
+                        : "bg-secondary/20 border-border/40 opacity-75 hover:opacity-90"
+                    )}
                   >
                     <span
                       className={cn(
-                        "flex size-12 shrink-0 items-center justify-center rounded-2xl shadow-sm",
-                        b.earned ? "text-primary-foreground" : "bg-muted text-muted-foreground",
+                        "flex size-11 shrink-0 items-center justify-center rounded-2xl shadow-xs",
+                        b.earned
+                          ? "text-primary-foreground"
+                          : "bg-muted/80 text-muted-foreground/60 border border-border/40"
                       )}
                       style={b.earned ? { background: "var(--gradient-primary)" } : undefined}
                     >
                       <b.icon className="size-5" />
                     </span>
-                    <div className="min-w-0">
-                      <p className="font-hindi font-semibold text-foreground truncate">{b.title}</p>
-                      <p className="font-hindi text-xs text-muted-foreground mt-0.5 leading-tight">{b.desc}</p>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center justify-between gap-1 mb-0.5">
+                        <p className="font-hindi font-semibold text-sm text-foreground truncate">{b.title}</p>
+                        <span
+                          className={cn(
+                            "text-[10px] font-bold px-2 py-0.5 rounded-full border shrink-0",
+                            b.earned
+                              ? "text-success bg-success/15 border-success/25"
+                              : "text-muted-foreground/70 bg-secondary border-border/40"
+                          )}
+                        >
+                          {b.earned ? "Unlocked" : "Locked"}
+                        </span>
+                      </div>
+                      <p className="font-hindi text-xs text-muted-foreground leading-tight">{b.desc}</p>
                     </div>
                   </GlassCard>
                 ))}
@@ -517,66 +565,49 @@ function DashboardPage() {
          </div>
 
          {/* 8. Lesson tracks breakdown card */}
-         <GlassCard hover={false} className="h-fit flex flex-col">
-            <div className="flex items-center gap-3 mb-8">
-              <div className="p-2.5 bg-accent-blue/10 rounded-xl text-accent-blue shadow-sm border border-accent-blue/20">
+         <GlassCard hover={false} className="h-fit flex flex-col p-6">
+            <div className="flex items-center gap-3 mb-5">
+              <div className="p-2 bg-accent-blue/10 rounded-xl text-accent-blue shadow-xs border border-accent-blue/20">
                 <BookOpen className="size-5" />
               </div>
-              <h3 className="text-lg font-semibold text-foreground">Lesson Tracks</h3>
+              <div>
+                <h3 className="text-lg font-semibold text-foreground">Lesson Tracks</h3>
+                <p className="text-xs text-muted-foreground">Course progress by tier</p>
+              </div>
             </div>
             
-            <div className="space-y-7 flex-1">
-               <div>
-                  <div className="flex justify-between items-end mb-3">
-                     <div>
-                        <h4 className="font-semibold text-foreground">Beginner Track</h4>
-                        <p className="text-xs text-muted-foreground font-hindi mt-0.5">शुरुआती पाठ</p>
-                     </div>
-                     <span className="text-sm font-semibold text-foreground bg-secondary px-2 py-0.5 rounded-md">{beginnerCompleted}/{beginnerTotal}</span>
-                  </div>
-                  <div className="h-2.5 w-full bg-muted/80 rounded-full overflow-hidden shadow-inner border border-border/40">
-                     <div 
-                        className="h-full bg-success rounded-full transition-all duration-1000" 
-                        style={{ width: `${beginnerTotal > 0 ? (beginnerCompleted / beginnerTotal) * 100 : 0}%` }}
-                     />
-                  </div>
-               </div>
-
-               <div>
-                  <div className="flex justify-between items-end mb-3">
-                     <div>
-                        <h4 className="font-semibold text-foreground">Intermediate Track</h4>
-                        <p className="text-xs text-muted-foreground font-hindi mt-0.5">मध्यम पाठ</p>
-                     </div>
-                     <span className="text-sm font-semibold text-foreground bg-secondary px-2 py-0.5 rounded-md">0/15</span>
-                  </div>
-                  <div className="h-2.5 w-full bg-muted/80 rounded-full overflow-hidden shadow-inner border border-border/40">
-                     <div 
-                        className="h-full bg-primary rounded-full transition-all duration-1000" 
-                        style={{ width: `0%` }}
-                     />
-                  </div>
-               </div>
-
-               <div>
-                  <div className="flex justify-between items-end mb-3">
-                     <div>
-                        <h4 className="font-semibold text-foreground">Advanced Track</h4>
-                        <p className="text-xs text-muted-foreground font-hindi mt-0.5">उन्नत पाठ</p>
-                     </div>
-                     <span className="text-sm font-semibold text-foreground bg-secondary px-2 py-0.5 rounded-md">0/10</span>
-                  </div>
-                  <div className="h-2.5 w-full bg-muted/80 rounded-full overflow-hidden shadow-inner border border-border/40">
-                     <div 
-                        className="h-full bg-orange-500 rounded-full transition-all duration-1000" 
-                        style={{ width: `0%` }}
-                     />
-                  </div>
-               </div>
+            <div className="space-y-3.5 flex-1">
+               {tracks.map((track) => {
+                 const pct = track.total > 0 ? Math.min(100, Math.round((track.completed / track.total) * 100)) : 0;
+                 return (
+                   <div key={track.name} className="space-y-2 p-3.5 rounded-2xl bg-secondary/30 border border-border/40 transition-colors hover:bg-secondary/50">
+                      <div className="flex flex-wrap items-center justify-between gap-2">
+                         <div>
+                            <h4 className="font-semibold text-sm text-foreground">{track.name}</h4>
+                            <p className="text-xs text-muted-foreground font-hindi mt-0.5">{track.subName}</p>
+                         </div>
+                         <div className="flex items-center gap-2">
+                            <span className={cn("text-[10px] font-bold px-2 py-0.5 rounded-full border", track.badgeColor)}>
+                              {pct === 100 ? "Completed" : pct > 0 ? `${pct}%` : "Not Started"}
+                            </span>
+                            <span className="text-xs font-bold text-foreground tabular-nums bg-background px-2 py-0.5 rounded-md border border-border/50">
+                              {track.completed}/{track.total}
+                            </span>
+                         </div>
+                      </div>
+                      <div className="h-2.5 w-full bg-secondary/80 rounded-full overflow-hidden border border-border/40 p-0.5">
+                         <div 
+                            className={cn("h-full rounded-full transition-all duration-700 ease-out shadow-xs", track.color)}
+                            style={{ width: `${pct}%` }}
+                         />
+                      </div>
+                   </div>
+                 );
+               })}
             </div>
             
-            <div className="mt-8 pt-5 border-t border-border">
-               <p className="text-xs font-medium text-muted-foreground text-center">Complete lower tiers to unlock advanced tracks</p>
+            <div className="mt-5 pt-4 border-t border-border/60">
+               <p className="text-xs font-medium text-muted-foreground text-center">Complete lessons in each tier to unlock advanced tracks</p>
             </div>
          </GlassCard>
       </div>
