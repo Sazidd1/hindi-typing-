@@ -5,7 +5,6 @@ import { useAuth } from "@/lib/auth";
 
 const navItems = [
   { to: "/", label: "Home" },
-  { to: "/practice", label: "Practice" },
   { to: "/lessons", label: "Lessons" },
   { to: "/leaderboard", label: "Leaderboard" },
   { to: "/dashboard", label: "Dashboard" },
