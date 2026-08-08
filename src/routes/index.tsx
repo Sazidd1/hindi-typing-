@@ -28,21 +28,25 @@ const features = [
     icon: Keyboard,
     title: "Remington Keyboard",
     text: "एनिमेटेड वर्चुअल कीबोर्ड और उंगली मार्गदर्शन के साथ सही तकनीक सीखें।",
+    bg: "linear-gradient(135deg, #2563eb, #3b82f6)",
   },
   {
     icon: Gauge,
     title: "Live WPM",
     text: "हर कीस्ट्रोक पर गति, शुद्धता और त्रुटियाँ रीयल-टाइम में देखें।",
+    bg: "linear-gradient(135deg, #16a34a, #22c55e)",
   },
   {
     icon: BarChart3,
     title: "Progress Analytics",
     text: "साप्ताहिक चार्ट, स्ट्रीक और अभ्यास समय एक ही डैशबोर्ड पर।",
+    bg: "linear-gradient(135deg, #ea580c, #f97316)",
   },
   {
     icon: Award,
     title: "Achievements",
     text: "बैज और लीडरबोर्ड आपको हर दिन अभ्यास के लिए प्रेरित करते हैं।",
+    bg: "linear-gradient(135deg, #ca8a04, #eab308)",
   },
 ];
 
@@ -118,23 +122,33 @@ function Index() {
       </section>
 
       <section>
-        <SectionTitle
-          eyebrow="Why Abhyas"
-          title="A learning experience built for Hindi typists"
-          subtitle="हर सुविधा आपकी गति और आत्मविश्वास बढ़ाने के लिए डिज़ाइन की गई है।"
-        />
-        <div className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+        <div className="mb-[32px] animate-rise-in">
+          <span className="en block text-[#2563eb] font-bold text-[12px] tracking-[1px] uppercase mb-2">
+            Why Abhyas
+          </span>
+          <h2 className="en text-[30px] font-extrabold text-foreground leading-tight">
+            A learning experience built for Hindi typists
+          </h2>
+          <p className="mt-3 text-[14.5px] text-[#64748b] max-w-2xl font-hindi leading-relaxed">
+            हर सुविधा आपकी गति और आत्मविश्वास बढ़ाने के लिए डिज़ाइन की गई है।
+          </p>
+        </div>
+        <div className="grid gap-[20px] grid-cols-1 md:grid-cols-2 xl:grid-cols-4">
           {features.map((f, i) => (
-            <GlassCard key={f.title} className="animate-rise-in" >
+            <div
+              key={f.title}
+              className="bg-[#ffffff] border border-[#e6ebf2] rounded-[16px] px-[22px] py-[26px] transition-all duration-150 ease-out hover:-translate-y-[4px] hover:shadow-[0_12px_24px_rgba(20,30,60,0.08)] animate-rise-in"
+              style={{ animationDelay: `${i * 60}ms` }}
+            >
               <div
-                className="flex size-11 items-center justify-center rounded-xl text-primary-foreground"
-                style={{ background: "var(--gradient-primary)", animationDelay: `${i * 60}ms` }}
+                className="flex w-[46px] h-[46px] items-center justify-center rounded-[12px] mb-[16px]"
+                style={{ background: f.bg }}
               >
-                <f.icon className="size-5" />
+                <f.icon className="w-[20px] h-[20px] text-white" />
               </div>
-              <h3 className="mt-4 text-lg font-semibold text-foreground">{f.title}</h3>
-              <p className="mt-2 font-hindi text-sm text-muted-foreground">{f.text}</p>
-            </GlassCard>
+              <h3 className="en text-[16px] font-bold text-foreground mb-[6px]">{f.title}</h3>
+              <p className="font-hindi text-[13px] text-[#64748b] leading-[1.6]">{f.text}</p>
+            </div>
           ))}
         </div>
       </section>
