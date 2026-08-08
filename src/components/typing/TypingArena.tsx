@@ -407,7 +407,7 @@ export function TypingArena({
       `}</style>
 
       <div className={cn(
-        "mx-auto w-[98%] max-w-[1300px] flex flex-col lg:flex-row gap-6 lg:gap-8 animate-in fade-in slide-in-from-bottom-4 duration-700 px-2 sm:px-4 transition-all duration-300",
+        "mx-auto w-[98%] max-w-[1350px] flex flex-col lg:flex-row gap-6 lg:gap-8 animate-in fade-in slide-in-from-bottom-4 duration-700 px-2 sm:px-4 transition-all duration-300",
         isFocusMode 
           ? "items-center justify-center min-h-[85vh]" 
           : cn("items-start min-h-0", isWordPractice ? "-mt-4 sm:-mt-8" : "-mt-1 sm:-mt-2")
@@ -420,7 +420,7 @@ export function TypingArena({
       <div 
         className={cn(
           "relative mx-auto w-full min-h-[140px] cursor-text rounded-3xl p-4 sm:p-6 bg-white/60 border border-white/60 shadow-sm backdrop-blur-xl transition-all duration-300 group overflow-hidden",
-          isFocusMode ? "max-w-[1000px]" : "max-w-[850px]"
+          isFocusMode ? "max-w-[1050px]" : "max-w-[940px]"
         )}
         onClick={() => inputRef.current?.focus()}
       >
@@ -632,8 +632,8 @@ export function TypingArena({
 
       {/* Preserved Keyboard Component */}
       <div className={cn(
-        "mx-auto w-full max-w-[850px] transition-all duration-300 ease-in-out",
-        isFocusMode ? "h-0 opacity-0 overflow-hidden m-0 p-0" : "h-auto opacity-100"
+        "mx-auto w-full transition-all duration-300 ease-in-out",
+        isFocusMode ? "h-0 max-w-[1050px] opacity-0 overflow-hidden m-0 p-0" : "h-auto max-w-[940px] opacity-100"
       )}>
         {showKeyboard && <HindiKeyboard nextChar={nextChar} />}
       </div>
@@ -645,9 +645,9 @@ export function TypingArena({
         "shrink-0 transition-all duration-300 ease-in-out",
         isFocusMode 
           ? "w-0 h-0 opacity-0 overflow-hidden m-0 p-0" 
-          : "w-full lg:w-[320px] space-y-4 sm:space-y-6 mt-6 lg:mt-0 opacity-100"
+          : "w-full lg:w-[270px] space-y-4 sm:space-y-6 mt-6 lg:mt-0 opacity-100"
       )}>
-        <div className="bg-secondary/30 rounded-[2rem] p-6 sm:p-8 shadow-sm border border-border/40 flex flex-col gap-6">
+        <div className="bg-secondary/30 rounded-[2rem] p-5 sm:p-6 shadow-sm border border-border/40 flex flex-col gap-5">
           <h3 className="text-xl font-semibold tracking-tight text-foreground">Live Session</h3>
           
           {/* 2x2 Grid */}
@@ -714,11 +714,11 @@ export function TypingArena({
         {/* Focus Mode Toggle */}
         <div 
           onClick={() => setIsFocusMode(true)}
-          className="bg-background rounded-[2rem] p-6 sm:p-8 shadow-sm border border-border/40 flex items-center justify-between cursor-pointer hover:bg-secondary/20 transition-colors"
+          className="bg-background rounded-[2rem] p-5 sm:p-6 shadow-sm border border-border/40 flex items-center justify-between cursor-pointer hover:bg-secondary/20 transition-colors"
         >
            <div className="flex flex-col gap-0.5">
              <span className="font-semibold text-sm text-foreground">Focus Mode</span>
-             <span className="text-[11px] text-muted-foreground font-medium">Hide all UI distractions</span>
+             <span className="text-[11px] text-muted-foreground font-medium">Hide distractions</span>
            </div>
            {/* Toggle Switch */}
            <div className="w-11 h-6 bg-secondary/80 rounded-full relative shadow-inner border border-border/50">
