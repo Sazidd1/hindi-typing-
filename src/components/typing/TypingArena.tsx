@@ -239,7 +239,8 @@ export function TypingArena({
             errors: errors,
             grade: finalValidation.grade,
             xp: finalValidation.xp,
-            charMistakes: charMistakesRef.current
+            charMistakes: charMistakesRef.current,
+            elapsedSeconds: elapsed
           };
           localStorage.setItem(key, JSON.stringify([newResult, ...existing].slice(0, 50)));
         } catch (e) {
