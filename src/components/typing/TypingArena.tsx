@@ -60,6 +60,8 @@ export function TypingArena({
   const charMistakesRef = useRef<Record<string, number>>({});
   const { currentUser } = useAuth();
 
+  const isWordPractice = ["ch11", "ch22", "ch23", "ch24"].includes(lessonSlug || "");
+
   const typedChars = useMemo(() => Array.from(typed), [typed]);
 
   const validation = validateSession(
@@ -406,11 +408,13 @@ export function TypingArena({
 
       <div className={cn(
         "mx-auto w-[98%] max-w-[1300px] flex flex-col lg:flex-row gap-6 lg:gap-8 animate-in fade-in slide-in-from-bottom-4 duration-700 px-2 sm:px-4 transition-all duration-300",
-        isFocusMode ? "items-center justify-center min-h-[85vh]" : "items-start min-h-0"
+        isFocusMode 
+          ? "items-center justify-center min-h-[85vh]" 
+          : cn("items-start min-h-0", isWordPractice ? "-mt-4 sm:-mt-8" : "-mt-1 sm:-mt-2")
       )}>
         
         {/* Left Side: Typing Area & Keyboard */}
-        <div className="flex-1 w-full space-y-4 sm:space-y-6">
+        <div className="flex-1 w-full space-y-3 sm:space-y-4">
 
       {/* Tile Typing Area */}
       <div 
@@ -629,7 +633,7 @@ export function TypingArena({
       {/* Preserved Keyboard Component */}
       <div className={cn(
         "mx-auto w-full max-w-[850px] transition-all duration-300 ease-in-out",
-        isFocusMode ? "h-0 opacity-0 overflow-hidden m-0 p-0" : "pt-2 h-auto opacity-100"
+        isFocusMode ? "h-0 opacity-0 overflow-hidden m-0 p-0" : "h-auto opacity-100"
       )}>
         {showKeyboard && <HindiKeyboard nextChar={nextChar} />}
       </div>
