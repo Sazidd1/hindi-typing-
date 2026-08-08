@@ -207,7 +207,7 @@ function Index() {
           title="Seven structured lesson tracks"
           subtitle="होम रो से लेकर परीक्षा अभ्यास तक — क्रमबद्ध रूप से आगे बढ़ें।"
         />
-        <div className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+        <div className="mt-8 grid gap-4 sm:gap-5 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-6">
           {displayLessons.map((l) => (
             <LessonCard 
               key={l.slug} 
