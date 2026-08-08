@@ -49,71 +49,73 @@ const features = [
 function Index() {
   return (
     <div className="space-y-20">
-      <section className="grid items-center gap-10 lg:grid-cols-[1.1fr_0.9fr]">
-        <div className="animate-rise-in">
-          <span className="inline-flex items-center gap-2 rounded-full bg-white/80 px-4 py-1.5 text-xs font-semibold tracking-wide text-primary uppercase">
+      <section className="flex flex-wrap items-center justify-between gap-10 lg:gap-12">
+        <div className="flex-[1_1_min(100%,450px)] lg:max-w-[55%] animate-rise-in">
+          <span className="inline-flex items-center gap-2 rounded-full bg-white/80 px-4 py-1.5 text-[clamp(0.7rem,2vw,0.75rem)] font-semibold tracking-wide text-primary uppercase">
             <Sparkles className="size-3.5" /> Premium Hindi typing trainer
           </span>
-          <h1 className="mt-5 text-4xl leading-tight font-semibold tracking-tight text-foreground md:text-6xl">
+          <h1 className="mt-5 py-1 text-[clamp(1.875rem,4.5vw,3.25rem)] leading-[1.35] font-semibold tracking-tight text-foreground">
             हिंदी टाइपिंग सीखें,
-            <span className="text-gradient block">तेज़ी और शुद्धता के साथ</span>
+            <span className="text-gradient block mt-1">तेज़ी और शुद्धता के साथ</span>
           </h1>
-          <p className="mt-5 max-w-xl font-hindi text-base text-muted-foreground md:text-lg">
+          <p className="mt-5 max-w-xl font-hindi text-[clamp(1rem,2vw,1.125rem)] leading-relaxed text-muted-foreground">
             संरचित पाठ, परीक्षा-स्तरीय अभ्यास और रीयल-टाइम विश्लेषण — सब कुछ एक सुंदर,
             सहज इंटरफ़ेस में।
           </p>
-          <div className="mt-8 flex flex-wrap gap-3">
+          <div className="mt-8 flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4">
             <Link
               to="/practice"
-              className="rounded-full px-6 py-3 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-elevated)] transition-transform hover:scale-105"
+              className="inline-flex justify-center items-center rounded-full px-6 py-3.5 sm:py-3 text-[clamp(0.875rem,2vw,0.875rem)] sm:text-[1rem] font-semibold text-primary-foreground shadow-[var(--shadow-elevated)] transition-transform hover:scale-105"
               style={{ background: "var(--gradient-primary)" }}
             >
               अभ्यास शुरू करें
             </Link>
             <Link
               to="/lessons"
-              className="rounded-full border border-border bg-white/80 px-6 py-3 text-sm font-semibold text-foreground transition-colors hover:bg-white"
+              className="inline-flex justify-center items-center rounded-full border border-border bg-white/80 px-6 py-3.5 sm:py-3 text-[clamp(0.875rem,2vw,0.875rem)] sm:text-[1rem] font-semibold text-foreground transition-colors hover:bg-white"
             >
               पाठ देखें
             </Link>
           </div>
-          <div className="mt-10 grid max-w-lg grid-cols-3 gap-4">
+          <div className="mt-10 grid max-w-lg grid-cols-3 gap-3 sm:gap-4">
             {[
               { k: "40+", v: "Practice sets" },
               { k: "7", v: "Lesson tracks" },
               { k: "100%", v: "Free to use" },
             ].map((s) => (
-              <div key={s.v} className="glass rounded-2xl px-4 py-3 text-center">
-                <p className="text-2xl font-semibold text-primary">{s.k}</p>
-                <p className="text-xs text-muted-foreground">{s.v}</p>
+              <div key={s.v} className="glass rounded-2xl px-2 py-3 sm:px-4 text-center">
+                <p className="text-[clamp(1.25rem,3vw,1.5rem)] font-semibold text-primary">{s.k}</p>
+                <p className="text-[clamp(0.65rem,1.5vw,0.75rem)] text-muted-foreground">{s.v}</p>
               </div>
             ))}
           </div>
         </div>
 
-        <GlassCard className="animate-float-soft p-6" hover={false}>
-          <p className="text-xs font-semibold tracking-wide text-muted-foreground uppercase">
-            Live preview
-          </p>
-          <p className="mt-3 font-hindi text-2xl leading-relaxed">
-            <span className="text-success">कर कब कहा</span>{" "}
-            <span className="rounded-md bg-primary px-1 text-primary-foreground">दि</span>
-            <span className="text-muted-foreground">न दिया सिर सदा</span>{" "}
-            <span className="bg-danger/15 text-danger underline">हरा</span>
-          </p>
-          <div className="mt-6 grid grid-cols-3 gap-3 text-center">
-            {[
-              { l: "WPM", v: "42", c: "text-primary" },
-              { l: "Accuracy", v: "97%", c: "text-success" },
-              { l: "Errors", v: "3", c: "text-danger" },
-            ].map((s) => (
-              <div key={s.l} className="rounded-2xl bg-white/70 py-3">
-                <p className={`text-xl font-semibold ${s.c}`}>{s.v}</p>
-                <p className="text-[11px] tracking-wide text-muted-foreground uppercase">{s.l}</p>
-              </div>
-            ))}
-          </div>
-        </GlassCard>
+        <div className="flex-[1_1_min(100%,350px)] lg:max-w-[42%]">
+          <GlassCard className="animate-float-soft p-5 sm:p-6" hover={false}>
+            <p className="text-[clamp(0.7rem,1.5vw,0.75rem)] font-semibold tracking-wide text-muted-foreground uppercase">
+              Live preview
+            </p>
+            <p className="mt-3 font-hindi text-[clamp(1.25rem,3vw,1.5rem)] leading-relaxed">
+              <span className="text-success">कर कब कहा</span>{" "}
+              <span className="rounded-md bg-primary px-1 text-primary-foreground">दि</span>
+              <span className="text-muted-foreground">न दिया सिर सदा</span>{" "}
+              <span className="bg-danger/15 text-danger underline">हरा</span>
+            </p>
+            <div className="mt-6 grid grid-cols-3 gap-2 sm:gap-3 text-center">
+              {[
+                { l: "WPM", v: "42", c: "text-primary" },
+                { l: "Accuracy", v: "97%", c: "text-success" },
+                { l: "Errors", v: "3", c: "text-danger" },
+              ].map((s) => (
+                <div key={s.l} className="rounded-2xl bg-white/70 py-2 sm:py-3">
+                  <p className={`text-[clamp(1.125rem,2.5vw,1.25rem)] font-semibold ${s.c}`}>{s.v}</p>
+                  <p className="text-[clamp(0.65rem,1.5vw,0.6875rem)] tracking-wide text-muted-foreground uppercase">{s.l}</p>
+                </div>
+              ))}
+            </div>
+          </GlassCard>
+        </div>
       </section>
 
       <section>
