@@ -51,10 +51,10 @@ function Index() {
     <div className="space-y-20">
       <section className="flex flex-wrap items-center justify-between gap-10 lg:gap-12">
         <div className="flex-[1_1_min(100%,450px)] lg:max-w-[55%] animate-rise-in">
-          <span className="inline-flex items-center gap-2 rounded-full bg-white/80 px-4 py-1.5 text-[clamp(0.7rem,2vw,0.75rem)] font-semibold tracking-wide text-primary uppercase">
+          <span className="en inline-flex items-center gap-2 rounded-full bg-white/80 px-4 py-1.5 text-[clamp(0.7rem,2vw,0.75rem)] font-semibold tracking-wide text-primary uppercase">
             <Sparkles className="size-3.5" /> Premium Hindi typing trainer
           </span>
-          <h1 className="mt-5 py-1 text-[clamp(1.875rem,4.5vw,3.25rem)] leading-[1.35] font-semibold tracking-tight text-foreground">
+          <h1 className="mt-5 py-1 text-[clamp(1.875rem,4.5vw,3.25rem)] leading-[1.25] font-extrabold tracking-tight text-foreground">
             हिंदी टाइपिंग सीखें,
             <span className="text-gradient block mt-1">तेज़ी और शुद्धता के साथ</span>
           </h1>
@@ -65,8 +65,7 @@ function Index() {
           <div className="mt-8 flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4">
             <Link
               to="/practice"
-              className="inline-flex justify-center items-center rounded-full px-6 py-3.5 sm:py-3 text-[clamp(0.875rem,2vw,0.875rem)] sm:text-[1rem] font-semibold text-primary-foreground shadow-[var(--shadow-elevated)] transition-transform hover:scale-105"
-              style={{ background: "var(--gradient-primary)" }}
+              className="btn-primary inline-flex justify-center items-center w-full sm:w-auto"
             >
               अभ्यास शुरू करें
             </Link>
@@ -84,8 +83,8 @@ function Index() {
               { k: "100%", v: "Free to use" },
             ].map((s) => (
               <div key={s.v} className="glass rounded-2xl px-2 py-3 sm:px-4 text-center">
-                <p className="text-[clamp(1.25rem,3vw,1.5rem)] font-semibold text-primary">{s.k}</p>
-                <p className="text-[clamp(0.65rem,1.5vw,0.75rem)] text-muted-foreground">{s.v}</p>
+                <p className="en text-[clamp(1.25rem,3vw,1.5rem)] font-semibold text-primary">{s.k}</p>
+                <p className="en text-[clamp(0.65rem,1.5vw,0.75rem)] text-muted-foreground">{s.v}</p>
               </div>
             ))}
           </div>
@@ -93,7 +92,7 @@ function Index() {
 
         <div className="flex-[1_1_min(100%,350px)] lg:max-w-[42%]">
           <GlassCard className="animate-float-soft p-5 sm:p-6" hover={false}>
-            <p className="text-[clamp(0.7rem,1.5vw,0.75rem)] font-semibold tracking-wide text-muted-foreground uppercase">
+            <p className="en text-[clamp(0.7rem,1.5vw,0.75rem)] font-semibold tracking-wide text-muted-foreground uppercase">
               Live preview
             </p>
             <p className="mt-3 font-hindi text-[clamp(1.25rem,3vw,1.5rem)] leading-relaxed">
@@ -109,8 +108,8 @@ function Index() {
                 { l: "Errors", v: "3", c: "text-danger" },
               ].map((s) => (
                 <div key={s.l} className="rounded-2xl bg-white/70 py-2 sm:py-3">
-                  <p className={`text-[clamp(1.125rem,2.5vw,1.25rem)] font-semibold ${s.c}`}>{s.v}</p>
-                  <p className="text-[clamp(0.65rem,1.5vw,0.6875rem)] tracking-wide text-muted-foreground uppercase">{s.l}</p>
+                  <p className={`en text-[clamp(1.125rem,2.5vw,1.25rem)] font-semibold ${s.c}`}>{s.v}</p>
+                  <p className="en text-[clamp(0.65rem,1.5vw,0.6875rem)] tracking-wide text-muted-foreground uppercase">{s.l}</p>
                 </div>
               ))}
             </div>

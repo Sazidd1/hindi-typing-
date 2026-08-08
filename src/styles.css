@@ -215,5 +215,28 @@
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
+    font-family: 'Noto Sans Devanagari', sans-serif;
   }
+}
+
+.en {
+  font-family: 'Poppins', sans-serif;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: #fff;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgba(37,99,235,0.35), 0 2px 4px rgba(37,99,235,0.2);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 28px rgba(37,99,235,0.42);
 }

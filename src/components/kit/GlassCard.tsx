@@ -37,11 +37,11 @@ export function SectionTitle({
   return (
     <div className={cn("animate-rise-in", className)}>
       {eyebrow ? (
-        <span className="inline-flex items-center rounded-full bg-accent px-3 py-1 text-xs font-semibold tracking-wide text-accent-foreground uppercase">
+        <span className="en inline-flex items-center rounded-full bg-accent px-3 py-1 text-xs font-semibold tracking-wide text-accent-foreground uppercase">
           {eyebrow}
         </span>
       ) : null}
-      <h2 className="mt-3 text-3xl font-semibold tracking-tight text-foreground md:text-4xl">
+      <h2 className="en mt-3 text-3xl font-semibold tracking-tight text-foreground md:text-4xl">
         {title}
       </h2>
       {subtitle ? (
