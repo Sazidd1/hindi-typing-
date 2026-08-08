@@ -64,7 +64,7 @@ export function ChapterMasteryModal({
             <Trophy className="size-8 text-yellow-600 drop-shadow-sm" />
           </div>
           <div className="flex items-center gap-3">
-            <h2 className="text-2xl font-extrabold text-slate-800 tracking-tight">Chapter Mastery</h2>
+            <h2 className="text-2xl font-extrabold text-slate-800 tracking-tight">Lesson Mastery</h2>
             {grade && (
               <span className={cn(
                 "px-3 py-1 text-sm font-bold rounded-full leading-none shadow-sm",
@@ -159,7 +159,7 @@ export function ChapterMasteryModal({
               search={{ lesson: nextLessonSlug } as any}
               className="w-full inline-flex justify-center items-center gap-2 rounded-2xl px-6 py-4 text-[15px] font-bold text-white transition-all hover:scale-[1.02] shadow-md shadow-blue-500/25 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500"
             >
-              Next Chapter
+              Next Lesson
             </Link>
           )}
           
@@ -175,7 +175,7 @@ export function ChapterMasteryModal({
             to={"/lessons" as any}
             className="w-full inline-flex justify-center items-center rounded-2xl px-6 py-3 text-[14px] font-bold text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition-colors mt-1"
           >
-            Back to Chapter List
+            Back to Lesson List
           </Link>
         </div>
 

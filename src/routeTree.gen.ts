@@ -10,7 +10,6 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as AccuracyTestRouteImport } from './routes/accuracy-test'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as LeaderboardRouteImport } from './routes/leaderboard'
 import { Route as LessonsRouteImport } from './routes/lessons'
@@ -18,16 +17,10 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as PracticeRouteImport } from './routes/practice'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as SettingsRouteImport } from './routes/settings'
-import { Route as SpeedTestRouteImport } from './routes/speed-test'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AccuracyTestRoute = AccuracyTestRouteImport.update({
-  id: '/accuracy-test',
-  path: '/accuracy-test',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardRoute = DashboardRouteImport.update({
@@ -65,15 +58,9 @@ const SettingsRoute = SettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SpeedTestRoute = SpeedTestRouteImport.update({
-  id: '/speed-test',
-  path: '/speed-test',
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/accuracy-test': typeof AccuracyTestRoute
   '/dashboard': typeof DashboardRoute
   '/leaderboard': typeof LeaderboardRoute
   '/lessons': typeof LessonsRoute
@@ -81,11 +68,9 @@ export interface FileRoutesByFullPath {
   '/practice': typeof PracticeRoute
   '/profile': typeof ProfileRoute
   '/settings': typeof SettingsRoute
-  '/speed-test': typeof SpeedTestRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/accuracy-test': typeof AccuracyTestRoute
   '/dashboard': typeof DashboardRoute
   '/leaderboard': typeof LeaderboardRoute
   '/lessons': typeof LessonsRoute
@@ -93,12 +78,10 @@ export interface FileRoutesByTo {
   '/practice': typeof PracticeRoute
   '/profile': typeof ProfileRoute
   '/settings': typeof SettingsRoute
-  '/speed-test': typeof SpeedTestRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/accuracy-test': typeof AccuracyTestRoute
   '/dashboard': typeof DashboardRoute
   '/leaderboard': typeof LeaderboardRoute
   '/lessons': typeof LessonsRoute
@@ -106,13 +89,11 @@ export interface FileRoutesById {
   '/practice': typeof PracticeRoute
   '/profile': typeof ProfileRoute
   '/settings': typeof SettingsRoute
-  '/speed-test': typeof SpeedTestRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/accuracy-test'
     | '/dashboard'
     | '/leaderboard'
     | '/lessons'
@@ -120,11 +101,9 @@ export interface FileRouteTypes {
     | '/practice'
     | '/profile'
     | '/settings'
-    | '/speed-test'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/accuracy-test'
     | '/dashboard'
     | '/leaderboard'
     | '/lessons'
@@ -132,11 +111,9 @@ export interface FileRouteTypes {
     | '/practice'
     | '/profile'
     | '/settings'
-    | '/speed-test'
   id:
     | '__root__'
     | '/'
-    | '/accuracy-test'
     | '/dashboard'
     | '/leaderboard'
     | '/lessons'
@@ -144,12 +121,10 @@ export interface FileRouteTypes {
     | '/practice'
     | '/profile'
     | '/settings'
-    | '/speed-test'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AccuracyTestRoute: typeof AccuracyTestRoute
   DashboardRoute: typeof DashboardRoute
   LeaderboardRoute: typeof LeaderboardRoute
   LessonsRoute: typeof LessonsRoute
@@ -157,7 +132,6 @@ export interface RootRouteChildren {
   PracticeRoute: typeof PracticeRoute
   ProfileRoute: typeof ProfileRoute
   SettingsRoute: typeof SettingsRoute
-  SpeedTestRoute: typeof SpeedTestRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -167,13 +141,6 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/accuracy-test': {
-      id: '/accuracy-test'
-      path: '/accuracy-test'
-      fullPath: '/accuracy-test'
-      preLoaderRoute: typeof AccuracyTestRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dashboard': {
@@ -225,19 +192,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SettingsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/speed-test': {
-      id: '/speed-test'
-      path: '/speed-test'
-      fullPath: '/speed-test'
-      preLoaderRoute: typeof SpeedTestRouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AccuracyTestRoute: AccuracyTestRoute,
   DashboardRoute: DashboardRoute,
   LeaderboardRoute: LeaderboardRoute,
   LessonsRoute: LessonsRoute,
@@ -245,7 +204,6 @@ const rootRouteChildren: RootRouteChildren = {
   PracticeRoute: PracticeRoute,
   ProfileRoute: ProfileRoute,
   SettingsRoute: SettingsRoute,
-  SpeedTestRoute: SpeedTestRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

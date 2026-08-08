@@ -57,6 +57,7 @@ export function TypingArena({
   const lastActiveTimeRef = useRef<number | null>(null);
   const mouseTimeoutRef = useRef<number | null>(null);
   const cursorTimeoutRef = useRef<number | null>(null);
+  const charMistakesRef = useRef<Record<string, number>>({});
   const { currentUser } = useAuth();
 
   const typedChars = useMemo(() => Array.from(typed), [typed]);
@@ -81,6 +82,7 @@ export function TypingArena({
     setErrors(0);
     setFinished(false);
     completedRef.current = false;
+    charMistakesRef.current = {};
     inputRef.current?.focus();
   }, []);
 
@@ -234,7 +236,8 @@ export function TypingArena({
             accuracy: finalValidation.accuracy,
             errors: errors,
             grade: finalValidation.grade,
-            xp: finalValidation.xp
+            xp: finalValidation.xp,
+            charMistakes: charMistakesRef.current
           };
           localStorage.setItem(key, JSON.stringify([newResult, ...existing].slice(0, 50)));
         } catch (e) {
@@ -284,6 +287,10 @@ export function TypingArena({
         const globalI = typedChars.length + i;
         if (addedChars[i] !== chars[globalI]) {
           newErrors++;
+          const targetChar = chars[globalI];
+          if (targetChar !== ' ') {
+            charMistakesRef.current[targetChar] = (charMistakesRef.current[targetChar] || 0) + 1;
+          }
         }
       }
 

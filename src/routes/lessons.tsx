@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { GlassCard, SectionTitle } from "@/components/kit/GlassCard";
 import { lessons } from "@/lib/typing-data";
+import { generateDailyChallenge } from "@/lib/daily-challenge";
 
 export const Route = createFileRoute("/lessons")({
   head: () => ({
@@ -43,33 +44,7 @@ const extendedCurriculumBase = [
     path: "/practice",
     search: { lesson: l.slug },
     icon: BookOpen,
-  })),
-  {
-    slug: "speed-test",
-    title: "Speed Test",
-    hindiTitle: "गति परीक्षण",
-    description: "Tests",
-    level: "उन्नत",
-    keys: "पूर्ण कीबोर्ड",
-    minutes: 5,
-    type: "test",
-    path: "/practice", // Or /speed-test if that route exists
-    search: { lesson: "speed-test" },
-    icon: Zap,
-  },
-  {
-    slug: "accuracy-test",
-    title: "Accuracy Test",
-    hindiTitle: "शुद्धता परीक्षण",
-    description: "Tests",
-    level: "उन्नत",
-    keys: "पूर्ण कीबोर्ड",
-    minutes: 5,
-    type: "test",
-    path: "/practice", // Or /accuracy-test
-    search: { lesson: "accuracy-test" },
-    icon: Target,
-  }
+  }))
 ];
 
 const categories = ["All", "Home Row", "Top Row", "Bottom Row", "Mixed", "Tests"];
@@ -89,6 +64,10 @@ function LessonsPage() {
        if (saved) {
          try { data[l.slug] = JSON.parse(saved); } catch (e) {}
        }
+    }
+    const savedDaily = localStorage.getItem(`lesson_state_${currentUser}_daily-challenge`);
+    if (savedDaily) {
+      try { data['daily-challenge'] = JSON.parse(savedDaily); } catch (e) {}
     }
     setProgressData(data);
   }, [currentUser]);
@@ -135,8 +114,32 @@ function LessonsPage() {
     return matchesSearch && matchesCategory;
   });
 
-  const dailyChallenge = extendedCurriculum.find(l => l.slug === "ch11") || extendedCurriculum[10] || extendedCurriculum[0];
-  const recommendedLesson = extendedCurriculum.find(l => l.slug === "ch22") || extendedCurriculum[21] || extendedCurriculum[0];
+  const dailyChallenge = useMemo(() => {
+    if (!currentUser) {
+      const fallback = extendedCurriculum.find(l => l.slug === "ch11") || extendedCurriculum[10] || extendedCurriculum[0];
+      return { ...fallback, isLocked: false };
+    }
+    const challengeLesson = generateDailyChallenge(currentUser, progressData);
+    const saved = progressData[challengeLesson.slug] || { progress: 0, completed: false };
+    return {
+      ...challengeLesson,
+      type: "lesson",
+      path: "/practice",
+      search: { lesson: challengeLesson.slug },
+      icon: Flame,
+      progress: saved.progress || 0,
+      isCompleted: saved.completed || false,
+      isLocked: false,
+    };
+  }, [currentUser, progressData, extendedCurriculum]);
+
+  const recommendedLesson = useMemo(() => {
+    const nextUnfinished = extendedCurriculum.find(l => !l.isLocked && !l.isCompleted && l.type !== "test");
+    if (nextUnfinished) return nextUnfinished;
+
+    const testOrMixed = extendedCurriculum.find(l => l.slug === "ch22");
+    return testOrMixed || extendedCurriculum[0];
+  }, [extendedCurriculum]);
 
   return (
     <div className="space-y-12 pb-10">
@@ -365,7 +368,7 @@ function LessonsPage() {
             </h3>
             
             <div className="mt-4 space-y-3 text-[14px] text-slate-600 font-medium leading-snug">
-              <p>Complete the previous chapter first to follow the recommended learning path.</p>
+              <p>Complete the previous lesson first to follow the recommended learning path.</p>
               <p>You can still continue if you prefer.</p>
             </div>
 

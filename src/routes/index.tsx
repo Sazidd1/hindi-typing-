@@ -173,23 +173,6 @@ function Index() {
           <HindiKeyboard nextChar="क" />
         </div>
       </section>
-
-      <section className="glass-strong flex flex-col items-center gap-4 rounded-3xl px-6 py-14 text-center">
-        <Target className="size-8 text-primary" />
-        <h2 className="max-w-2xl text-3xl font-semibold text-foreground">
-          Ready to beat your personal best?
-        </h2>
-        <p className="max-w-xl font-hindi text-muted-foreground">
-          एक मिनट का स्पीड टेस्ट लें और देखें आप कहाँ खड़े हैं।
-        </p>
-        <Link
-          to="/speed-test"
-          className="rounded-full px-6 py-3 text-sm font-semibold text-primary-foreground transition-transform hover:scale-105"
-          style={{ background: "var(--gradient-primary)" }}
-        >
-          Start speed test
-        </Link>
-      </section>
     </div>
   );
 }
