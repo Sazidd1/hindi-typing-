@@ -12,7 +12,6 @@ import {
   SlidersHorizontal,
   Target,
   Trophy,
-  UserCog,
   X,
   Zap,
 } from "lucide-react";
@@ -301,14 +300,15 @@ function ProfilePage() {
     <div className="space-y-10">
       <SectionTitle eyebrow="Account" title="Your profile" />
 
-      {/* Profile Header */}
+      {/* Profile Header — identity + account actions */}
       <GlassCard hover={false} className="p-6 sm:p-8">
-        <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 min-w-0">
+        {/* Row 1: Avatar + identity + primary Edit action */}
+        <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-start gap-5 min-w-0">
             {/* Avatar */}
             <div className="relative shrink-0">
               <span
-                className="flex size-20 sm:size-22 items-center justify-center rounded-3xl font-bold text-3xl sm:text-4xl text-primary-foreground uppercase shadow-md border-2 border-white/60"
+                className="flex size-20 sm:size-[88px] items-center justify-center rounded-3xl font-bold text-3xl sm:text-4xl text-primary-foreground uppercase shadow-md border-2 border-white/60"
                 style={{ background: "var(--gradient-primary)" }}
               >
                 {userInitial}
@@ -321,7 +321,7 @@ function ProfilePage() {
 
             {/* User Identity & Subtitles */}
             <div className="min-w-0 flex-1">
-              <div className="flex flex-wrap items-center gap-2.5">
+              <div className="flex flex-wrap items-center gap-2">
                 <h2 className="font-hindi text-2xl sm:text-3xl font-bold text-foreground truncate leading-tight">
                   {currentUser}
                 </h2>
@@ -334,8 +334,8 @@ function ProfilePage() {
                 </span>
               </div>
 
-              {/* Compact Secondary Metadata (XP & Member Since with Tooltip) */}
-              <div className="mt-3 flex flex-wrap items-center gap-3 sm:gap-4 text-xs font-medium text-muted-foreground">
+              {/* XP & Joined date */}
+              <div className="mt-3 flex flex-wrap items-center gap-2.5 sm:gap-3 text-xs font-medium text-muted-foreground">
                 <div className="flex items-center gap-1.5 bg-secondary/60 border border-border/50 px-3 py-1 rounded-xl text-foreground font-semibold">
                   <Zap className="size-4 text-amber-500 fill-amber-500/20" />
                   <span>{totalXp.toLocaleString()} XP</span>
@@ -357,19 +357,53 @@ function ProfilePage() {
             </div>
           </div>
 
-          {/* Action: Edit Profile */}
-          <div className="shrink-0 pt-2 md:pt-0 border-t border-border/40 md:border-t-0">
+          {/* Primary action — desktop right-side, mobile full-width below */}
+          <div className="shrink-0 self-start sm:self-center">
             <button
               onClick={() => {
                 setNewUserName(currentUser);
                 setIsEditModalOpen(true);
               }}
-              className="inline-flex items-center justify-center gap-2 w-full md:w-auto px-4.5 py-2.5 bg-primary text-primary-foreground text-sm font-semibold rounded-xl hover:bg-primary/90 transition-all shadow-xs hover:shadow group cursor-pointer"
+              className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-4 py-2.5 bg-primary text-primary-foreground text-sm font-semibold rounded-xl hover:bg-primary/90 transition-all shadow-xs hover:shadow group cursor-pointer"
             >
               <Pencil className="size-4 transition-transform group-hover:rotate-12" />
               <span>Edit Profile</span>
             </button>
           </div>
+        </div>
+
+        {/* Row 2: Secondary account action strip */}
+        <div className="mt-5 pt-4 border-t border-border/50 flex flex-wrap gap-2">
+          {/* Notifications — informational, no action yet */}
+          <div
+            className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-border/50 bg-secondary/30 text-xs font-medium text-muted-foreground cursor-default select-none"
+            title="Daily reminders — coming soon"
+          >
+            <Bell className="size-3.5 text-amber-500" />
+            <span>Notifications</span>
+            <span className="text-[10px] font-semibold bg-muted/80 border border-border/40 px-1.5 py-0 rounded-md ml-0.5">Off</span>
+          </div>
+
+          {/* Share Progress */}
+          <button
+            onClick={handleShareProgress}
+            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-border/50 bg-secondary/30 hover:bg-success/10 hover:border-success/30 hover:text-success text-xs font-medium text-muted-foreground transition-all cursor-pointer group"
+            title="Copy your stats to clipboard"
+          >
+            {isCopied ? <Check className="size-3.5" /> : <Share2 className="size-3.5" />}
+            <span>{isCopied ? "Copied!" : "Share Progress"}</span>
+          </button>
+
+          {/* Preferences */}
+          <Link
+            to="/settings"
+            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-border/50 bg-secondary/30 hover:bg-primary/8 hover:border-primary/30 hover:text-primary text-xs font-medium text-muted-foreground transition-all group"
+            title="Keyboard layout, font size and more"
+          >
+            <SlidersHorizontal className="size-3.5" />
+            <span>Preferences</span>
+            <ChevronRight className="size-3 opacity-50 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all" />
+          </Link>
         </div>
       </GlassCard>
 
@@ -460,84 +494,7 @@ function ProfilePage() {
         </div>
       </GlassCard>
 
-      {/* Account / Profile Settings & Quick Actions Section */}
-      <GlassCard hover={false} className="p-6">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-foreground">Account & Settings</h3>
-        </div>
 
-        <div className="grid gap-3.5 sm:grid-cols-2 lg:grid-cols-4">
-          {/* 1. Edit Profile */}
-          <button
-            onClick={() => {
-              setNewUserName(currentUser);
-              setIsEditModalOpen(true);
-            }}
-            className="flex items-center gap-3.5 p-3.5 rounded-2xl border border-border/50 bg-secondary/30 hover:bg-secondary/70 hover:border-primary/30 transition-all text-left group cursor-pointer"
-          >
-            <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary border border-primary/20 group-hover:scale-105 transition-transform">
-              <UserCog className="size-5" />
-            </span>
-            <div className="min-w-0 flex-1">
-              <p className="font-semibold text-sm text-foreground group-hover:text-primary transition-colors">
-                Edit Profile
-              </p>
-              <p className="text-xs text-muted-foreground truncate">Update display name</p>
-            </div>
-          </button>
-
-          {/* 2. Notifications */}
-          <div className="flex items-center justify-between gap-3 p-3.5 rounded-2xl border border-border/50 bg-secondary/30 transition-all">
-            <div className="flex items-center gap-3.5 min-w-0">
-              <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-amber-500/10 text-amber-600 border border-amber-500/20">
-                <Bell className="size-5" />
-              </span>
-              <div className="min-w-0 flex-1">
-                <p className="font-semibold text-sm text-foreground truncate">Notifications</p>
-                <p className="text-xs text-muted-foreground truncate">Daily reminders</p>
-              </div>
-            </div>
-            <span className="text-[10px] font-semibold text-muted-foreground/80 bg-muted/80 px-2 py-0.5 rounded-md shrink-0 border border-border/40">
-              Disabled
-            </span>
-          </div>
-
-          {/* 3. Share Progress */}
-          <button
-            onClick={handleShareProgress}
-            className="flex items-center gap-3.5 p-3.5 rounded-2xl border border-border/50 bg-secondary/30 hover:bg-secondary/70 hover:border-success/30 transition-all text-left group cursor-pointer"
-          >
-            <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-success/10 text-success border border-success/20 group-hover:scale-105 transition-transform">
-              {isCopied ? <Check className="size-5" /> : <Share2 className="size-5" />}
-            </span>
-            <div className="min-w-0 flex-1">
-              <p className="font-semibold text-sm text-foreground group-hover:text-success transition-colors">
-                {isCopied ? "Copied!" : "Share Progress"}
-              </p>
-              <p className="text-xs text-muted-foreground truncate">
-                {isCopied ? "Summary in clipboard" : "Copy stats summary"}
-              </p>
-            </div>
-          </button>
-
-          {/* 4. Preferences / Settings */}
-          <Link
-            to="/settings"
-            className="flex items-center gap-3.5 p-3.5 rounded-2xl border border-border/50 bg-secondary/30 hover:bg-secondary/70 hover:border-primary/30 transition-all text-left group"
-          >
-            <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-indigo-500/10 text-indigo-600 border border-indigo-500/20 group-hover:scale-105 transition-transform">
-              <SlidersHorizontal className="size-5" />
-            </span>
-            <div className="min-w-0 flex-1">
-              <p className="font-semibold text-sm text-foreground group-hover:text-indigo-600 transition-colors">
-                Preferences
-              </p>
-              <p className="text-xs text-muted-foreground truncate">Keyboard & studio options</p>
-            </div>
-            <ChevronRight className="size-4 text-muted-foreground/60 group-hover:text-foreground group-hover:translate-x-0.5 transition-all" />
-          </Link>
-        </div>
-      </GlassCard>
 
       {/* Edit Profile Modal */}
       {isEditModalOpen && (
