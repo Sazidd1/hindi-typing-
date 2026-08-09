@@ -1,4 +1,4 @@
-//#region node_modules/.nitro/vite/services/ssr/assets/scoring-6LP2V0fA.js
+//#region node_modules/.nitro/vite/services/ssr/assets/scoring-D8JtVBFj.js
 function calculateGrade(wpm, accuracy, targetWpm) {
 	if (accuracy >= 98 && wpm >= targetWpm) return "A+";
 	if (accuracy >= 95) return "A";
@@ -11,6 +11,7 @@ function calculateXP(wpm, accuracy, errors) {
 	if (errors === 0) xp += 30;
 	return Math.round(xp);
 }
+var XP_PER_LEVEL = 1e3;
 function validateSession(typedChars, expectedChars, elapsedSeconds, recordedErrors, isParagraphMode) {
 	let correctCount = 0;
 	for (let i = 0; i < typedChars.length; i++) if (typedChars[i] === expectedChars[i]) correctCount++;
@@ -52,4 +53,4 @@ function validateSession(typedChars, expectedChars, elapsedSeconds, recordedErro
 	};
 }
 //#endregion
-export { validateSession as n, calculateXP as t };
+export { calculateXP as n, validateSession as r, XP_PER_LEVEL as t };

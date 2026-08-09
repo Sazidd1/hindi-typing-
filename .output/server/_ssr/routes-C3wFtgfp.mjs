@@ -4,10 +4,10 @@ import { t as useAuth } from "./auth-CWdKt_1e.mjs";
 import { n as SectionTitle, t as GlassCard } from "./GlassCard-DIxNQspi.mjs";
 import { n as lessons } from "./typing-data-Bb8KDxq1.mjs";
 import { h as Link } from "../_libs/@tanstack/react-router+[...].mjs";
-import { D as ChartColumn, _ as Keyboard, j as Award, k as BookOpen, s as Sparkles, v as Gauge } from "../_libs/lucide-react.mjs";
-import { t as LessonCard } from "./LessonCard-Bcmxdm1G.mjs";
+import { A as BookOpen, M as Award, O as ChartColumn, _ as Keyboard, s as Sparkles, y as Gauge } from "../_libs/lucide-react.mjs";
+import { t as LessonCard } from "./LessonCard-DtDW6Boh.mjs";
 import { t as HindiKeyboard } from "./HindiKeyboard-CnEYgceD.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/routes-CZOeeE3x.js
+//#region node_modules/.nitro/vite/services/ssr/assets/routes-C3wFtgfp.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 var features = [

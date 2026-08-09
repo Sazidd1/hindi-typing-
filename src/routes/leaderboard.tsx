@@ -4,6 +4,7 @@ import { GlassCard, SectionTitle } from "@/components/kit/GlassCard";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/lib/auth";
 import { useState, useEffect } from "react";
+import { calculateXP, XP_PER_LEVEL, MAX_DISPLAY_LEVEL } from "@/lib/scoring";
 
 export const Route = createFileRoute("/leaderboard")({
   head: () => ({
@@ -53,6 +54,7 @@ type Period = "Daily" | "Weekly" | "Monthly" | "Overall";
 
 function LeaderboardPage() {
   const { currentUser } = useAuth();
+  const [leaderboardMode, setLeaderboardMode] = useState<"Typing Speed" | "XP">("Typing Speed");
   const [period, setPeriod] = useState<Period>("Weekly");
   const [realPlayers, setRealPlayers] = useState<any[]>([]);
 
@@ -81,12 +83,16 @@ function LeaderboardPage() {
       let tests = 0;
       let highestWpm = 0;
       let highestAcc = 0;
+      let totalXp = 0;
       
       results.forEach(r => {
         if (!r.date || typeof r.date !== "string") return;
+        if (leaderboardMode === "Typing Speed" && r.isBonus) return;
         
         let include = false;
-        if (period === "Overall") {
+        if (leaderboardMode === "XP") {
+          include = true;
+        } else if (period === "Overall") {
           include = true;
         } else {
           // Try parsing existing "D Mon" format by appending current year
@@ -112,20 +118,36 @@ function LeaderboardPage() {
         }
         
         if (include) {
-           tests++;
-           if (r.wpm > highestWpm) {
-             highestWpm = r.wpm;
-             highestAcc = r.accuracy || 0;
+           if (leaderboardMode === "Typing Speed") {
+             tests++;
+             if (r.wpm > highestWpm) {
+               highestWpm = r.wpm;
+               highestAcc = r.accuracy || 0;
+             }
+           } else {
+             if (!r.isBonus) tests++;
+             if (typeof r.xp === "number" && !isNaN(r.xp)) {
+               totalXp += r.xp;
+             } else {
+               const w = parseInt(String(r.wpm ?? 0).replace(" WPM", "")) || 0;
+               const a = parseInt(String(r.accuracy || r.acc || "0").replace("%", "")) || 0;
+               const errs = typeof r.errors === "number" ? r.errors : 0;
+               totalXp += calculateXP(w, a, errs);
+             }
            }
         }
       });
       
-      return { name: username, wpm: highestWpm, acc: highestAcc, tests };
-    }).filter(p => p.tests > 0);
+      return { name: username, wpm: highestWpm, acc: highestAcc, tests, xp: totalXp };
+    }).filter(p => leaderboardMode === "XP" ? p.xp > 0 : p.tests > 0);
     
-    aggregated.sort((a, b) => b.wpm - a.wpm);
+    if (leaderboardMode === "XP") {
+      aggregated.sort((a, b) => b.xp - a.xp);
+    } else {
+      aggregated.sort((a, b) => b.wpm - a.wpm);
+    }
     setRealPlayers(aggregated);
-  }, [period]);
+  }, [period, leaderboardMode]);
   
   return (
     <div className="flex flex-col">
@@ -141,8 +163,28 @@ function LeaderboardPage() {
         </p>
       </div>
 
-      <div className="mt-8 flex justify-center">
+      <div className="mt-8 flex flex-col items-center gap-4">
         <div className="inline-flex items-center rounded-full border border-border/60 bg-card p-1 shadow-sm">
+          {(["Typing Speed", "XP"] as const).map((m) => (
+            <button
+              key={m}
+              onClick={() => setLeaderboardMode(m)}
+              className={cn(
+                "px-5 sm:px-6 py-1.5 sm:py-2 text-xs sm:text-sm font-bold rounded-full transition-colors",
+                leaderboardMode === m 
+                  ? "bg-primary text-primary-foreground shadow-sm"
+                  : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
+              )}
+            >
+              {m}
+            </button>
+          ))}
+        </div>
+
+        <div className={cn(
+          "inline-flex items-center rounded-full border border-border/60 bg-card p-1 shadow-sm transition-opacity duration-300",
+          leaderboardMode === "XP" ? "opacity-40 pointer-events-none" : "opacity-100"
+        )}>
           {(["Daily", "Weekly", "Monthly", "Overall"] as Period[]).map((p) => (
             <button
               key={p}
@@ -177,10 +219,14 @@ function LeaderboardPage() {
                     <Icon className={style.iconSize} />
                   </span>
                   <p className="mt-4 font-hindi text-lg font-semibold text-foreground">{p.name}</p>
-                  <p className="mt-5 text-[26px] font-[800] leading-none text-primary">{p.wpm}</p>
-                  <p className="mt-1.5 text-[11px] tracking-wider text-muted-foreground uppercase">WPM</p>
+                  <p className="mt-5 text-[26px] font-[800] leading-none text-primary">
+                    {leaderboardMode === "XP" ? p.xp.toLocaleString() : p.wpm}
+                  </p>
+                  <p className="mt-1.5 text-[11px] tracking-wider text-muted-foreground uppercase">
+                    {leaderboardMode === "XP" ? "XP" : "WPM"}
+                  </p>
                   <div className="mt-3 inline-block rounded-full bg-success/10 px-2.5 py-0.5 text-[11px] font-[800] text-success">
-                    {p.acc}% accuracy
+                    {leaderboardMode === "XP" ? `Level ${Math.min(MAX_DISPLAY_LEVEL, Math.floor(p.xp / XP_PER_LEVEL) + 1)}` : `${p.acc}% accuracy`}
                   </div>
                 </GlassCard>
               );
@@ -194,8 +240,8 @@ function LeaderboardPage() {
                   <tr className="border-b border-border/70 text-[11px] font-[700] tracking-wider text-slate-500 dark:text-slate-400 uppercase">
                     <th className="px-6 py-4 text-center w-20">Rank</th>
                     <th className="px-6 py-4 text-left">Typist</th>
-                    <th className="px-6 py-4 text-center">WPM</th>
-                    <th className="px-6 py-4 text-center">Accuracy</th>
+                    <th className="px-6 py-4 text-center">{leaderboardMode === "XP" ? "Level" : "WPM"}</th>
+                    <th className="px-6 py-4 text-center">{leaderboardMode === "XP" ? "Total XP" : "Accuracy"}</th>
                     <th className="px-6 py-4 text-right">Tests</th>
                   </tr>
                 </thead>
@@ -223,8 +269,12 @@ function LeaderboardPage() {
                             </span>
                           )}
                         </td>
-                        <td className="px-6 py-4 text-center font-[800] text-primary tabular-nums">{p.wpm}</td>
-                        <td className="px-6 py-4 text-center font-[800] text-success tabular-nums">{p.acc}%</td>
+                        <td className="px-6 py-4 text-center font-[800] text-primary tabular-nums">
+                          {leaderboardMode === "XP" ? `Lvl ${Math.min(MAX_DISPLAY_LEVEL, Math.floor(p.xp / XP_PER_LEVEL) + 1)}` : p.wpm}
+                        </td>
+                        <td className="px-6 py-4 text-center font-[800] text-success tabular-nums">
+                          {leaderboardMode === "XP" ? p.xp.toLocaleString() : `${p.acc}%`}
+                        </td>
                         <td className="px-6 py-4 text-right text-muted-foreground tabular-nums">{p.tests}</td>
                       </tr>
                     );

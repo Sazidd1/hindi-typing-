@@ -4,11 +4,11 @@ import { t as useAuth } from "./auth-CWdKt_1e.mjs";
 import { t as cn } from "./utils-C_uf36nf.mjs";
 import { n as lessons } from "./typing-data-Bb8KDxq1.mjs";
 import { g as require_react_dom, h as Link } from "../_libs/@tanstack/react-router+[...].mjs";
-import { C as CircleCheck, S as CircleX, a as Target, d as RotateCcw, f as Play, i as TriangleAlert, r as Trophy, t as Zap } from "../_libs/lucide-react.mjs";
-import { t as Route } from "./practice-CY6kbSv6.mjs";
+import { C as CircleX, a as Target, d as RotateCcw, f as Play, i as TriangleAlert, r as Trophy, t as Zap, w as CircleCheck } from "../_libs/lucide-react.mjs";
+import { r as validateSession } from "./scoring-D8JtVBFj.mjs";
+import { t as Route } from "./practice-DTxjz1oE.mjs";
 import { t as HindiKeyboard } from "./HindiKeyboard-CnEYgceD.mjs";
-import { n as validateSession } from "./scoring-6LP2V0fA.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/practice-Ch69LdVp.js
+//#region node_modules/.nitro/vite/services/ssr/assets/practice-DkntJH7c.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 var import_react_dom = /* @__PURE__ */ __toESM(require_react_dom());
@@ -430,8 +430,9 @@ function TypingArena({ lessonSlug, text, title, subtitle, timeLimit, showKeyboar
 				const key = "results_" + currentUser;
 				const existing = JSON.parse(localStorage.getItem(key) || "[]");
 				const date = /* @__PURE__ */ new Date();
-				const newResult = {
-					date: `${date.getDate()} ${date.toLocaleString("default", { month: "short" })}`,
+				const dateString = `${date.getDate()} ${date.toLocaleString("default", { month: "short" })}`;
+				let updatedResults = [{
+					date: dateString,
 					lessonSlug: lessonSlug || "unknown",
 					wpm: finalValidation.wpm,
 					accuracy: finalValidation.accuracy,
@@ -440,8 +441,22 @@ function TypingArena({ lessonSlug, text, title, subtitle, timeLimit, showKeyboar
 					xp: finalValidation.xp,
 					charMistakes: charMistakesRef.current,
 					elapsedSeconds: elapsed
-				};
-				localStorage.setItem(key, JSON.stringify([newResult, ...existing].slice(0, 50)));
+				}, ...existing];
+				const bonusKey = `daily_bonus_claimed_${currentUser}_${dateString}`;
+				if (localStorage.getItem(bonusKey) !== "true") {
+					localStorage.setItem(bonusKey, "true");
+					updatedResults = [{
+						date: dateString,
+						lessonSlug: "daily-bonus",
+						wpm: 0,
+						accuracy: 100,
+						errors: 0,
+						grade: "A+",
+						xp: 100,
+						isBonus: true
+					}, ...updatedResults];
+				}
+				localStorage.setItem(key, JSON.stringify(updatedResults.slice(0, 50)));
 			} catch (e) {
 				console.error("Failed to save result", e);
 			}

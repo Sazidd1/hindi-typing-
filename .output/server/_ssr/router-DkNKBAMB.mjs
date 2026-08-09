@@ -3,13 +3,13 @@ import { n as require_jsx_runtime, r as require_react, t as QueryClientProvider 
 import { t as useAuth } from "./auth-CWdKt_1e.mjs";
 import { c as HeadContent, d as Outlet, f as lazyRouteComponent, h as Link, m as createRootRouteWithContext, p as createFileRoute, s as Scripts, u as createRouter, v as useRouter } from "../_libs/@tanstack/react-router+[...].mjs";
 import { _ as Keyboard, m as Menu, n as X } from "../_libs/lucide-react.mjs";
-import { t as Route$8 } from "./practice-CY6kbSv6.mjs";
+import { t as Route$8 } from "./practice-DTxjz1oE.mjs";
 import { t as useTheme } from "./theme-CcnM0qqy.mjs";
 import { t as QueryClient } from "../_libs/tanstack__query-core.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/router-a86MHkAK.js
+//#region node_modules/.nitro/vite/services/ssr/assets/router-DkNKBAMB.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
-var styles_default = "/assets/styles-augYaucm.css";
+var styles_default = "/assets/styles-CiDIv9Nv.css";
 function reportLovableError(error, context = {}) {
 	if (typeof window === "undefined") return;
 	window.__lovableEvents?.captureException?.(error, {
@@ -332,7 +332,7 @@ function RootComponent() {
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AppShell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Outlet, {}) })
 	});
 }
-var $$splitComponentImporter$6 = () => import("./routes-CZOeeE3x.mjs");
+var $$splitComponentImporter$6 = () => import("./routes-C3wFtgfp.mjs");
 var Route$6 = createFileRoute("/")({
 	head: () => ({ meta: [
 		{ title: "Hindi Typing Practice — Abhyas Studio" },
@@ -370,7 +370,7 @@ var Route$5 = createFileRoute("/dashboard")({
 	] }),
 	component: lazyRouteComponent($$splitComponentImporter$5, "component")
 });
-var $$splitComponentImporter$4 = () => import("./leaderboard-B5cJDWce.mjs");
+var $$splitComponentImporter$4 = () => import("./leaderboard-CtOAzd2G.mjs");
 var Route$4 = createFileRoute("/leaderboard")({
 	head: () => ({ meta: [
 		{ title: "Hindi Typing Leaderboard — Top Typists" },
@@ -389,7 +389,7 @@ var Route$4 = createFileRoute("/leaderboard")({
 	] }),
 	component: lazyRouteComponent($$splitComponentImporter$4, "component")
 });
-var $$splitComponentImporter$3 = () => import("./lessons-BoFzVKGi.mjs");
+var $$splitComponentImporter$3 = () => import("./lessons-BmLKE1BQ.mjs");
 var Route$3 = createFileRoute("/lessons")({
 	head: () => ({ meta: [
 		{ title: "Hindi Typing Lessons — Home Row to Exam Practice" },
@@ -410,7 +410,7 @@ var Route$3 = createFileRoute("/lessons")({
 });
 var $$splitComponentImporter$2 = () => import("./login-CO5Tszs2.mjs");
 var Route$2 = createFileRoute("/login")({ component: lazyRouteComponent($$splitComponentImporter$2, "component") });
-var $$splitComponentImporter$1 = () => import("./profile-D-H-ZJnS.mjs");
+var $$splitComponentImporter$1 = () => import("./profile-CDOqIaWW.mjs");
 var Route$1 = createFileRoute("/profile")({
 	head: () => ({ meta: [{ title: "Typist Profile — Hindi Typing Abhyas Studio" }] }),
 	component: lazyRouteComponent($$splitComponentImporter$1, "component")

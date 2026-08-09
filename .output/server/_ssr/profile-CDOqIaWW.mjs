@@ -5,9 +5,9 @@ import { t as cn } from "./utils-C_uf36nf.mjs";
 import { n as SectionTitle, t as GlassCard } from "./GlassCard-DIxNQspi.mjs";
 import { t as StatCard } from "./StatCard-Cac9fzfv.mjs";
 import { _ as useNavigate, h as Link } from "../_libs/@tanstack/react-router+[...].mjs";
-import { A as Bell, E as Check, O as CalendarDays, T as ChevronRight, a as Target, c as SlidersHorizontal, l as Share2, n as X, p as Pencil, r as Trophy, t as Zap, v as Gauge, x as Clock, y as Flame } from "../_libs/lucide-react.mjs";
-import { t as calculateXP } from "./scoring-6LP2V0fA.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/profile-D-H-ZJnS.js
+import { D as Check, E as ChevronRight, S as Clock, a as Target, b as Flame, c as SlidersHorizontal, j as Bell, k as CalendarDays, l as Share2, n as X, p as Pencil, r as Trophy, t as Zap, y as Gauge } from "../_libs/lucide-react.mjs";
+import { n as calculateXP, t as XP_PER_LEVEL } from "./scoring-D8JtVBFj.mjs";
+//#region node_modules/.nitro/vite/services/ssr/assets/profile-CDOqIaWW.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 function ProfilePage() {
@@ -46,6 +46,7 @@ function ProfilePage() {
 		if (!Array.isArray(history)) return [];
 		return history.filter((h) => {
 			if (!h || typeof h !== "object") return false;
+			if (h.isBonus) return true;
 			const w = parseInt(String(h.wpm ?? 0).replace(" WPM", "")) || 0;
 			const a = parseInt(String(h.accuracy || h.acc || "0").replace("%", "")) || 0;
 			return w > 0 && w < 250 && a > 0 && a <= 100;
@@ -241,10 +242,36 @@ function ProfilePage() {
 									})
 								]
 							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-								className: "mt-3 flex flex-wrap items-center gap-2.5 sm:gap-3 text-xs font-medium text-muted-foreground",
+								className: "mt-3 flex flex-wrap items-stretch gap-2.5 sm:gap-3 text-xs font-medium text-muted-foreground",
 								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-									className: "flex items-center gap-1.5 bg-secondary/60 border border-border/50 px-3 py-1 rounded-xl text-foreground font-semibold",
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Zap, { className: "size-4 text-amber-500 fill-amber-500/20" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { children: [totalXp.toLocaleString(), " XP"] })]
+									className: "flex flex-col justify-center gap-1.5 bg-secondary/30 border border-border/40 p-3 rounded-2xl min-w-[200px]",
+									children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+											className: "flex items-center justify-between text-[11px] font-[800] px-1",
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+												className: "flex items-center gap-1.5 text-foreground",
+												children: [
+													/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Zap, { className: "size-3.5 text-indigo-500 fill-indigo-500/20" }),
+													"Level ",
+													Math.min(50, Math.floor(totalXp / XP_PER_LEVEL) + 1)
+												]
+											}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+												className: "text-muted-foreground tracking-wider uppercase",
+												children: Math.min(50, Math.floor(totalXp / 1e3) + 1) >= 50 ? `${totalXp.toLocaleString()} XP` : `${totalXp.toLocaleString()} / ${(Math.floor(totalXp / XP_PER_LEVEL) * XP_PER_LEVEL + XP_PER_LEVEL).toLocaleString()} XP`
+											})]
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+											className: "h-[9px] w-full bg-black/5 dark:bg-white/5 rounded-full overflow-hidden border border-black/5 dark:border-white/5",
+											children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+												className: "h-full bg-gradient-to-r from-primary to-indigo-500 rounded-full transition-all duration-1000 ease-out",
+												style: { width: Math.min(50, Math.floor(totalXp / 1e3) + 1) >= 50 ? "100%" : `${totalXp % XP_PER_LEVEL / XP_PER_LEVEL * 100}%` }
+											})
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+											className: "text-[10px] font-bold text-center text-muted-foreground mt-0.5",
+											children: Math.min(50, Math.floor(totalXp / 1e3) + 1) >= 50 ? "Maximum Level" : `${Math.floor(totalXp / XP_PER_LEVEL) * XP_PER_LEVEL + XP_PER_LEVEL - totalXp} XP to next milestone`
+										})
+									]
 								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 									className: "group relative inline-flex items-center",
 									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {

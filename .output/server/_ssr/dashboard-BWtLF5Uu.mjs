@@ -6,7 +6,7 @@ import { n as SectionTitle, t as GlassCard } from "./GlassCard-DIxNQspi.mjs";
 import { t as StatCard } from "./StatCard-Cac9fzfv.mjs";
 import { n as lessons } from "./typing-data-Bb8KDxq1.mjs";
 import { h as Link } from "../_libs/@tanstack/react-router+[...].mjs";
-import { T as ChevronRight, a as Target, f as Play, k as BookOpen, r as Trophy, t as Zap, v as Gauge, x as Clock, y as Flame } from "../_libs/lucide-react.mjs";
+import { A as BookOpen, E as ChevronRight, S as Clock, a as Target, b as Flame, f as Play, r as Trophy, t as Zap, y as Gauge } from "../_libs/lucide-react.mjs";
 import { a as CartesianGrid, i as Area, n as YAxis, o as ResponsiveContainer, r as XAxis, s as Tooltip, t as AreaChart } from "../_libs/recharts+[...].mjs";
 //#region node_modules/.nitro/vite/services/ssr/assets/dashboard-BWtLF5Uu.js
 var import_react = /* @__PURE__ */ __toESM(require_react());

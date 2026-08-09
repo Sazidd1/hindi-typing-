@@ -366,6 +366,34 @@ var Gauge = createLucideIcon("gauge", [["path", {
 * This source code is licensed under the ISC license.
 * See the LICENSE file in the root directory of this source tree.
 */
+var Gift = createLucideIcon("gift", [
+	["path", {
+		d: "M12 7v14",
+		key: "1akyts"
+	}],
+	["path", {
+		d: "M20 11v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8",
+		key: "1sqzm4"
+	}],
+	["path", {
+		d: "M7.5 7a1 1 0 0 1 0-5A4.8 8 0 0 1 12 7a4.8 8 0 0 1 4.5-5 1 1 0 0 1 0 5",
+		key: "kc0143"
+	}],
+	["rect", {
+		x: "3",
+		y: "7",
+		width: "18",
+		height: "4",
+		rx: "1",
+		key: "1hberx"
+	}]
+]);
+/**
+* @license lucide-react v0.575.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
 var Keyboard = createLucideIcon("keyboard", [
 	["path", {
 		d: "M10 8h.01",
@@ -753,4 +781,4 @@ var Zap = createLucideIcon("zap", [["path", {
 	key: "1xq2db"
 }]]);
 //#endregion
-export { Bell as A, CircleCheck as C, ChartColumn as D, Check as E, ArrowRight as M, CalendarDays as O, CircleX as S, ChevronRight as T, Keyboard as _, Target as a, Crown as b, SlidersHorizontal as c, RotateCcw as d, Play as f, Lock as g, Medal as h, TriangleAlert as i, Award as j, BookOpen as k, Share2 as l, Menu as m, X as n, Star as o, Pencil as p, Trophy as r, Sparkles as s, Zap as t, Search as u, Gauge as v, CircleCheckBig as w, Clock as x, Flame as y };
+export { BookOpen as A, CircleX as C, Check as D, ChevronRight as E, Award as M, ArrowRight as N, ChartColumn as O, Clock as S, CircleCheckBig as T, Keyboard as _, Target as a, Flame as b, SlidersHorizontal as c, RotateCcw as d, Play as f, Lock as g, Medal as h, TriangleAlert as i, Bell as j, CalendarDays as k, Share2 as l, Menu as m, X as n, Star as o, Pencil as p, Trophy as r, Sparkles as s, Zap as t, Search as u, Gift as v, CircleCheck as w, Crown as x, Gauge as y };

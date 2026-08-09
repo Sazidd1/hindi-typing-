@@ -16,6 +16,9 @@ export function calculateXP(wpm: number, accuracy: number, errors: number): numb
 
 export const DEFAULT_TARGET_WPM = 20;
 
+export const XP_PER_LEVEL = 1000;
+export const MAX_DISPLAY_LEVEL = 50;
+
 export type ValidationResult = {
   isValid: boolean;
   wpm: number;

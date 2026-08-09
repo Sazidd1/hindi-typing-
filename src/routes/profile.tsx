@@ -19,7 +19,7 @@ import { useEffect, useMemo, useState } from "react";
 import { GlassCard, SectionTitle } from "@/components/kit/GlassCard";
 import { StatCard } from "@/components/kit/StatCard";
 import { useAuth } from "@/lib/auth";
-import { calculateXP } from "@/lib/scoring";
+import { calculateXP, XP_PER_LEVEL, MAX_DISPLAY_LEVEL } from "@/lib/scoring";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/profile")({
@@ -40,6 +40,7 @@ type ResultRecord = {
   errors?: number;
   elapsedSeconds?: number;
   lessonSlug?: string;
+  isBonus?: boolean;
 };
 
 function ProfilePage() {
@@ -87,6 +88,7 @@ function ProfilePage() {
     if (!Array.isArray(history)) return [];
     return history.filter((h) => {
       if (!h || typeof h !== "object") return false;
+      if (h.isBonus) return true;
       const w = parseInt(String(h.wpm ?? 0).replace(" WPM", "")) || 0;
       const a = parseInt(String(h.accuracy || h.acc || "0").replace("%", "")) || 0;
       return w > 0 && w < 250 && a > 0 && a <= 100;
@@ -335,10 +337,34 @@ function ProfilePage() {
               </div>
 
               {/* XP & Joined date */}
-              <div className="mt-3 flex flex-wrap items-center gap-2.5 sm:gap-3 text-xs font-medium text-muted-foreground">
-                <div className="flex items-center gap-1.5 bg-secondary/60 border border-border/50 px-3 py-1 rounded-xl text-foreground font-semibold">
-                  <Zap className="size-4 text-amber-500 fill-amber-500/20" />
-                  <span>{totalXp.toLocaleString()} XP</span>
+              <div className="mt-3 flex flex-wrap items-stretch gap-2.5 sm:gap-3 text-xs font-medium text-muted-foreground">
+                <div className="flex flex-col justify-center gap-1.5 bg-secondary/30 border border-border/40 p-3 rounded-2xl min-w-[200px]">
+                  <div className="flex items-center justify-between text-[11px] font-[800] px-1">
+                    <span className="flex items-center gap-1.5 text-foreground">
+                      <Zap className="size-3.5 text-indigo-500 fill-indigo-500/20" />
+                      Level {Math.min(MAX_DISPLAY_LEVEL, Math.floor(totalXp / XP_PER_LEVEL) + 1)}
+                    </span>
+                    <span className="text-muted-foreground tracking-wider uppercase">
+                      {Math.min(MAX_DISPLAY_LEVEL, Math.floor(totalXp / XP_PER_LEVEL) + 1) >= MAX_DISPLAY_LEVEL ? (
+                        `${totalXp.toLocaleString()} XP`
+                      ) : (
+                        `${totalXp.toLocaleString()} / ${(Math.floor(totalXp / XP_PER_LEVEL) * XP_PER_LEVEL + XP_PER_LEVEL).toLocaleString()} XP`
+                      )}
+                    </span>
+                  </div>
+                  <div className="h-[9px] w-full bg-black/5 dark:bg-white/5 rounded-full overflow-hidden border border-black/5 dark:border-white/5">
+                    <div 
+                      className="h-full bg-gradient-to-r from-primary to-indigo-500 rounded-full transition-all duration-1000 ease-out"
+                      style={{ width: Math.min(MAX_DISPLAY_LEVEL, Math.floor(totalXp / XP_PER_LEVEL) + 1) >= MAX_DISPLAY_LEVEL ? '100%' : `${((totalXp % XP_PER_LEVEL) / XP_PER_LEVEL) * 100}%` }}
+                    />
+                  </div>
+                  <div className="text-[10px] font-bold text-center text-muted-foreground mt-0.5">
+                    {Math.min(MAX_DISPLAY_LEVEL, Math.floor(totalXp / XP_PER_LEVEL) + 1) >= MAX_DISPLAY_LEVEL ? (
+                      "Maximum Level"
+                    ) : (
+                      `${(Math.floor(totalXp / XP_PER_LEVEL) * XP_PER_LEVEL + XP_PER_LEVEL) - totalXp} XP to next milestone`
+                    )}
+                  </div>
                 </div>
 
                 <div className="group relative inline-flex items-center">

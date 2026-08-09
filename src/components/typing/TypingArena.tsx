@@ -242,7 +242,26 @@ export function TypingArena({
             charMistakes: charMistakesRef.current,
             elapsedSeconds: elapsed
           };
-          localStorage.setItem(key, JSON.stringify([newResult, ...existing].slice(0, 50)));
+          let updatedResults = [newResult, ...existing];
+          
+          // Daily Bonus Logic
+          const bonusKey = `daily_bonus_claimed_${currentUser}_${dateString}`;
+          if (localStorage.getItem(bonusKey) !== "true") {
+             localStorage.setItem(bonusKey, "true");
+             const bonusResult = {
+               date: dateString,
+               lessonSlug: "daily-bonus",
+               wpm: 0,
+               accuracy: 100,
+               errors: 0,
+               grade: "A+",
+               xp: 100,
+               isBonus: true
+             };
+             updatedResults = [bonusResult, ...updatedResults];
+          }
+
+          localStorage.setItem(key, JSON.stringify(updatedResults.slice(0, 50)));
         } catch (e) {
           console.error("Failed to save result", e);
         }

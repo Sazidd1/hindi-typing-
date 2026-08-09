@@ -4,9 +4,9 @@ import { t as useAuth } from "./auth-CWdKt_1e.mjs";
 import { n as SectionTitle, t as GlassCard } from "./GlassCard-DIxNQspi.mjs";
 import { n as lessons } from "./typing-data-Bb8KDxq1.mjs";
 import { h as Link } from "../_libs/@tanstack/react-router+[...].mjs";
-import { M as ArrowRight, _ as Keyboard, f as Play, g as Lock, k as BookOpen, o as Star, u as Search, y as Flame } from "../_libs/lucide-react.mjs";
-import { t as LessonCard } from "./LessonCard-Bcmxdm1G.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/lessons-BoFzVKGi.js
+import { A as BookOpen, N as ArrowRight, _ as Keyboard, b as Flame, f as Play, g as Lock, o as Star, u as Search } from "../_libs/lucide-react.mjs";
+import { t as LessonCard } from "./LessonCard-DtDW6Boh.mjs";
+//#region node_modules/.nitro/vite/services/ssr/assets/lessons-BmLKE1BQ.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 function getTodayString() {

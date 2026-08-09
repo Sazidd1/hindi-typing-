@@ -3,8 +3,9 @@ import { n as require_jsx_runtime, r as require_react } from "../_libs/react+tan
 import { t as useAuth } from "./auth-CWdKt_1e.mjs";
 import { t as cn } from "./utils-C_uf36nf.mjs";
 import { t as GlassCard } from "./GlassCard-DIxNQspi.mjs";
-import { b as Crown, h as Medal, r as Trophy } from "../_libs/lucide-react.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/leaderboard-B5cJDWce.js
+import { h as Medal, r as Trophy, x as Crown } from "../_libs/lucide-react.mjs";
+import { n as calculateXP, t as XP_PER_LEVEL } from "./scoring-D8JtVBFj.mjs";
+//#region node_modules/.nitro/vite/services/ssr/assets/leaderboard-CtOAzd2G.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 var podiumIcons = [
@@ -37,6 +38,7 @@ var podiumStyles = [
 ];
 function LeaderboardPage() {
 	const { currentUser } = useAuth();
+	const [leaderboardMode, setLeaderboardMode] = (0, import_react.useState)("Typing Speed");
 	const [period, setPeriod] = (0, import_react.useState)("Weekly");
 	const [realPlayers, setRealPlayers] = (0, import_react.useState)([]);
 	(0, import_react.useEffect)(() => {
@@ -53,30 +55,43 @@ function LeaderboardPage() {
 		}
 		const today = /* @__PURE__ */ new Date();
 		today.setHours(0, 0, 0, 0);
-		const sevenDaysAgo = /* @__PURE__ */ new Date(today.getTime() - 6048e5);
+		const sixDaysAgo = /* @__PURE__ */ new Date(today.getTime() - 5184e5);
 		const aggregated = Object.keys(usersData).map((username) => {
 			const results = usersData[username];
 			let tests = 0;
 			let highestWpm = 0;
 			let highestAcc = 0;
+			let totalXp = 0;
 			results.forEach((r) => {
 				if (!r.date || typeof r.date !== "string") return;
+				if (leaderboardMode === "Typing Speed" && r.isBonus) return;
 				let include = false;
-				if (period === "Overall") include = true;
+				if (leaderboardMode === "XP") include = true;
+				else if (period === "Overall") include = true;
 				else {
 					const d = /* @__PURE__ */ new Date(`${r.date} ${today.getFullYear()}`);
 					if (!isNaN(d.getTime())) {
 						d.setHours(0, 0, 0, 0);
+						if (d.getTime() > today.getTime() + 6048e5) d.setFullYear(d.getFullYear() - 1);
 						if (period === "Daily" && d.getTime() === today.getTime()) include = true;
-						else if (period === "Weekly" && d.getTime() >= sevenDaysAgo.getTime() && d.getTime() <= today.getTime()) include = true;
+						else if (period === "Weekly" && d.getTime() >= sixDaysAgo.getTime() && d.getTime() <= today.getTime()) include = true;
 						else if (period === "Monthly" && d.getMonth() === today.getMonth() && d.getFullYear() === today.getFullYear()) include = true;
 					}
 				}
-				if (include) {
+				if (include) if (leaderboardMode === "Typing Speed") {
 					tests++;
 					if (r.wpm > highestWpm) {
 						highestWpm = r.wpm;
 						highestAcc = r.accuracy || 0;
+					}
+				} else {
+					if (!r.isBonus) tests++;
+					if (typeof r.xp === "number" && !isNaN(r.xp)) totalXp += r.xp;
+					else {
+						const w = parseInt(String(r.wpm ?? 0).replace(" WPM", "")) || 0;
+						const a = parseInt(String(r.accuracy || r.acc || "0").replace("%", "")) || 0;
+						const errs = typeof r.errors === "number" ? r.errors : 0;
+						totalXp += calculateXP(w, a, errs);
 					}
 				}
 			});
@@ -84,12 +99,14 @@ function LeaderboardPage() {
 				name: username,
 				wpm: highestWpm,
 				acc: highestAcc,
-				tests
+				tests,
+				xp: totalXp
 			};
-		}).filter((p) => p.tests > 0);
-		aggregated.sort((a, b) => b.wpm - a.wpm);
+		}).filter((p) => leaderboardMode === "XP" ? p.xp > 0 : p.tests > 0);
+		if (leaderboardMode === "XP") aggregated.sort((a, b) => b.xp - a.xp);
+		else aggregated.sort((a, b) => b.wpm - a.wpm);
 		setRealPlayers(aggregated);
-	}, [period]);
+	}, [period, leaderboardMode]);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		className: "flex flex-col",
 		children: [
@@ -110,10 +127,17 @@ function LeaderboardPage() {
 					})
 				]
 			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-				className: "mt-8 flex justify-center",
-				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "mt-8 flex flex-col items-center gap-4",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 					className: "inline-flex items-center rounded-full border border-border/60 bg-card p-1 shadow-sm",
+					children: ["Typing Speed", "XP"].map((m) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+						onClick: () => setLeaderboardMode(m),
+						className: cn("px-5 sm:px-6 py-1.5 sm:py-2 text-xs sm:text-sm font-bold rounded-full transition-colors", leaderboardMode === m ? "bg-primary text-primary-foreground shadow-sm" : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"),
+						children: m
+					}, m))
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+					className: cn("inline-flex items-center rounded-full border border-border/60 bg-card p-1 shadow-sm transition-opacity duration-300", leaderboardMode === "XP" ? "opacity-40 pointer-events-none" : "opacity-100"),
 					children: [
 						"Daily",
 						"Weekly",
@@ -124,7 +148,7 @@ function LeaderboardPage() {
 						className: cn("px-5 py-1.5 text-xs font-semibold rounded-full transition-colors", period === p ? "bg-primary text-primary-foreground shadow-sm" : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"),
 						children: p
 					}, p))
-				})
+				})]
 			}),
 			realPlayers.length > 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 				className: "mt-6 md:mt-8 grid gap-5 md:grid-cols-4 pt-2 md:pt-4",
@@ -144,15 +168,15 @@ function LeaderboardPage() {
 							}),
 							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 								className: "mt-5 text-[26px] font-[800] leading-none text-primary",
-								children: p.wpm
+								children: leaderboardMode === "XP" ? p.xp.toLocaleString() : p.wpm
 							}),
 							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 								className: "mt-1.5 text-[11px] tracking-wider text-muted-foreground uppercase",
-								children: "WPM"
+								children: leaderboardMode === "XP" ? "XP" : "WPM"
 							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 								className: "mt-3 inline-block rounded-full bg-success/10 px-2.5 py-0.5 text-[11px] font-[800] text-success",
-								children: [p.acc, "% accuracy"]
+								children: leaderboardMode === "XP" ? `Level ${Math.min(50, Math.floor(p.xp / XP_PER_LEVEL) + 1)}` : `${p.acc}% accuracy`
 							})
 						]
 					}, p.name);
@@ -177,11 +201,11 @@ function LeaderboardPage() {
 								}),
 								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", {
 									className: "px-6 py-4 text-center",
-									children: "WPM"
+									children: leaderboardMode === "XP" ? "Level" : "WPM"
 								}),
 								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", {
 									className: "px-6 py-4 text-center",
-									children: "Accuracy"
+									children: leaderboardMode === "XP" ? "Total XP" : "Accuracy"
 								}),
 								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", {
 									className: "px-6 py-4 text-right",
@@ -206,11 +230,11 @@ function LeaderboardPage() {
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", {
 										className: "px-6 py-4 text-center font-[800] text-primary tabular-nums",
-										children: p.wpm
+										children: leaderboardMode === "XP" ? `Lvl ${Math.min(50, Math.floor(p.xp / XP_PER_LEVEL) + 1)}` : p.wpm
 									}),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("td", {
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", {
 										className: "px-6 py-4 text-center font-[800] text-success tabular-nums",
-										children: [p.acc, "%"]
+										children: leaderboardMode === "XP" ? p.xp.toLocaleString() : `${p.acc}%`
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", {
 										className: "px-6 py-4 text-right text-muted-foreground tabular-nums",
