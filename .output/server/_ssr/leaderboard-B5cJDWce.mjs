@@ -1,0 +1,242 @@
+import { i as __toESM } from "../_runtime.mjs";
+import { n as require_jsx_runtime, r as require_react } from "../_libs/react+tanstack__react-query.mjs";
+import { t as useAuth } from "./auth-CWdKt_1e.mjs";
+import { t as cn } from "./utils-C_uf36nf.mjs";
+import { t as GlassCard } from "./GlassCard-DIxNQspi.mjs";
+import { b as Crown, h as Medal, r as Trophy } from "../_libs/lucide-react.mjs";
+//#region node_modules/.nitro/vite/services/ssr/assets/leaderboard-B5cJDWce.js
+var import_react = /* @__PURE__ */ __toESM(require_react());
+var import_jsx_runtime = require_jsx_runtime();
+var podiumIcons = [
+	Crown,
+	Trophy,
+	Medal,
+	Medal
+];
+var podiumStyles = [
+	{
+		card: "relative z-10 md:-translate-y-3 md:scale-105 shadow-xl md:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] dark:md:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.3)]",
+		iconBox: "bg-amber-500/15 border border-amber-500/30 text-amber-600 dark:text-amber-400",
+		iconSize: "size-7"
+	},
+	{
+		card: "shadow-lg",
+		iconBox: "bg-slate-400/15 border border-slate-400/30 text-slate-600 dark:text-slate-300",
+		iconSize: "size-6"
+	},
+	{
+		card: "shadow-lg",
+		iconBox: "bg-orange-700/15 border border-orange-700/30 text-orange-700 dark:text-orange-500",
+		iconSize: "size-6"
+	},
+	{
+		card: "shadow-md opacity-90",
+		iconBox: "bg-blue-500/10 border border-blue-500/20 text-blue-600 dark:text-blue-400",
+		iconSize: "size-5"
+	}
+];
+function LeaderboardPage() {
+	const { currentUser } = useAuth();
+	const [period, setPeriod] = (0, import_react.useState)("Weekly");
+	const [realPlayers, setRealPlayers] = (0, import_react.useState)([]);
+	(0, import_react.useEffect)(() => {
+		const usersData = {};
+		for (let i = 0; i < localStorage.length; i++) {
+			const key = localStorage.key(i);
+			if (key && key.startsWith("results_")) {
+				const username = key.replace("results_", "");
+				try {
+					const results = JSON.parse(localStorage.getItem(key) || "[]");
+					if (Array.isArray(results)) usersData[username] = results;
+				} catch (e) {}
+			}
+		}
+		const today = /* @__PURE__ */ new Date();
+		today.setHours(0, 0, 0, 0);
+		const sevenDaysAgo = /* @__PURE__ */ new Date(today.getTime() - 6048e5);
+		const aggregated = Object.keys(usersData).map((username) => {
+			const results = usersData[username];
+			let tests = 0;
+			let highestWpm = 0;
+			let highestAcc = 0;
+			results.forEach((r) => {
+				if (!r.date || typeof r.date !== "string") return;
+				let include = false;
+				if (period === "Overall") include = true;
+				else {
+					const d = /* @__PURE__ */ new Date(`${r.date} ${today.getFullYear()}`);
+					if (!isNaN(d.getTime())) {
+						d.setHours(0, 0, 0, 0);
+						if (period === "Daily" && d.getTime() === today.getTime()) include = true;
+						else if (period === "Weekly" && d.getTime() >= sevenDaysAgo.getTime() && d.getTime() <= today.getTime()) include = true;
+						else if (period === "Monthly" && d.getMonth() === today.getMonth() && d.getFullYear() === today.getFullYear()) include = true;
+					}
+				}
+				if (include) {
+					tests++;
+					if (r.wpm > highestWpm) {
+						highestWpm = r.wpm;
+						highestAcc = r.accuracy || 0;
+					}
+				}
+			});
+			return {
+				name: username,
+				wpm: highestWpm,
+				acc: highestAcc,
+				tests
+			};
+		}).filter((p) => p.tests > 0);
+		aggregated.sort((a, b) => b.wpm - a.wpm);
+		setRealPlayers(aggregated);
+	}, [period]);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: "flex flex-col",
+		children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "animate-rise-in",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+						className: "en inline-flex items-center rounded-full bg-accent px-3 py-1 text-xs font-semibold tracking-wide text-accent-foreground uppercase",
+						children: "Community"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h1", {
+						className: "en mt-4 text-3xl font-[800] tracking-tight text-primary",
+						children: "Weekly leaderboard"
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+						className: "mt-2 text-sm text-slate-500 dark:text-slate-400",
+						children: "इस सप्ताह के सबसे तेज़ और सटीक टाइपिस्ट।"
+					})
+				]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "mt-8 flex justify-center",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+					className: "inline-flex items-center rounded-full border border-border/60 bg-card p-1 shadow-sm",
+					children: [
+						"Daily",
+						"Weekly",
+						"Monthly",
+						"Overall"
+					].map((p) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+						onClick: () => setPeriod(p),
+						className: cn("px-5 py-1.5 text-xs font-semibold rounded-full transition-colors", period === p ? "bg-primary text-primary-foreground shadow-sm" : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"),
+						children: p
+					}, p))
+				})
+			}),
+			realPlayers.length > 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "mt-6 md:mt-8 grid gap-5 md:grid-cols-4 pt-2 md:pt-4",
+				children: realPlayers.slice(0, 4).map((p, i) => {
+					const Icon = podiumIcons[i];
+					const style = podiumStyles[i];
+					return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(GlassCard, {
+						className: cn("text-center transition-transform", style.card),
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: cn("mx-auto flex size-14 items-center justify-center rounded-2xl", style.iconBox),
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Icon, { className: style.iconSize })
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+								className: "mt-4 font-hindi text-lg font-semibold text-foreground",
+								children: p.name
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+								className: "mt-5 text-[26px] font-[800] leading-none text-primary",
+								children: p.wpm
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+								className: "mt-1.5 text-[11px] tracking-wider text-muted-foreground uppercase",
+								children: "WPM"
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "mt-3 inline-block rounded-full bg-success/10 px-2.5 py-0.5 text-[11px] font-[800] text-success",
+								children: [p.acc, "% accuracy"]
+							})
+						]
+					}, p.name);
+				})
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "mt-10 md:mt-16",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(GlassCard, {
+					hover: false,
+					className: "overflow-x-auto p-0",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("table", {
+						className: "w-full min-w-[560px] text-sm",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("thead", { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("tr", {
+							className: "border-b border-border/70 text-[11px] font-[700] tracking-wider text-slate-500 dark:text-slate-400 uppercase",
+							children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", {
+									className: "px-6 py-4 text-center w-20",
+									children: "Rank"
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", {
+									className: "px-6 py-4 text-left",
+									children: "Typist"
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", {
+									className: "px-6 py-4 text-center",
+									children: "WPM"
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", {
+									className: "px-6 py-4 text-center",
+									children: "Accuracy"
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("th", {
+									className: "px-6 py-4 text-right",
+									children: "Tests"
+								})
+							]
+						}) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("tbody", { children: realPlayers.map((p, i) => {
+							const isCurrentUser = currentUser === p.name;
+							return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("tr", {
+								className: cn("border-b transition-all duration-200 last:border-0", isCurrentUser ? "border-primary/20 bg-primary/5 hover:bg-primary/10" : "border-border/40 hover:bg-indigo-500/5 dark:hover:bg-indigo-400/10"),
+								children: [
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("td", {
+										className: "px-6 py-4 text-center font-[700] text-indigo-500/90 dark:text-indigo-400",
+										children: ["#", i + 1]
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("td", {
+										className: "px-6 py-4 text-left font-hindi font-medium text-foreground",
+										children: [p.name, isCurrentUser && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											className: "ml-2 inline-flex items-center rounded-full bg-primary/10 border border-primary/20 px-1.5 py-[1px] en text-[9px] font-bold text-primary uppercase translate-y-[-1px]",
+											children: "You"
+										})]
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", {
+										className: "px-6 py-4 text-center font-[800] text-primary tabular-nums",
+										children: p.wpm
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("td", {
+										className: "px-6 py-4 text-center font-[800] text-success tabular-nums",
+										children: [p.acc, "%"]
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", {
+										className: "px-6 py-4 text-right text-muted-foreground tabular-nums",
+										children: p.tests
+									})
+								]
+							}, p.name);
+						}) })]
+					})
+				})
+			})] }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "mt-16",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(GlassCard, {
+					hover: false,
+					className: "flex flex-col items-center justify-center py-20 text-center",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+						className: "text-xl font-semibold text-foreground/80",
+						children: "No typing results yet"
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+						className: "text-sm text-muted-foreground mt-2",
+						children: "Take a new typing test or switch periods to see the leaderboard."
+					})]
+				})
+			})
+		]
+	});
+}
+//#endregion
+export { LeaderboardPage as component };
