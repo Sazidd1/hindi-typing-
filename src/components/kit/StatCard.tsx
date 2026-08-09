@@ -24,7 +24,7 @@ export function StatCard({
   }[tone];
 
   return (
-    <div className={cn("glass flex h-full items-center gap-4 rounded-3xl p-5 shadow-sm transition-all duration-300 hover:shadow-md border border-white/60", className)}>
+    <div className={cn("glass flex h-full items-center gap-4 rounded-3xl p-5 sm:p-6 shadow-sm transition-all duration-300 hover:shadow-md border border-white/60", className)}>
       <span className={cn("flex size-12 shrink-0 items-center justify-center rounded-2xl shadow-xs", toneClass)}>
         <Icon className="size-5" />
       </span>

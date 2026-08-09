@@ -261,7 +261,7 @@ function DashboardPage() {
   ], [streak, bestWpm, bestAcc, completedSlugs]);
 
   return (
-    <div className="space-y-10">
+    <div className="space-y-6 sm:space-y-8">
       <SectionTitle
         eyebrow="Overview"
         title="Your typing dashboard"
@@ -269,17 +269,17 @@ function DashboardPage() {
       />
 
       {/* 3. 4 stat cards */}
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <div className="grid gap-4 sm:gap-6 sm:grid-cols-2 xl:grid-cols-4">
         <StatCard icon={Flame} label="Daily streak" value={streak} suffix="days" tone="danger" />
         <StatCard icon={Clock} label="Practice time" value={practiceTimeStr} tone="muted" />
         <StatCard icon={Gauge} label="Average WPM" value={avgWpm} suffix="WPM" />
         <StatCard icon={Target} label="Accuracy" value={avgAcc} suffix="%" tone="success" />
       </div>
 
-      <div className="grid gap-6 xl:grid-cols-[1.4fr_1fr]">
+      <div className="grid gap-6 lg:grid-cols-[1.35fr_1fr] xl:grid-cols-[1.4fr_1fr]">
         {/* 4. Weekly progress chart */}
-        <GlassCard hover={false} className="flex flex-col">
-          <div className="flex flex-wrap items-center justify-between gap-2 mb-6">
+        <GlassCard hover={false} className="flex flex-col p-6 min-w-0">
+          <div className="flex flex-wrap items-center justify-between gap-2 mb-5">
             <div>
               <h3 className="text-lg font-semibold text-foreground">Weekly progress</h3>
               <p className="text-xs text-muted-foreground">Last 7 days performance</p>
@@ -307,7 +307,7 @@ function DashboardPage() {
               </p>
             </div>
           ) : (
-            <div className="flex-1 min-h-[260px]">
+            <div className="flex-1 min-h-[260px] min-w-0">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={weeklyData} margin={{ left: -20, right: 12, top: 12, bottom: 4 }}>
                   <defs>
@@ -391,7 +391,7 @@ function DashboardPage() {
           )}
         </GlassCard>
 
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-6 min-w-0">
           {/* 5. Daily goal card */}
           <GlassCard hover={false} className="flex-1 flex flex-col justify-between p-6">
             <div>
@@ -440,11 +440,13 @@ function DashboardPage() {
           </GlassCard>
 
           {/* 7. Weakest keys card */}
-          <GlassCard hover={false} className="flex flex-col justify-between p-5 border border-border/80">
+          <GlassCard hover={false} className="flex flex-col justify-between p-6">
             <div className="flex items-center justify-between mb-3">
-              <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Weakest Keys</span>
+              <div>
+                <h3 className="text-lg font-semibold text-foreground">Weakest keys</h3>
+              </div>
               {weakKeysData.length > 0 && (
-                <span className="text-[10px] font-bold text-danger bg-danger/10 px-2.5 py-0.5 rounded-full border border-danger/20">
+                <span className="text-[10px] font-bold text-danger bg-danger/10 px-2.5 py-1 rounded-full border border-danger/20 uppercase tracking-wider">
                   Needs Practice
                 </span>
               )}
@@ -470,23 +472,23 @@ function DashboardPage() {
         </div>
       </div>
 
-      <div className="grid gap-6 xl:grid-cols-[1.4fr_1fr]">
-         <div className="flex flex-col gap-6">
+      <div className="grid gap-6 lg:grid-cols-[1.35fr_1fr] xl:grid-cols-[1.4fr_1fr]">
+         <div className="flex flex-col gap-6 min-w-0">
             {/* 6. Achievements/Badges row */}
             <div>
-              <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-semibold text-foreground">Achievement badges</h3>
                 <span className="text-xs font-semibold text-muted-foreground">
                   {badges.filter(b => b.earned).length}/{badges.length} Unlocked
                 </span>
               </div>
-              <div className="grid gap-3.5 sm:grid-cols-2">
+              <div className="grid gap-4 sm:grid-cols-2">
                 {badges.map((b) => (
                   <GlassCard
                     key={b.title}
                     hover={false}
                     className={cn(
-                      "flex items-center gap-3.5 p-4 rounded-2xl transition-all duration-300 border",
+                      "flex items-center gap-3.5 p-4 rounded-2xl transition-all duration-300 border min-w-0",
                       b.earned
                         ? "bg-primary/5 border-primary/20 shadow-xs hover:border-primary/40"
                         : "bg-secondary/20 border-border/40 opacity-75 hover:opacity-90"
@@ -525,42 +527,112 @@ function DashboardPage() {
             </div>
 
             {/* 9. Recent activity table */}
-            <GlassCard hover={false} className="p-0 overflow-hidden flex flex-col flex-1">
-              <div className="border-b border-border px-6 py-4 flex items-center justify-between bg-background/30">
-                <h3 className="text-lg font-semibold text-foreground">Recent activity</h3>
-                <Link to="/profile" className="text-xs font-semibold text-primary flex items-center gap-1 hover:underline">
-                  View all <ChevronRight className="size-3" />
+            <GlassCard hover={false} className="p-0 overflow-hidden flex flex-col flex-1 min-w-0">
+              <div className="border-b border-border/80 px-6 py-4 flex items-center justify-between bg-background/40">
+                <div className="flex items-center gap-2.5">
+                  <h3 className="text-lg font-semibold text-foreground">Recent activity</h3>
+                  {validHistory.length > 0 && (
+                    <span className="text-[11px] font-bold text-muted-foreground bg-secondary/80 px-2.5 py-0.5 rounded-full border border-border/50 tabular-nums">
+                      {validHistory.length}
+                    </span>
+                  )}
+                </div>
+                <Link
+                  to="/profile"
+                  className="text-xs font-semibold text-primary flex items-center gap-1 hover:underline group"
+                >
+                  <span>View all</span>
+                  <ChevronRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
                 </Link>
               </div>
-              <div className="divide-y divide-border/60 flex-1">
-                {validHistory.length === 0 ? (
-                  <div className="p-8 text-center text-muted-foreground">
-                    No recent activity found. Start typing!
+
+              {validHistory.length === 0 ? (
+                <div className="flex flex-1 flex-col items-center justify-center p-8 text-center bg-secondary/10 min-h-[200px]">
+                  <div className="flex size-11 items-center justify-center rounded-2xl bg-primary/10 text-primary mb-3 shadow-xs">
+                    <Clock className="size-5" />
                   </div>
-                ) : (
-                  validHistory.slice(0, 4).map((h, i) => (
-                    <div
-                      key={i}
-                      className="flex flex-wrap items-center justify-between gap-3 px-6 py-4 transition-colors hover:bg-white/60"
-                    >
-                      <div>
-                        <p className="font-medium text-foreground">Practice Session</p>
-                        <p className="text-sm text-muted-foreground mt-0.5">{h.date} • {h.lessonSlug || 'Custom'}</p>
-                      </div>
-                      <div className="flex gap-6 text-sm items-center">
-                        <div className="flex flex-col items-end">
-                           <span className="text-[10px] text-muted-foreground font-semibold uppercase tracking-wider">WPM</span>
-                           <span className="font-semibold text-primary tabular-nums text-base">{h.wpm}</span>
-                        </div>
-                        <div className="flex flex-col items-end">
-                           <span className="text-[10px] text-muted-foreground font-semibold uppercase tracking-wider">ACC</span>
-                           <span className="font-semibold text-success tabular-nums text-base">{h.accuracy || h.acc}</span>
-                        </div>
-                      </div>
+                  <p className="text-sm font-semibold text-foreground">No recent typing sessions</p>
+                  <p className="mt-1 text-xs text-muted-foreground max-w-xs">
+                    Complete a lesson or practice session to build your typing history.
+                  </p>
+                  <Link
+                    to="/practice"
+                    className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-primary bg-primary/10 hover:bg-primary/20 border border-primary/20 px-3.5 py-1.5 rounded-xl transition-colors"
+                  >
+                    <span>Start Practice</span>
+                    <ChevronRight className="size-3.5" />
+                  </Link>
+                </div>
+              ) : (
+                <div className="w-full overflow-x-auto">
+                  <div className="min-w-[480px]">
+                    {/* Column Headers */}
+                    <div className="grid grid-cols-[1.8fr_1fr_1fr_1.1fr] items-center px-6 py-2.5 bg-secondary/40 border-b border-border/60 text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">
+                      <div>Session / Lesson</div>
+                      <div className="text-center">WPM</div>
+                      <div className="text-center">Accuracy</div>
+                      <div className="text-right">Date</div>
                     </div>
-                  ))
-                )}
-              </div>
+
+                    {/* Rows */}
+                    <div className="divide-y divide-border/50 max-h-[320px] overflow-y-auto">
+                      {validHistory.slice(0, 5).map((h, i) => {
+                        const wpmVal = parseInt(String(h.wpm ?? 0).replace(" WPM", "")) || 0;
+                        const accVal = parseInt(String(h.accuracy || h.acc || "0").replace("%", "")) || 0;
+
+                        const lessonObj = lessons.find((l) => l.slug === h.lessonSlug);
+                        const lessonName = lessonObj
+                          ? lessonObj.title
+                          : h.lessonSlug === "daily-challenge"
+                          ? "Daily Challenge"
+                          : h.lessonSlug === "custom"
+                          ? "Custom Practice"
+                          : h.lessonSlug
+                          ? `Lesson (${h.lessonSlug})`
+                          : "Practice Session";
+
+                        const subText = lessonObj ? lessonObj.hindiTitle : null;
+
+                        return (
+                          <div
+                            key={i}
+                            className="grid grid-cols-[1.8fr_1fr_1fr_1.1fr] items-center px-6 py-3 transition-colors hover:bg-secondary/30"
+                          >
+                            {/* Session / Lesson */}
+                            <div className="min-w-0 pr-2">
+                              <p className="font-medium text-sm text-foreground truncate">{lessonName}</p>
+                              {subText ? (
+                                <p className="text-xs text-muted-foreground font-hindi truncate">{subText}</p>
+                              ) : (
+                                <p className="text-xs text-muted-foreground truncate">Free Practice</p>
+                              )}
+                            </div>
+
+                            {/* WPM */}
+                            <div className="flex justify-center">
+                              <span className="inline-flex items-center gap-1 font-semibold text-xs text-primary bg-primary/10 border border-primary/20 px-2.5 py-1 rounded-lg tabular-nums">
+                                {wpmVal} <span className="text-[10px] opacity-75 font-normal">WPM</span>
+                              </span>
+                            </div>
+
+                            {/* Accuracy */}
+                            <div className="flex justify-center">
+                              <span className="inline-flex items-center gap-1 font-semibold text-xs text-success bg-success/10 border border-success/20 px-2.5 py-1 rounded-lg tabular-nums">
+                                {accVal}%
+                              </span>
+                            </div>
+
+                            {/* Date */}
+                            <div className="text-right text-xs font-medium text-muted-foreground tabular-nums whitespace-nowrap">
+                              {h.date || "Today"}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              )}
             </GlassCard>
          </div>
 
@@ -606,7 +678,7 @@ function DashboardPage() {
                })}
             </div>
             
-            <div className="mt-5 pt-4 border-t border-border/60">
+            <div className="mt-6 pt-4 border-t border-border/60">
                <p className="text-xs font-medium text-muted-foreground text-center">Complete lessons in each tier to unlock advanced tracks</p>
             </div>
          </GlassCard>
