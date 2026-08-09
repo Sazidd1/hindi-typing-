@@ -210,7 +210,7 @@ function Index() {
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
           <SectionTitle
             eyebrow="Curriculum"
-            title="Seven structured lesson tracks"
+            title="Six structured lesson tracks"
             subtitle="होम रो से लेकर परीक्षा अभ्यास तक — क्रमबद्ध रूप से आगे बढ़ें।"
           />
           <Link

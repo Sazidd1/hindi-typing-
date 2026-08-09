@@ -50,7 +50,7 @@ const podiumStyles = [
   }
 ];
 
-type Period = "Daily" | "Weekly" | "Monthly" | "Overall";
+type Period = "Daily" | "Weekly" | "Monthly";
 
 function LeaderboardPage() {
   const { currentUser } = useAuth();
@@ -156,7 +156,7 @@ function LeaderboardPage() {
           Community
         </span>
         <h1 className="en mt-4 text-3xl font-[800] tracking-tight text-primary">
-          Weekly leaderboard
+          {leaderboardMode === "XP" ? "XP Leaderboard" : `${period} Leaderboard`}
         </h1>
         <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
           इस सप्ताह के सबसे तेज़ और सटीक टाइपिस्ट।
@@ -181,25 +181,24 @@ function LeaderboardPage() {
           ))}
         </div>
 
-        <div className={cn(
-          "inline-flex items-center rounded-full border border-border/60 bg-card p-1 shadow-sm transition-opacity duration-300",
-          leaderboardMode === "XP" ? "opacity-40 pointer-events-none" : "opacity-100"
-        )}>
-          {(["Daily", "Weekly", "Monthly", "Overall"] as Period[]).map((p) => (
-            <button
-              key={p}
-              onClick={() => setPeriod(p)}
-              className={cn(
-                "px-5 py-1.5 text-xs font-semibold rounded-full transition-colors",
-                period === p 
-                  ? "bg-primary text-primary-foreground shadow-sm"
-                  : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
-              )}
-            >
-              {p}
-            </button>
-          ))}
-        </div>
+        {leaderboardMode === "Typing Speed" && (
+          <div className="inline-flex items-center rounded-full border border-border/60 bg-card p-1 shadow-sm transition-opacity duration-300">
+            {(["Daily", "Weekly", "Monthly"] as Period[]).map((p) => (
+              <button
+                key={p}
+                onClick={() => setPeriod(p)}
+                className={cn(
+                  "px-5 py-1.5 text-xs font-semibold rounded-full transition-colors",
+                  period === p 
+                    ? "bg-primary text-primary-foreground shadow-sm"
+                    : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
+                )}
+              >
+                {p}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
 
       {realPlayers.length > 0 ? (

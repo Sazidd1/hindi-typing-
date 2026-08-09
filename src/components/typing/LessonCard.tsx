@@ -8,11 +8,9 @@ export function LessonCard({ item, setLockedLessonIntent }: { item: any, setLock
   
   const headerBg = isCompleted 
     ? "bg-gradient-to-br from-[#16a34a] to-[#22c55e]"
-    : item.isLocked
-    ? "bg-[#e2e7ef]"
     : "bg-gradient-to-br from-[#2563eb] to-[#1d4ed8]";
   
-  const headerTextColor = item.isLocked ? "text-slate-500" : "text-white";
+  const headerTextColor = "text-white";
   
   const { currentUser } = useAuth();
 
@@ -80,7 +78,7 @@ export function LessonCard({ item, setLockedLessonIntent }: { item: any, setLock
                 e.preventDefault();
                 setLockedLessonIntent && setLockedLessonIntent(item);
               }}
-              className="flex w-full items-center justify-center gap-2 rounded-xl px-3 py-2.5 text-[11px] font-bold leading-none transition-colors bg-slate-200 text-slate-500 hover:bg-slate-300 shadow-sm"
+              className="flex w-full items-center justify-center gap-2 rounded-xl px-3 py-2.5 text-[11px] font-bold leading-none transition-colors bg-blue-600 text-white hover:bg-blue-700 shadow-sm"
             >
               <span>Start Lesson</span>
               <Lock className="size-3.5" />

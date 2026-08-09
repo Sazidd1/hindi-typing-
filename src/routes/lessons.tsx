@@ -191,7 +191,7 @@ function LessonsPage() {
                 <Link
                   to={dailyChallenge.path as any}
                   search={dailyChallenge.search as any}
-                  className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-[12px] font-bold text-primary-foreground shadow-sm hover:-translate-y-0.5 hover:shadow-md transition-all"
+                  className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-2.5 text-[12px] font-bold text-white shadow-sm hover:bg-blue-700 transition-all"
                 >
                   Accept Challenge <Play className="size-3.5 fill-current" />
                 </Link>
@@ -238,7 +238,7 @@ function LessonsPage() {
                 <Link
                   to={recommendedLesson.path as any}
                   search={recommendedLesson.search as any}
-                  className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-secondary px-4 py-2.5 text-[12px] font-bold text-secondary-foreground transition-all hover:bg-foreground hover:text-background shadow-sm"
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-[12px] font-bold text-white transition-all hover:bg-blue-700 shadow-sm"
                 >
                   Continue Learning <ArrowRight className="size-3.5" />
                 </Link>
