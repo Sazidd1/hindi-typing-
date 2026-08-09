@@ -48,7 +48,7 @@ const extendedCurriculumBase = [
   }))
 ];
 
-const categories = ["All", "Home Row", "Top Row", "Bottom Row", "Mixed", "Tests"];
+export const categories = ["All", "Home Row", "Top Row", "Bottom Row", "Mixed", "Tests"];
 
 function LessonsPage() {
   const { currentUser } = useAuth();

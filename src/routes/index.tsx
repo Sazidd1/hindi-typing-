@@ -5,6 +5,7 @@ import { GlassCard, SectionTitle } from "@/components/kit/GlassCard";
 import { HindiKeyboard } from "@/components/typing/HindiKeyboard";
 import { LessonCard } from "@/components/typing/LessonCard";
 import { lessons } from "@/lib/typing-data";
+import { categories } from "@/routes/lessons";
 import { useAuth } from "@/lib/auth";
 import { BookOpen } from "lucide-react";
 
@@ -134,8 +135,8 @@ function Index() {
           </div>
           <div className="mt-10 grid max-w-lg grid-cols-3 gap-3 sm:gap-4">
             {[
-              { k: "40+", v: "Practice sets" },
-              { k: "7", v: "Lesson tracks" },
+              { k: `${lessons.length}+`, v: "Lessons" },
+              { k: `${categories.length}+`, v: "Lesson Tracks" },
               { k: "100%", v: "Free to use" },
             ].map((s) => (
               <div key={s.v} className="glass rounded-2xl px-2 py-3 sm:px-4 text-center">
