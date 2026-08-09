@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { Keyboard, Menu, X } from "lucide-react";
 import { useState, type ReactNode } from "react";
 import { useAuth } from "@/lib/auth";
@@ -30,6 +30,12 @@ function ThemeToggle() {
 export function AppShell({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
   const { currentUser, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    await logout();
+    navigate({ to: "/login" });
+  };
 
   return (
     <div className="surface-grid min-h-screen">
@@ -83,7 +89,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                   Profile
                 </Link>
                 <button
-                  onClick={logout}
+                  onClick={handleLogout}
                   className="hidden rounded-full px-4 py-2 text-sm font-semibold text-primary-foreground transition-transform hover:scale-105 md:inline-flex"
                   style={{ background: "var(--gradient-primary)" }}
                 >
@@ -131,8 +137,8 @@ export function AppShell({ children }: { children: ReactNode }) {
               ))}
               {currentUser && (
                 <button
-                  onClick={() => {
-                    logout();
+                  onClick={async () => {
+                    await handleLogout();
                     setOpen(false);
                   }}
                   className="rounded-lg px-3 py-2.5 text-left text-sm font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40"

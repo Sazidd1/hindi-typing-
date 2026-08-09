@@ -44,7 +44,7 @@ type ResultRecord = {
 };
 
 function ProfilePage() {
-  const { currentUser, isLoaded, login, logout } = useAuth();
+  const { currentUser, isLoaded, updateProfileName, logout } = useAuth();
   const navigate = useNavigate();
   const [history, setHistory] = useState<ResultRecord[]>([]);
 
@@ -269,7 +269,7 @@ function ProfilePage() {
   const handleSaveName = () => {
     const trimmed = newUserName.trim();
     if (trimmed && trimmed !== currentUser) {
-      login(trimmed);
+      updateProfileName(trimmed);
       setIsEditModalOpen(false);
     }
   };
@@ -600,8 +600,8 @@ function ProfilePage() {
               <p className="text-xs text-muted-foreground">Remove your session from this device</p>
             </div>
             <button
-              onClick={() => {
-                logout();
+              onClick={async () => {
+                await logout();
                 navigate({ to: "/login" });
               }}
               className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-destructive border border-destructive/30 bg-destructive/5 rounded-xl hover:bg-destructive/10 hover:border-destructive/50 transition-all cursor-pointer"

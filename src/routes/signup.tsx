@@ -1,42 +1,55 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
-import { Keyboard, Eye, EyeOff, Loader2 } from "lucide-react";
+import { Keyboard, Eye, EyeOff, Loader2, Sparkles } from "lucide-react";
 import { useState } from "react";
 import { GlassCard } from "@/components/kit/GlassCard";
 import { useAuth } from "@/lib/auth";
 
-export const Route = createFileRoute("/login")({
-  component: LoginPage,
+export const Route = createFileRoute("/signup")({
+  component: SignupPage,
 });
 
-function LoginPage() {
+function SignupPage() {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   
-  const { login } = useAuth();
+  const { signup } = useAuth();
   const navigate = useNavigate();
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
     
-    if (!email.trim() || !password.trim()) {
-      setError("Please enter both email and password.");
+    if (!name.trim() || !email.trim() || !password.trim()) {
+      setError("Please fill out all fields.");
+      return;
+    }
+    
+    if (password.length < 6) {
+      setError("Password must be at least 6 characters long.");
+      return;
+    }
+    
+    if (password !== confirmPassword) {
+      setError("Passwords do not match.");
       return;
     }
     
     setIsLoading(true);
     
     try {
-      const result = await login(email, password);
+      const result = await signup(name, email, password);
       
       if (result.error) {
         setError(result.error);
         setIsLoading(false);
       } else {
-        // Successful login -> Home
+        // Successful signup -> Home
         navigate({ to: "/" });
       }
     } catch (err) {
@@ -46,16 +59,16 @@ function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-[70vh] items-center justify-center p-4">
+    <div className="flex min-h-[80vh] items-center justify-center p-4">
       <GlassCard className="w-full max-w-md p-8 sm:p-10 text-center animate-rise-in">
         <div className="mx-auto mb-6 flex size-16 items-center justify-center rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 text-primary">
-          <Keyboard className="size-8" />
+          <Sparkles className="size-8" />
         </div>
         <h1 className="mb-2 text-2xl font-bold tracking-tight text-foreground">
-          Welcome back
+          Create an Account
         </h1>
         <p className="mb-8 font-hindi text-muted-foreground">
-          अपने खाते में प्रवेश करें
+          नया खाता बनाएँ
         </p>
 
         {error && (
@@ -64,13 +77,24 @@ function LoginPage() {
           </div>
         )}
 
-        <form onSubmit={handleLogin} className="flex flex-col gap-4 text-left">
+        <form onSubmit={handleSignup} className="flex flex-col gap-4 text-left">
+          <div className="space-y-1.5">
+            <label className="text-sm font-medium text-foreground ml-1">Display Name</label>
+            <input
+              type="text"
+              placeholder="e.g. Rahul"
+              autoFocus
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="w-full rounded-xl border border-input bg-background/50 px-4 py-3 text-lg font-medium text-foreground outline-none transition-all placeholder:text-muted-foreground/60 focus:border-primary focus:ring-2 focus:ring-primary/20"
+            />
+          </div>
+          
           <div className="space-y-1.5">
             <label className="text-sm font-medium text-foreground ml-1">Email</label>
             <input
               type="email"
-              placeholder="Enter your email"
-              autoFocus
+              placeholder="name@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full rounded-xl border border-input bg-background/50 px-4 py-3 text-lg font-medium text-foreground outline-none transition-all placeholder:text-muted-foreground/60 focus:border-primary focus:ring-2 focus:ring-primary/20"
@@ -82,7 +106,7 @@ function LoginPage() {
             <div className="relative">
               <input
                 type={showPassword ? "text" : "password"}
-                placeholder="Enter your password"
+                placeholder="Create a password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full rounded-xl border border-input bg-background/50 px-4 py-3 pr-12 text-lg font-medium text-foreground outline-none transition-all placeholder:text-muted-foreground/60 focus:border-primary focus:ring-2 focus:ring-primary/20"
@@ -91,35 +115,38 @@ function LoginPage() {
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors p-1"
-                aria-label={showPassword ? "Hide password" : "Show password"}
               >
                 {showPassword ? <EyeOff className="size-5" /> : <Eye className="size-5" />}
               </button>
             </div>
           </div>
           
-          <div className="flex justify-end mt-[-4px]">
-            <Link 
-              to="/forgot-password" 
-              className="text-sm font-medium text-primary hover:underline transition-all"
-            >
-              Forgot password?
-            </Link>
+          <div className="space-y-1.5 relative">
+            <label className="text-sm font-medium text-foreground ml-1">Confirm Password</label>
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder="Confirm your password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                className="w-full rounded-xl border border-input bg-background/50 px-4 py-3 text-lg font-medium text-foreground outline-none transition-all placeholder:text-muted-foreground/60 focus:border-primary focus:ring-2 focus:ring-primary/20"
+              />
+            </div>
           </div>
 
           <button
             type="submit"
-            disabled={!email.trim() || !password.trim() || isLoading}
-            className="w-full mt-2 flex justify-center items-center rounded-xl px-4 py-3 font-semibold text-primary-foreground shadow-sm transition-all hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+            disabled={!name.trim() || !email.trim() || !password.trim() || isLoading}
+            className="w-full mt-4 flex justify-center items-center rounded-xl px-4 py-3 font-semibold text-primary-foreground shadow-sm transition-all hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
             style={{ background: "var(--gradient-primary)" }}
           >
-            {isLoading ? <Loader2 className="size-5 animate-spin" /> : "Login"}
+            {isLoading ? <Loader2 className="size-5 animate-spin" /> : "Create Account"}
           </button>
           
           <p className="mt-4 text-center text-sm text-muted-foreground">
-            Don't have an account?{" "}
-            <Link to="/signup" className="font-semibold text-primary hover:underline">
-              Sign up
+            Already have an account?{" "}
+            <Link to="/login" className="font-semibold text-primary hover:underline">
+              Log in
             </Link>
           </p>
         </form>
