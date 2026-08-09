@@ -7,6 +7,7 @@ import { lessons } from "@/lib/typing-data";
 import { Link } from "@tanstack/react-router";
 import { calculateGrade, calculateXP, DEFAULT_TARGET_WPM, validateSession } from "@/lib/scoring";
 import { ChapterMasteryModal } from "@/components/typing/ChapterMasteryModal";
+import { toast } from "sonner";
 
 export type TypingResult = {
   wpm: number;
@@ -244,21 +245,16 @@ export function TypingArena({
           };
           let updatedResults = [newResult, ...existing];
           
-          // Daily Bonus Logic
-          const bonusKey = `daily_bonus_claimed_${currentUser}_${dateString}`;
-          if (localStorage.getItem(bonusKey) !== "true") {
-             localStorage.setItem(bonusKey, "true");
-             const bonusResult = {
-               date: dateString,
-               lessonSlug: "daily-bonus",
-               wpm: 0,
-               accuracy: 100,
-               errors: 0,
-               grade: "A+",
-               xp: 100,
-               isBonus: true
-             };
-             updatedResults = [bonusResult, ...updatedResults];
+          // Lesson Completion Bonus Logic
+          if (lessonSlug) {
+             const bonusKey = `lesson_completion_bonus_${currentUser}_${lessonSlug}`;
+             if (localStorage.getItem(bonusKey) !== "true") {
+                localStorage.setItem(bonusKey, "true");
+                newResult.xp += 100;
+                finalValidation.xp += 100;
+                toast.success("+100 XP 🎉", { description: "Lesson Complete!" });
+                window.dispatchEvent(new Event("xpUpdated"));
+             }
           }
 
           localStorage.setItem(key, JSON.stringify(updatedResults.slice(0, 50)));

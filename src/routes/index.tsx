@@ -33,24 +33,28 @@ const features = [
     title: "Remington Keyboard",
     text: "एनिमेटेड वर्चुअल कीबोर्ड और उंगली मार्गदर्शन के साथ सही तकनीक सीखें।",
     bg: "linear-gradient(135deg, #2563eb, #3b82f6)",
+    to: "/practice" as const,
   },
   {
     icon: Gauge,
     title: "Live WPM",
     text: "हर कीस्ट्रोक पर गति, शुद्धता और त्रुटियाँ रीयल-टाइम में देखें।",
     bg: "linear-gradient(135deg, #16a34a, #22c55e)",
+    to: "/practice" as const,
   },
   {
     icon: BarChart3,
     title: "Progress Analytics",
     text: "साप्ताहिक चार्ट, स्ट्रीक और अभ्यास समय एक ही डैशबोर्ड पर।",
     bg: "linear-gradient(135deg, #ea580c, #f97316)",
+    to: "/dashboard" as const,
   },
   {
     icon: Award,
     title: "Achievements",
     text: "बैज और लीडरबोर्ड आपको हर दिन अभ्यास के लिए प्रेरित करते हैं।",
     bg: "linear-gradient(135deg, #ca8a04, #eab308)",
+    to: "/profile" as const,
   },
 ];
 
@@ -183,20 +187,21 @@ function Index() {
         </div>
         <div className="grid gap-[20px] grid-cols-1 md:grid-cols-2 xl:grid-cols-4">
           {features.map((f, i) => (
-            <div
+            <Link
+              to={f.to}
               key={f.title}
-              className="bg-[#ffffff] border border-[#e6ebf2] rounded-[16px] px-[22px] py-[26px] transition-all duration-150 ease-out hover:-translate-y-[4px] hover:shadow-[0_12px_24px_rgba(20,30,60,0.08)] animate-rise-in"
+              className="group block bg-[#ffffff] border border-[#e6ebf2] rounded-[16px] px-[22px] py-[26px] transition-all duration-200 ease-out hover:-translate-y-[3px] hover:shadow-[0_14px_28px_rgba(20,30,60,0.12)] focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 animate-rise-in cursor-pointer"
               style={{ animationDelay: `${i * 60}ms` }}
             >
               <div
-                className="flex w-[46px] h-[46px] items-center justify-center rounded-[12px] mb-[16px]"
+                className="flex w-[46px] h-[46px] items-center justify-center rounded-[12px] mb-[16px] transition-transform duration-200 group-hover:scale-110"
                 style={{ background: f.bg }}
               >
                 <f.icon className="w-[20px] h-[20px] text-white" />
               </div>
               <h3 className="en text-[16px] font-bold text-foreground mb-[6px]">{f.title}</h3>
               <p className="font-hindi text-[13px] text-[#64748b] leading-[1.6]">{f.text}</p>
-            </div>
+            </Link>
           ))}
         </div>
       </section>

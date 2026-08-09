@@ -1,7 +1,6 @@
 import { Link } from "@tanstack/react-router";
-import { CheckCircle, Lock, ArrowRight, Gift } from "lucide-react";
+import { CheckCircle, Lock, ArrowRight } from "lucide-react";
 import { useAuth } from "@/lib/auth";
-import { useEffect, useState } from "react";
 
 export function LessonCard({ item, setLockedLessonIntent }: { item: any, setLockedLessonIntent?: (item: any) => void }) {
   const Icon = item.icon;
@@ -16,16 +15,6 @@ export function LessonCard({ item, setLockedLessonIntent }: { item: any, setLock
   const headerTextColor = item.isLocked ? "text-slate-500" : "text-white";
   
   const { currentUser } = useAuth();
-  const [isBonusClaimed, setIsBonusClaimed] = useState(false);
-  
-  useEffect(() => {
-    if (currentUser) {
-      const date = new Date();
-      const dateStr = `${date.getDate()} ${date.toLocaleString("default", { month: "short" })}`;
-      const bonusKey = `daily_bonus_claimed_${currentUser}_${dateStr}`;
-      setIsBonusClaimed(localStorage.getItem(bonusKey) === "true");
-    }
-  }, [currentUser]);
 
   return (
     <div className="group flex flex-col rounded-[16px] overflow-hidden border border-[#e6ebf2] bg-[#ffffff] transition-all duration-200 hover:-translate-y-[3px] hover:shadow-[0_14px_28px_rgba(20,30,60,0.08)] h-full">
@@ -83,23 +72,7 @@ export function LessonCard({ item, setLockedLessonIntent }: { item: any, setLock
         </div>
 
         <div className="mt-2.5">
-          {isBonusClaimed ? (
-            <div className="flex items-center justify-between bg-slate-100 border border-slate-200 rounded-lg px-2.5 py-1.5 opacity-60 mb-2.5">
-              <div className="flex items-center gap-1.5 text-[10px] font-bold text-slate-500">
-                <Gift className="size-3" />
-                <span>Daily Bonus</span>
-              </div>
-              <span className="text-[10px] font-bold text-slate-500 tracking-wide">Claimed ✓</span>
-            </div>
-          ) : (
-            <div className="flex items-center justify-between bg-amber-500/10 border border-amber-500/20 rounded-lg px-2.5 py-1.5 mb-2.5">
-              <div className="flex items-center gap-1.5 text-[10px] font-bold text-amber-600">
-                <Gift className="size-3" />
-                <span>Daily Bonus</span>
-              </div>
-              <span className="text-[10px] font-bold text-amber-600 tracking-wide">+100 XP</span>
-            </div>
-          )}
+
           
           {item.isLocked ? (
             <button 
