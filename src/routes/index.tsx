@@ -134,16 +134,21 @@ function Index() {
             </Link>
           </div>
           <div className="mt-10 grid max-w-lg grid-cols-3 gap-3 sm:gap-4">
-            {[
-              { k: `${lessons.length}+`, v: "Lessons" },
-              { k: `${categories.length}+`, v: "Lesson Tracks" },
-              { k: "100%", v: "Free to use" },
-            ].map((s) => (
-              <div key={s.v} className="glass rounded-2xl px-2 py-3 sm:px-4 text-center">
-                <p className="en text-[clamp(1.25rem,3vw,1.5rem)] font-semibold text-primary">{s.k}</p>
-                <p className="en text-[clamp(0.65rem,1.5vw,0.75rem)] text-muted-foreground">{s.v}</p>
-              </div>
-            ))}
+            <Link to="/lessons" className="col-span-2 grid grid-cols-2 gap-3 sm:gap-4 group cursor-pointer hover:-translate-y-0.5 transition-transform duration-200">
+              {[
+                { k: `${lessons.length}+`, v: "Lessons" },
+                { k: `${categories.length}+`, v: "Lesson Tracks" },
+              ].map((s) => (
+                <div key={s.v} className="glass rounded-2xl px-2 py-3.5 sm:px-4 text-center flex flex-col justify-center gap-1 transition-colors duration-200 group-hover:bg-primary/5 group-hover:border-primary/20">
+                  <p className="en text-[clamp(1.25rem,3vw,1.5rem)] font-semibold text-primary leading-none">{s.k}</p>
+                  <p className="en text-[clamp(0.65rem,1.5vw,0.75rem)] text-muted-foreground leading-snug text-balance">{s.v}</p>
+                </div>
+              ))}
+            </Link>
+            <div className="glass rounded-2xl px-2 py-3.5 sm:px-4 text-center flex flex-col justify-center gap-1">
+              <p className="en text-[clamp(1.25rem,3vw,1.5rem)] font-semibold text-primary leading-none">100%</p>
+              <p className="en text-[clamp(0.65rem,1.5vw,0.75rem)] text-muted-foreground leading-snug text-balance">Free to use</p>
+            </div>
           </div>
         </div>
 
