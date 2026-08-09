@@ -231,33 +231,33 @@ function DashboardPage() {
       subName: "शुरुआती पाठ",
       completed: beginnerCompleted,
       total: beginnerTotal,
-      color: "bg-success",
-      badgeColor: "text-success bg-success/15 border-success/25",
+      color: "bg-orange-500",
+      badgeColor: "text-orange-500 bg-orange-500/15 border-orange-500/25",
     },
     {
       name: "Intermediate Track",
       subName: "मध्यम पाठ",
       completed: interCompleted,
       total: interTotal,
-      color: "bg-primary",
-      badgeColor: "text-primary bg-primary/15 border-primary/25",
+      color: "bg-accent-blue",
+      badgeColor: "text-accent-blue bg-accent-blue/15 border-accent-blue/25",
     },
     {
       name: "Advanced Track",
       subName: "उन्नत पाठ",
       completed: advCompleted,
       total: advTotal,
-      color: "bg-orange-500",
-      badgeColor: "text-orange-600 bg-orange-500/15 border-orange-500/25",
+      color: "bg-teal-500",
+      badgeColor: "text-teal-500 bg-teal-500/15 border-teal-500/25",
     },
   ], [beginnerCompleted, beginnerTotal, interCompleted, interTotal, advCompleted, advTotal]);
 
   // 9. Badges (4 Primary Badges)
   const badges = useMemo(() => [
-    { icon: Flame, title: "7 दिन स्ट्रीक", desc: "लगातार सात दिन अभ्यास", earned: streak >= 7 },
-    { icon: Zap, title: "50 WPM क्लब", desc: "50 शब्द प्रति मिनट पार", earned: bestWpm >= 50 },
-    { icon: Target, title: "शुद्धता मास्टर", desc: "98% शुद्धता प्राप्त", earned: bestAcc >= 98 },
-    { icon: Trophy, title: "परीक्षा तैयार", desc: "परीक्षा पाठ पूर्ण करें", earned: completedSlugs.has("ch25") || completedSlugs.has("ch28") },
+    { icon: Flame, title: "7 दिन स्ट्रीक", desc: "लगातार सात दिन अभ्यास", earned: streak >= 7, iconClass: "text-orange-500 bg-orange-500/10 border border-orange-500/20" },
+    { icon: Zap, title: "50 WPM क्लब", desc: "50 शब्द प्रति मिनट पार", earned: bestWpm >= 50, iconClass: "text-purple-500 bg-purple-500/10 border border-purple-500/20" },
+    { icon: Target, title: "शुद्धता मास्टर", desc: "98% शुद्धता प्राप्त", earned: bestAcc >= 98, iconClass: "text-success bg-success/10 border border-success/20" },
+    { icon: Trophy, title: "परीक्षा तैयार", desc: "परीक्षा पाठ पूर्ण करें", earned: completedSlugs.has("ch25") || completedSlugs.has("ch28"), iconClass: "text-accent-blue bg-accent-blue/10 border border-accent-blue/20" },
   ], [streak, bestWpm, bestAcc, completedSlugs]);
 
   return (
@@ -271,8 +271,8 @@ function DashboardPage() {
       {/* 3. 4 stat cards */}
       <div className="grid gap-4 sm:gap-6 sm:grid-cols-2 xl:grid-cols-4">
         <StatCard icon={Flame} label="Daily streak" value={streak} suffix="days" tone="danger" />
-        <StatCard icon={Clock} label="Practice time" value={practiceTimeStr} tone="muted" />
-        <StatCard icon={Gauge} label="Average WPM" value={avgWpm} suffix="WPM" />
+        <StatCard icon={Clock} label="Practice time" value={practiceTimeStr} tone="blue" />
+        <StatCard icon={Gauge} label="Average WPM" value={avgWpm} suffix="WPM" tone="purple" />
         <StatCard icon={Target} label="Accuracy" value={avgAcc} suffix="%" tone="success" />
       </div>
 
@@ -405,25 +405,29 @@ function DashboardPage() {
               
               <div className="mt-5 space-y-4">
                 {[
-                  { label: "Practice minutes", value: todayPracticeMins, max: 30, tone: "var(--primary)" },
-                  { label: "Lessons completed", value: todayLessonsCompleted, max: 5, tone: "var(--accent-blue)" },
-                  { label: "Accuracy target", value: todayAvgAcc, max: 98, tone: "var(--success)" },
+                  { label: "Practice minutes", value: todayPracticeMins, max: 30, tone: "bg-accent-blue", icon: Clock, iconClass: "text-accent-blue bg-accent-blue/10 border border-accent-blue/20" },
+                  { label: "Lessons completed", value: todayLessonsCompleted, max: 5, tone: "bg-teal-500", icon: BookOpen, iconClass: "text-teal-500 bg-teal-500/10 border border-teal-500/20" },
+                  { label: "Accuracy target", value: todayAvgAcc, max: 98, tone: "bg-success", icon: Target, iconClass: "text-success bg-success/10 border border-success/20" },
                 ].map((g) => {
                   const pct = Math.min(100, Math.round((g.value / g.max) * 100));
                   return (
                     <div key={g.label} className="space-y-1.5">
                       <div className="flex items-center justify-between text-xs">
-                        <span className="text-foreground/90 font-semibold">{g.label}</span>
+                        <div className="flex items-center gap-2">
+                          <span className={cn("flex size-6 items-center justify-center rounded-lg border", g.iconClass)}>
+                            <g.icon className="size-3.5" />
+                          </span>
+                          <span className="text-foreground/90 font-semibold">{g.label}</span>
+                        </div>
                         <span className="font-bold text-foreground tabular-nums bg-secondary/60 px-2 py-0.5 rounded-md border border-border/40">
                           {g.value}/{g.max}
                         </span>
                       </div>
                       <div className="h-2.5 w-full rounded-full bg-secondary/80 border border-border/40 p-0.5 overflow-hidden">
                         <div
-                          className="h-full rounded-full transition-all duration-700 ease-out shadow-xs"
+                          className={cn("h-full rounded-full transition-all duration-700 ease-out shadow-xs", g.tone)}
                           style={{
                             width: `${pct}%`,
-                            background: g.tone,
                           }}
                         />
                       </div>
@@ -454,14 +458,22 @@ function DashboardPage() {
 
             {weakKeysData.length > 0 ? (
               <div className="flex flex-wrap items-center gap-3">
-                {weakKeysData.map(({ char, count }) => (
-                  <div key={char} className="flex items-center gap-2.5 bg-danger/10 border border-danger/20 px-3.5 py-2 rounded-2xl transition-transform hover:scale-105">
-                    <span className="font-hindi text-2xl font-bold text-danger leading-none">{char}</span>
-                    <span className="text-[11px] font-bold text-danger/90 tabular-nums bg-background/80 px-2 py-0.5 rounded-lg shadow-2xs border border-danger/15">
-                      {count} {count === 1 ? 'mistake' : 'mistakes'}
-                    </span>
-                  </div>
-                ))}
+                {weakKeysData.map(({ char, count }, i) => {
+                  const accents = [
+                    { b: "bg-orange-500/10", br: "border-orange-500/20", t: "text-orange-500", tb: "border-orange-500/15" },
+                    { b: "bg-accent-blue/10", br: "border-accent-blue/20", t: "text-accent-blue", tb: "border-accent-blue/15" },
+                    { b: "bg-teal-500/10", br: "border-teal-500/20", t: "text-teal-500", tb: "border-teal-500/15" },
+                  ];
+                  const a = accents[i % accents.length];
+                  return (
+                    <div key={char} className={cn("flex items-center gap-2.5 border px-3.5 py-2 rounded-2xl transition-transform hover:scale-105", a.b, a.br)}>
+                      <span className={cn("font-hindi text-2xl font-bold leading-none", a.t)}>{char}</span>
+                      <span className={cn("text-[11px] font-bold tabular-nums bg-background/80 px-2 py-0.5 rounded-lg shadow-2xs border", a.t, a.tb)}>
+                        {count} {count === 1 ? 'mistake' : 'mistakes'}
+                      </span>
+                    </div>
+                  );
+                })}
               </div>
             ) : (
               <div className="flex min-h-[56px] items-center justify-center rounded-2xl bg-secondary/40 border border-border/40 px-4 py-3 text-center">
@@ -498,10 +510,9 @@ function DashboardPage() {
                       className={cn(
                         "flex size-11 shrink-0 items-center justify-center rounded-2xl shadow-xs",
                         b.earned
-                          ? "text-primary-foreground"
+                          ? b.iconClass
                           : "bg-muted/80 text-muted-foreground/60 border border-border/40"
                       )}
-                      style={b.earned ? { background: "var(--gradient-primary)" } : undefined}
                     >
                       <b.icon className="size-5" />
                     </span>

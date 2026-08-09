@@ -13,7 +13,7 @@ export function StatCard({
   label: string;
   value: string | number;
   suffix?: string;
-  tone?: "primary" | "success" | "danger" | "muted";
+  tone?: "primary" | "success" | "danger" | "muted" | "blue" | "purple";
   className?: string;
 }) {
   const toneClass = {
@@ -21,6 +21,8 @@ export function StatCard({
     success: "text-success bg-success/10 border border-success/20",
     danger: "text-danger bg-danger/10 border border-danger/20",
     muted: "text-muted-foreground bg-muted border border-border/40",
+    blue: "text-accent-blue bg-accent-blue/10 border border-accent-blue/20",
+    purple: "text-purple-500 bg-purple-500/10 border border-purple-500/20",
   }[tone];
 
   return (
