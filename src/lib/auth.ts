@@ -27,8 +27,13 @@ export function useAuth() {
   }, []);
 
   const login = (username: string) => {
-    if (!username.trim()) return;
-    localStorage.setItem(CURRENT_USER_KEY, username.trim());
+    const trimmed = username.trim();
+    if (!trimmed) return;
+    localStorage.setItem(CURRENT_USER_KEY, trimmed);
+    const createdKey = "account_created_" + trimmed;
+    if (!localStorage.getItem(createdKey)) {
+      localStorage.setItem(createdKey, new Date().toISOString());
+    }
     window.dispatchEvent(new Event("auth-change"));
   };
 
