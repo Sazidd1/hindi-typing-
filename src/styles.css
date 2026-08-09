@@ -37,6 +37,15 @@
     linear-gradient(180deg, oklch(0.985 0.012 250), oklch(0.965 0.02 245));
 }
 
+/* Dark variant for surface-grid */
+.dark .surface-grid,
+.dark.surface-grid {
+  background-image:
+    radial-gradient(circle at 15% 10%, color-mix(in oklab, oklch(0.55 0.18 258) 18%, transparent), transparent 45%),
+    radial-gradient(circle at 85% 0%, color-mix(in oklab, oklch(0.55 0.15 232) 16%, transparent), transparent 40%),
+    linear-gradient(180deg, oklch(0.14 0.03 258), oklch(0.16 0.032 255));
+}
+
 @keyframes float-soft {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-10px); }
@@ -125,6 +134,9 @@
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
+/* ─────────────────────────────────────────
+   LIGHT MODE (default)
+   ───────────────────────────────────────── */
 :root {
   --radius: 1rem;
   --background: oklch(0.985 0.012 250);
@@ -172,41 +184,79 @@
   --sidebar-ring: oklch(0.704 0.04 256.788);
 }
 
+/* ─────────────────────────────────────────
+   DARK MODE
+   ───────────────────────────────────────── */
 .dark {
-  --background: oklch(0.129 0.042 264.695);
-  --foreground: oklch(0.984 0.003 247.858);
-  --card: oklch(0.208 0.042 265.755);
-  --card-foreground: oklch(0.984 0.003 247.858);
-  --popover: oklch(0.208 0.042 265.755);
-  --popover-foreground: oklch(0.984 0.003 247.858);
-  --primary: oklch(0.929 0.013 255.508);
-  --primary-foreground: oklch(0.208 0.042 265.755);
-  --secondary: oklch(0.279 0.041 260.031);
-  --secondary-foreground: oklch(0.984 0.003 247.858);
-  --muted: oklch(0.279 0.041 260.031);
-  --muted-foreground: oklch(0.704 0.04 256.788);
-  --accent: oklch(0.279 0.041 260.031);
-  --accent-foreground: oklch(0.984 0.003 247.858);
-  --destructive: oklch(0.704 0.191 22.216);
-  --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.551 0.027 264.364);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.208 0.042 265.755);
-  --sidebar-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-accent: oklch(0.279 0.041 260.031);
-  --sidebar-accent-foreground: oklch(0.984 0.003 247.858);
+  /* Backgrounds — deep navy, not pure black */
+  --background: oklch(0.145 0.032 258);
+  --foreground: oklch(0.94 0.01 248);
+
+  /* Cards / surfaces */
+  --card: oklch(0.20 0.035 260);
+  --card-foreground: oklch(0.94 0.01 248);
+  --popover: oklch(0.20 0.035 260);
+  --popover-foreground: oklch(0.94 0.01 248);
+
+  /* Brand primary — keep indigo readable on dark */
+  --primary: oklch(0.65 0.18 258);
+  --primary-foreground: oklch(0.10 0.02 260);
+  --accent-blue: oklch(0.72 0.15 232);
+
+  /* Secondary / muted surfaces */
+  --secondary: oklch(0.255 0.038 260);
+  --secondary-foreground: oklch(0.90 0.01 248);
+  --muted: oklch(0.255 0.038 260);
+  --muted-foreground: oklch(0.62 0.04 256);
+  --accent: oklch(0.265 0.038 258);
+  --accent-foreground: oklch(0.90 0.01 248);
+
+  /* Semantic colors — slightly brightened for dark contrast */
+  --destructive: oklch(0.68 0.22 25);
+  --destructive-foreground: oklch(0.94 0.01 248);
+  --success: oklch(0.68 0.18 152);
+  --danger: oklch(0.68 0.22 25);
+  --warning: oklch(0.80 0.16 75);
+
+  /* Borders & inputs */
+  --border: oklch(1 0 0 / 11%);
+  --input: oklch(1 0 0 / 14%);
+  --ring: oklch(0.65 0.18 258);
+
+  /* Glass surfaces — dark navy with transparency */
+  --glass-bg: color-mix(in oklab, oklch(0.20 0.035 260) 72%, transparent);
+  --glass-strong: color-mix(in oklab, oklch(0.22 0.038 260) 88%, transparent);
+  --glass-border: oklch(1 0 0 / 10%);
+
+  /* Gradients — unchanged, they work on dark */
+  --gradient-primary: linear-gradient(135deg, oklch(0.55 0.2 258), oklch(0.7 0.15 228));
+  --gradient-soft: linear-gradient(135deg, color-mix(in oklab, oklch(0.65 0.18 258) 18%, oklch(0.20 0.035 260)), color-mix(in oklab, oklch(0.72 0.15 232) 15%, oklch(0.20 0.035 260)));
+
+  /* Shadows */
+  --shadow-glass: 0 12px 40px -18px oklch(0 0 0 / 50%);
+  --shadow-elevated: 0 24px 60px -24px oklch(0 0 0 / 60%);
+
+  /* Charts */
+  --chart-1: oklch(0.55 0.22 258);
+  --chart-2: oklch(0.65 0.17 162);
+  --chart-3: oklch(0.75 0.18 70);
+  --chart-4: oklch(0.60 0.24 303);
+  --chart-5: oklch(0.62 0.24 16);
+
+  /* Sidebar */
+  --sidebar: oklch(0.20 0.035 260);
+  --sidebar-foreground: oklch(0.94 0.01 248);
+  --sidebar-primary: oklch(0.65 0.18 258);
+  --sidebar-primary-foreground: oklch(0.94 0.01 248);
+  --sidebar-accent: oklch(0.255 0.038 260);
+  --sidebar-accent-foreground: oklch(0.94 0.01 248);
   --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.551 0.027 264.364);
+  --sidebar-ring: oklch(0.65 0.18 258);
 }
 
+/* ─────────────────────────────────────────
+   BASE LAYER
+   ───────────────────────────────────────── */
 @layer base {
   * {
     border-color: var(--color-border);
@@ -216,6 +266,7 @@
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: 'Noto Sans Devanagari', sans-serif;
+    transition: background-color 0.25s ease, color 0.25s ease;
   }
 }
 
@@ -223,6 +274,56 @@
   font-family: 'Poppins', sans-serif;
 }
 
+/* ─────────────────────────────────────────
+   COMPONENT OVERRIDES — DARK MODE
+   ───────────────────────────────────────── */
+
+/* Header & Footer */
+.dark header {
+  background: color-mix(in oklab, oklch(0.20 0.035 260) 80%, transparent) !important;
+  border-bottom-color: oklch(1 0 0 / 8%) !important;
+}
+
+.dark footer {
+  background: color-mix(in oklab, oklch(0.20 0.035 260) 80%, transparent) !important;
+  border-top-color: oklch(1 0 0 / 8%) !important;
+}
+
+/* Mobile menu overlay */
+.dark .mobile-menu-overlay {
+  background: color-mix(in oklab, oklch(0.18 0.03 260) 92%, transparent) !important;
+}
+
+/* Theme transition — smooth but no layout shift */
+html {
+  transition: none;
+}
+*, *::before, *::after {
+  transition-property: background-color, border-color, color, box-shadow;
+  transition-duration: 0.25s;
+  transition-timing-function: ease;
+}
+/* But NOT for transforms, opacity on animations — let them be fast */
+.animate-rise-in,
+.animate-float-soft,
+.animate-key-pop {
+  transition: none;
+}
+
+/* Typing arena tile — light base, dark via CSS variable */
+.typing-tile {
+  background-color: var(--card);
+  border-color: var(--border);
+}
+
+.dark .typing-tile {
+  background-color: oklch(0.24 0.038 260);
+  border-color: oklch(1 0 0 / 12%);
+}
+
+/* ─────────────────────────────────────────
+   EXISTING SHARED STYLES (UNCHANGED)
+   ───────────────────────────────────────── */
 .btn-primary {
   background: linear-gradient(135deg, #2563eb, #1d4ed8);
   color: #fff;

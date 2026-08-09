@@ -601,7 +601,7 @@ function ProfilePage() {
             validHistory.map((h, i) => (
               <div
                 key={i}
-                className="flex flex-wrap items-center justify-between gap-3 px-6 py-4 transition-colors hover:bg-white/60"
+                className="flex flex-wrap items-center justify-between gap-3 px-6 py-4 transition-colors hover:bg-secondary/40"
               >
                 <div>
                   <p className="font-medium text-foreground">Practice Session</p>

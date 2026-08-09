@@ -420,7 +420,7 @@ export function TypingArena({
       {/* Tile Typing Area */}
       <div 
         className={cn(
-          "relative mx-auto w-full min-h-[140px] cursor-text rounded-3xl p-4 sm:p-6 bg-white/60 border border-white/60 shadow-sm backdrop-blur-xl transition-all duration-300 group overflow-hidden",
+          "relative mx-auto w-full min-h-[140px] cursor-text rounded-3xl p-4 sm:p-6 bg-card/80 dark:bg-card/90 border border-border/60 shadow-sm backdrop-blur-xl transition-all duration-300 group overflow-hidden",
           isFocusMode ? "max-w-[1050px]" : "max-w-[940px]"
         )}
         onClick={() => inputRef.current?.focus()}
@@ -525,14 +525,14 @@ export function TypingArena({
                       <div
                         key={cIdx}
                         className={cn(
-                          "flex items-center justify-center rounded-xl bg-white shadow-sm border border-slate-100 transition-all duration-300 shrink-0",
+                          "flex items-center justify-center rounded-xl bg-card dark:bg-[oklch(0.24_0.038_260)] shadow-sm border border-border/50 transition-all duration-300 shrink-0",
                           isSpace 
                             ? (isFocusMode ? "w-16 sm:w-20" : "w-14 sm:w-16") 
                             : (isFocusMode ? "size-12 sm:size-14" : "size-11 sm:size-12"),
                           
                           state === "pending" && !isCurrent && "border border-border/60 text-[#94A3B8]",
                           isCurrent && "outline outline-[2.5px] outline-offset-[2.5px] outline-[#F59E0B] border-transparent z-10 shadow-[0_4px_14px_rgba(245,158,11,0.2)] text-[#F59E0B] scale-105",
-                          state === "correct" && !isCurrent && "border border-[#16A34A]/30 bg-[#16A34A]/5 text-[#16A34A]",
+                          state === "correct" && !isCurrent && "border border-[#16A34A]/30 bg-[#16A34A]/8 text-[#16A34A]",
                           state === "wrong" && !isCurrent && "border-2 border-[#EF4444] bg-[#EF4444]/10 text-[#EF4444]",
                         )}
                       >
@@ -648,13 +648,13 @@ export function TypingArena({
           ? "w-0 h-0 opacity-0 overflow-hidden m-0 p-0" 
           : "w-full lg:w-[270px] space-y-4 sm:space-y-6 mt-6 lg:mt-0 opacity-100"
       )}>
-        <div className="bg-secondary/30 rounded-[2rem] p-5 sm:p-6 shadow-sm border border-border/40 flex flex-col gap-5">
+        <div className="bg-card/60 dark:bg-card/80 rounded-[2rem] p-5 sm:p-6 shadow-sm border border-border/40 flex flex-col gap-5">
           <h3 className="text-xl font-semibold tracking-tight text-foreground">Live Session</h3>
           
           {/* 2x2 Grid */}
           <div className="grid grid-cols-2 gap-3">
              {/* Speed */}
-             <div className="bg-background rounded-2xl p-4 shadow-sm border border-border/40 flex flex-col gap-1">
+             <div className="bg-background/80 dark:bg-background rounded-2xl p-4 shadow-sm border border-border/40 flex flex-col gap-1">
                <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Speed</span>
                <div className="flex items-center gap-1">
                  <span className="text-[28px] font-semibold tracking-tight text-primary">{wpm}</span>
@@ -662,7 +662,7 @@ export function TypingArena({
                </div>
              </div>
              {/* Accuracy */}
-             <div className="bg-background rounded-2xl p-4 shadow-sm border border-border/40 flex flex-col gap-1">
+             <div className="bg-background/80 dark:bg-background rounded-2xl p-4 shadow-sm border border-border/40 flex flex-col gap-1">
                <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Accuracy</span>
                <div className="flex items-center gap-1">
                  <span className="text-[28px] font-semibold tracking-tight text-success">{accuracy}</span>
@@ -670,14 +670,14 @@ export function TypingArena({
                </div>
              </div>
              {/* Time */}
-             <div className="bg-background rounded-2xl p-4 shadow-sm border border-border/40 flex flex-col gap-1">
+             <div className="bg-background/80 dark:bg-background rounded-2xl p-4 shadow-sm border border-border/40 flex flex-col gap-1">
                <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Time</span>
                <div className="flex items-center gap-1">
                  <span className="text-[22px] font-semibold tracking-tight text-foreground">{formatTime(elapsed)}</span>
                </div>
              </div>
              {/* Streak */}
-             <div className="bg-background rounded-2xl p-4 shadow-sm border border-border/40 flex flex-col gap-1">
+             <div className="bg-background/80 dark:bg-background rounded-2xl p-4 shadow-sm border border-border/40 flex flex-col gap-1">
                <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Streak</span>
                <div className="flex items-center gap-1">
                  <span className="text-[22px] font-semibold tracking-tight text-orange-500">{currentStreak}</span>
@@ -715,7 +715,7 @@ export function TypingArena({
         {/* Focus Mode Toggle */}
         <div 
           onClick={() => setIsFocusMode(true)}
-          className="bg-background rounded-[2rem] p-5 sm:p-6 shadow-sm border border-border/40 flex items-center justify-between cursor-pointer hover:bg-secondary/20 transition-colors"
+          className="bg-background/80 dark:bg-background rounded-[2rem] p-5 sm:p-6 shadow-sm border border-border/40 flex items-center justify-between cursor-pointer hover:bg-secondary/30 transition-colors"
         >
            <div className="flex flex-col gap-0.5">
              <span className="font-semibold text-sm text-foreground">Focus Mode</span>

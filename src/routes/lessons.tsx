@@ -291,15 +291,15 @@ function LessonsPage() {
           onClick={() => setLockedLessonIntent(null)}
         >
           <div 
-            className="w-[90%] max-w-[400px] bg-white rounded-[24px] p-6 shadow-[0_8px_30px_rgb(0,0,0,0.12)] animate-in zoom-in-95 duration-200"
+            className="w-[90%] max-w-[400px] bg-background border border-border rounded-[24px] p-6 shadow-[0_8px_30px_rgb(0,0,0,0.18)] animate-in zoom-in-95 duration-200"
             onClick={(e) => e.stopPropagation()}
           >
-            <h3 className="text-xl font-bold text-slate-800 flex items-center gap-2">
-              <Lock className="size-5 text-slate-400" />
+            <h3 className="text-xl font-bold text-foreground flex items-center gap-2">
+              <Lock className="size-5 text-muted-foreground" />
               Lesson Locked
             </h3>
             
-            <div className="mt-4 space-y-3 text-[14px] text-slate-600 font-medium leading-snug">
+            <div className="mt-4 space-y-3 text-[14px] text-muted-foreground font-medium leading-snug">
               <p>Complete the previous lesson first to follow the recommended learning path.</p>
               <p>You can still continue if you prefer.</p>
             </div>
@@ -307,7 +307,7 @@ function LessonsPage() {
             <div className="mt-8 flex items-center justify-end gap-3">
               <button 
                 onClick={() => setLockedLessonIntent(null)}
-                className="px-5 py-2.5 rounded-xl text-[13px] font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 transition-colors"
+                className="px-5 py-2.5 rounded-xl text-[13px] font-bold text-muted-foreground bg-secondary hover:bg-secondary/80 transition-colors"
               >
                 Go Back
               </button>
@@ -315,7 +315,7 @@ function LessonsPage() {
                 to={lockedLessonIntent.path as any}
                 search={lockedLessonIntent.search as any}
                 onClick={() => setLockedLessonIntent(null)}
-                className="px-5 py-2.5 rounded-xl text-[13px] font-bold text-white bg-blue-600 hover:bg-blue-700 transition-colors shadow-sm"
+                className="px-5 py-2.5 rounded-xl text-[13px] font-bold text-primary-foreground bg-primary hover:bg-primary/90 transition-colors shadow-sm"
               >
                 Continue Anyway
               </Link>

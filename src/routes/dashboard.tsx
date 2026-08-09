@@ -340,14 +340,14 @@ function DashboardPage() {
                       const d = payload[0]?.payload;
                       if (!d || !d.hasData) {
                         return (
-                          <div className="rounded-2xl border border-border bg-white/95 p-3 shadow-lg backdrop-blur-md">
+                          <div className="rounded-2xl border border-border bg-card/95 p-3 shadow-lg backdrop-blur-md">
                             <p className="text-xs font-semibold text-foreground">{label}</p>
                             <p className="mt-1 text-xs text-muted-foreground">No practice sessions</p>
                           </div>
                         );
                       }
                       return (
-                        <div className="rounded-2xl border border-border bg-white/95 p-3 shadow-lg backdrop-blur-md space-y-1.5">
+                        <div className="rounded-2xl border border-border bg-card/95 p-3 shadow-lg backdrop-blur-md space-y-1.5">
                           <p className="text-xs font-semibold text-muted-foreground">{label} ({d.dateStr})</p>
                           {d.wpm !== null && (
                             <p className="text-xs font-bold text-primary flex items-center justify-between gap-4">
@@ -457,7 +457,7 @@ function DashboardPage() {
                 {weakKeysData.map(({ char, count }) => (
                   <div key={char} className="flex items-center gap-2.5 bg-danger/10 border border-danger/20 px-3.5 py-2 rounded-2xl transition-transform hover:scale-105">
                     <span className="font-hindi text-2xl font-bold text-danger leading-none">{char}</span>
-                    <span className="text-[11px] font-bold text-danger/90 tabular-nums bg-white/80 px-2 py-0.5 rounded-lg shadow-2xs border border-danger/15">
+                    <span className="text-[11px] font-bold text-danger/90 tabular-nums bg-background/80 px-2 py-0.5 rounded-lg shadow-2xs border border-danger/15">
                       {count} {count === 1 ? 'mistake' : 'mistakes'}
                     </span>
                   </div>

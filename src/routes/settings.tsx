@@ -1,8 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { GlassCard, SectionTitle } from "@/components/kit/GlassCard";
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useTheme } from "@/lib/theme";
 
 export const Route = createFileRoute("/settings")({
   head: () => ({
@@ -82,7 +82,7 @@ function OptionRow({
               "rounded-full px-4 py-2 text-sm font-medium transition-all duration-200",
               o === value
                 ? "bg-primary text-primary-foreground"
-                : "bg-white/80 text-muted-foreground hover:text-foreground",
+                : "bg-secondary/60 text-muted-foreground hover:text-foreground hover:bg-secondary",
             )}
           >
             {o}
@@ -90,6 +90,48 @@ function OptionRow({
         ))}
       </div>
     </div>
+  );
+}
+
+/** Appearance section — controls the global light/dark theme. */
+function AppearanceSection() {
+  const { theme, setTheme } = useTheme();
+
+  return (
+    <GlassCard hover={false}>
+      <h3 className="text-lg font-semibold text-foreground">Appearance</h3>
+      <p className="text-sm text-muted-foreground mt-0.5 mb-4">
+        Choose how the app looks across all pages.
+      </p>
+      <div className="flex flex-wrap gap-3">
+        <button
+          onClick={() => setTheme("light")}
+          aria-pressed={theme === "light"}
+          className={cn(
+            "flex items-center gap-2.5 rounded-2xl px-5 py-3 text-sm font-semibold border transition-all duration-200",
+            theme === "light"
+              ? "bg-primary text-primary-foreground border-primary shadow-sm"
+              : "bg-secondary/50 text-muted-foreground border-border/60 hover:bg-secondary hover:text-foreground"
+          )}
+        >
+          <span className="text-base leading-none" aria-hidden="true">☀️</span>
+          Light
+        </button>
+        <button
+          onClick={() => setTheme("dark")}
+          aria-pressed={theme === "dark"}
+          className={cn(
+            "flex items-center gap-2.5 rounded-2xl px-5 py-3 text-sm font-semibold border transition-all duration-200",
+            theme === "dark"
+              ? "bg-primary text-primary-foreground border-primary shadow-sm"
+              : "bg-secondary/50 text-muted-foreground border-border/60 hover:bg-secondary hover:text-foreground"
+          )}
+        >
+          <span className="text-base leading-none" aria-hidden="true">🌙</span>
+          Dark
+        </button>
+      </div>
+    </GlassCard>
   );
 }
 
@@ -101,6 +143,9 @@ function SettingsPage() {
         title="Settings"
         subtitle="अपने अभ्यास अनुभव को अपने अनुसार ढालें।"
       />
+
+      {/* Appearance — global theme control */}
+      <AppearanceSection />
 
       <div className="grid gap-6 xl:grid-cols-2">
         <GlassCard hover={false}>

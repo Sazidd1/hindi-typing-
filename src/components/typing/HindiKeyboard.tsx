@@ -27,7 +27,7 @@ export function HindiKeyboard({ nextChar }: { nextChar?: string | undefined }) {
   const needsShift = target?.shift ?? false;
 
   return (
-    <div className="glass-strong rounded-3xl p-6 sm:p-8 mx-auto w-full border border-white/60 shadow-sm">
+    <div className="glass-strong rounded-3xl p-6 sm:p-8 mx-auto w-full border border-white/60 dark:border-white/10 shadow-sm">
       <div className="flex flex-col gap-2 w-full">
         {keyboardRows.map((row, ri) => (
           <div key={ri} className="flex w-full gap-2">
@@ -49,7 +49,7 @@ export function HindiKeyboard({ nextChar }: { nextChar?: string | undefined }) {
                     backgroundColor: fBg,
                   }}
                   className={cn(
-                    "key relative flex flex-col items-center justify-center rounded-[10px] h-[58px] transition-all duration-200 border border-white/70",
+                    "key relative flex flex-col items-center justify-center rounded-[10px] h-[58px] transition-all duration-200 border border-white/70 dark:border-white/12",
                     isActive && "active z-10",
                     isShiftHint && "ring-2 ring-primary bg-primary/20",
                   )}

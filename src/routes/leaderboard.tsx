@@ -84,7 +84,7 @@ function LeaderboardPage() {
             {players.map((p, i) => (
               <tr
                 key={p.name}
-                className="border-b border-border/60 transition-colors last:border-0 hover:bg-white/60"
+                className="border-b border-border/60 transition-colors last:border-0 hover:bg-secondary/40"
               >
                 <td className="px-6 py-4 font-semibold text-primary">#{i + 1}</td>
                 <td className="px-6 py-4 font-hindi font-medium text-foreground">{p.name}</td>

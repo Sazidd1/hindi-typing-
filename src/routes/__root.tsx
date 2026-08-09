@@ -115,8 +115,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    // suppressHydrationWarning: the inline script below may add 'dark' to className
+    // before React hydrates. This tells React to ignore that mismatch on <html>.
+    // This is the standard pattern for SSR-compatible dark mode (used by next-themes etc.)
+    <html lang="en" suppressHydrationWarning>
       <head>
+        {/* FOUC prevention: runs synchronously before stylesheets paint.
+            Reads localStorage and applies 'dark' class to <html> instantly. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('theme');if(t==='dark')document.documentElement.classList.add('dark');}catch(e){}})();`,
+          }}
+        />
         <HeadContent />
       </head>
       <body>
