@@ -35,7 +35,8 @@ export function TypingArena({
   isParagraphMode?: boolean;
   onComplete?: (result: TypingResult) => void;
 }) {
-  const isInfiniteMode = lessonSlug === "ch1";
+  const isWordPractice = ["ch11", "ch22", "ch23", "ch24", "ch35"].includes(lessonSlug || "");
+  const isInfiniteMode = !isWordPractice && !!lessonSlug;
   const [dynamicText, setDynamicText] = useState(text);
 
   useEffect(() => {
@@ -61,7 +62,7 @@ export function TypingArena({
   const charMistakesRef = useRef<Record<string, number>>({});
   const { currentUser } = useAuth();
 
-  const isWordPractice = ["ch11", "ch22", "ch23", "ch24", "ch35"].includes(lessonSlug || "");
+  // isWordPractice is now defined at the top of the component
 
   const typedChars = useMemo(() => Array.from(typed), [typed]);
 
@@ -122,12 +123,13 @@ export function TypingArena({
       if (chars.length - typedChars.length < 150) {
         const activeLesson = lessons.find(l => l.slug === lessonSlug);
         if (activeLesson) {
-          const keysArr = activeLesson.keys.split(' ').filter(Boolean);
+          // Dynamically extract the exact pool of characters used in this lesson's original text
+          const pool = Array.from(new Set(activeLesson.text.replace(/\s+/g, '')));
           let newWords = [];
           for (let i = 0; i < 40; i++) {
             let w = "";
             for (let j = 0; j < 5; j++) {
-              w += keysArr[Math.floor(Math.random() * keysArr.length)];
+              w += pool[Math.floor(Math.random() * pool.length)];
             }
             newWords.push(w);
           }
