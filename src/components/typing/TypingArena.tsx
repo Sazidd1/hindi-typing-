@@ -3,9 +3,8 @@ import { Gauge, RotateCcw, Target, Timer, TriangleAlert, Trophy, Play, ArrowRigh
 import { cn } from "@/lib/utils";
 import { HindiKeyboard } from "@/components/typing/HindiKeyboard";
 import { useAuth } from "@/lib/auth";
-import { lessons } from "@/lib/typing-data";
-import { Link } from "@tanstack/react-router";
 import { calculateGrade, calculateXP, DEFAULT_TARGET_WPM, validateSession } from "@/lib/scoring";
+import { HINDI_MAP, lessons } from "@/lib/typing-data";
 import { ChapterMasteryModal } from "@/components/typing/ChapterMasteryModal";
 import { toast } from "sonner";
 
@@ -16,12 +15,6 @@ export type TypingResult = {
   seconds: number;
 };
 
-const HINDI_MAP: Record<string, string> = {
-  'f':'ि', 'j':'र', 'd':'क', 'k':'ा', 's':'े', 'l':'स', 'a':'ं', ';':'य', 'g':'ह', 
-  'h':'ी', 'r':'त', 'u':'न', 'e':'म', 'i':'प', 'w':'ू', 'o':'व', 'q':'ु', 'p':'च', 
-  't':'ज', 'y':'ल', 'c':'ब', 'n':'द', 'x':'ग', 'm':'उ', 'v':'अ', 'z':'्र', ',':'ए', 
-  '.':'ण्', '/':'ध्'
-};
 
 export function TypingArena({
   lessonSlug,
@@ -61,7 +54,7 @@ export function TypingArena({
   const charMistakesRef = useRef<Record<string, number>>({});
   const { currentUser } = useAuth();
 
-  const isWordPractice = ["ch11", "ch22", "ch23", "ch24"].includes(lessonSlug || "");
+  const isWordPractice = ["ch11", "ch22", "ch23", "ch24", "ch35"].includes(lessonSlug || "");
 
   const typedChars = useMemo(() => Array.from(typed), [typed]);
 

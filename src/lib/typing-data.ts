@@ -102,11 +102,28 @@ export const keyboardRows: KeyDef[][] = [
   [{ en: "Space", hi: " ", finger: "thumb", width: 10 }],
 ];
 
+export const HINDI_MAP: Record<string, string> = {};
+
 const charIndex: Record<string, { key: KeyDef; shift: boolean }> = {};
+
+// First pass: unshifted keys get absolute priority
 for (const row of keyboardRows) {
   for (const key of row) {
-    if (key.hi && !charIndex[key.hi]) charIndex[key.hi] = { key, shift: false };
-    if (key.shift && !charIndex[key.shift]) charIndex[key.shift] = { key, shift: true };
+    if (key.en.length === 1 && key.hi) {
+      HINDI_MAP[key.en.toLowerCase()] = key.hi;
+    }
+    if (key.hi && !charIndex[key.hi]) {
+      charIndex[key.hi] = { key, shift: false };
+    }
+  }
+}
+
+// Second pass: shift keys only if not already mapped to an unshifted key
+for (const row of keyboardRows) {
+  for (const key of row) {
+    if (key.shift && !charIndex[key.shift]) {
+      charIndex[key.shift] = { key, shift: true };
+    }
   }
 }
 
@@ -159,5 +176,6 @@ export const lessons: Lesson[] = [
   { slug: 'ch31', title: 'Lesson 31', hindiTitle: 'इ द', description: 'Bottom Row', level: 'शुरुआती', keys: 'इ द', minutes: 3, text: 'इददद ददइद दइदइ दइदद दइदइ दददद दइदइ इइइइ इददइ इइदद इदइद ददइइ ददइइ इइइइ दइदइ इदइइ इइइद इदइद इदइइ दइइइ इददइ ददइद इइइइ दइइइ इददइ दइदइ इइइइ इइइद दददद दददइ इइइद इइदइ इदइइ दददइ इइदइ इदइद इइदइ ददइइ इदइद ददइइ' },
   { slug: 'ch32', title: 'Lesson 32', hindiTitle: '्र ध् ग ब इ', description: 'Bottom Row', level: 'शुरुआती', keys: '्र ध् ग ब इ', minutes: 3, text: 'गब्रइ इध्ग ब्रगध् ्रगइ ध्ब्रइ इगध् गध्ब इ्रब बइग ध्इग ब्रध्इ ्रइध् गइब्र इबध् ध्गइ ब्रगइ इ्रग गध्इ ्रबध् इगब्र ध्इब गब्रध् इध्ब्र ब्रइग ध्गब्र इगब ्रध्इ बइध् गइध् इब्रग ध्ब्रग ्रगब इध्इ गब्रइ इगध् ब्रगइ ध्इग गध्इ इब्रध् ब्रइब' },
   { slug: 'ch33', title: 'Lesson 33', hindiTitle: 'उ ए ण् ध् द', description: 'Bottom Row', level: 'शुरुआती', keys: 'उ ए ण् ध् द', minutes: 3, text: 'उण्द एध्उ दण्ए ध्उद ण्एध् उएण्द दध्उए ण्उद एदण् ध्एउ उध्द दएण्ध् ण्ध्उ एउद ध्ण्ए उदण् दउध् ण्एउद एध्ण् ध्दउ उएद दण्उ ण्ध्ए एउदण् ध्एद उण्ध् दध्ए ण्उदध् एदउ ध्ण्द उध्ए दएउ ण्दध् एण्उद ध्उण् उदध् दउए ण्एद एध्उद ध्दण्' },
-  { slug: 'ch34', title: 'Lesson 34', hindiTitle: 'बॉटम रो', description: 'Bottom Row', level: 'शुरुआती', keys: 'बॉटम रो', minutes: 3, text: 'गबअइ दउएण् ध््रगब अइदउ एण्ध््र गबदउ अइएण् ध््रअइ गबण्ध् दउ्रग बअइद उएण्ध् ्रगबअ इदउए ण्ध््रग बअइउ एण्ध्द उ्रगब अइण्ध् दए्रग उबअइ ध्ण्एउ दइबग ्रअउए ण्ध्गब इदअ्र उण्एध् दइगब ्रअण्ध् उएदइ गबअ्र ण्ध्उए गबइद ्रअण्ध् उएदइ ध्इगब ्रअदउ एण्ध्इ गबअ्र उएण्द' }
+  { slug: 'ch34', title: 'Lesson 34', hindiTitle: 'बॉटम रो', description: 'Bottom Row', level: 'शुरुआती', keys: 'बॉटम रो', minutes: 3, text: 'गबअइ दउएण् ध््रगब अइदउ एण्ध््र गबदउ अइएण् ध््रअइ गबण्ध् दउ्रग बअइद उएण्ध् ्रगबअ इदउए ण्ध््रग बअइउ एण्ध्द उ्रगब अइण्ध् दए्रग उबअइ ध्ण्एउ दइबग ्रअउए ण्ध्गब इदअ्र उण्एध् दइगब ्रअण्ध् उएदइ गबअ्र ण्ध्उए गबइद ्रअण्ध् उएदइ ध्इगब ्रअदउ एण्ध्इ गबअ्र उएण्द' },
+  { slug: 'ch35', title: 'Word Practice', hindiTitle: 'शब्द अभ्यास', description: 'Mixed', level: 'शुरुआती', keys: 'शब्द अभ्यास', minutes: 3, text: 'अब सब बस यह सह दस रस सर हर कब करा करे करी कहा कही कहे सका सकी रहा रही बाग दाग बाद याद सदा दाह राह राग गाय राय सारी बारी हारी इस उस ग्रह साहस साध्य िकया िकये िकस िकसी कार सारे साह' }
 ];

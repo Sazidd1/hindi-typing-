@@ -37,7 +37,7 @@ function PracticePage() {
         text={active.text} 
         title={active.title} 
         subtitle={active.hindiTitle} 
-        isParagraphMode={["ch11", "ch22", "ch23", "ch24"].includes(active.slug)}
+        isParagraphMode={["ch11", "ch22", "ch23", "ch24", "ch35"].includes(active.slug)}
       />
     </div>
   );
