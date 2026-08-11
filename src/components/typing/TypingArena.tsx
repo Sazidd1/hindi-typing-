@@ -35,8 +35,15 @@ export function TypingArena({
   isParagraphMode?: boolean;
   onComplete?: (result: TypingResult) => void;
 }) {
-  // Ensure text always ends with a space so the final word gets a space bubble
-  const normalizedText = useMemo(() => text.trim() + " ", [text]);
+  const isInfiniteMode = lessonSlug === "ch1";
+  const [dynamicText, setDynamicText] = useState(text);
+
+  useEffect(() => {
+    setDynamicText(text);
+  }, [text, lessonSlug]);
+
+  // Do not add trailing space so the lesson ends exactly after the last word
+  const normalizedText = useMemo(() => dynamicText.trim(), [dynamicText]);
   const chars = useMemo(() => Array.from(normalizedText), [normalizedText]);
   const [typed, setTyped] = useState("");
   const [startedAt, setStartedAt] = useState<number | null>(null);
@@ -67,7 +74,9 @@ export function TypingArena({
   );
 
   const { wpm, accuracy, correctCharacters, totalAttempted } = validation;
-  const progress = Math.min(100, Math.round((typedChars.length / chars.length) * 100));
+  const progress = isInfiniteMode && timeLimit 
+    ? Math.min(100, Math.round((elapsed / timeLimit) * 100))
+    : Math.min(100, Math.round((typedChars.length / chars.length) * 100));
   const remaining = timeLimit ? Math.max(0, timeLimit - elapsed) : null;
 
   const reset = useCallback(() => {
@@ -106,6 +115,27 @@ export function TypingArena({
       } catch (e) {}
     }
   }, [text, reset, lessonSlug, currentUser]);
+
+  useEffect(() => {
+    if (isInfiniteMode && startedAt !== null && !finished) {
+      // Generate more text when approaching the end (e.g. less than 150 chars remaining)
+      if (chars.length - typedChars.length < 150) {
+        const activeLesson = lessons.find(l => l.slug === lessonSlug);
+        if (activeLesson) {
+          const keysArr = activeLesson.keys.split(' ').filter(Boolean);
+          let newWords = [];
+          for (let i = 0; i < 40; i++) {
+            let w = "";
+            for (let j = 0; j < 5; j++) {
+              w += keysArr[Math.floor(Math.random() * keysArr.length)];
+            }
+            newWords.push(w);
+          }
+          setDynamicText(prev => prev + " " + newWords.join(' '));
+        }
+      }
+    }
+  }, [typedChars.length, chars.length, isInfiniteMode, startedAt, finished, lessonSlug]);
 
   const togglePause = useCallback(() => {
     if (finished) return;
@@ -203,7 +233,7 @@ export function TypingArena({
   useEffect(() => {
     if (finished || completedRef.current) return;
     const timeUp = timeLimit != null && elapsed >= timeLimit && startedAt !== null;
-    const done = typedChars.length >= chars.length && chars.length > 0;
+    const done = isInfiniteMode ? false : (typedChars.length >= chars.length && chars.length > 0);
     
     if (timeUp || done) {
       // Final rigid validation check
@@ -516,9 +546,9 @@ export function TypingArena({
 
             let globalIndex = pageStartCharIndex;
 
-            const renderWord = (word: string, wIdxInPage: number) => {
+            const renderWord = (word: string, wIdxInPage: number, isLastWordInText: boolean) => {
               const wordChars = Array.from(word);
-              const charsWithSpace = [...wordChars, " "];
+              const charsWithSpace = isLastWordInText ? wordChars : [...wordChars, " "];
               
               return (
                 <div className="flex gap-1.5 sm:gap-2 shrink-0">
@@ -571,12 +601,16 @@ export function TypingArena({
             };
 
             return (
-              <div className="grid grid-cols-2 gap-x-[60px] sm:gap-x-[90px] gap-y-4 sm:gap-y-5 w-max mx-auto px-2">
-                {visibleWords.map((word, wIdx) => (
-                  <div key={wIdx} className="flex justify-start shrink-0">
-                    {renderWord(word, wIdx)}
-                  </div>
-                ))}
+              <div className="grid grid-cols-2 gap-x-[60px] sm:gap-x-[100px] gap-y-[40px] sm:gap-y-[60px] w-max mx-auto px-2 pb-2">
+                {visibleWords.map((word, wIdx) => {
+                  const absoluteWIdx = startWordIdx + wIdx;
+                  const isLastWordInText = absoluteWIdx === words.length - 1;
+                  return (
+                    <div key={wIdx} className="flex justify-start shrink-0">
+                      {renderWord(word, absoluteWIdx, isLastWordInText)}
+                    </div>
+                  );
+                })}
               </div>
             );
           })()}

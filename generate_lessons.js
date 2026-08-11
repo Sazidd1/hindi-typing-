@@ -38,7 +38,7 @@ const chapters = [
 
 function gen(keys) {
     let arr = [];
-    for(let i=0; i<40; i++) {
+    for(let i=0; i<5; i++) {
         let w = '';
         for(let j=0; j<4; j++) w += map[keys[Math.floor(Math.random() * keys.length)]];
         arr.push(w);
