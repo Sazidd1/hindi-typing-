@@ -453,17 +453,16 @@ export function TypingArena({
       )}>
         
         {/* Left Side: Typing Area & Keyboard */}
-        <div className="flex-1 w-full space-y-3 sm:space-y-4">
+        <div className="flex flex-col flex-1 w-full gap-6 sm:gap-8">
 
-      {/* Tile Typing Area */}
       <div 
         className={cn(
-          "relative mx-auto w-full min-h-[140px] cursor-text rounded-3xl p-4 sm:p-6 bg-card/80 dark:bg-card/90 border border-border/60 shadow-sm backdrop-blur-xl transition-all duration-300 group overflow-hidden",
-          isFocusMode ? "max-w-[1050px]" : "max-w-[940px]"
+          "relative mx-auto w-full h-[170px] sm:h-[190px] cursor-text rounded-3xl py-2 px-6 sm:py-3 sm:px-8 flex items-center justify-center bg-card/80 dark:bg-card/90 border border-border/60 shadow-sm backdrop-blur-xl transition-all duration-300 group overflow-hidden shrink-0",
+          isFocusMode ? "max-w-[1100px]" : "max-w-[1000px]"
         )}
         onClick={() => inputRef.current?.focus()}
       >
-        <div className="flex flex-col gap-y-4 sm:gap-y-5 w-full items-center overflow-x-auto custom-scrollbar p-2">
+        <div className="flex flex-col w-full h-full items-center justify-center overflow-y-auto overflow-x-hidden custom-scrollbar">
           {(() => {
             if (isParagraphMode) {
               const _dependentVowels = new Set([
@@ -601,7 +600,7 @@ export function TypingArena({
             };
 
             return (
-              <div className="grid grid-cols-2 gap-x-[60px] sm:gap-x-[100px] gap-y-[40px] sm:gap-y-[60px] w-max mx-auto px-2 pb-2">
+              <div className="grid grid-cols-2 gap-x-10 sm:gap-x-16 gap-y-5 sm:gap-y-7 w-max mx-auto px-2">
                 {visibleWords.map((word, wIdx) => {
                   const absoluteWIdx = startWordIdx + wIdx;
                   const isLastWordInText = absoluteWIdx === words.length - 1;
