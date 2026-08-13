@@ -38,7 +38,7 @@ function PracticePage() {
         title={active.title} 
         subtitle={active.hindiTitle} 
         timeLimit={active.minutes * 60}
-        isParagraphMode={["ch11", "ch22", "ch23", "ch24", "ch35"].includes(active.slug)}
+        isParagraphMode={["ch11", "ch22", "ch23", "ch24"].includes(active.slug)}
       />
     </div>
   );
