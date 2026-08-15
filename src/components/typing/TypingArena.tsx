@@ -68,7 +68,7 @@ export function TypingArena({
   isParagraphMode?: boolean;
   onComplete?: (result: TypingResult) => void;
 }) {
-  const isWordPractice = ["ch11", "ch22", "ch23", "ch24"].includes(lessonSlug || "");
+  const isWordPractice = ["ch11", "ch22", "ch23", "ch24", "ch35"].includes(lessonSlug || "");
   const isInfiniteMode = !isWordPractice && !!lessonSlug;
   const [dynamicText, setDynamicText] = useState(text);
 
