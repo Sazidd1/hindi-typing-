@@ -4,8 +4,41 @@ import { cn } from "@/lib/utils";
 import { HindiKeyboard } from "@/components/typing/HindiKeyboard";
 import { useAuth } from "@/lib/auth";
 import { calculateGrade, calculateXP, DEFAULT_TARGET_WPM, validateSession } from "@/lib/scoring";
-import { HINDI_MAP, lessons } from "@/lib/typing-data";
+import { HINDI_MAP, lessons, keyboardRows } from "@/lib/typing-data";
 import { ChapterMasteryModal } from "@/components/typing/ChapterMasteryModal";
+
+const multiCharTokens = Array.from(new Set(
+  keyboardRows.flatMap(row => 
+    row.flatMap(key => {
+      const tokens = [];
+      if (key.hi && Array.from(key.hi).length > 1) tokens.push(key.hi);
+      if (key.shift && Array.from(key.shift).length > 1) tokens.push(key.shift);
+      return tokens;
+    })
+  )
+)).sort((a, b) => b.length - a.length);
+
+export function tokenizeHindi(text: string): string[] {
+  const tokens: string[] = [];
+  let remaining = text;
+  while (remaining.length > 0) {
+    let matched = false;
+    for (const token of multiCharTokens) {
+      if (remaining.startsWith(token)) {
+        tokens.push(token);
+        remaining = remaining.slice(token.length);
+        matched = true;
+        break;
+      }
+    }
+    if (!matched) {
+      const char = Array.from(remaining)[0];
+      tokens.push(char);
+      remaining = remaining.slice(char.length);
+    }
+  }
+  return tokens;
+}
 import { toast } from "sonner";
 
 export type TypingResult = {
@@ -45,7 +78,7 @@ export function TypingArena({
 
   // Do not add trailing space so the lesson ends exactly after the last word
   const normalizedText = useMemo(() => dynamicText.trim(), [dynamicText]);
-  const chars = useMemo(() => Array.from(normalizedText), [normalizedText]);
+  const chars = useMemo(() => tokenizeHindi(normalizedText), [normalizedText]);
   const [typed, setTyped] = useState("");
   const [startedAt, setStartedAt] = useState<number | null>(null);
   const [isPaused, setIsPaused] = useState(false);
@@ -64,7 +97,7 @@ export function TypingArena({
 
   // isWordPractice is now defined at the top of the component
 
-  const typedChars = useMemo(() => Array.from(typed), [typed]);
+  const typedChars = useMemo(() => tokenizeHindi(typed), [typed]);
 
   const validation = validateSession(
     typedChars,
@@ -124,7 +157,8 @@ export function TypingArena({
         const activeLesson = lessons.find(l => l.slug === lessonSlug);
         if (activeLesson) {
           // Dynamically extract the exact pool of characters used in this lesson's original text
-          const pool = Array.from(new Set(activeLesson.text.replace(/\s+/g, '')));
+          const tokens = tokenizeHindi(activeLesson.text.replace(/\s+/g, ''));
+          const pool = Array.from(new Set(tokens));
           let newWords = [];
           for (let i = 0; i < 40; i++) {
             let w = "";
@@ -316,7 +350,7 @@ export function TypingArena({
     
     // Map physical English keystrokes to Hindi chars if OS keyboard is English
     const mappedValue = Array.from(value).map(ch => HINDI_MAP[ch] || ch).join('');
-    const next = Array.from(mappedValue).slice(0, chars.length);
+    const next = tokenizeHindi(mappedValue).slice(0, chars.length);
 
     // Strict Rule 1: Backspace is disabled
     if (next.length < typedChars.length) return;
@@ -503,7 +537,7 @@ export function TypingArena({
                   isFocusMode ? "text-[28px] sm:text-[32px] leading-[2.5]" : "text-2xl sm:text-[28px] leading-[2.2]"
                 )}>
                   {words.map((word, wIdx) => {
-                    const wordChars = Array.from(word);
+                    const wordChars = tokenizeHindi(word);
                     const charsWithSpace = [...wordChars, " "];
                     
                     // Assign global indices to characters in their true typing order
@@ -548,7 +582,7 @@ export function TypingArena({
             let globalIndex = pageStartCharIndex;
 
             const renderWord = (word: string, wIdxInPage: number, isLastWordInText: boolean) => {
-              const wordChars = Array.from(word);
+              const wordChars = tokenizeHindi(word);
               const charsWithSpace = isLastWordInText ? wordChars : [...wordChars, " "];
               
               return (
