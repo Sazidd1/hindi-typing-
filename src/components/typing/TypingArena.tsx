@@ -349,11 +349,20 @@ export function TypingArena({
     if (isPaused) setIsPaused(false);
     
     // Map physical English keystrokes to Hindi chars if OS keyboard is English
-    const mappedValue = Array.from(value).map(ch => HINDI_MAP[ch] || ch).join('');
-    const next = tokenizeHindi(mappedValue).slice(0, chars.length);
+    // Only map the newly added characters to avoid re-mapping already typed Hindi chars
+    let mappedValue = value;
+    if (value.startsWith(typed) && value.length > typed.length) {
+      const added = value.slice(typed.length);
+      const mappedAdded = Array.from(added).map(ch => HINDI_MAP[ch] || ch).join('');
+      mappedValue = typed + mappedAdded;
+    } else if (value.length < typed.length) {
+      // Strict Rule 1: Backspace is disabled
+      return;
+    } else {
+      mappedValue = Array.from(value).map(ch => HINDI_MAP[ch] || ch).join('');
+    }
 
-    // Strict Rule 1: Backspace is disabled
-    if (next.length < typedChars.length) return;
+    const next = tokenizeHindi(mappedValue).slice(0, chars.length);
 
     if (next.length > typedChars.length) {
       const addedChars = next.slice(typedChars.length);
