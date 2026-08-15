@@ -20,7 +20,7 @@ export function LessonCard({ item, setLockedLessonIntent }: { item: any, setLock
       {/* HEADER STRIP */}
       <div className={`px-[20px] py-[10px] ${headerBg}`}>
         <span className={`font-bold text-[11px] uppercase tracking-[0.5px] ${headerTextColor}`}>
-          {item.title}
+          {item.slug ? `Lesson ${item.slug.replace('ch', '')}` : item.title}
         </span>
       </div>
 

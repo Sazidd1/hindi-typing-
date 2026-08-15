@@ -498,7 +498,10 @@ export function TypingArena({
         )}
         onClick={() => inputRef.current?.focus()}
       >
-        <div className="flex flex-col w-full h-full items-center justify-center overflow-y-auto overflow-x-hidden custom-scrollbar">
+        <div className={cn(
+          "flex flex-col w-full h-full items-center overflow-y-auto overflow-x-hidden custom-scrollbar",
+          isParagraphMode ? "justify-start pt-4 sm:pt-6 pb-8" : "justify-center"
+        )}>
           {(() => {
             if (isParagraphMode) {
               const _dependentVowels = new Set([
