@@ -66,9 +66,9 @@ export const keyboardRows: KeyDef[][] = [
     { en: "I", hi: "प", shift: "प्", finger: "r-middle" },
     { en: "O", hi: "व", shift: "व्", finger: "r-ring" },
     { en: "P", hi: "च", shift: "च्", finger: "r-pinky" },
-    { en: "[", hi: "ख", shift: "ख्", finger: "r-pinky" },
-    { en: "]", hi: "थ", shift: "थ्", finger: "r-pinky" },
-    { en: "\\", hi: "ॉ", shift: "|", finger: "r-pinky", width: 1.4 },
+    { en: "[", hi: "ख्", shift: "ख्", finger: "r-pinky" },
+    { en: "]", hi: ",", shift: "थ्", finger: "r-pinky" },
+    { en: "\\", hi: "(", shift: "|", finger: "r-pinky", width: 1.4 },
   ],
   [
     { en: "Caps", hi: "", finger: "l-pinky", width: 1.9 },
@@ -82,7 +82,7 @@ export const keyboardRows: KeyDef[][] = [
     { en: "K", hi: "ा", shift: "आ", finger: "r-middle" },
     { en: "L", hi: "स", shift: "द्", finger: "r-ring" },
     { en: ";", hi: "य", shift: "ओ", finger: "r-pinky" },
-    { en: "'", hi: "ट", shift: "ठ", finger: "r-pinky" },
+    { en: "'", hi: "श्", shift: "ठ", finger: "r-pinky" },
     { en: "Enter", hi: "", finger: "r-pinky", width: 2.1 },
   ],
   [
