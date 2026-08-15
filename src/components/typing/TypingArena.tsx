@@ -88,6 +88,7 @@ export function TypingArena({
   const [errors, setErrors] = useState(0);
   const [finished, setFinished] = useState(false);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  const activeWordRef = useRef<HTMLDivElement>(null);
   const completedRef = useRef(false);
   const lastActiveTimeRef = useRef<number | null>(null);
   const mouseTimeoutRef = useRef<number | null>(null);
@@ -417,6 +418,13 @@ export function TypingArena({
     }
   }
 
+  // Auto-scroll paragraph mode
+  useEffect(() => {
+    if (isParagraphMode && activeWordRef.current) {
+      activeWordRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }, [currentWordIndex, isParagraphMode]);
+
   const WORDS_PER_PAGE = 4;
   const pageIndex = Math.floor(currentWordIndex / WORDS_PER_PAGE);
   const startWordIdx = pageIndex * WORDS_PER_PAGE;
@@ -565,7 +573,11 @@ export function TypingArena({
                     const displayOrder = _buildDisplayOrder(mappedChars.map(m => m.ch));
 
                     return (
-                      <div key={wIdx} className="whitespace-pre">
+                      <div 
+                        key={wIdx} 
+                        className="whitespace-pre"
+                        ref={wIdx === currentWordIndex ? activeWordRef : null}
+                      >
                         {displayOrder.map((displayIdx) => {
                           const { ch, cIdx, isCurrent, state } = mappedChars[displayIdx];
                           return (
