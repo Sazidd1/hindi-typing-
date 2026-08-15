@@ -42,10 +42,9 @@ export function LessonCard({ item, setLockedLessonIntent }: { item: any, setLock
           </span>
         </div>
         
-        <div className="mt-1.5 flex-1 flex flex-col">
-          <h3 className="text-[13px] font-bold text-slate-800 transition-colors line-clamp-1 leading-snug">{item.title}</h3>
-          <p className="font-hindi text-[22px] sm:text-[25px] font-extrabold text-blue-600 leading-tight line-clamp-1 mt-0.5">{item.hindiTitle}</p>
-          <p className="font-hindi text-[11px] text-slate-500 line-clamp-1 leading-snug mt-1">{item.description}</p>
+        <div className="mt-2 flex-1 flex flex-col">
+          <p className="font-hindi text-[26px] sm:text-[30px] font-extrabold text-blue-600 leading-tight line-clamp-1">{item.hindiTitle}</p>
+          <p className="text-[12px] font-medium text-slate-500 line-clamp-1 leading-snug mt-1.5">{item.description}</p>
         </div>
 
         <div className="mt-1.5 flex flex-wrap text-[10px] font-bold uppercase tracking-wider text-slate-500">
