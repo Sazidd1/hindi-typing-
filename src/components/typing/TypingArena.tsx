@@ -506,11 +506,17 @@ export function TypingArena({
         "mx-auto w-[98%] max-w-[1350px] flex flex-col lg:flex-row gap-6 lg:gap-8 animate-in fade-in slide-in-from-bottom-4 duration-700 px-2 sm:px-4 transition-all duration-300",
         isFocusMode 
           ? "items-center justify-center min-h-[85vh]" 
-          : cn("items-start min-h-0", isWordPractice ? "-mt-4 sm:-mt-8" : "-mt-1 sm:-mt-2")
+          : cn("items-start min-h-0", isWordPractice ? "-mt-6 sm:-mt-8" : "-mt-4 sm:-mt-6")
       )}>
         
         {/* Left Side: Typing Area & Keyboard */}
         <div className="flex flex-col flex-1 w-full gap-6 sm:gap-8">
+
+          {!isFocusMode && (title || subtitle) && (
+            <h2 className="text-black text-center font-bold text-2xl sm:text-3xl px-2 mt-0 -mb-4 sm:-mb-6 relative z-10">
+              {title} {subtitle && <span className="font-hindi text-black">( {subtitle} )</span>}
+            </h2>
+          )}
 
       <div 
         className={cn(
@@ -736,7 +742,7 @@ export function TypingArena({
       {/* Preserved Keyboard Component */}
       <div className={cn(
         "mx-auto w-full transition-all duration-300 ease-in-out",
-        isFocusMode ? "h-0 max-w-[1050px] opacity-0 overflow-hidden m-0 p-0" : "h-auto max-w-[940px] opacity-100"
+        isFocusMode ? "h-0 max-w-[1050px] opacity-0 overflow-hidden m-0 p-0" : "h-auto max-w-[850px] opacity-100 -mt-2 sm:-mt-4"
       )}>
         {showKeyboard && <HindiKeyboard nextChar={nextChar} />}
       </div>
