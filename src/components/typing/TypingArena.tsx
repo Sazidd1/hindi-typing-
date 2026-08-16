@@ -530,11 +530,8 @@ export function TypingArena({
               ]);
               const _isDependentVowelSign = (s: string) => {
                   if (!s || s.length === 0) return false;
-                  if (s.startsWith('ि') || s.startsWith('\u094D')) return true;
-                  for (let i = 0; i < s.length; i++) {
-                      if (_dependentVowels.has(s[i])) return true;
-                  }
-                  return false;
+                  if (s === 'ि') return true;
+                  return _dependentVowels.has(s[0]);
               };
               const _buildDisplayOrder = (hindiParts: string[]) => {
                   const order = [];
