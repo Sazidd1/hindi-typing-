@@ -43,7 +43,7 @@ export function LessonCard({ item, setLockedLessonIntent }: { item: any, setLock
         </div>
         
         <div className="mt-2 flex-1 flex flex-col">
-          <p className="font-hindi text-[26px] sm:text-[30px] font-extrabold text-blue-600 leading-tight line-clamp-1">{item.hindiTitle}</p>
+          <p className="font-hindi text-[20px] font-bold text-blue-600 leading-tight line-clamp-1">{item.hindiTitle}</p>
           <p className="text-[12px] font-medium text-slate-500 line-clamp-1 leading-snug mt-1.5">{item.description}</p>
         </div>
 

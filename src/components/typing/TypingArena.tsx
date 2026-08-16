@@ -514,7 +514,7 @@ export function TypingArena({
 
           {!isFocusMode && (title || subtitle) && (
             <h2 className="text-black text-center font-bold text-2xl sm:text-3xl px-2 mt-0 -mb-4 sm:-mb-6 relative z-10">
-              {title} {subtitle && <span className="font-hindi text-black">( {subtitle} )</span>}
+              {title} {subtitle && <span className="font-hindi text-gray-500">( {subtitle} )</span>}
             </h2>
           )}
 
