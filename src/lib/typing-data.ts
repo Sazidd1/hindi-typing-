@@ -124,8 +124,15 @@ for (const row of keyboardRows) {
 // Second pass: shift keys only if not already mapped to an unshifted key
 for (const row of keyboardRows) {
   for (const key of row) {
-    if (key.shift && !charIndex[key.shift]) {
-      charIndex[key.shift] = { key, shift: true };
+    if (key.shift) {
+      const existing = charIndex[key.shift];
+      const isExistingLetter = existing && existing.key.en.match(/[a-zA-Z]/);
+      const isNewLetter = key.en.match(/[a-zA-Z]/);
+      
+      // Map if it doesn't exist, OR if the new key is a letter and the old key is a symbol/number
+      if (!existing || (!isExistingLetter && isNewLetter)) {
+        charIndex[key.shift] = { key, shift: true };
+      }
     }
   }
 }
