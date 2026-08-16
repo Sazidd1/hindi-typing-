@@ -2,14 +2,14 @@ import { i as __toESM } from "../_runtime.mjs";
 import { n as require_jsx_runtime, r as require_react } from "../_libs/react+tanstack__react-query.mjs";
 import { n as useAuth } from "./auth-CcoBRp2W.mjs";
 import { t as cn } from "./utils-C_uf36nf.mjs";
-import { n as keyboardRows, r as lessons, t as HINDI_MAP } from "./typing-data-DKS3OzVB.mjs";
+import { n as keyboardRows, r as lessons, t as HINDI_MAP } from "./typing-data-CZpugleZ.mjs";
 import { g as require_react_dom, h as Link } from "../_libs/@tanstack/react-router+[...].mjs";
 import { D as CircleCheck, E as CircleX, a as Target, d as RotateCcw, f as Play, i as TriangleAlert, r as Trophy, t as Zap } from "../_libs/lucide-react.mjs";
 import { r as validateSession } from "./scoring-D8JtVBFj.mjs";
-import { t as Route } from "./practice-B3Ov640g.mjs";
-import { t as HindiKeyboard } from "./HindiKeyboard-B1Ko6iWJ.mjs";
+import { t as Route } from "./practice-CGKuKubV.mjs";
+import { t as HindiKeyboard } from "./HindiKeyboard-lt0Bf6bL.mjs";
 import { t as toast } from "../_libs/sonner.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/practice-C_YEiLY6.js
+//#region node_modules/.nitro/vite/services/ssr/assets/practice-BDIRAIt0.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 var import_react_dom = /* @__PURE__ */ __toESM(require_react_dom());

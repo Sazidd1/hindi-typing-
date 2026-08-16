@@ -1,7 +1,7 @@
 import { n as require_jsx_runtime } from "../_libs/react+tanstack__react-query.mjs";
 import { t as cn } from "./utils-C_uf36nf.mjs";
-import { i as lookupChar, n as keyboardRows } from "./typing-data-DKS3OzVB.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/HindiKeyboard-B1Ko6iWJ.js
+import { i as lookupChar, n as keyboardRows } from "./typing-data-CZpugleZ.mjs";
+//#region node_modules/.nitro/vite/services/ssr/assets/HindiKeyboard-lt0Bf6bL.js
 var import_jsx_runtime = require_jsx_runtime();
 function getFingerColorHex(finger) {
 	if (!finger) return "#e2e8f0";

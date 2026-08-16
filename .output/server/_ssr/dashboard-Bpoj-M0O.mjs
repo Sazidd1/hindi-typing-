@@ -4,11 +4,11 @@ import { n as useAuth } from "./auth-CcoBRp2W.mjs";
 import { t as cn } from "./utils-C_uf36nf.mjs";
 import { n as SectionTitle, t as GlassCard } from "./GlassCard-DIxNQspi.mjs";
 import { t as StatCard } from "./StatCard-Cac9fzfv.mjs";
-import { r as lessons } from "./typing-data-DKS3OzVB.mjs";
+import { r as lessons } from "./typing-data-CZpugleZ.mjs";
 import { h as Link } from "../_libs/@tanstack/react-router+[...].mjs";
 import { N as BookOpen, T as Clock, a as Target, b as Gauge, f as Play, k as ChevronRight, r as Trophy, t as Zap, x as Flame } from "../_libs/lucide-react.mjs";
 import { a as CartesianGrid, i as Area, n as YAxis, o as ResponsiveContainer, r as XAxis, s as Tooltip, t as AreaChart } from "../_libs/recharts+[...].mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/dashboard-Djigbe1t.js
+//#region node_modules/.nitro/vite/services/ssr/assets/dashboard-Bpoj-M0O.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 function DashboardPage() {

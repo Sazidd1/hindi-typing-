@@ -1,6 +1,6 @@
 import { f as lazyRouteComponent, p as createFileRoute } from "../_libs/@tanstack/react-router+[...].mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/lessons-CTS5_JO3.js
-var $$splitComponentImporter = () => import("./lessons-g78zTUxf.mjs");
+//#region node_modules/.nitro/vite/services/ssr/assets/lessons-DpODvTx7.js
+var $$splitComponentImporter = () => import("./lessons-CMkI4kSe.mjs");
 var Route = createFileRoute("/lessons")({
 	head: () => ({ meta: [
 		{ title: "Hindi Typing Lessons — Home Row to Exam Practice" },

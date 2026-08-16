@@ -1,7 +1,7 @@
 import { f as lazyRouteComponent, p as createFileRoute } from "../_libs/@tanstack/react-router+[...].mjs";
 import { n as stringType, t as objectType } from "../_libs/zod.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/practice-B3Ov640g.js
-var $$splitComponentImporter = () => import("./practice-C_YEiLY6.mjs");
+//#region node_modules/.nitro/vite/services/ssr/assets/practice-CGKuKubV.js
+var $$splitComponentImporter = () => import("./practice-BDIRAIt0.mjs");
 var searchSchema = objectType({ lesson: stringType().optional() });
 var Route = createFileRoute("/practice")({
 	validateSearch: searchSchema,
