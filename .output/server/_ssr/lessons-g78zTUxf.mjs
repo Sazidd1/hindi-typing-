@@ -2,12 +2,12 @@ import { i as __toESM } from "../_runtime.mjs";
 import { n as require_jsx_runtime, r as require_react } from "../_libs/react+tanstack__react-query.mjs";
 import { n as useAuth } from "./auth-CcoBRp2W.mjs";
 import { n as SectionTitle, t as GlassCard } from "./GlassCard-DIxNQspi.mjs";
-import { r as lessons } from "./typing-data-Cr2qQ1sa.mjs";
+import { r as lessons } from "./typing-data-DKS3OzVB.mjs";
 import { h as Link } from "../_libs/@tanstack/react-router+[...].mjs";
 import { I as ArrowRight, N as BookOpen, f as Play, g as Lock, o as Star, u as Search, v as Keyboard, x as Flame } from "../_libs/lucide-react.mjs";
-import { n as categories } from "./lessons-DmYyIIxH.mjs";
+import { n as categories } from "./lessons-CTS5_JO3.mjs";
 import { t as LessonCard } from "./LessonCard-DjgjN3oH.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/lessons-DsX3lPu1.js
+//#region node_modules/.nitro/vite/services/ssr/assets/lessons-g78zTUxf.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 function getTodayString() {

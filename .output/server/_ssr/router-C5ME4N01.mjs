@@ -3,11 +3,11 @@ import { n as require_jsx_runtime, r as require_react, t as QueryClientProvider 
 import { n as useAuth, t as AuthProvider } from "./auth-CcoBRp2W.mjs";
 import { _ as useNavigate, c as HeadContent, d as Outlet, f as lazyRouteComponent, h as Link, m as createRootRouteWithContext, p as createFileRoute, s as Scripts, u as createRouter, v as useRouter } from "../_libs/@tanstack/react-router+[...].mjs";
 import { m as Menu, n as X, v as Keyboard } from "../_libs/lucide-react.mjs";
-import { t as Route$9 } from "./lessons-DmYyIIxH.mjs";
-import { t as Route$10 } from "./practice-BqjYnJH7.mjs";
+import { t as Route$9 } from "./lessons-CTS5_JO3.mjs";
+import { t as Route$10 } from "./practice-B3Ov640g.mjs";
 import { t as useTheme } from "./theme-CcnM0qqy.mjs";
 import { t as QueryClient } from "../_libs/tanstack__query-core.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/router-BXj4_4yd.js
+//#region node_modules/.nitro/vite/services/ssr/assets/router-C5ME4N01.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 var styles_default = "/assets/styles-CbgIhKn2.css";
@@ -338,7 +338,7 @@ function RootComponent() {
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AppShell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Outlet, {}) }) })
 	});
 }
-var $$splitComponentImporter$7 = () => import("./routes-BHxtk_KJ.mjs");
+var $$splitComponentImporter$7 = () => import("./routes-uBLSxb7L.mjs");
 var Route$7 = createFileRoute("/")({
 	head: () => ({ meta: [
 		{ title: "Hindi Typing Practice — Abhyas Studio" },
@@ -357,7 +357,7 @@ var Route$7 = createFileRoute("/")({
 	] }),
 	component: lazyRouteComponent($$splitComponentImporter$7, "component")
 });
-var $$splitComponentImporter$6 = () => import("./dashboard-BWxFMoxm.mjs");
+var $$splitComponentImporter$6 = () => import("./dashboard-Djigbe1t.mjs");
 var Route$6 = createFileRoute("/dashboard")({
 	head: () => ({ meta: [
 		{ title: "Typing Dashboard — Streak, WPM & Weekly Progress" },
