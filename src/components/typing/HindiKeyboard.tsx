@@ -60,7 +60,7 @@ export function HindiKeyboard({ nextChar }: { nextChar?: string | undefined }) {
                       isActive ? "text-[19px] text-white" : "text-sm sm:text-base text-foreground",
                     )}
                   >
-                    {key.hi || key.en}
+                    {isActive && needsShift && key.shift ? key.shift : key.hi || key.en}
                   </span>
                   {key.hi ? (
                     <span

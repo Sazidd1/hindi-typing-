@@ -115,6 +115,19 @@ var createLucideIcon = (iconName, iconNode) => {
 * This source code is licensed under the ISC license.
 * See the LICENSE file in the root directory of this source tree.
 */
+var ArrowLeft = createLucideIcon("arrow-left", [["path", {
+	d: "m12 19-7-7 7-7",
+	key: "1l729n"
+}], ["path", {
+	d: "M19 12H5",
+	key: "x3x0zl"
+}]]);
+/**
+* @license lucide-react v0.575.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
 var ArrowRight = createLucideIcon("arrow-right", [["path", {
 	d: "M5 12h14",
 	key: "1ays0h"
@@ -343,6 +356,45 @@ var Crown = createLucideIcon("crown", [["path", {
 * This source code is licensed under the ISC license.
 * See the LICENSE file in the root directory of this source tree.
 */
+var EyeOff = createLucideIcon("eye-off", [
+	["path", {
+		d: "M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49",
+		key: "ct8e1f"
+	}],
+	["path", {
+		d: "M14.084 14.158a3 3 0 0 1-4.242-4.242",
+		key: "151rxh"
+	}],
+	["path", {
+		d: "M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143",
+		key: "13bj9a"
+	}],
+	["path", {
+		d: "m2 2 20 20",
+		key: "1ooewy"
+	}]
+]);
+/**
+* @license lucide-react v0.575.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
+var Eye = createLucideIcon("eye", [["path", {
+	d: "M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0",
+	key: "1nclc0"
+}], ["circle", {
+	cx: "12",
+	cy: "12",
+	r: "3",
+	key: "1v7zrd"
+}]]);
+/**
+* @license lucide-react v0.575.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
 var Flame = createLucideIcon("flame", [["path", {
 	d: "M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4",
 	key: "1slcih"
@@ -366,28 +418,16 @@ var Gauge = createLucideIcon("gauge", [["path", {
 * This source code is licensed under the ISC license.
 * See the LICENSE file in the root directory of this source tree.
 */
-var Gift = createLucideIcon("gift", [
-	["path", {
-		d: "M12 7v14",
-		key: "1akyts"
-	}],
-	["path", {
-		d: "M20 11v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8",
-		key: "1sqzm4"
-	}],
-	["path", {
-		d: "M7.5 7a1 1 0 0 1 0-5A4.8 8 0 0 1 12 7a4.8 8 0 0 1 4.5-5 1 1 0 0 1 0 5",
-		key: "kc0143"
-	}],
-	["rect", {
-		x: "3",
-		y: "7",
-		width: "18",
-		height: "4",
-		rx: "1",
-		key: "1hberx"
-	}]
-]);
+var KeyRound = createLucideIcon("key-round", [["path", {
+	d: "M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z",
+	key: "1s6t7t"
+}], ["circle", {
+	cx: "16.5",
+	cy: "7.5",
+	r: ".5",
+	fill: "currentColor",
+	key: "w0ekpg"
+}]]);
 /**
 * @license lucide-react v0.575.0 - ISC
 *
@@ -436,6 +476,16 @@ var Keyboard = createLucideIcon("keyboard", [
 		key: "18n3k1"
 	}]
 ]);
+/**
+* @license lucide-react v0.575.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
+var LoaderCircle = createLucideIcon("loader-circle", [["path", {
+	d: "M21 12a9 9 0 1 1-6.219-8.56",
+	key: "13zald"
+}]]);
 /**
 * @license lucide-react v0.575.0 - ISC
 *
@@ -781,4 +831,4 @@ var Zap = createLucideIcon("zap", [["path", {
 	key: "1xq2db"
 }]]);
 //#endregion
-export { BookOpen as A, CircleX as C, Check as D, ChevronRight as E, Award as M, ArrowRight as N, ChartColumn as O, Clock as S, CircleCheckBig as T, Keyboard as _, Target as a, Flame as b, SlidersHorizontal as c, RotateCcw as d, Play as f, Lock as g, Medal as h, TriangleAlert as i, Bell as j, CalendarDays as k, Share2 as l, Menu as m, X as n, Star as o, Pencil as p, Trophy as r, Sparkles as s, Zap as t, Search as u, Gift as v, CircleCheck as w, Crown as x, Gauge as y };
+export { Check as A, EyeOff as C, CircleCheck as D, CircleX as E, Award as F, ArrowRight as I, ArrowLeft as L, CalendarDays as M, BookOpen as N, CircleCheckBig as O, Bell as P, Eye as S, Clock as T, LoaderCircle as _, Target as a, Gauge as b, SlidersHorizontal as c, RotateCcw as d, Play as f, Lock as g, Medal as h, TriangleAlert as i, ChartColumn as j, ChevronRight as k, Share2 as l, Menu as m, X as n, Star as o, Pencil as p, Trophy as r, Sparkles as s, Zap as t, Search as u, Keyboard as v, Crown as w, Flame as x, KeyRound as y };

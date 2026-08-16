@@ -365,27 +365,31 @@ export function TypingArena({
 
     const next = tokenizeHindi(mappedValue).slice(0, chars.length);
 
-    if (next.length > typedChars.length) {
-      const addedChars = next.slice(typedChars.length);
-      let newErrors = 0;
-      
-      // Check every single newly added character (handles pasting/multiple keys)
-      for (let i = 0; i < addedChars.length; i++) {
-        const globalI = typedChars.length + i;
-        if (addedChars[i] !== chars[globalI]) {
+    let newErrors = 0;
+    let hasError = false;
+    
+    // Check all characters in next against chars
+    for (let i = 0; i < next.length; i++) {
+      if (next[i] !== chars[i]) {
+        hasError = true;
+        // Count as a new error only if it wasn't already recorded in typedChars
+        if (i >= typedChars.length || typedChars[i] === chars[i]) {
           newErrors++;
-          const targetChar = chars[globalI];
+          const targetChar = chars[i];
           if (targetChar !== ' ') {
             charMistakesRef.current[targetChar] = (charMistakesRef.current[targetChar] || 0) + 1;
           }
         }
       }
+    }
 
-      if (newErrors > 0) {
-        setErrors((e) => e + newErrors);
-        // In Bubble Mode (not paragraph), block completely on ANY wrong character
-        if (!isParagraphMode) return; 
-      }
+    if (newErrors > 0) {
+      setErrors((e) => e + newErrors);
+    }
+    
+    // In Bubble Mode (not paragraph), block completely on ANY wrong character
+    if (hasError && !isParagraphMode) {
+      return;
     }
     
     setTyped(next.join(""));
