@@ -85,11 +85,13 @@ export function AppShell({ children }: { children: ReactNode }) {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent 
                       align="start" 
-                      className="w-[340px] rounded-[20px] border border-white/40 shadow-[0_8px_32px_rgba(0,0,0,0.12)] p-1.5"
+                      className="w-[340px] rounded-[20px] p-1.5"
                       style={{
-                        backgroundColor: "rgba(255, 255, 255, 0.65)",
-                        backdropFilter: "blur(18px)",
-                        WebkitBackdropFilter: "blur(18px)"
+                        backgroundColor: "rgba(255, 255, 255, 0.68)",
+                        backdropFilter: "blur(20px)",
+                        WebkitBackdropFilter: "blur(20px)",
+                        border: "1px solid rgba(255, 255, 255, 0.75)",
+                        boxShadow: "0 12px 35px rgba(15, 23, 42, 0.16)"
                       }}
                     >
                       {item.dropdown.map((subItem) => {
@@ -108,7 +110,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                           <DropdownMenuItem 
                             key={subItem.label} 
                             asChild 
-                            className="rounded-[14px] cursor-pointer py-2.5 px-3 text-[#0f172a] transition-all duration-200 hover:bg-[rgba(14,165,233,0.10)] focus:bg-[rgba(14,165,233,0.10)] focus:text-[#0f172a] hover:text-[#0f172a] my-0.5"
+                            className="rounded-[14px] cursor-pointer py-2.5 px-3 transition-all duration-200 my-0.5 bg-[rgba(59,130,246,0.10)] text-[#2563eb] hover:bg-[rgba(59,130,246,0.16)] focus:bg-[rgba(59,130,246,0.16)] hover:text-[#2563eb] focus:text-[#2563eb]"
                           >
                             <Link to={subItem.to!} className="w-full font-medium">
                               {subItem.label}
