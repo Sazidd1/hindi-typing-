@@ -139,13 +139,13 @@ function Index() {
                 { k: `${lessons.length}+`, v: "Lessons" },
                 { k: `${categories.length}+`, v: "Lesson Tracks" },
               ].map((s) => (
-                <div key={s.v} className="glass rounded-2xl px-2 py-3.5 sm:px-4 text-center flex flex-col justify-center gap-1 transition-colors duration-200 group-hover:bg-primary/5 group-hover:border-primary/20">
+                <div key={s.v} className="bg-white/90 backdrop-blur-md border border-[rgba(255,255,255,0.9)] shadow-[0_6px_18px_rgba(30,80,140,0.08)] rounded-[20px] px-2 py-3.5 sm:px-4 text-center flex flex-col justify-center gap-1 transition-colors duration-200 group-hover:bg-primary/5 group-hover:border-primary/20">
                   <p className="en text-[clamp(1.25rem,3vw,1.5rem)] font-semibold text-primary leading-none">{s.k}</p>
                   <p className="en text-[clamp(0.65rem,1.5vw,0.75rem)] text-muted-foreground leading-snug text-balance">{s.v}</p>
                 </div>
               ))}
             </Link>
-            <div className="glass rounded-2xl px-2 py-3.5 sm:px-4 text-center flex flex-col justify-center gap-1">
+            <div className="bg-white/90 backdrop-blur-md border border-[rgba(255,255,255,0.9)] shadow-[0_6px_18px_rgba(30,80,140,0.08)] rounded-[20px] px-2 py-3.5 sm:px-4 text-center flex flex-col justify-center gap-1">
               <p className="en text-[clamp(1.25rem,3vw,1.5rem)] font-semibold text-primary leading-none">100%</p>
               <p className="en text-[clamp(0.65rem,1.5vw,0.75rem)] text-muted-foreground leading-snug text-balance">Free to use</p>
             </div>
@@ -153,29 +153,60 @@ function Index() {
         </div>
 
         <div className="flex-[1_1_min(100%,350px)] lg:max-w-[42%]">
-          <GlassCard className="animate-float-soft p-5 sm:p-6" hover={false}>
-            <p className="en text-[clamp(0.7rem,1.5vw,0.75rem)] font-semibold tracking-wide text-muted-foreground uppercase">
-              Live preview
+          <div className="animate-float-soft p-4 sm:p-5 rounded-[24px] bg-white/80 dark:bg-slate-900/60 backdrop-blur-[20px] border border-[rgba(255,255,255,0.85)] dark:border-white/20 shadow-[0_8px_32px_rgba(30,80,140,0.12)] flex flex-col gap-3 relative overflow-hidden">
+            <div className="absolute top-0 right-0 -mt-10 -mr-10 size-40 bg-primary/20 blur-[50px] rounded-full pointer-events-none" />
+            
+            <p className="en text-[clamp(0.7rem,1.5vw,0.75rem)] font-bold tracking-widest text-muted-foreground uppercase mb-1 px-1">
+              Explore
             </p>
-            <p className="mt-3 font-hindi text-[clamp(1.25rem,3vw,1.5rem)] leading-relaxed">
-              <span className="text-success">कर कब कहा</span>{" "}
-              <span className="rounded-md bg-primary px-1 text-primary-foreground">दि</span>
-              <span className="text-muted-foreground">न दिया सिर सदा</span>{" "}
-              <span className="bg-danger/15 text-danger underline">हरा</span>
-            </p>
-            <div className="mt-6 grid grid-cols-3 gap-2 sm:gap-3 text-center">
-              {[
-                { l: "WPM", v: "42", c: "text-primary" },
-                { l: "Accuracy", v: "97%", c: "text-success" },
-                { l: "Errors", v: "3", c: "text-danger" },
-              ].map((s) => (
-                <div key={s.l} className="rounded-2xl bg-card/70 border border-border/50 py-2 sm:py-3">
-                  <p className={`en text-[clamp(1.125rem,2.5vw,1.25rem)] font-semibold ${s.c}`}>{s.v}</p>
-                  <p className="en text-[clamp(0.65rem,1.5vw,0.6875rem)] tracking-wide text-muted-foreground uppercase">{s.l}</p>
+
+            {/* Option 1: Typing Tutor (Highlighted) */}
+            <Link to="/practice" className="group relative flex flex-col rounded-[20px] p-5 bg-white dark:bg-slate-800 border border-primary/30 shadow-md transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:border-primary/50 cursor-pointer overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/[0.08] to-transparent opacity-100 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className="flex items-start gap-4 relative z-10">
+                <div className="flex size-14 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                  <span className="text-[26px]">⌨️</span>
                 </div>
-              ))}
+                <div className="flex-1">
+                  <div className="flex justify-between items-start">
+                    <h3 className="en font-bold text-slate-900 dark:text-slate-100 text-[18px] leading-tight">Typing Tutor</h3>
+                  </div>
+                  <p className="font-hindi text-[14px] text-primary font-medium mt-1 mb-0.5">Hindi Remington</p>
+                  <p className="en text-[13px] text-slate-500 dark:text-slate-400">Structured lessons & practice</p>
+                </div>
+              </div>
+              <div className="mt-4 flex items-center justify-end relative z-10">
+                <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary transition-transform group-hover:translate-x-1">
+                  Start Learning <span className="text-lg leading-none">&rarr;</span>
+                </span>
+              </div>
+            </Link>
+
+            <div className="grid grid-cols-2 gap-3">
+              {/* Option 2: Typing Test */}
+              <Link to="/practice" className="group relative flex flex-col rounded-[18px] p-4 bg-white/70 dark:bg-slate-800/60 border border-slate-200 shadow-[0_4px_12px_rgba(30,80,140,0.06)] dark:border-white/10 transition-all duration-300 hover:bg-white/90 dark:hover:bg-slate-800/80 hover:shadow-[0_6px_16px_rgba(30,80,140,0.1)] hover:-translate-y-1 cursor-pointer">
+                <div className="flex size-10 shrink-0 items-center justify-center rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 mb-3">
+                  <span className="text-[20px]">⚡</span>
+                </div>
+                <div>
+                  <h3 className="en font-bold text-slate-800 dark:text-slate-200 text-[15px] leading-tight">Typing Test</h3>
+                  <p className="en text-[12px] text-slate-600 dark:text-slate-400 font-medium mt-1">Speed & Accuracy</p>
+                </div>
+              </Link>
+
+              {/* Option 3: Translator */}
+              <div className="group relative flex flex-col rounded-[18px] p-4 bg-white/70 dark:bg-slate-800/60 border border-slate-200 shadow-[0_4px_12px_rgba(30,80,140,0.06)] dark:border-white/10 transition-all duration-300 hover:bg-white/90 dark:hover:bg-slate-800/80 hover:shadow-[0_6px_16px_rgba(30,80,140,0.1)] hover:-translate-y-1 cursor-pointer">
+                <div className="flex size-10 shrink-0 items-center justify-center rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 mb-3">
+                  <span className="text-[20px]">🌐</span>
+                </div>
+                <div>
+                  <h3 className="en font-bold text-slate-800 dark:text-slate-200 text-[15px] leading-tight">Translator</h3>
+                  <p className="en text-[12px] text-slate-600 dark:text-slate-400 font-medium mt-1">Hindi ↔ English</p>
+                </div>
+              </div>
             </div>
-          </GlassCard>
+            
+          </div>
         </div>
       </section>
 
