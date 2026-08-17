@@ -7,7 +7,7 @@ import { LessonCard } from "@/components/typing/LessonCard";
 import { lessons } from "@/lib/typing-data";
 import { categories } from "@/routes/lessons";
 import { useAuth } from "@/lib/auth";
-import { BookOpen } from "lucide-react";
+import { BookOpen, X, ChevronRight } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -62,6 +62,7 @@ const features = [
 function Index() {
   const { currentUser } = useAuth();
   const [progressData, setProgressData] = useState<Record<string, any>>({});
+  const [isTutorModalOpen, setIsTutorModalOpen] = useState(false);
 
   useEffect(() => {
     if (!currentUser) return;
@@ -161,18 +162,14 @@ function Index() {
             </p>
 
             {/* Option 1: Typing Tutor (Highlighted) */}
-            <Link to="/practice" className="group relative flex flex-col rounded-[20px] p-5 bg-white dark:bg-slate-800 border border-primary/30 shadow-md transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:border-primary/50 cursor-pointer overflow-hidden">
+            <div onClick={() => setIsTutorModalOpen(true)} className="group relative flex flex-col rounded-[20px] p-5 bg-white dark:bg-slate-800 border border-primary/30 shadow-md transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:border-primary/50 cursor-pointer overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-br from-primary/[0.08] to-transparent opacity-100 group-hover:opacity-100 transition-opacity duration-300" />
               <div className="flex items-start gap-4 relative z-10">
                 <div className="flex size-14 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary">
                   <span className="text-[26px]">⌨️</span>
                 </div>
-                <div className="flex-1">
-                  <div className="flex justify-between items-start">
-                    <h3 className="en font-bold text-slate-900 dark:text-slate-100 text-[18px] leading-tight">Typing Tutor</h3>
-                  </div>
-                  <p className="font-hindi text-[14px] text-primary font-medium mt-1 mb-0.5">Hindi Remington</p>
-                  <p className="en text-[13px] text-slate-500 dark:text-slate-400">Structured lessons & practice</p>
+                <div className="flex-1 flex flex-col justify-center min-h-[56px]">
+                  <h3 className="en font-bold text-slate-900 dark:text-slate-100 text-[18px] leading-tight">Typing Tutor</h3>
                 </div>
               </div>
               <div className="mt-4 flex items-center justify-end relative z-10">
@@ -180,7 +177,7 @@ function Index() {
                   Start Learning <span className="text-lg leading-none">&rarr;</span>
                 </span>
               </div>
-            </Link>
+            </div>
 
             <div className="grid grid-cols-2 gap-3">
               {/* Option 2: Typing Test */}
@@ -277,6 +274,70 @@ function Index() {
           <HindiKeyboard nextChar="क" />
         </div>
       </section>
+
+      {isTutorModalOpen && (
+        <div 
+          className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/20 backdrop-blur-md"
+          style={{ animation: 'fadeIn 200ms ease-out' }}
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setIsTutorModalOpen(false);
+          }}
+        >
+          <div 
+            className="relative w-full max-w-[460px] rounded-[24px] bg-[rgba(255,255,255,0.65)] backdrop-blur-[20px] border border-[rgba(255,255,255,0.75)] shadow-[0_24px_48px_rgba(30,80,140,0.12),0_0_40px_rgba(56,189,248,0.15)] p-6 sm:p-7"
+            style={{ animation: 'scaleIn 200ms ease-out' }}
+          >
+            <style>{`
+              @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+              @keyframes scaleIn { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: scale(1); } }
+            `}</style>
+            
+            <button 
+              onClick={() => setIsTutorModalOpen(false)} 
+              className="absolute top-5 right-5 p-2 text-slate-500 hover:text-slate-800 hover:bg-white/40 rounded-full transition-colors focus:outline-none"
+            >
+              <X className="size-5" />
+            </button>
+            
+            <h2 className="en text-[22px] font-extrabold text-slate-800 mb-5 px-1 tracking-tight">Choose Typing Tutor</h2>
+            
+            <div className="flex flex-col gap-3">
+               <Link 
+                 to="/lessons" 
+                 onClick={() => setIsTutorModalOpen(false)}
+                 className="group flex flex-col sm:flex-row sm:items-center justify-between p-4 sm:p-5 rounded-[18px] bg-white/50 border border-white/80 shadow-sm hover:shadow-md hover:bg-white/80 hover:border-primary/40 hover:-translate-y-0.5 transition-all duration-200 cursor-pointer relative overflow-hidden gap-3"
+               >
+                  <div className="absolute inset-0 bg-primary/[0.04] opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <div className="relative z-10 flex flex-col">
+                     <span className="en font-bold text-slate-900 text-[15px] sm:text-[16px]">Hindi Typing — Remington GAIL</span>
+                     <span className="en text-[13px] text-slate-600 mt-0.5 font-medium">Hindi Remington GAIL typing practice</span>
+                  </div>
+                  <div className="relative z-10 flex items-center justify-between sm:justify-end gap-3">
+                     <span className="en text-[10px] font-bold text-primary bg-primary/10 px-2.5 py-1 rounded-full uppercase tracking-widest">Available</span>
+                     <ChevronRight className="size-4 text-primary transition-transform group-hover:translate-x-1 hidden sm:block" />
+                  </div>
+               </Link>
+
+               {[
+                 { title: "Hindi Typing — Remington CBI", sub: "Hindi Remington CBI typing practice" },
+                 { title: "Hindi Typing — KrutiDev", sub: "KrutiDev typing practice" },
+                 { title: "Hindi Typing — Mangal Inscript", sub: "Mangal Inscript typing practice" },
+                 { title: "English Typing Tutor", sub: "English typing practice" }
+               ].map((item) => (
+                 <div key={item.title} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 sm:p-5 rounded-[18px] bg-white/20 border border-white/30 cursor-not-allowed gap-3">
+                    <div className="flex flex-col opacity-75">
+                       <span className="en font-bold text-slate-700 text-[15px] sm:text-[16px]">{item.title}</span>
+                       <span className="en text-[13px] text-slate-600 mt-0.5 font-medium">{item.sub}</span>
+                    </div>
+                    <div className="flex items-center">
+                       <span className="en text-[10px] font-bold text-slate-600 bg-white/40 px-2.5 py-1 rounded-full uppercase tracking-widest">Coming Soon</span>
+                    </div>
+                 </div>
+               ))}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

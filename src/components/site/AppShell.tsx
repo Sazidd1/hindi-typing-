@@ -15,9 +15,11 @@ const navItems = [
   {
     label: "Typing Tutor",
     dropdown: [
-      { to: "/practice?type=english", label: "English Typing Tutor" },
-      { to: "/practice?type=krutidev", label: "Hindi Typing Tutor KrutiDev" },
-      { to: "/practice?type=mangal", label: "Hindi Typing Tutor Mangal Inscript" },
+      { to: "/lessons", label: "Hindi Typing — Remington GAIL" },
+      { label: "Hindi Typing — Remington CBI", disabled: true },
+      { label: "Hindi Typing — KrutiDev", disabled: true },
+      { label: "Hindi Typing — Mangal Inscript", disabled: true },
+      { label: "English Typing Tutor", disabled: true },
     ],
   },
   { to: "/lessons", label: "Lessons" },
@@ -83,24 +85,37 @@ export function AppShell({ children }: { children: ReactNode }) {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent 
                       align="start" 
-                      className="w-[280px] rounded-[20px] border border-white/40 shadow-[0_8px_32px_rgba(0,0,0,0.12)] p-1.5"
+                      className="w-[340px] rounded-[20px] border border-white/40 shadow-[0_8px_32px_rgba(0,0,0,0.12)] p-1.5"
                       style={{
                         backgroundColor: "rgba(255, 255, 255, 0.65)",
                         backdropFilter: "blur(18px)",
                         WebkitBackdropFilter: "blur(18px)"
                       }}
                     >
-                      {item.dropdown.map((subItem) => (
-                        <DropdownMenuItem 
-                          key={subItem.to} 
-                          asChild 
-                          className="rounded-[14px] cursor-pointer py-2.5 px-3 text-[#0f172a] transition-all duration-200 hover:bg-[rgba(14,165,233,0.10)] focus:bg-[rgba(14,165,233,0.10)] focus:text-[#0f172a] hover:text-[#0f172a] my-0.5"
-                        >
-                          <Link to={subItem.to} className="w-full font-medium">
-                            {subItem.label}
-                          </Link>
-                        </DropdownMenuItem>
-                      ))}
+                      {item.dropdown.map((subItem) => {
+                        if (subItem.disabled) {
+                          return (
+                            <div
+                              key={subItem.label}
+                              className="flex items-center justify-between rounded-[14px] cursor-not-allowed py-2.5 px-3 text-slate-500 opacity-70 my-0.5 select-none"
+                            >
+                              <span className="font-medium">{subItem.label}</span>
+                              <span className="text-[10px] font-bold bg-white/50 px-2 py-0.5 rounded-full uppercase tracking-widest text-slate-500 border border-white/40">Coming Soon</span>
+                            </div>
+                          );
+                        }
+                        return (
+                          <DropdownMenuItem 
+                            key={subItem.label} 
+                            asChild 
+                            className="rounded-[14px] cursor-pointer py-2.5 px-3 text-[#0f172a] transition-all duration-200 hover:bg-[rgba(14,165,233,0.10)] focus:bg-[rgba(14,165,233,0.10)] focus:text-[#0f172a] hover:text-[#0f172a] my-0.5"
+                          >
+                            <Link to={subItem.to!} className="w-full font-medium">
+                              {subItem.label}
+                            </Link>
+                          </DropdownMenuItem>
+                        );
+                      })}
                     </DropdownMenuContent>
                   </DropdownMenu>
                 );
@@ -174,16 +189,29 @@ export function AppShell({ children }: { children: ReactNode }) {
                         {item.label}
                       </div>
                       <div className="flex flex-col ml-3 pl-3 border-l-2 border-border/50">
-                        {item.dropdown.map((subItem) => (
-                          <Link
-                            key={subItem.to}
-                            to={subItem.to}
-                            onClick={() => setOpen(false)}
-                            className="rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-secondary/60 transition-colors"
-                          >
-                            {subItem.label}
-                          </Link>
-                        ))}
+                        {item.dropdown.map((subItem) => {
+                          if (subItem.disabled) {
+                            return (
+                              <div
+                                key={subItem.label}
+                                className="flex items-center justify-between rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground opacity-60 cursor-not-allowed"
+                              >
+                                {subItem.label}
+                                <span className="text-[9px] font-bold bg-secondary px-1.5 py-0.5 rounded-full uppercase tracking-widest">Coming Soon</span>
+                              </div>
+                            );
+                          }
+                          return (
+                            <Link
+                              key={subItem.label}
+                              to={subItem.to!}
+                              onClick={() => setOpen(false)}
+                              className="rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-secondary/60 transition-colors"
+                            >
+                              {subItem.label}
+                            </Link>
+                          );
+                        })}
                       </div>
                     </div>
                   );
