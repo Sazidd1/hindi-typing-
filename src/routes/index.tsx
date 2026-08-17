@@ -192,7 +192,7 @@ function Index() {
               </Link>
 
               {/* Option 3: Translator */}
-              <div className="group relative flex flex-col rounded-[18px] p-4 bg-white/70 dark:bg-slate-800/60 border border-slate-200 shadow-[0_4px_12px_rgba(30,80,140,0.06)] dark:border-white/10 transition-all duration-300 hover:bg-white/90 dark:hover:bg-slate-800/80 hover:shadow-[0_6px_16px_rgba(30,80,140,0.1)] hover:-translate-y-1 cursor-pointer">
+              <Link to="/translator" className="group relative flex flex-col rounded-[18px] p-4 bg-white/70 dark:bg-slate-800/60 border border-slate-200 shadow-[0_4px_12px_rgba(30,80,140,0.06)] dark:border-white/10 transition-all duration-300 hover:bg-white/90 dark:hover:bg-slate-800/80 hover:shadow-[0_6px_16px_rgba(30,80,140,0.1)] hover:-translate-y-1 cursor-pointer">
                 <div className="flex size-10 shrink-0 items-center justify-center rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 mb-3">
                   <span className="text-[20px]">🌐</span>
                 </div>
@@ -200,7 +200,7 @@ function Index() {
                   <h3 className="en font-bold text-slate-800 dark:text-slate-200 text-[15px] leading-tight">Translator</h3>
                   <p className="en text-[12px] text-slate-600 dark:text-slate-400 font-medium mt-1">Hindi ↔ English</p>
                 </div>
-              </div>
+              </Link>
             </div>
             
           </div>
@@ -233,8 +233,8 @@ function Index() {
               >
                 <f.icon className="w-[20px] h-[20px] text-white" />
               </div>
-              <h3 className="en text-[16px] font-bold text-foreground mb-[6px]">{f.title}</h3>
-              <p className="font-hindi text-[13px] text-[#64748b] leading-[1.6]">{f.text}</p>
+              <h3 className="en text-[16px] font-bold text-foreground dark:text-[#0f172a] mb-[6px]">{f.title}</h3>
+              <p className="font-hindi text-[13px] text-[#64748b] dark:text-[#64748b] leading-[1.6]">{f.text}</p>
             </Link>
           ))}
         </div>
