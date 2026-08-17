@@ -1,15 +1,29 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import { Keyboard, Menu, X } from "lucide-react";
+import { Keyboard, Menu, X, ChevronDown } from "lucide-react";
 import { useState, type ReactNode } from "react";
 import { useAuth } from "@/lib/auth";
 import { useTheme } from "@/lib/theme";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const navItems = [
   { to: "/", label: "Home" },
+  {
+    label: "Typing Tutor",
+    dropdown: [
+      { to: "/practice?type=english", label: "English Typing Tutor" },
+      { to: "/practice?type=krutidev", label: "Hindi Typing Tutor KrutiDev" },
+      { to: "/practice?type=mangal", label: "Hindi Typing Tutor Mangal Inscript" },
+    ],
+  },
   { to: "/lessons", label: "Lessons" },
   { to: "/leaderboard", label: "Leaderboard" },
   { to: "/dashboard", label: "Dashboard" },
-] as const;
+];
 
 function ThemeToggle() {
   const { theme, toggleTheme } = useTheme();
@@ -59,18 +73,52 @@ export function AppShell({ children }: { children: ReactNode }) {
           </Link>
 
           <nav className="hidden items-center gap-1 lg:flex">
-            {navItems.map((item) => (
-              <Link
-                key={item.to}
-                to={item.to}
-                activeOptions={{ exact: item.to === "/" }}
-                activeProps={{ className: "bg-primary text-primary-foreground" }}
-                inactiveProps={{ className: "text-muted-foreground hover:bg-white/80 dark:hover:bg-white/10" }}
-                className="rounded-full px-3.5 py-2 text-sm font-medium transition-all duration-200"
-              >
-                {item.label}
-              </Link>
-            ))}
+            {navItems.map((item) => {
+              if (item.dropdown) {
+                return (
+                  <DropdownMenu key={item.label}>
+                    <DropdownMenuTrigger className="flex items-center gap-1 rounded-full px-3.5 py-2 text-sm font-medium text-muted-foreground transition-all duration-200 hover:bg-white/80 dark:hover:bg-white/10 outline-none data-[state=open]:bg-white/80 dark:data-[state=open]:bg-white/10">
+                      {item.label}
+                      <ChevronDown className="size-4 opacity-50" />
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent 
+                      align="start" 
+                      className="w-[280px] rounded-[20px] border border-white/40 shadow-[0_8px_32px_rgba(0,0,0,0.12)] p-1.5"
+                      style={{
+                        backgroundColor: "rgba(255, 255, 255, 0.65)",
+                        backdropFilter: "blur(18px)",
+                        WebkitBackdropFilter: "blur(18px)"
+                      }}
+                    >
+                      {item.dropdown.map((subItem) => (
+                        <DropdownMenuItem 
+                          key={subItem.to} 
+                          asChild 
+                          className="rounded-[14px] cursor-pointer py-2.5 px-3 text-[#0f172a] transition-all duration-200 hover:bg-[rgba(14,165,233,0.10)] focus:bg-[rgba(14,165,233,0.10)] focus:text-[#0f172a] hover:text-[#0f172a] my-0.5"
+                        >
+                          <Link to={subItem.to} className="w-full font-medium">
+                            {subItem.label}
+                          </Link>
+                        </DropdownMenuItem>
+                      ))}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                );
+              }
+
+              return (
+                <Link
+                  key={item.to}
+                  to={item.to!}
+                  activeOptions={{ exact: item.to === "/" }}
+                  activeProps={{ className: "bg-primary text-primary-foreground" }}
+                  inactiveProps={{ className: "text-muted-foreground hover:bg-white/80 dark:hover:bg-white/10" }}
+                  className="rounded-full px-3.5 py-2 text-sm font-medium transition-all duration-200"
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
           </nav>
 
           <div className="flex items-center gap-2">
@@ -118,23 +166,56 @@ export function AppShell({ children }: { children: ReactNode }) {
         {open ? (
           <div className="mobile-menu-overlay animate-rise-in border-t border-white/50 dark:border-white/8 bg-white/85 dark:bg-[oklch(0.18_0.03_260/0.95)] px-5 py-3 lg:hidden">
             <div className="flex flex-col">
-              {[
-                ...navItems,
-                ...(currentUser
-                  ? [
-                      { to: "/profile" as const, label: "Profile" },
-                    ]
-                  : [{ to: "/login" as const, label: "Login" }]),
-              ].map((item) => (
+              {navItems.map((item) => {
+                if (item.dropdown) {
+                  return (
+                    <div key={item.label} className="flex flex-col mb-1">
+                      <div className="px-3 py-2 text-sm font-semibold text-foreground/80">
+                        {item.label}
+                      </div>
+                      <div className="flex flex-col ml-3 pl-3 border-l-2 border-border/50">
+                        {item.dropdown.map((subItem) => (
+                          <Link
+                            key={subItem.to}
+                            to={subItem.to}
+                            onClick={() => setOpen(false)}
+                            className="rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-secondary/60 transition-colors"
+                          >
+                            {subItem.label}
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  );
+                }
+                return (
+                  <Link
+                    key={item.to}
+                    to={item.to!}
+                    onClick={() => setOpen(false)}
+                    className="rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-secondary/60 transition-colors mb-1"
+                  >
+                    {item.label}
+                  </Link>
+                );
+              })}
+              {currentUser ? (
                 <Link
-                  key={item.to}
-                  to={item.to}
+                  to="/profile"
                   onClick={() => setOpen(false)}
-                  className="rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-secondary/60 transition-colors"
+                  className="rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-secondary/60 transition-colors mb-1"
                 >
-                  {item.label}
+                  Profile
                 </Link>
-              ))}
+              ) : (
+                <Link
+                  to="/login"
+                  onClick={() => setOpen(false)}
+                  className="rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-secondary/60 transition-colors mb-1"
+                >
+                  Login
+                </Link>
+              )}
               {currentUser && (
                 <button
                   onClick={async () => {
