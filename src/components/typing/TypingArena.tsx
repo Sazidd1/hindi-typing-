@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Gauge, RotateCcw, Target, Timer, TriangleAlert, Trophy, Play, ArrowRight, List } from "lucide-react";
+import { Gauge, RotateCcw, Target, Timer, TriangleAlert, Trophy, Play, ArrowRight, List, CheckCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { HindiKeyboard } from "@/components/typing/HindiKeyboard";
 import { useAuth } from "@/lib/auth";
@@ -88,6 +88,7 @@ export function TypingArena({
   const [elapsed, setElapsed] = useState(0);
   const [errors, setErrors] = useState(0);
   const [finished, setFinished] = useState(false);
+  const [forceFinish, setForceFinish] = useState(false);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const activeWordRef = useRef<HTMLDivElement>(null);
   const completedRef = useRef(false);
@@ -273,7 +274,7 @@ export function TypingArena({
     const timeUp = timeLimit != null && elapsed >= timeLimit && startedAt !== null;
     const done = isInfiniteMode ? false : (typedChars.length >= chars.length && chars.length > 0);
     
-    if (timeUp || done) {
+    if (timeUp || done || forceFinish) {
       // Final rigid validation check
       const finalValidation = validateSession(
         typedChars,
@@ -342,7 +343,9 @@ export function TypingArena({
     accuracy,
     errors,
     onComplete,
-    currentUser
+    currentUser,
+    forceFinish,
+    isInfiniteMode
   ]);
 
   function handleChange(value: string) {
@@ -830,6 +833,20 @@ export function TypingArena({
               </div>
             )}
             {finished ? "Session Complete" : startedAt === null ? "Start Session" : isPaused ? "Resume Session" : "Pause Session"}
+          </button>
+
+          {/* Submit Button */}
+          <button 
+            onClick={() => setForceFinish(true)}
+            disabled={finished || startedAt === null}
+            className={cn(
+              "w-full text-foreground rounded-[14px] py-4 flex items-center justify-center gap-2 font-semibold transition-colors shadow-sm h-[56px] border border-border/40",
+              "bg-secondary/30 hover:bg-secondary/50 dark:bg-[#071426] dark:hover:bg-[#1C304A]",
+              (finished || startedAt === null) && "opacity-50 cursor-not-allowed"
+            )}
+          >
+            <CheckCircle className="size-4" />
+            Submit Session
           </button>
         </div>
 
