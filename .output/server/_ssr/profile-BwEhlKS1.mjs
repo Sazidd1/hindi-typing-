@@ -8,8 +8,8 @@ import { t as StatCard } from "./StatCard-Cac9fzfv.mjs";
 import { g as useNavigate, h as Link } from "../_libs/@tanstack/react-router+[...].mjs";
 import { C as Flame, F as Check, L as CalendarDays, N as ChevronRight, O as Clock, S as Gauge, b as Keyboard, l as SlidersHorizontal, m as Pencil, n as X, o as Target, r as Trophy, t as Zap, u as Share2, z as Bell } from "../_libs/lucide-react.mjs";
 import { n as calculateXP, t as XP_PER_LEVEL } from "./scoring-C2r0ix1P.mjs";
-import { t as HindiKeyboard } from "./HindiKeyboard-Bk1uhYz0.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/profile-ZzB0Wwfn.js
+import { t as HindiKeyboard } from "./HindiKeyboard-DGIBPTxP.mjs";
+//#region node_modules/.nitro/vite/services/ssr/assets/profile-BwEhlKS1.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 function ProfilePage() {
@@ -27,7 +27,8 @@ function ProfilePage() {
 		"Minimal",
 		"High Contrast",
 		"Focus",
-		"Color Zones"
+		"Color Zones",
+		"Soft Pastel"
 	];
 	const [temporaryPreset, setTemporaryPreset] = (0, import_react.useState)("Color Zones");
 	const openKeyboardModal = () => {

@@ -1,4 +1,4 @@
-//#region node_modules/.nitro/vite/services/ssr/assets/_tanstack-start-manifest_v-CJoRf8q5.js
+//#region node_modules/.nitro/vite/services/ssr/assets/_tanstack-start-manifest_v-CbyAwbCp.js
 var tsrStartManifest = () => ({ routes: {
 	__root__: {
 		filePath: "C:/Users/Pikachu/Desktop/tem/hindi-typing-project/src/routes/__root.tsx",
@@ -16,7 +16,7 @@ var tsrStartManifest = () => ({ routes: {
 			"/translator"
 		],
 		preloads: [
-			"/assets/index-DyEqcQr8.js",
+			"/assets/index-D1jGCKZu.js",
 			"/assets/jsx-runtime-B-hcVAMW.js",
 			"/assets/link-CzqW9V16.js",
 			"/assets/preload-helper-D42ASfUS.js",
@@ -31,26 +31,26 @@ var tsrStartManifest = () => ({ routes: {
 			"/assets/theme-DQKZaIZ_.js",
 			"/assets/utils-B6KiDbIe.js",
 			"/assets/lessons-CNb3VMxz.js",
-			"/assets/practice-CceIgvQ5.js"
+			"/assets/practice-CZmLayVV.js"
 		],
 		scripts: [{ attrs: {
 			type: "module",
 			async: !0,
-			src: "/assets/index-DyEqcQr8.js"
+			src: "/assets/index-D1jGCKZu.js"
 		} }]
 	},
 	"/": {
 		filePath: "C:/Users/Pikachu/Desktop/tem/hindi-typing-project/src/routes/index.tsx",
 		children: void 0,
 		preloads: [
-			"/assets/routes-4C0Jeaya.js",
+			"/assets/routes-BlDbUNyl.js",
 			"/assets/LessonCard-Bu06ESL1.js",
 			"/assets/book-open-D5-VjScL.js",
 			"/assets/gauge-gxv4Qjm8.js",
 			"/assets/sparkles-DZ5Pl1vD.js",
 			"/assets/GlassCard-DTkfYs2Z.js",
 			"/assets/typing-data-DP4iVqfE.js",
-			"/assets/HindiKeyboard-BwEmqKEE.js"
+			"/assets/HindiKeyboard-DhDMwT_a.js"
 		]
 	},
 	"/dashboard": {
@@ -110,13 +110,13 @@ var tsrStartManifest = () => ({ routes: {
 		filePath: "C:/Users/Pikachu/Desktop/tem/hindi-typing-project/src/routes/practice.tsx",
 		children: void 0,
 		preloads: [
-			"/assets/practice-6yqVxaBq.js",
+			"/assets/practice-f3GFV_ja.js",
 			"/assets/circle-check-big-CKDJV1eo.js",
 			"/assets/play-CPV0a6Tn.js",
 			"/assets/zap-D1212EZv.js",
 			"/assets/trophy-BiN7Vuj2.js",
 			"/assets/typing-data-DP4iVqfE.js",
-			"/assets/HindiKeyboard-BwEmqKEE.js",
+			"/assets/HindiKeyboard-DhDMwT_a.js",
 			"/assets/scoring-CxwDst-S.js"
 		]
 	},
@@ -124,14 +124,14 @@ var tsrStartManifest = () => ({ routes: {
 		filePath: "C:/Users/Pikachu/Desktop/tem/hindi-typing-project/src/routes/profile.tsx",
 		children: void 0,
 		preloads: [
-			"/assets/profile-Bbx9Cr4k.js",
+			"/assets/profile-DegsLwjQ.js",
 			"/assets/StatCard-D17gXVvJ.js",
 			"/assets/flame-PRX9Ejhe.js",
 			"/assets/gauge-gxv4Qjm8.js",
 			"/assets/zap-D1212EZv.js",
 			"/assets/trophy-BiN7Vuj2.js",
 			"/assets/GlassCard-DTkfYs2Z.js",
-			"/assets/HindiKeyboard-BwEmqKEE.js",
+			"/assets/HindiKeyboard-DhDMwT_a.js",
 			"/assets/scoring-CxwDst-S.js"
 		]
 	},

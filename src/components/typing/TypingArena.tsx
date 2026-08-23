@@ -154,7 +154,7 @@ export function TypingArena({
     // Disable auto-restore for regular lessons 1 to 80
     const match = lessonSlug.match(/^ch(\d+)$/);
     if (match) {
-      const lessonNum = parseInt(match[1]);
+      const lessonNum = parseInt(match[1]!);
       if (lessonNum >= 1 && lessonNum <= 80) {
         return;
       }

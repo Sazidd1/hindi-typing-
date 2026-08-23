@@ -8,8 +8,8 @@ import { h as Link } from "../_libs/@tanstack/react-router+[...].mjs";
 import { B as Award, I as ChartColumn, N as ChevronRight, R as BookOpen, S as Gauge, b as Keyboard, c as Sparkles, n as X } from "../_libs/lucide-react.mjs";
 import { n as categories } from "./lessons-D_j7lGJZ.mjs";
 import { t as LessonCard } from "./LessonCard-Cwivbwqd.mjs";
-import { t as HindiKeyboard } from "./HindiKeyboard-Bk1uhYz0.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/routes-p8Ve48wp.js
+import { t as HindiKeyboard } from "./HindiKeyboard-DGIBPTxP.mjs";
+//#region node_modules/.nitro/vite/services/ssr/assets/routes-DpFfv3_c.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 var features = [
