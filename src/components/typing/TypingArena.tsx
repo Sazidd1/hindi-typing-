@@ -520,7 +520,8 @@ export function TypingArena({
 
       <div 
         className={cn(
-          "relative mx-auto w-full h-[170px] sm:h-[190px] cursor-text rounded-3xl py-2 px-6 sm:py-3 sm:px-8 flex items-center justify-center bg-card/80 dark:bg-card/90 border border-border/60 shadow-sm backdrop-blur-xl transition-all duration-300 group overflow-hidden shrink-0",
+          "relative mx-auto w-full cursor-text rounded-3xl py-2 px-6 sm:py-3 sm:px-8 flex items-center justify-center bg-card/80 dark:bg-card/90 border border-border/60 shadow-sm backdrop-blur-xl transition-all duration-300 group overflow-hidden shrink-0",
+          isFocusMode && ["ch-full-practice", "ch-full-practice-2", "ch-full-practice-3", "ch-story-practice-1", "ch-story-practice-2", "ch-news-practice", "ch-dialogue-practice", "ch-adventure-story"].includes(lessonSlug || "") ? "h-[220px] sm:h-[240px]" : "h-[170px] sm:h-[190px]",
           isFocusMode ? "max-w-[1100px]" : "max-w-[1000px]"
         )}
         onClick={() => inputRef.current?.focus()}
@@ -561,7 +562,9 @@ export function TypingArena({
               return (
                 <div className={cn(
                   "w-full text-left font-hindi select-none flex flex-wrap gap-y-2 px-2 transition-all duration-300",
-                  isFocusMode ? "text-[28px] sm:text-[32px] leading-[2.5]" : "text-2xl sm:text-[28px] leading-[2.2]"
+                  isFocusMode 
+                    ? (["ch-full-practice", "ch-full-practice-2", "ch-full-practice-3", "ch-story-practice-1", "ch-story-practice-2", "ch-news-practice", "ch-dialogue-practice", "ch-adventure-story"].includes(lessonSlug || "") ? "text-[28px] sm:text-[32px] leading-[1.8]" : "text-[28px] sm:text-[32px] leading-[2.5]") 
+                    : "text-2xl sm:text-[28px] leading-[2.2]"
                 )}>
                   {words.map((word, wIdx) => {
                     const wordChars = tokenizeHindi(word);
