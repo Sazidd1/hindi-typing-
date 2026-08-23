@@ -1,4 +1,4 @@
-//#region node_modules/.nitro/vite/services/ssr/assets/typing-data-C_yguwu3.js
+//#region node_modules/.nitro/vite/services/ssr/assets/typing-data-D0Th4K6Z.js
 /** Hindi Remington (GAIL) style keyboard layout */
 var keyboardRows = [
 	[
@@ -362,9 +362,10 @@ var EN_SHIFT_MAP = {
 };
 for (const row of keyboardRows) for (const key of row) {
 	if (key.en.length === 1 && key.hi) HINDI_MAP[key.en.toLowerCase()] = key.hi;
-	if (key.en.length === 1 && key.shift) {
-		if (key.en.match(/[a-zA-Z]/)) HINDI_MAP[key.en.toUpperCase()] = key.shift;
-		else if (EN_SHIFT_MAP[key.en]) HINDI_MAP[EN_SHIFT_MAP[key.en]] = key.shift;
+	if (key.en.length === 1 && key.shift) if (key.en.match(/[a-zA-Z]/)) HINDI_MAP[key.en.toUpperCase()] = key.shift;
+	else {
+		const mappedShift = EN_SHIFT_MAP[key.en];
+		if (mappedShift !== void 0) HINDI_MAP[mappedShift] = key.shift;
 	}
 	if (key.hi && !charIndex[key.hi]) charIndex[key.hi] = {
 		key,

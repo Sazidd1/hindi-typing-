@@ -5,16 +5,16 @@ import { n as useAuth, t as AuthProvider } from "./auth-CcoBRp2W.mjs";
 import { t as cn } from "./utils-C_uf36nf.mjs";
 import { _ as useRouter, c as HeadContent, d as Outlet, f as lazyRouteComponent, g as useNavigate, h as Link, m as createRootRouteWithContext, p as createFileRoute, s as Scripts, u as createRouter } from "../_libs/@tanstack/react-router+[...].mjs";
 import { F as Check, N as ChevronRight, P as ChevronDown, b as Keyboard, h as Menu, k as Circle, n as X } from "../_libs/lucide-react.mjs";
-import { t as Route$10 } from "./lessons-DYBrTSla.mjs";
-import { t as Route$11 } from "./practice-KhUoaOeI.mjs";
+import { t as Route$10 } from "./lessons-D_j7lGJZ.mjs";
+import { t as Route$11 } from "./practice-pfJesYTx.mjs";
 import { t as useTheme } from "./theme-CcnM0qqy.mjs";
 import { t as QueryClient } from "../_libs/tanstack__query-core.mjs";
 import { t as QueryClientProvider } from "../_libs/tanstack__react-query.mjs";
 import { a as Label2, c as Root2, d as SubTrigger2, f as Trigger, i as ItemIndicator2, l as Separator2, n as Content2, o as Portal2, r as Item2, s as RadioItem2, t as CheckboxItem2, u as SubContent2 } from "../_libs/@radix-ui/react-dropdown-menu+[...].mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/router-BGYU_Qpn.js
+//#region node_modules/.nitro/vite/services/ssr/assets/router-C_SBPMtR.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
-var styles_default = "/assets/styles-Bps-lOOK.css";
+var styles_default = "/assets/styles-T6Z0-TBh.css";
 function reportLovableError(error, context = {}) {
 	if (typeof window === "undefined") return;
 	window.__lovableEvents?.captureException?.(error, {
@@ -136,7 +136,7 @@ function ThemeToggle() {
 		onClick: toggleTheme,
 		"aria-label": theme === "dark" ? "Switch to Light Mode" : "Switch to Dark Mode",
 		title: theme === "dark" ? "Switch to Light Mode" : "Switch to Dark Mode",
-		className: "inline-flex size-9 items-center justify-center rounded-xl bg-secondary/60 border border-border/60 text-foreground transition-all duration-200 hover:bg-secondary hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+		className: "inline-flex size-9 items-center justify-center rounded-xl bg-secondary/60 dark:bg-white/[0.04] border border-border/60 dark:border-white/[0.08] text-foreground transition-all duration-200 hover:bg-secondary dark:hover:bg-white/[0.08] hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 			className: "text-base leading-none select-none",
 			"aria-hidden": "true",
@@ -163,7 +163,7 @@ function AppShell({ children }) {
 		className: "surface-grid min-h-screen",
 		children: [
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("header", {
-				className: "sticky top-0 z-50 border-b border-white/50 dark:border-white/8 bg-white/60 dark:bg-[oklch(0.20_0.035_260/0.85)] backdrop-blur-xl shadow-sm",
+				className: "sticky top-0 z-50 border-b border-white/50 dark:border-white/[0.08] bg-white/60 dark:bg-[rgba(7,20,38,0.90)] backdrop-blur-xl shadow-sm",
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 					className: "mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-3",
 					children: [
@@ -196,28 +196,21 @@ function AppShell({ children }) {
 									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChevronDown, { className: "size-4 opacity-50" })]
 								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DropdownMenuContent, {
 									align: "start",
-									className: "w-[280px] rounded-[20px] p-2",
-									style: {
-										backgroundColor: "rgba(255, 255, 255, 0.68)",
-										backdropFilter: "blur(20px)",
-										WebkitBackdropFilter: "blur(20px)",
-										border: "1px solid rgba(255, 255, 255, 0.75)",
-										boxShadow: "0 12px 35px rgba(15, 23, 42, 0.16)"
-									},
+									className: "w-[280px] rounded-[20px] p-2 bg-white/70 dark:bg-[rgba(17,31,53,0.96)] backdrop-blur-[20px] dark:backdrop-blur-[16px] border border-white/75 dark:border-[rgba(255,255,255,0.10)] shadow-[0_12px_35px_rgba(15,23,42,0.16)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.35)]",
 									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-										className: "px-3 py-2 text-[10px] font-bold text-muted-foreground uppercase tracking-widest",
+										className: "px-3 py-2 text-[10px] font-bold text-muted-foreground dark:text-[#71839B] uppercase tracking-widest",
 										children: "Keyboard Layout"
 									}), LAYOUTS.map((l) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DropdownMenuItem, {
 										onClick: () => handleLayoutSelect(l),
-										className: cn("rounded-[14px] cursor-pointer py-2.5 px-3 transition-all duration-200 my-0.5 font-medium flex items-center justify-between", layout === l ? "bg-[rgba(59,130,246,0.12)] text-[#2563eb] hover:bg-[rgba(59,130,246,0.16)] focus:bg-[rgba(59,130,246,0.16)] hover:text-[#2563eb] focus:text-[#2563eb]" : "text-foreground hover:bg-black/5 dark:hover:bg-white/10 focus:bg-black/5 dark:focus:bg-white/10"),
-										children: [l, layout === l && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "size-2 rounded-full bg-[#2563eb]" })]
+										className: cn("rounded-[14px] cursor-pointer py-2.5 px-3 transition-all duration-200 my-0.5 font-medium flex items-center justify-between", layout === l ? "bg-[rgba(59,130,246,0.12)] dark:bg-[rgba(43,111,255,0.16)] text-[#2563eb] dark:text-[#5B8FFF]" : "text-foreground dark:text-[#A9B8CC] hover:bg-black/5 dark:hover:bg-[rgba(255,255,255,0.06)] focus:bg-black/5 dark:focus:bg-[rgba(255,255,255,0.06)]"),
+										children: [l, layout === l && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "size-2 rounded-full bg-[#2563eb] dark:bg-[#5B8FFF]" })]
 									}, l))]
 								})] }, "layout-selector");
 								return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Link, {
 									to: item.to,
 									activeOptions: { exact: item.to === "/" },
 									activeProps: { className: "bg-primary text-primary-foreground" },
-									inactiveProps: { className: "text-muted-foreground hover:bg-white/80 dark:hover:bg-white/10" },
+									inactiveProps: { className: "text-muted-foreground dark:text-[#8EA0B8] hover:bg-white/80 dark:hover:bg-white/10 dark:hover:text-[#FFFFFF]" },
 									className: "rounded-full px-3.5 py-2 text-sm font-medium transition-all duration-200",
 									children: item.label
 								}, item.to);
@@ -229,7 +222,7 @@ function AppShell({ children }) {
 								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ThemeToggle, {}),
 								currentUser ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Link, {
 									to: "/profile",
-									className: "hidden rounded-full border border-border bg-white/80 dark:bg-white/10 px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-white dark:hover:bg-white/20 md:inline-flex items-center gap-2",
+									className: "hidden rounded-full border border-border dark:border-white/10 bg-white/80 dark:bg-[#1C304D] px-4 py-2 text-sm font-medium text-foreground dark:text-[#F4F7FB] transition-colors hover:bg-white dark:hover:bg-[#1C304D]/80 md:inline-flex items-center gap-2",
 									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 										className: "flex size-5 items-center justify-center rounded-full bg-primary text-[10px] text-primary-foreground font-bold uppercase",
 										children: currentUser[0]
@@ -481,7 +474,7 @@ function RootComponent() {
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AppShell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Outlet, {}) }) })
 	});
 }
-var $$splitComponentImporter$8 = () => import("./routes-Z2zkkqN0.mjs");
+var $$splitComponentImporter$8 = () => import("./routes-p8Ve48wp.mjs");
 var Route$8 = createFileRoute("/")({
 	head: () => ({ meta: [
 		{ title: "Hindi Typing Practice — Abhyas Studio" },
@@ -500,7 +493,7 @@ var Route$8 = createFileRoute("/")({
 	] }),
 	component: lazyRouteComponent($$splitComponentImporter$8, "component")
 });
-var $$splitComponentImporter$7 = () => import("./dashboard-DN8Qci3G.mjs");
+var $$splitComponentImporter$7 = () => import("./dashboard-Bd6uRyWW.mjs");
 var Route$7 = createFileRoute("/dashboard")({
 	head: () => ({ meta: [
 		{ title: "Typing Dashboard — Streak, WPM & Weekly Progress" },
@@ -521,7 +514,7 @@ var Route$7 = createFileRoute("/dashboard")({
 });
 var $$splitComponentImporter$6 = () => import("./forgot-password-DDGTf5-P.mjs");
 var Route$6 = createFileRoute("/forgot-password")({ component: lazyRouteComponent($$splitComponentImporter$6, "component") });
-var $$splitComponentImporter$5 = () => import("./leaderboard-BE-5S-8i.mjs");
+var $$splitComponentImporter$5 = () => import("./leaderboard-CqTbrg9P.mjs");
 var Route$5 = createFileRoute("/leaderboard")({
 	head: () => ({ meta: [
 		{ title: "Hindi Typing Leaderboard — Top Typists" },
@@ -540,9 +533,9 @@ var Route$5 = createFileRoute("/leaderboard")({
 	] }),
 	component: lazyRouteComponent($$splitComponentImporter$5, "component")
 });
-var $$splitComponentImporter$4 = () => import("./login-BXyWbaY0.mjs");
+var $$splitComponentImporter$4 = () => import("./login-B9vfHu0_.mjs");
 var Route$4 = createFileRoute("/login")({ component: lazyRouteComponent($$splitComponentImporter$4, "component") });
-var $$splitComponentImporter$3 = () => import("./profile--ZCmIf1Z.mjs");
+var $$splitComponentImporter$3 = () => import("./profile-ZzB0Wwfn.mjs");
 var Route$3 = createFileRoute("/profile")({
 	head: () => ({ meta: [{ title: "Typist Profile — Hindi Typing Abhyas Studio" }] }),
 	component: lazyRouteComponent($$splitComponentImporter$3, "component")

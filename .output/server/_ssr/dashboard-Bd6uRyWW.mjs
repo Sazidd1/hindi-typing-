@@ -5,11 +5,11 @@ import { n as useAuth } from "./auth-CcoBRp2W.mjs";
 import { t as cn } from "./utils-C_uf36nf.mjs";
 import { n as SectionTitle, t as GlassCard } from "./GlassCard-DIxNQspi.mjs";
 import { t as StatCard } from "./StatCard-Cac9fzfv.mjs";
-import { r as lessons } from "./typing-data-C_yguwu3.mjs";
+import { r as lessons } from "./typing-data-D0Th4K6Z.mjs";
 import { h as Link } from "../_libs/@tanstack/react-router+[...].mjs";
 import { C as Flame, N as ChevronRight, O as Clock, R as BookOpen, S as Gauge, o as Target, p as Play, r as Trophy, t as Zap } from "../_libs/lucide-react.mjs";
 import { a as CartesianGrid, i as Area, n as YAxis, o as ResponsiveContainer, r as XAxis, s as Tooltip, t as AreaChart } from "../_libs/recharts+[...].mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/dashboard-DN8Qci3G.js
+//#region node_modules/.nitro/vite/services/ssr/assets/dashboard-Bd6uRyWW.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 function DashboardPage() {
@@ -30,7 +30,7 @@ function DashboardPage() {
 		}
 	}, [currentUser, isLoaded]);
 	const userName = currentUser || "Guest";
-	userName.trim() && userName.trim()[0].toUpperCase();
+	userName.trim() && userName.trim()[0]?.toUpperCase();
 	const validHistory = (0, import_react.useMemo)(() => {
 		if (!Array.isArray(history)) return [];
 		return history.filter((h) => {
@@ -577,6 +577,7 @@ function DashboardPage() {
 									}
 								];
 								const a = accents[i % accents.length];
+								if (!a) return null;
 								return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 									className: cn("flex items-center gap-2.5 border px-3.5 py-2 rounded-2xl transition-transform hover:scale-105", a.b, a.br),
 									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {

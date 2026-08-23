@@ -3,7 +3,7 @@ import { u as require_react } from "../_libs/@floating-ui/react-dom+[...].mjs";
 import { a as require_jsx_runtime } from "../_libs/@radix-ui/react-collection+[...].mjs";
 import { n as useAuth } from "./auth-CcoBRp2W.mjs";
 import { g as useNavigate } from "../_libs/@tanstack/react-router+[...].mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/login-BXyWbaY0.js
+//#region node_modules/.nitro/vite/services/ssr/assets/login-B9vfHu0_.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 var legends = [
@@ -68,9 +68,8 @@ function LoginPage() {
 	const [forgotActive, setForgotActive] = (0, import_react.useState)(false);
 	const [isLoading, setIsLoading] = (0, import_react.useState)(false);
 	const [successView, setSuccessView] = (0, import_react.useState)(false);
-	const [successName, setSuccessName] = (0, import_react.useState)("");
 	const { login, signup, resetPassword, logout } = useAuth();
-	useNavigate();
+	const navigate = useNavigate();
 	const isSignup = mode === "signup";
 	const handleToggleMode = () => {
 		setMode(isSignup ? "login" : "signup");
@@ -101,8 +100,10 @@ function LoginPage() {
 				setTimeout(() => setForgotActive(false), 3e3);
 			} else setTimeout(() => {
 				setIsLoading(false);
-				setSuccessName(name.trim());
 				setSuccessView(true);
+				setTimeout(() => {
+					navigate({ to: "/" });
+				}, 1200);
 			}, 1300);
 		} else {
 			const result = await login(email, password);
@@ -114,6 +115,9 @@ function LoginPage() {
 			} else setTimeout(() => {
 				setIsLoading(false);
 				setSuccessView(true);
+				setTimeout(() => {
+					navigate({ to: "/" });
+				}, 1200);
 			}, 1300);
 		}
 	};
@@ -265,7 +269,7 @@ function LoginPage() {
 											className: "input-shell",
 											children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", {
 												type: "text",
-												placeholder: "Sazid Ahmed",
+												placeholder: "Your full name",
 												value: name,
 												onChange: (e) => setName(e.target.value),
 												required: true
@@ -385,7 +389,7 @@ function LoginPage() {
 									children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", { d: "M20 6 9 17l-5-5" })
 								})
 							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", { children: isSignup ? successName ? `Welcome, ${successName}!` : "Account created!" : "Welcome back!" }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", { children: isSignup ? "Account created!" : "Welcome back!" }),
 							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: isSignup ? "आपका खाता सफलतापूर्वक बन गया है" : "आपने सफलतापूर्वक लॉगिन कर लिया है" }),
 							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
 								className: "ghost-btn",

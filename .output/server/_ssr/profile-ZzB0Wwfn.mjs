@@ -6,9 +6,10 @@ import { t as cn } from "./utils-C_uf36nf.mjs";
 import { n as SectionTitle, t as GlassCard } from "./GlassCard-DIxNQspi.mjs";
 import { t as StatCard } from "./StatCard-Cac9fzfv.mjs";
 import { g as useNavigate, h as Link } from "../_libs/@tanstack/react-router+[...].mjs";
-import { C as Flame, F as Check, L as CalendarDays, N as ChevronRight, O as Clock, S as Gauge, l as SlidersHorizontal, m as Pencil, n as X, o as Target, r as Trophy, t as Zap, u as Share2, z as Bell } from "../_libs/lucide-react.mjs";
-import { n as calculateXP, t as XP_PER_LEVEL } from "./scoring-D8JtVBFj.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/profile--ZCmIf1Z.js
+import { C as Flame, F as Check, L as CalendarDays, N as ChevronRight, O as Clock, S as Gauge, b as Keyboard, l as SlidersHorizontal, m as Pencil, n as X, o as Target, r as Trophy, t as Zap, u as Share2, z as Bell } from "../_libs/lucide-react.mjs";
+import { n as calculateXP, t as XP_PER_LEVEL } from "./scoring-C2r0ix1P.mjs";
+import { t as HindiKeyboard } from "./HindiKeyboard-Bk1uhYz0.mjs";
+//#region node_modules/.nitro/vite/services/ssr/assets/profile-ZzB0Wwfn.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 function ProfilePage() {
@@ -18,6 +19,31 @@ function ProfilePage() {
 	const [isEditModalOpen, setIsEditModalOpen] = (0, import_react.useState)(false);
 	const [newUserName, setNewUserName] = (0, import_react.useState)("");
 	const [isCopied, setIsCopied] = (0, import_react.useState)(false);
+	const [isKeyboardModalOpen, setIsKeyboardModalOpen] = (0, import_react.useState)(false);
+	const presetOptions = [
+		"Classic Glass",
+		"Classic",
+		"Dark Pro",
+		"Minimal",
+		"High Contrast",
+		"Focus",
+		"Color Zones"
+	];
+	const [temporaryPreset, setTemporaryPreset] = (0, import_react.useState)("Color Zones");
+	const openKeyboardModal = () => {
+		let savedPreset = localStorage.getItem("settings_keyboard_preset");
+		if (savedPreset === "Default") {
+			savedPreset = "Classic Glass";
+			localStorage.setItem("settings_keyboard_preset", "Classic Glass");
+		}
+		setTemporaryPreset(savedPreset || "Color Zones");
+		setIsKeyboardModalOpen(true);
+	};
+	const handleApplyPreset = () => {
+		localStorage.setItem("settings_keyboard_preset", temporaryPreset);
+		window.dispatchEvent(new Event("keyboardPresetUpdated"));
+		setIsKeyboardModalOpen(false);
+	};
 	(0, import_react.useEffect)(() => {
 		if (isLoaded && !currentUser) {
 			navigate({ to: "/login" });
@@ -329,6 +355,16 @@ function ProfilePage() {
 								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Preferences" }),
 								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChevronRight, { className: "size-3 opacity-50 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all" })
 							]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+							onClick: openKeyboardModal,
+							className: "inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-border/50 bg-secondary/30 hover:bg-primary/8 hover:border-primary/30 hover:text-primary text-xs font-medium text-muted-foreground transition-all group cursor-pointer",
+							title: "Change keyboard appearance",
+							children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Keyboard, { className: "size-3.5" }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Keyboard" }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChevronRight, { className: "size-3 opacity-50 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all" })
+							]
 						})
 					]
 				})]
@@ -480,6 +516,56 @@ function ProfilePage() {
 								disabled: !newUserName.trim() || newUserName.trim() === currentUser,
 								className: "px-4 py-2 text-sm font-semibold bg-primary text-primary-foreground rounded-xl hover:bg-primary/90 disabled:opacity-50 transition-colors shadow-xs cursor-pointer",
 								children: "Save Changes"
+							})]
+						})
+					]
+				})
+			}),
+			isKeyboardModalOpen && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 animate-in fade-in duration-200",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "w-full max-w-5xl rounded-3xl bg-background border border-border p-6 sm:p-8 shadow-2xl flex flex-col gap-6 max-h-[95vh] overflow-y-auto custom-scrollbar",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "flex items-start justify-between shrink-0",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
+								className: "text-xl font-bold text-foreground",
+								children: "Keyboard Preset"
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+								className: "text-sm text-muted-foreground mt-1",
+								children: "Choose your preferred keyboard style. The preview below updates instantly."
+							})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+								onClick: () => setIsKeyboardModalOpen(false),
+								className: "rounded-full p-2 bg-secondary/50 text-muted-foreground hover:bg-secondary hover:text-foreground transition-colors cursor-pointer",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(X, { className: "size-5" })
+							})]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							className: "w-full bg-secondary/20 rounded-2xl p-4 sm:p-8 border border-border/50 flex flex-col items-center justify-center min-h-[350px] shrink-0",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(HindiKeyboard, {
+								nextChar: "क",
+								preset: temporaryPreset
+							})
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							className: "flex flex-wrap gap-3 pt-2 shrink-0",
+							children: presetOptions.map((o) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+								onClick: () => setTemporaryPreset(o),
+								"aria-pressed": temporaryPreset === o,
+								className: cn("rounded-2xl px-5 py-3 text-sm font-semibold border transition-all duration-200 cursor-pointer", temporaryPreset === o ? "bg-primary text-primary-foreground border-primary shadow-md scale-105" : "bg-secondary/50 text-muted-foreground border-border/60 hover:bg-secondary hover:text-foreground"),
+								children: [o, temporaryPreset === o && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Check, { className: "inline-block ml-2 size-4" })]
+							}, o))
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "flex justify-end gap-3 pt-4 border-t border-border/50 shrink-0",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+								onClick: () => setIsKeyboardModalOpen(false),
+								className: "px-6 py-2.5 text-sm font-semibold text-muted-foreground hover:bg-secondary rounded-xl transition-colors cursor-pointer",
+								children: "Cancel"
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+								onClick: handleApplyPreset,
+								className: "px-6 py-2.5 text-sm font-semibold bg-primary text-primary-foreground rounded-xl hover:bg-primary/90 transition-colors shadow-xs cursor-pointer",
+								children: "Apply Keyboard"
 							})]
 						})
 					]

@@ -98,10 +98,16 @@ export function TypingArena({
   const charMistakesRef = useRef<Record<string, number>>({});
   const { currentUser } = useAuth();
 
-  const [keyboardPreset, setKeyboardPreset] = useState<string>("Default");
+  const [keyboardPreset, setKeyboardPreset] = useState<string>("Color Zones");
   useEffect(() => {
     const updatePreset = () => {
-      setKeyboardPreset(localStorage.getItem("settings_keyboard_preset") || "Default");
+      let savedPreset = localStorage.getItem("settings_keyboard_preset");
+      if (savedPreset === "Default") {
+        savedPreset = "Classic Glass";
+        localStorage.setItem("settings_keyboard_preset", "Classic Glass");
+      }
+      const activePreset = savedPreset || "Color Zones";
+      setKeyboardPreset(activePreset);
     };
     updatePreset();
     window.addEventListener("keyboardPresetUpdated", updatePreset);

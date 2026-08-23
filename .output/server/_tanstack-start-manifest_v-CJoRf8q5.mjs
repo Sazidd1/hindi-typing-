@@ -1,4 +1,4 @@
-//#region node_modules/.nitro/vite/services/ssr/assets/_tanstack-start-manifest_v-BO8k6e__.js
+//#region node_modules/.nitro/vite/services/ssr/assets/_tanstack-start-manifest_v-CJoRf8q5.js
 var tsrStartManifest = () => ({ routes: {
 	__root__: {
 		filePath: "C:/Users/Pikachu/Desktop/tem/hindi-typing-project/src/routes/__root.tsx",
@@ -16,7 +16,7 @@ var tsrStartManifest = () => ({ routes: {
 			"/translator"
 		],
 		preloads: [
-			"/assets/index-BN5AXFmU.js",
+			"/assets/index-DyEqcQr8.js",
 			"/assets/jsx-runtime-B-hcVAMW.js",
 			"/assets/link-CzqW9V16.js",
 			"/assets/preload-helper-D42ASfUS.js",
@@ -25,38 +25,39 @@ var tsrStartManifest = () => ({ routes: {
 			"/assets/createLucideIcon-CLdWFMku.js",
 			"/assets/check-36OnHiEM.js",
 			"/assets/chevron-right-CHJcvRU6.js",
-			"/assets/lessons-uJvOW1-7.js",
+			"/assets/keyboard-kMJgIfGT.js",
 			"/assets/x-CGuQtexA.js",
 			"/assets/auth-BqalzaMc.js",
 			"/assets/theme-DQKZaIZ_.js",
 			"/assets/utils-B6KiDbIe.js",
-			"/assets/practice-BIA5ORJM.js"
+			"/assets/lessons-CNb3VMxz.js",
+			"/assets/practice-CceIgvQ5.js"
 		],
 		scripts: [{ attrs: {
 			type: "module",
 			async: !0,
-			src: "/assets/index-BN5AXFmU.js"
+			src: "/assets/index-DyEqcQr8.js"
 		} }]
 	},
 	"/": {
 		filePath: "C:/Users/Pikachu/Desktop/tem/hindi-typing-project/src/routes/index.tsx",
 		children: void 0,
 		preloads: [
-			"/assets/routes-Ds36hPH3.js",
-			"/assets/LessonCard-DpydU-KI.js",
+			"/assets/routes-4C0Jeaya.js",
+			"/assets/LessonCard-Bu06ESL1.js",
 			"/assets/book-open-D5-VjScL.js",
 			"/assets/gauge-gxv4Qjm8.js",
 			"/assets/sparkles-DZ5Pl1vD.js",
 			"/assets/GlassCard-DTkfYs2Z.js",
-			"/assets/typing-data-DcUPxUh4.js",
-			"/assets/HindiKeyboard-dS8fxuUC.js"
+			"/assets/typing-data-DP4iVqfE.js",
+			"/assets/HindiKeyboard-BwEmqKEE.js"
 		]
 	},
 	"/dashboard": {
 		filePath: "C:/Users/Pikachu/Desktop/tem/hindi-typing-project/src/routes/dashboard.tsx",
 		children: void 0,
 		preloads: [
-			"/assets/dashboard-BHQsOHPz.js",
+			"/assets/dashboard-DmQVwcMg.js",
 			"/assets/book-open-D5-VjScL.js",
 			"/assets/StatCard-D17gXVvJ.js",
 			"/assets/flame-PRX9Ejhe.js",
@@ -65,7 +66,7 @@ var tsrStartManifest = () => ({ routes: {
 			"/assets/zap-D1212EZv.js",
 			"/assets/trophy-BiN7Vuj2.js",
 			"/assets/GlassCard-DTkfYs2Z.js",
-			"/assets/typing-data-DcUPxUh4.js"
+			"/assets/typing-data-DP4iVqfE.js"
 		]
 	},
 	"/forgot-password": {
@@ -81,55 +82,57 @@ var tsrStartManifest = () => ({ routes: {
 		filePath: "C:/Users/Pikachu/Desktop/tem/hindi-typing-project/src/routes/leaderboard.tsx",
 		children: void 0,
 		preloads: [
-			"/assets/leaderboard-CFrVmFa1.js",
+			"/assets/leaderboard-C6GPbRT8.js",
 			"/assets/trophy-BiN7Vuj2.js",
 			"/assets/GlassCard-DTkfYs2Z.js",
-			"/assets/scoring-Df3_lJnT.js"
+			"/assets/scoring-CxwDst-S.js"
 		]
 	},
 	"/lessons": {
 		filePath: "C:/Users/Pikachu/Desktop/tem/hindi-typing-project/src/routes/lessons.tsx",
 		children: void 0,
 		preloads: [
-			"/assets/lessons-BKMD0Tt7.js",
-			"/assets/LessonCard-DpydU-KI.js",
+			"/assets/lessons-B0SYJBcC.js",
+			"/assets/LessonCard-Bu06ESL1.js",
 			"/assets/book-open-D5-VjScL.js",
 			"/assets/flame-PRX9Ejhe.js",
 			"/assets/play-CPV0a6Tn.js",
 			"/assets/GlassCard-DTkfYs2Z.js",
-			"/assets/typing-data-DcUPxUh4.js"
+			"/assets/typing-data-DP4iVqfE.js"
 		]
 	},
 	"/login": {
 		filePath: "C:/Users/Pikachu/Desktop/tem/hindi-typing-project/src/routes/login.tsx",
 		children: void 0,
-		preloads: ["/assets/login-CsMJSbAs.js"]
+		preloads: ["/assets/login-B3OzRW_X.js"]
 	},
 	"/practice": {
 		filePath: "C:/Users/Pikachu/Desktop/tem/hindi-typing-project/src/routes/practice.tsx",
 		children: void 0,
 		preloads: [
-			"/assets/practice-DxzSYjUp.js",
+			"/assets/practice-6yqVxaBq.js",
+			"/assets/circle-check-big-CKDJV1eo.js",
 			"/assets/play-CPV0a6Tn.js",
 			"/assets/zap-D1212EZv.js",
 			"/assets/trophy-BiN7Vuj2.js",
-			"/assets/typing-data-DcUPxUh4.js",
-			"/assets/HindiKeyboard-dS8fxuUC.js",
-			"/assets/scoring-Df3_lJnT.js"
+			"/assets/typing-data-DP4iVqfE.js",
+			"/assets/HindiKeyboard-BwEmqKEE.js",
+			"/assets/scoring-CxwDst-S.js"
 		]
 	},
 	"/profile": {
 		filePath: "C:/Users/Pikachu/Desktop/tem/hindi-typing-project/src/routes/profile.tsx",
 		children: void 0,
 		preloads: [
-			"/assets/profile-DMizz2Vx.js",
+			"/assets/profile-Bbx9Cr4k.js",
 			"/assets/StatCard-D17gXVvJ.js",
 			"/assets/flame-PRX9Ejhe.js",
 			"/assets/gauge-gxv4Qjm8.js",
 			"/assets/zap-D1212EZv.js",
 			"/assets/trophy-BiN7Vuj2.js",
 			"/assets/GlassCard-DTkfYs2Z.js",
-			"/assets/scoring-Df3_lJnT.js"
+			"/assets/HindiKeyboard-BwEmqKEE.js",
+			"/assets/scoring-CxwDst-S.js"
 		]
 	},
 	"/settings": {

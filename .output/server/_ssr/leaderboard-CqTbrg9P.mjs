@@ -5,8 +5,8 @@ import { n as useAuth } from "./auth-CcoBRp2W.mjs";
 import { t as cn } from "./utils-C_uf36nf.mjs";
 import { t as GlassCard } from "./GlassCard-DIxNQspi.mjs";
 import { E as Crown, g as Medal, r as Trophy } from "../_libs/lucide-react.mjs";
-import { n as calculateXP, t as XP_PER_LEVEL } from "./scoring-D8JtVBFj.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/leaderboard-BE-5S-8i.js
+import { n as calculateXP, t as XP_PER_LEVEL } from "./scoring-C2r0ix1P.mjs";
+//#region node_modules/.nitro/vite/services/ssr/assets/leaderboard-CqTbrg9P.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 var podiumIcons = [
@@ -63,7 +63,7 @@ function LeaderboardPage() {
 			let highestWpm = 0;
 			let highestAcc = 0;
 			let totalXp = 0;
-			results.forEach((r) => {
+			if (results) results.forEach((r) => {
 				if (!r.date || typeof r.date !== "string") return;
 				if (leaderboardMode === "Typing Speed" && r.isBonus) return;
 				let include = false;

@@ -3,12 +3,12 @@ import { u as require_react } from "../_libs/@floating-ui/react-dom+[...].mjs";
 import { a as require_jsx_runtime } from "../_libs/@radix-ui/react-collection+[...].mjs";
 import { n as useAuth } from "./auth-CcoBRp2W.mjs";
 import { n as SectionTitle, t as GlassCard } from "./GlassCard-DIxNQspi.mjs";
-import { r as lessons } from "./typing-data-C_yguwu3.mjs";
+import { r as lessons } from "./typing-data-D0Th4K6Z.mjs";
 import { h as Link } from "../_libs/@tanstack/react-router+[...].mjs";
 import { C as Flame, R as BookOpen, V as ArrowRight, _ as Lock, b as Keyboard, d as Search, p as Play, s as Star } from "../_libs/lucide-react.mjs";
-import { n as categories } from "./lessons-DYBrTSla.mjs";
+import { n as categories } from "./lessons-D_j7lGJZ.mjs";
 import { t as LessonCard } from "./LessonCard-Cwivbwqd.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/lessons-IcQI9wzC.js
+//#region node_modules/.nitro/vite/services/ssr/assets/lessons-BEZresl5.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 function getTodayString() {
@@ -25,7 +25,12 @@ function shuffle(array, seedStr) {
 	const shuffled = [...array];
 	for (let i = shuffled.length - 1; i > 0; i--) {
 		const j = Math.floor(seedRandom(seed++) * (i + 1));
-		[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+		const itemI = shuffled[i];
+		const itemJ = shuffled[j];
+		if (itemI !== void 0 && itemJ !== void 0) {
+			shuffled[i] = itemJ;
+			shuffled[j] = itemI;
+		}
 	}
 	return shuffled;
 }
@@ -45,6 +50,7 @@ function generateDailyChallenge(userId, progressData) {
 	const unlockedWords = /* @__PURE__ */ new Set();
 	for (let i = 0; i < lessons.length; i++) {
 		const l = lessons[i];
+		if (!l) break;
 		if (!previousLessonCompleted) break;
 		highestUnlockedIndex = i;
 		if (l.keys) for (const char of l.keys.replace(/\s+/g, "")) unlockedKeys.add(char);
@@ -77,7 +83,8 @@ function generateDailyChallenge(userId, progressData) {
 			pool = pool.concat(Array.from(unlockedWords).slice(0, 10));
 			const shuffled = shuffle(pool, today + userId);
 			while (practiceWords.length < 30 && shuffled.length > 0) {
-				practiceWords.push(shuffled[practiceWords.length % shuffled.length]);
+				const randomWord = shuffled[practiceWords.length % shuffled.length];
+				if (randomWord) practiceWords.push(randomWord);
 				if (practiceWords.length >= 30) break;
 			}
 		} else {
@@ -95,7 +102,10 @@ function generateDailyChallenge(userId, progressData) {
 		}
 	} else {
 		const shuffled = shuffle(Array.from(unlockedWords), today + userId);
-		for (let i = 0; i < 30; i++) practiceWords.push(shuffled[i % shuffled.length]);
+		for (let i = 0; i < 30; i++) {
+			const randomWord = shuffled[i % shuffled.length];
+			if (randomWord) practiceWords.push(randomWord);
+		}
 	}
 	const challenge = {
 		slug: "daily-challenge",
@@ -275,7 +285,7 @@ function LessonsPage() {
 							})
 						})]
 					})]
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(GlassCard, {
+				}), recommendedLesson && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(GlassCard, {
 					className: "group relative overflow-hidden border-accent-blue/20 p-0",
 					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 						className: "relative p-4 sm:p-5 flex flex-col h-full justify-between",

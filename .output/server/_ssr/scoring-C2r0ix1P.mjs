@@ -1,4 +1,4 @@
-//#region node_modules/.nitro/vite/services/ssr/assets/scoring-D8JtVBFj.js
+//#region node_modules/.nitro/vite/services/ssr/assets/scoring-C2r0ix1P.js
 function calculateGrade(wpm, accuracy, targetWpm) {
 	if (accuracy >= 98 && wpm >= targetWpm) return "A+";
 	if (accuracy >= 95) return "A";
@@ -40,7 +40,7 @@ function validateSession(typedChars, expectedChars, elapsedSeconds, recordedErro
 		totalAttempted,
 		grade: null,
 		xp: 0,
-		reason
+		reason: reason ?? "Invalid session"
 	};
 	return {
 		isValid,

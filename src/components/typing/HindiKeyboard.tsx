@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import { keyboardRows, lookupChar, type Finger } from "@/lib/typing-data";
 
 export type KeyboardPreset = 
-  | "Default" 
+  | "Classic Glass" 
   | "Classic" 
   | "Dark Pro" 
   | "Minimal" 
@@ -35,12 +35,12 @@ interface HindiKeyboardProps {
   preset?: KeyboardPreset | string;
 }
 
-export function HindiKeyboard({ nextChar, preset = "Default" }: HindiKeyboardProps) {
+export function HindiKeyboard({ nextChar, preset = "Color Zones" }: HindiKeyboardProps) {
   const target = nextChar ? lookupChar(nextChar) : undefined;
   const activeKey = nextChar === " " ? "Space" : target?.key.en;
   const needsShift = target?.shift ?? false;
 
-  const isDefault = preset === "Default";
+  const isClassicGlass = preset === "Classic Glass";
   const isClassic = preset === "Classic";
   const isDarkPro = preset === "Dark Pro";
   const isMinimal = preset === "Minimal";
@@ -51,7 +51,7 @@ export function HindiKeyboard({ nextChar, preset = "Default" }: HindiKeyboardPro
   // Wrapper Styles
   const wrapperClass = cn(
     "mx-auto w-full flex flex-col gap-2 transition-all duration-300",
-    isDefault && "glass-strong rounded-[24px] p-6 sm:p-8 border border-white/60 dark:bg-[#101F34] dark:border-[rgba(255,255,255,0.08)] dark:shadow-[0_16px_40px_rgba(0,0,0,0.18)] shadow-sm",
+    isClassicGlass && "glass-strong rounded-[24px] p-6 sm:p-8 border border-white/60 dark:bg-[#101F34] dark:border-[rgba(255,255,255,0.08)] dark:shadow-[0_16px_40px_rgba(0,0,0,0.18)] shadow-sm",
     isClassic && "bg-slate-200 dark:bg-slate-800 rounded-xl p-6 sm:p-8 border border-slate-300 dark:border-slate-700 shadow-md",
     isDarkPro && "bg-[#0a0a0a] rounded-2xl p-6 sm:p-8 border border-neutral-800 shadow-2xl",
     isMinimal && "bg-transparent p-6 sm:p-8",
@@ -87,8 +87,8 @@ export function HindiKeyboard({ nextChar, preset = "Default" }: HindiKeyboardPro
               const keyClass = cn(
                 "key relative flex flex-col items-center justify-center h-[58px] transition-all duration-200",
                 
-                // Default logic
-                isDefault && cn(
+                // Classic Glass logic
+                isClassicGlass && cn(
                   "rounded-[10px] border",
                   isActive 
                     ? "active z-10 bg-primary border-transparent text-white dark:!bg-[#2B6FFF] dark:shadow-[0_0_0_2px_rgba(43,111,255,0.25),0_8px_20px_rgba(43,111,255,0.22)]" 
@@ -152,7 +152,7 @@ export function HindiKeyboard({ nextChar, preset = "Default" }: HindiKeyboardPro
               );
 
               // Inline Style overrides based on preset
-              if (isDefault && !isActive) {
+              if (isClassicGlass && !isActive) {
                 customStyles.borderBottomColor = fColor;
                 customStyles.borderBottomWidth = "3px";
                 customStyles.borderBottomStyle = "solid";
@@ -166,7 +166,7 @@ export function HindiKeyboard({ nextChar, preset = "Default" }: HindiKeyboardPro
               // Text Style Construction
               const mainTextClass = cn(
                 "font-hindi leading-none",
-                isDefault && (isActive ? "text-[19px] font-semibold text-white" : "text-sm sm:text-base font-semibold text-foreground dark:text-[#EAF0F7]"),
+                isClassicGlass && (isActive ? "text-[19px] font-semibold text-white" : "text-sm sm:text-base font-semibold text-foreground dark:text-[#EAF0F7]"),
                 isClassic && "text-sm sm:text-base font-bold",
                 isDarkPro && "text-sm sm:text-base font-medium",
                 isMinimal && "text-lg",
@@ -177,7 +177,7 @@ export function HindiKeyboard({ nextChar, preset = "Default" }: HindiKeyboardPro
 
               const subTextClass = cn(
                 "mt-0.5 leading-none",
-                isDefault && (isActive ? "text-white/80 text-[11px]" : "text-[9px] text-muted-foreground dark:text-[#8FA2BC]"),
+                isClassicGlass && (isActive ? "text-white/80 text-[11px]" : "text-[9px] text-muted-foreground dark:text-[#8FA2BC]"),
                 isClassic && "text-[9px] opacity-70",
                 isDarkPro && "text-[9px] opacity-60",
                 isMinimal && "text-[10px] opacity-50",
@@ -207,8 +207,8 @@ export function HindiKeyboard({ nextChar, preset = "Default" }: HindiKeyboardPro
         ))}
       </div>
 
-      {/* Legend - Only show on Default and Color Zones */}
-      {(isDefault || isColorZones) && (
+      {/* Legend - Only show on Classic Glass and Color Zones */}
+      {(isClassicGlass || isColorZones) && (
         <div className="mt-8 flex flex-wrap justify-center gap-4 text-[13px] text-muted-foreground">
           {[
             { c: "#f97316", l: "Little finger" },

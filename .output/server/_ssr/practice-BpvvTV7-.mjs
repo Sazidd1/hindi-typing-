@@ -3,14 +3,14 @@ import { l as require_react_dom, u as require_react } from "../_libs/@floating-u
 import { a as require_jsx_runtime } from "../_libs/@radix-ui/react-collection+[...].mjs";
 import { n as useAuth } from "./auth-CcoBRp2W.mjs";
 import { t as cn } from "./utils-C_uf36nf.mjs";
-import { n as keyboardRows, r as lessons, t as HINDI_MAP } from "./typing-data-C_yguwu3.mjs";
+import { n as keyboardRows, r as lessons, t as HINDI_MAP } from "./typing-data-D0Th4K6Z.mjs";
 import { h as Link } from "../_libs/@tanstack/react-router+[...].mjs";
-import { A as CircleX, f as RotateCcw, i as TriangleAlert, j as CircleCheck, o as Target, p as Play, r as Trophy, t as Zap } from "../_libs/lucide-react.mjs";
-import { r as validateSession } from "./scoring-D8JtVBFj.mjs";
-import { t as Route } from "./practice-KhUoaOeI.mjs";
-import { t as HindiKeyboard } from "./HindiKeyboard-ClzAXsE7.mjs";
+import { A as CircleX, M as CircleCheckBig, f as RotateCcw, i as TriangleAlert, j as CircleCheck, o as Target, p as Play, r as Trophy, t as Zap } from "../_libs/lucide-react.mjs";
+import { r as validateSession } from "./scoring-C2r0ix1P.mjs";
+import { t as Route } from "./practice-pfJesYTx.mjs";
+import { t as HindiKeyboard } from "./HindiKeyboard-Bk1uhYz0.mjs";
 import { t as toast } from "../_libs/sonner.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/practice-CaTMrT87.js
+//#region node_modules/.nitro/vite/services/ssr/assets/practice-BpvvTV7-.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 var import_react_dom = /* @__PURE__ */ __toESM(require_react_dom());
@@ -275,6 +275,7 @@ function tokenizeHindi(text) {
 		}
 		if (!matched) {
 			const char = Array.from(remaining)[0];
+			if (!char) break;
 			tokens.push(char);
 			remaining = remaining.slice(char.length);
 		}
@@ -306,6 +307,7 @@ function TypingArena({ lessonSlug, text, title, subtitle, timeLimit, showKeyboar
 	const [elapsed, setElapsed] = (0, import_react.useState)(0);
 	const [errors, setErrors] = (0, import_react.useState)(0);
 	const [finished, setFinished] = (0, import_react.useState)(false);
+	const [forceFinish, setForceFinish] = (0, import_react.useState)(false);
 	const inputRef = (0, import_react.useRef)(null);
 	const activeWordRef = (0, import_react.useRef)(null);
 	const completedRef = (0, import_react.useRef)(false);
@@ -314,6 +316,20 @@ function TypingArena({ lessonSlug, text, title, subtitle, timeLimit, showKeyboar
 	const cursorTimeoutRef = (0, import_react.useRef)(null);
 	const charMistakesRef = (0, import_react.useRef)({});
 	const { currentUser } = useAuth();
+	const [keyboardPreset, setKeyboardPreset] = (0, import_react.useState)("Color Zones");
+	(0, import_react.useEffect)(() => {
+		const updatePreset = () => {
+			let savedPreset = localStorage.getItem("settings_keyboard_preset");
+			if (savedPreset === "Default") {
+				savedPreset = "Classic Glass";
+				localStorage.setItem("settings_keyboard_preset", "Classic Glass");
+			}
+			setKeyboardPreset(savedPreset || "Color Zones");
+		};
+		updatePreset();
+		window.addEventListener("keyboardPresetUpdated", updatePreset);
+		return () => window.removeEventListener("keyboardPresetUpdated", updatePreset);
+	}, []);
 	const typedChars = (0, import_react.useMemo)(() => tokenizeHindi(typed), [typed]);
 	const validation = validateSession(typedChars, chars, elapsed, errors, !!isParagraphMode);
 	const { wpm, accuracy, correctCharacters, totalAttempted } = validation;
@@ -452,7 +468,7 @@ function TypingArena({ lessonSlug, text, title, subtitle, timeLimit, showKeyboar
 		if (finished || completedRef.current) return;
 		const timeUp = timeLimit != null && elapsed >= timeLimit && startedAt !== null;
 		const done = isInfiniteMode ? false : typedChars.length >= chars.length && chars.length > 0;
-		if (timeUp || done) {
+		if (timeUp || done || forceFinish) {
 			const finalValidation = validateSession(typedChars, chars, elapsed, errors, !!isParagraphMode);
 			completedRef.current = true;
 			setFinished(true);
@@ -504,7 +520,9 @@ function TypingArena({ lessonSlug, text, title, subtitle, timeLimit, showKeyboar
 		accuracy,
 		errors,
 		onComplete,
-		currentUser
+		currentUser,
+		forceFinish,
+		isInfiniteMode
 	]);
 	function handleChange(value) {
 		if (finished) return;
@@ -525,7 +543,7 @@ function TypingArena({ lessonSlug, text, title, subtitle, timeLimit, showKeyboar
 			if (i >= typedChars.length || typedChars[i] === chars[i]) {
 				newErrors++;
 				const targetChar = chars[i];
-				if (targetChar !== " ") charMistakesRef.current[targetChar] = (charMistakesRef.current[targetChar] || 0) + 1;
+				if (targetChar && targetChar !== " ") charMistakesRef.current[targetChar] = (charMistakesRef.current[targetChar] || 0) + 1;
 			}
 		}
 		if (newErrors > 0) setErrors((e) => e + newErrors);
@@ -541,13 +559,17 @@ function TypingArena({ lessonSlug, text, title, subtitle, timeLimit, showKeyboar
 		let curr = 0;
 		for (let i = 0; i < words.length; i++) {
 			starts.push(curr);
-			curr += words[i].length + 1;
+			const w = words[i];
+			if (w !== void 0) curr += w.length + 1;
 		}
 		return starts;
 	}, [words]);
 	let currentWordIndex = 0;
-	for (let i = 0; i < wordStartIndices.length; i++) if (typedChars.length >= wordStartIndices[i]) currentWordIndex = i;
-	else break;
+	for (let i = 0; i < wordStartIndices.length; i++) {
+		const startIdx = wordStartIndices[i];
+		if (startIdx !== void 0 && typedChars.length >= startIdx) currentWordIndex = i;
+		else break;
+	}
 	(0, import_react.useEffect)(() => {
 		if (isParagraphMode && activeWordRef.current) activeWordRef.current.scrollIntoView({
 			behavior: "smooth",
@@ -558,7 +580,7 @@ function TypingArena({ lessonSlug, text, title, subtitle, timeLimit, showKeyboar
 	const startWordIdx = Math.floor(currentWordIndex / WORDS_PER_PAGE) * WORDS_PER_PAGE;
 	const endWordIdx = Math.min(startWordIdx + WORDS_PER_PAGE, words.length);
 	const visibleWords = words.slice(startWordIdx, endWordIdx);
-	const pageStartCharIndex = wordStartIndices[startWordIdx];
+	const pageStartCharIndex = wordStartIndices[startWordIdx] ?? 0;
 	(0, import_react.useEffect)(() => {
 		if (!lessonSlug || !currentUser) return;
 		const totalUnits = isParagraphMode ? words.length : chars.length;
@@ -626,15 +648,15 @@ function TypingArena({ lessonSlug, text, title, subtitle, timeLimit, showKeyboar
 			className: cn("mx-auto w-[98%] max-w-[1350px] flex flex-col lg:flex-row gap-6 lg:gap-8 animate-in fade-in slide-in-from-bottom-4 duration-700 px-2 sm:px-4 transition-all duration-300", isFocusMode ? "items-center justify-center min-h-[85vh]" : cn("items-start min-h-0", isWordPractice ? "-mt-6 sm:-mt-8" : "-mt-4 sm:-mt-6")),
 			children: [
 				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "flex flex-col flex-1 w-full gap-6 sm:gap-8",
+					className: "flex flex-col flex-1 w-full gap-0",
 					children: [
 						!isFocusMode && (title || subtitle) && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h2", {
-							className: "text-black text-center font-bold text-2xl sm:text-3xl px-2 mt-0 -mb-4 sm:-mb-6 relative z-10",
+							className: "text-slate-900 dark:text-[#F4F7FB] text-center font-bold text-2xl sm:text-3xl leading-tight px-2 mt-0 mb-0 relative z-10",
 							children: [
 								title,
 								" ",
 								subtitle && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-									className: "font-hindi text-gray-500",
+									className: "font-hindi text-gray-500 dark:text-[#8FA2BC]",
 									children: [
 										"( ",
 										subtitle,
@@ -644,247 +666,258 @@ function TypingArena({ lessonSlug, text, title, subtitle, timeLimit, showKeyboar
 							]
 						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: cn("relative mx-auto w-full cursor-text rounded-3xl py-2 px-6 sm:py-3 sm:px-8 flex items-center justify-center bg-card/80 dark:bg-card/90 border border-border/60 shadow-sm backdrop-blur-xl transition-all duration-300 group overflow-hidden shrink-0", isFocusMode && [
-								"ch-full-practice",
-								"ch-full-practice-2",
-								"ch-full-practice-3",
-								"ch-story-practice-1",
-								"ch-story-practice-2",
-								"ch-news-practice",
-								"ch-dialogue-practice",
-								"ch-adventure-story"
-							].includes(lessonSlug || "") ? "h-[220px] sm:h-[240px]" : "h-[170px] sm:h-[190px]", isFocusMode ? "max-w-[1100px]" : "max-w-[1000px]"),
-							onClick: () => inputRef.current?.focus(),
-							children: [
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-									className: cn("flex flex-col w-full h-full items-center overflow-y-auto overflow-x-hidden custom-scrollbar", isParagraphMode ? "justify-start pt-4 sm:pt-6 pb-8" : "justify-center"),
-									children: (() => {
-										if (isParagraphMode) {
-											const _dependentVowels = /* @__PURE__ */ new Set([
-												"ा",
-												"ि",
-												"ी",
-												"ु",
-												"ू",
-												"े",
-												"ै",
-												"ो",
-												"ौ",
-												"ृ",
-												"ं",
-												"ँ",
-												"ः",
-												"्",
-												"़"
-											]);
-											const _isDependentVowelSign = (s) => {
-												if (!s || s.length === 0) return false;
-												if (s === "ि") return true;
-												return _dependentVowels.has(s[0]);
-											};
-											const _buildDisplayOrder = (hindiParts) => {
-												const order = [];
-												const buffer = [];
-												for (let ki = 0; ki < hindiParts.length; ki++) if (_isDependentVowelSign(hindiParts[ki]) && order.length === 0) buffer.push(ki);
-												else {
-													order.push(ki);
-													if (!_isDependentVowelSign(hindiParts[ki])) {
-														for (const bki of buffer) order.push(bki);
-														buffer.length = 0;
+							className: "flex flex-col w-full gap-6 sm:gap-8 mt-4",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: cn("relative mx-auto w-full cursor-text rounded-[24px] py-2 px-6 sm:py-3 sm:px-8 flex items-center justify-center bg-card/80 dark:bg-[linear-gradient(145deg,#101F34,#0D1A2D)] border border-border/60 dark:border-[rgba(255,255,255,0.09)] shadow-[0_16px_40px_rgba(0,0,0,0.18)] backdrop-blur-xl transition-all duration-300 group overflow-hidden shrink-0", isFocusMode && [
+									"ch-full-practice",
+									"ch-full-practice-2",
+									"ch-full-practice-3",
+									"ch-story-practice-1",
+									"ch-story-practice-2",
+									"ch-news-practice",
+									"ch-dialogue-practice",
+									"ch-adventure-story"
+								].includes(lessonSlug || "") ? "h-[220px] sm:h-[240px]" : "h-[170px] sm:h-[190px]", isFocusMode ? "max-w-[1100px]" : "max-w-[1000px]"),
+								onClick: () => inputRef.current?.focus(),
+								children: [
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+										className: cn("flex flex-col w-full h-full items-center overflow-y-auto overflow-x-hidden custom-scrollbar", isParagraphMode ? "justify-start pt-4 sm:pt-6 pb-8" : "justify-center"),
+										children: (() => {
+											if (isParagraphMode) {
+												const _dependentVowels = /* @__PURE__ */ new Set([
+													"ा",
+													"ि",
+													"ी",
+													"ु",
+													"ू",
+													"े",
+													"ै",
+													"ो",
+													"ौ",
+													"ृ",
+													"ं",
+													"ँ",
+													"ः",
+													"्",
+													"़"
+												]);
+												const _isDependentVowelSign = (s) => {
+													if (!s || s.length === 0) return false;
+													if (s === "ि") return true;
+													return _dependentVowels.has(s[0] ?? "");
+												};
+												const _buildDisplayOrder = (hindiParts) => {
+													const order = [];
+													const buffer = [];
+													for (let ki = 0; ki < hindiParts.length; ki++) {
+														const part = hindiParts[ki];
+														if (part !== void 0 && _isDependentVowelSign(part) && order.length === 0) buffer.push(ki);
+														else {
+															order.push(ki);
+															if (part !== void 0 && !_isDependentVowelSign(part)) {
+																for (const bki of buffer) order.push(bki);
+																buffer.length = 0;
+															}
+														}
 													}
-												}
-												for (const bki of buffer) order.push(bki);
-												return order;
-											};
-											let globalIndex = 0;
-											return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-												className: cn("w-full text-left font-hindi select-none flex flex-wrap gap-y-2 px-2 transition-all duration-300", isFocusMode ? [
-													"ch-full-practice",
-													"ch-full-practice-2",
-													"ch-full-practice-3",
-													"ch-story-practice-1",
-													"ch-story-practice-2",
-													"ch-news-practice",
-													"ch-dialogue-practice",
-													"ch-adventure-story"
-												].includes(lessonSlug || "") ? "text-[28px] sm:text-[32px] leading-[1.8]" : "text-[28px] sm:text-[32px] leading-[2.5]" : "text-2xl sm:text-[28px] leading-[2.2]"),
-												children: words.map((word, wIdx) => {
-													const mappedChars = [...tokenizeHindi(word), " "].map((ch, idxInWord) => {
+													for (const bki of buffer) order.push(bki);
+													return order;
+												};
+												let globalIndex = 0;
+												return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+													className: cn("w-full text-left font-hindi select-none flex flex-wrap gap-y-2 px-2 transition-all duration-300", isFocusMode ? [
+														"ch-full-practice",
+														"ch-full-practice-2",
+														"ch-full-practice-3",
+														"ch-story-practice-1",
+														"ch-story-practice-2",
+														"ch-news-practice",
+														"ch-dialogue-practice",
+														"ch-adventure-story"
+													].includes(lessonSlug || "") ? "text-[28px] sm:text-[32px] leading-[1.8]" : "text-[28px] sm:text-[32px] leading-[2.5]" : "text-2xl sm:text-[28px] leading-[2.2]"),
+													children: words.map((word, wIdx) => {
+														const mappedChars = [...tokenizeHindi(word), " "].map((ch, idxInWord) => {
+															const i = globalIndex++;
+															const typedCh = typedChars[i];
+															return {
+																ch,
+																cIdx: idxInWord,
+																isCurrent: i === typedChars.length,
+																state: typedCh === void 0 ? "pending" : typedCh === ch ? "correct" : "wrong"
+															};
+														});
+														const displayOrder = _buildDisplayOrder(mappedChars.map((m) => m.ch));
+														return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+															className: "whitespace-pre",
+															ref: wIdx === currentWordIndex ? activeWordRef : null,
+															children: displayOrder.map((displayIdx) => {
+																const mappedChar = mappedChars[displayIdx];
+																if (!mappedChar) return null;
+																const { ch, cIdx, isCurrent, state } = mappedChar;
+																return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+																	className: cn("transition-colors duration-200", ch === " " && "inline-block w-[0.5em]", isCurrent && "text-[#F59E0B] dark:text-[#F7C843] underline decoration-2 underline-offset-4", state === "correct" && !isCurrent && "text-[#16A34A] dark:text-[#12B76A]", state === "wrong" && !isCurrent && "text-[#EF4444] dark:text-[#F04452]", state === "pending" && !isCurrent && "text-[#94A3B8] dark:text-[#9AAAC0]"),
+																	children: ch
+																}, cIdx);
+															})
+														}, wIdx);
+													})
+												});
+											}
+											let globalIndex = pageStartCharIndex;
+											const renderWord = (word, wIdxInPage, isLastWordInText) => {
+												const wordChars = tokenizeHindi(word);
+												const charsWithSpace = isLastWordInText ? wordChars : [...wordChars, " "];
+												return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+													className: "flex gap-1.5 sm:gap-2 shrink-0",
+													children: charsWithSpace.map((ch, cIdx) => {
 														const i = globalIndex++;
 														const typedCh = typedChars[i];
-														return {
-															ch,
-															cIdx: idxInWord,
-															isCurrent: i === typedChars.length,
-															state: typedCh === void 0 ? "pending" : typedCh === ch ? "correct" : "wrong"
-														};
-													});
-													const displayOrder = _buildDisplayOrder(mappedChars.map((m) => m.ch));
-													return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-														className: "whitespace-pre",
-														ref: wIdx === currentWordIndex ? activeWordRef : null,
-														children: displayOrder.map((displayIdx) => {
-															const { ch, cIdx, isCurrent, state } = mappedChars[displayIdx];
-															return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-																className: cn("transition-colors duration-200", ch === " " && "inline-block w-[0.5em]", isCurrent && "text-[#F59E0B] underline decoration-2 underline-offset-4", state === "correct" && !isCurrent && "text-[#16A34A]", state === "wrong" && !isCurrent && "text-[#EF4444]", state === "pending" && !isCurrent && "text-[#94A3B8]"),
+														const isCurrent = i === typedChars.length;
+														const state = typedCh === void 0 ? "pending" : typedCh === ch ? "correct" : "wrong";
+														const isSpace = ch === " ";
+														return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+															className: cn("flex items-center justify-center rounded-xl bg-card dark:bg-[#1C304A] shadow-sm border border-border/50 dark:border-[rgba(255,255,255,0.05)] transition-all duration-300 shrink-0", isSpace ? isFocusMode ? "w-16 sm:w-20" : "w-14 sm:w-16" : isFocusMode ? "size-12 sm:size-14" : "size-11 sm:size-12", state === "pending" && !isCurrent && "border border-border/60 text-[#94A3B8] dark:text-[#9AAAC0]", isCurrent && "outline outline-[2.5px] outline-offset-[2.5px] outline-[#F59E0B] dark:outline-[#F7C843] border-transparent z-10 shadow-[0_4px_14px_rgba(245,158,11,0.2)] dark:shadow-[0_4px_14px_rgba(247,200,67,0.25)] text-[#F59E0B] dark:text-[#F7C843] scale-105", state === "correct" && !isCurrent && "border border-[#16A34A]/30 dark:border-[#12B76A]/30 bg-[#16A34A]/8 dark:bg-[#12B76A]/8 text-[#16A34A] dark:text-[#12B76A]", state === "wrong" && !isCurrent && "border-2 border-[#EF4444] dark:border-[#F04452] bg-[#EF4444]/10 dark:bg-[#F04452]/10 text-[#EF4444] dark:text-[#F04452]"),
+															children: isSpace ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+																className: cn("font-bold uppercase tracking-widest transition-all duration-300", isFocusMode ? "text-[10px] sm:text-[11px]" : "text-[9px] sm:text-[10px]", state === "pending" ? "text-[#94A3B8] dark:text-[#9AAAC0]" : state === "correct" ? "text-[#16A34A]/70 dark:text-[#12B76A]/70" : state === "wrong" ? "text-[#EF4444] dark:text-[#F04452]" : "text-[#F59E0B] dark:text-[#F7C843]"),
+																children: "Space"
+															}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+																className: cn("font-hindi font-bold transition-all duration-300", isFocusMode ? "text-2xl sm:text-[28px]" : "text-xl sm:text-2xl"),
 																children: ch
-															}, cIdx);
-														})
+															})
+														}, cIdx);
+													})
+												});
+											};
+											return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+												className: "grid grid-cols-2 gap-x-10 sm:gap-x-16 gap-y-5 sm:gap-y-7 w-max mx-auto px-2",
+												children: visibleWords.map((word, wIdx) => {
+													const absoluteWIdx = startWordIdx + wIdx;
+													const isLastWordInText = absoluteWIdx === words.length - 1;
+													return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+														className: "flex justify-start shrink-0",
+														children: renderWord(word, absoluteWIdx, isLastWordInText)
 													}, wIdx);
 												})
 											});
-										}
-										let globalIndex = pageStartCharIndex;
-										const renderWord = (word, wIdxInPage, isLastWordInText) => {
-											const wordChars = tokenizeHindi(word);
-											const charsWithSpace = isLastWordInText ? wordChars : [...wordChars, " "];
-											return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-												className: "flex gap-1.5 sm:gap-2 shrink-0",
-												children: charsWithSpace.map((ch, cIdx) => {
-													const i = globalIndex++;
-													const typedCh = typedChars[i];
-													const isCurrent = i === typedChars.length;
-													const state = typedCh === void 0 ? "pending" : typedCh === ch ? "correct" : "wrong";
-													const isSpace = ch === " ";
-													return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-														className: cn("flex items-center justify-center rounded-xl bg-card dark:bg-[oklch(0.24_0.038_260)] shadow-sm border border-border/50 transition-all duration-300 shrink-0", isSpace ? isFocusMode ? "w-16 sm:w-20" : "w-14 sm:w-16" : isFocusMode ? "size-12 sm:size-14" : "size-11 sm:size-12", state === "pending" && !isCurrent && "border border-border/60 text-[#94A3B8]", isCurrent && "outline outline-[2.5px] outline-offset-[2.5px] outline-[#F59E0B] border-transparent z-10 shadow-[0_4px_14px_rgba(245,158,11,0.2)] text-[#F59E0B] scale-105", state === "correct" && !isCurrent && "border border-[#16A34A]/30 bg-[#16A34A]/8 text-[#16A34A]", state === "wrong" && !isCurrent && "border-2 border-[#EF4444] bg-[#EF4444]/10 text-[#EF4444]"),
-														children: isSpace ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-															className: cn("font-bold uppercase tracking-widest transition-all duration-300", isFocusMode ? "text-[10px] sm:text-[11px]" : "text-[9px] sm:text-[10px]", state === "pending" ? "text-[#94A3B8]" : state === "correct" ? "text-[#16A34A]/70" : state === "wrong" ? "text-[#EF4444]" : "text-[#F59E0B]"),
-															children: "Space"
-														}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-															className: cn("font-hindi font-bold transition-all duration-300", isFocusMode ? "text-2xl sm:text-[28px]" : "text-xl sm:text-2xl"),
-															children: ch
-														})
-													}, cIdx);
-												})
-											});
-										};
-										return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-											className: "grid grid-cols-2 gap-x-10 sm:gap-x-16 gap-y-5 sm:gap-y-7 w-max mx-auto px-2",
-											children: visibleWords.map((word, wIdx) => {
-												const absoluteWIdx = startWordIdx + wIdx;
-												const isLastWordInText = absoluteWIdx === words.length - 1;
-												return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-													className: "flex justify-start shrink-0",
-													children: renderWord(word, absoluteWIdx, isLastWordInText)
-												}, wIdx);
-											})
-										});
-									})()
-								}),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("textarea", {
-									ref: inputRef,
-									value: typed,
-									onChange: (e) => handleChange(e.target.value),
-									onKeyDown: () => {
-										if (isPaused) setIsPaused(false);
-									},
-									spellCheck: false,
-									autoComplete: "off",
-									autoCorrect: "off",
-									autoCapitalize: "off",
-									"aria-label": "Hindi typing input",
-									className: "absolute inset-0 size-full resize-none rounded-3xl bg-transparent p-12 text-transparent caret-transparent outline-none z-10"
-								}),
-								!startedAt && !finished && !isPaused && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-									className: "absolute inset-0 flex items-center justify-center pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-20",
-									children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-										className: "rounded-full bg-background/90 px-4 py-2 text-sm font-semibold text-foreground backdrop-blur-md shadow-md border border-border",
-										children: "Click anywhere to start typing"
+										})()
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("textarea", {
+										ref: inputRef,
+										value: typed,
+										onChange: (e) => handleChange(e.target.value),
+										onKeyDown: () => {
+											if (isPaused) setIsPaused(false);
+										},
+										spellCheck: false,
+										autoComplete: "off",
+										autoCorrect: "off",
+										autoCapitalize: "off",
+										"aria-label": "Hindi typing input",
+										className: "absolute inset-0 size-full resize-none rounded-3xl bg-transparent p-12 text-transparent caret-transparent outline-none z-10"
+									}),
+									!startedAt && !finished && !isPaused && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+										className: "absolute inset-0 flex items-center justify-center pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-20",
+										children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											className: "rounded-full bg-background/90 px-4 py-2 text-sm font-semibold text-foreground backdrop-blur-md shadow-md border border-border",
+											children: "Click anywhere to start typing"
+										})
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+										className: cn("absolute inset-0 z-20 flex items-center justify-center rounded-3xl transition-all duration-200 pointer-events-none", isPaused && !finished ? "bg-primary/10 backdrop-blur-[2px] opacity-100" : "bg-primary/0 backdrop-blur-none opacity-0"),
+										children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											className: cn("text-[18px] sm:text-[20px] font-semibold text-primary drop-shadow-sm transition-all duration-200 animate-pulse", isPaused && !finished ? "scale-100 opacity-100" : "scale-95 opacity-0"),
+											children: "⌨️ Press any key to resume"
+										})
+									}),
+									finished && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChapterMasteryModal, {
+										wpm,
+										accuracy,
+										errors,
+										isValid: validation.isValid,
+										grade: validation.grade,
+										xp: validation.xp,
+										nextLessonSlug: nextLesson?.slug,
+										onPracticeAgain: reset
 									})
-								}),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-									className: cn("absolute inset-0 z-20 flex items-center justify-center rounded-3xl transition-all duration-200 pointer-events-none", isPaused && !finished ? "bg-primary/10 backdrop-blur-[2px] opacity-100" : "bg-primary/0 backdrop-blur-none opacity-0"),
-									children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-										className: cn("text-[18px] sm:text-[20px] font-semibold text-primary drop-shadow-sm transition-all duration-200 animate-pulse", isPaused && !finished ? "scale-100 opacity-100" : "scale-95 opacity-0"),
-										children: "⌨️ Press any key to resume"
-									})
-								}),
-								finished && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChapterMasteryModal, {
-									wpm,
-									accuracy,
-									errors,
-									isValid: validation.isValid,
-									grade: validation.grade,
-									xp: validation.xp,
-									nextLessonSlug: nextLesson?.slug,
-									onPracticeAgain: reset
+								]
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+								className: cn("mx-auto w-full transition-all duration-300 ease-in-out", isFocusMode ? "h-0 max-w-[1050px] opacity-0 overflow-hidden m-0 p-0" : "h-auto max-w-[850px] opacity-100 -mt-2 sm:-mt-4"),
+								children: showKeyboard && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(HindiKeyboard, {
+									nextChar,
+									preset: keyboardPreset
 								})
-							]
+							})]
 						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-							className: cn("mx-auto w-full transition-all duration-300 ease-in-out", isFocusMode ? "h-0 max-w-[1050px] opacity-0 overflow-hidden m-0 p-0" : "h-auto max-w-[850px] opacity-100 -mt-2 sm:-mt-4"),
-							children: showKeyboard && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(HindiKeyboard, { nextChar })
-						})
+						" "
 					]
 				}),
 				" ",
 				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: cn("shrink-0 transition-all duration-300 ease-in-out", isFocusMode ? "w-0 h-0 opacity-0 overflow-hidden m-0 p-0" : "w-full lg:w-[270px] space-y-4 sm:space-y-6 mt-6 lg:mt-0 opacity-100"),
+					className: cn("shrink-0 transition-all duration-300 ease-in-out", isFocusMode ? "w-0 h-0 opacity-0 overflow-hidden m-0 p-0" : "w-full lg:w-[30%] lg:max-w-[320px] lg:min-w-[280px] space-y-4 sm:space-y-6 mt-6 lg:mt-0 opacity-100"),
 					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "bg-card/60 dark:bg-card/80 rounded-[2rem] p-5 sm:p-6 shadow-sm border border-border/40 flex flex-col gap-5",
+						className: "bg-card/60 dark:bg-[linear-gradient(145deg,#101F34,#0D1A2D)] rounded-[24px] p-5 sm:p-6 shadow-[0_16px_40px_rgba(0,0,0,0.18)] border border-border/40 dark:border-[rgba(255,255,255,0.09)] flex flex-col gap-5",
 						children: [
 							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
-								className: "text-xl font-semibold tracking-tight text-foreground",
+								className: "text-xl font-semibold tracking-tight text-foreground dark:text-[#F4F7FB]",
 								children: "Live Session"
 							}),
 							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 								className: "grid grid-cols-2 gap-3",
 								children: [
 									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-										className: "bg-background/80 dark:bg-background rounded-2xl p-4 shadow-sm border border-border/40 flex flex-col gap-1",
+										className: "bg-background/80 dark:bg-[#071426] rounded-[20px] p-4 shadow-sm border border-border/40 dark:border-[rgba(255,255,255,0.05)] flex flex-col gap-1",
 										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-											className: "text-[10px] font-bold text-muted-foreground uppercase tracking-wider",
+											className: "text-[10px] font-bold text-muted-foreground dark:text-[#8FA2BC] uppercase tracking-wider",
 											children: "Speed"
 										}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 											className: "flex items-center gap-1",
 											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-												className: "text-[28px] font-semibold tracking-tight text-primary",
+												className: "text-[28px] font-semibold tracking-tight text-primary dark:text-[#4B8BFF]",
 												children: wpm
 											}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-												className: "text-[13px] font-semibold text-muted-foreground",
+												className: "text-[13px] font-semibold text-muted-foreground dark:text-[#8FA2BC]",
 												children: "WPM"
 											})]
 										})]
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-										className: "bg-background/80 dark:bg-background rounded-2xl p-4 shadow-sm border border-border/40 flex flex-col gap-1",
+										className: "bg-background/80 dark:bg-[#071426] rounded-[20px] p-4 shadow-sm border border-border/40 dark:border-[rgba(255,255,255,0.05)] flex flex-col gap-1",
 										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-											className: "text-[10px] font-bold text-muted-foreground uppercase tracking-wider",
+											className: "text-[10px] font-bold text-muted-foreground dark:text-[#8FA2BC] uppercase tracking-wider",
 											children: "Accuracy"
 										}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 											className: "flex items-center gap-1",
 											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-												className: "text-[28px] font-semibold tracking-tight text-success",
+												className: "text-[28px] font-semibold tracking-tight text-success dark:text-[#12B76A]",
 												children: accuracy
 											}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-												className: "text-[13px] font-semibold text-muted-foreground",
+												className: "text-[13px] font-semibold text-muted-foreground dark:text-[#8FA2BC]",
 												children: "%"
 											})]
 										})]
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-										className: "bg-background/80 dark:bg-background rounded-2xl p-4 shadow-sm border border-border/40 flex flex-col gap-1",
+										className: "bg-background/80 dark:bg-[#071426] rounded-[20px] p-4 shadow-sm border border-border/40 dark:border-[rgba(255,255,255,0.05)] flex flex-col gap-1",
 										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-											className: "text-[10px] font-bold text-muted-foreground uppercase tracking-wider",
+											className: "text-[10px] font-bold text-muted-foreground dark:text-[#8FA2BC] uppercase tracking-wider",
 											children: "Time"
 										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 											className: "flex items-center gap-1",
 											children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-												className: "text-[22px] font-semibold tracking-tight text-foreground",
+												className: "text-[22px] font-semibold tracking-tight text-foreground dark:text-[#F4F7FB]",
 												children: formatTime(elapsed)
 											})
 										})]
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-										className: "bg-background/80 dark:bg-background rounded-2xl p-4 shadow-sm border border-border/40 flex flex-col gap-1",
+										className: "bg-background/80 dark:bg-[#071426] rounded-[20px] p-4 shadow-sm border border-border/40 dark:border-[rgba(255,255,255,0.05)] flex flex-col gap-1",
 										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-											className: "text-[10px] font-bold text-muted-foreground uppercase tracking-wider",
+											className: "text-[10px] font-bold text-muted-foreground dark:text-[#8FA2BC] uppercase tracking-wider",
 											children: "Streak"
 										}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 											className: "flex items-center gap-1",
 											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-												className: "text-[22px] font-semibold tracking-tight text-orange-500",
+												className: "text-[22px] font-semibold tracking-tight text-orange-500 dark:text-[#F7C843]",
 												children: currentStreak
 											}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 												className: "text-[20px]",
@@ -897,23 +930,29 @@ function TypingArena({ lessonSlug, text, title, subtitle, timeLimit, showKeyboar
 							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
 								onClick: togglePause,
 								disabled: finished,
-								className: cn("w-full hover:bg-black text-white rounded-xl py-4 flex items-center justify-center gap-2 font-semibold transition-colors shadow-sm", isPaused ? "bg-primary text-primary-foreground hover:bg-primary/90" : "bg-[#1a1b1e]", finished && "opacity-50 cursor-not-allowed"),
+								className: cn("w-full text-white rounded-[14px] py-4 flex items-center justify-center gap-2 font-semibold transition-colors shadow-sm h-[56px]", isPaused ? "bg-primary/80 hover:bg-primary text-white" : "bg-primary hover:bg-primary/90 dark:bg-[#2563eb] dark:hover:bg-[#1d4ed8]", finished && "opacity-50 cursor-not-allowed"),
 								children: [finished ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Trophy, { className: "size-4" }) : isPaused || startedAt === null ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Play, { className: "size-4 fill-current" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 									className: "flex gap-1 items-center",
 									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "w-1.5 h-3.5 bg-white/90 rounded-sm" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "w-1.5 h-3.5 bg-white/90 rounded-sm" })]
 								}), finished ? "Session Complete" : startedAt === null ? "Start Session" : isPaused ? "Resume Session" : "Pause Session"]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+								onClick: () => setForceFinish(true),
+								disabled: finished || startedAt === null,
+								className: cn("w-full text-foreground rounded-[14px] py-4 flex items-center justify-center gap-2 font-semibold transition-colors shadow-sm h-[56px] border border-border/40", "bg-secondary/30 hover:bg-secondary/50 dark:bg-[#071426] dark:hover:bg-[#1C304A]", (finished || startedAt === null) && "opacity-50 cursor-not-allowed"),
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CircleCheckBig, { className: "size-4" }), "Submit Session"]
 							})
 						]
 					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 						onClick: () => setIsFocusMode(true),
-						className: "bg-background/80 dark:bg-background rounded-[2rem] p-5 sm:p-6 shadow-sm border border-border/40 flex items-center justify-between cursor-pointer hover:bg-secondary/30 transition-colors",
+						className: "bg-background/80 dark:bg-[linear-gradient(145deg,#101F34,#0D1A2D)] rounded-[24px] p-5 sm:p-6 shadow-sm border border-border/40 dark:border-[rgba(255,255,255,0.09)] dark:shadow-[0_16px_40px_rgba(0,0,0,0.18)] flex items-center justify-between cursor-pointer hover:bg-secondary/30 dark:hover:bg-[#1C304A] transition-colors",
 						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 							className: "flex flex-col gap-0.5",
 							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-								className: "font-semibold text-sm text-foreground",
+								className: "font-semibold text-sm text-foreground dark:text-[#F4F7FB]",
 								children: "Focus Mode"
 							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-								className: "text-[11px] text-muted-foreground font-medium",
+								className: "text-[11px] text-muted-foreground dark:text-[#71839B] font-medium",
 								children: "Hide distractions"
 							})]
 						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
@@ -2473,7 +2512,9 @@ function generateFullPracticeSession(lessonSlug) {
 			const currentWordCoveredTargets = /* @__PURE__ */ new Set();
 			for (const hiChar of Object.keys(charIndexCache)) if (word.includes(hiChar)) {
 				const targetIds = charIndexCache[hiChar];
-				for (const tId of targetIds) if (remainingTargets.has(tId)) currentWordCoveredTargets.add(tId);
+				if (targetIds) {
+					for (const tId of targetIds) if (remainingTargets.has(tId)) currentWordCoveredTargets.add(tId);
+				}
 			}
 			if (currentWordCoveredTargets.size > bestCoveredCount) {
 				bestCoveredCount = currentWordCoveredTargets.size;
@@ -2501,8 +2542,13 @@ function generateFullPracticeSession(lessonSlug) {
 	const finalString = sessionWords.join(" ");
 	if (lessonSlug) globalLessonSessions[lessonSlug] = sessionWords;
 	let overlapCount = 0;
-	if (lessonSlug === "ch-full-practice-3" && globalLessonSessions["ch-full-practice-2"]) overlapCount = sessionWords.filter((w) => globalLessonSessions["ch-full-practice-2"].includes(w)).length;
-	else if (lessonSlug === "ch-full-practice-2" && globalLessonSessions["ch-full-practice-3"]) overlapCount = sessionWords.filter((w) => globalLessonSessions["ch-full-practice-3"].includes(w)).length;
+	if (lessonSlug === "ch-full-practice-3" && globalLessonSessions["ch-full-practice-2"]) {
+		const list = globalLessonSessions["ch-full-practice-2"];
+		overlapCount = sessionWords.filter((w) => list.includes(w)).length;
+	} else if (lessonSlug === "ch-full-practice-2" && globalLessonSessions["ch-full-practice-3"]) {
+		const list = globalLessonSessions["ch-full-practice-3"];
+		overlapCount = sessionWords.filter((w) => list.includes(w)).length;
+	}
 	return {
 		totalUniqueWords: sessionWords.length,
 		totalCharacters: finalString.length,
@@ -2516,23 +2562,23 @@ function generateFullPracticeSession(lessonSlug) {
 var story1Template = `
 एक बार की बात है, {PLACE} में {HERO} नाम का एक {PROFESSION} रहता था। उसका जीवन बहुत ही सामान्य था, लेकिन एक दिन कुछ ऐसा हुआ जिसने उसकी पूरी दुनिया बदल दी।
 यह बात {DATE} की है। समय करीब {TIME} हो रहा था। आसमान में {WEATHER} छाए हुए थे। {HERO} अपने घर के बरामदे में बैठा हुआ था और {OBJECT} पढ़ रहा था। 
-अचानक, उसने एक तेज़ आवाज़ सुनी। "अरे! कोई मेरी मदद करो!" यह आवाज़ {HERO} के बचपन के मित्र {FRIEND} की थी।
-{HERO} तुरंत उठा और आवाज़ की दिशा में भागा। उसने देखा कि {FRIEND} एक {DANGER} में फँस गया था। {FRIEND} चिल्ला रहा था, ‘कृपया मुझे बचाओ!’ 
+अचानक, उसने एक तेज़ आवाज़ सुनी। ‘अरे। कोई मेरी मदद करो।’ यह आवाज़ {HERO} के बचपन के मित्र {FRIEND} की थी।
+{HERO} तुरंत उठा और आवाज़ की दिशा में भागा। उसने देखा कि {FRIEND} एक {DANGER} में फँस गया था। {FRIEND} चिल्ला रहा था, ‘कृपया मुझे बचाओ।’ 
 {HERO} ने अपनी पूरी ताक़त लगाई और {FRIEND} को सुरक्षित बाहर निकाल लिया। 
-"तुम ठीक तो हो?" {HERO} ने पूछा। 
-"हाँ, शुक्रिया मेरे दोस्त! तुमने मेरी जान बचाई है," {FRIEND} ने काँपते हुए उत्तर दिया। 
+‘तुम ठीक तो हो।’ {HERO} ने पूछा। 
+‘हाँ, शुक्रिया मेरे दोस्त। तुमने मेरी जान बचाई है,’ {FRIEND} ने काँपते हुए उत्तर दिया। 
 (यह देखकर वहाँ खड़े लोग भी बहुत हैरान थे|) 
 थोड़ी देर बाद, गाँव के सरपंच श्री {SARPANCH} भी वहाँ पहुँच गए। उन्होंने {HERO} की बहुत प्रशंसा की। 
-सरपंच ने कहा - "हमारे गाँव को तुम जैसे साहसी युवाओं पर गर्व है। तुमने जो किया है, वह वास्तव में अकल्पनीय है।" 
+सरपंच ने कहा - ‘हमारे गाँव को तुम जैसे साहसी युवाओं पर गर्व है। तुमने जो किया है, वह वास्तव में अकल्पनीय है।’ 
 इस घटना के बाद, {HERO} की चर्चा हर जगह होने लगी। 
 अब हम कुछ और बातों पर ध्यान देते हैं। {HERO} की शिक्षा बहुत उच्च स्तर की थी। उसने {UNIVERSITY} से गद्य और पद्य दोनों विधाओं में ज्ञान प्राप्त किया था। 
 उसका मानना था कि विद्या ही सबसे बड़ा धन है। 
 एक दिन, {HERO} ने अपने गाँव में एक विद्यालय खोलने का निर्णय लिया। 
-"मैं चाहता हूँ कि यहाँ का हर बच्चा पढ़-लिख कर महान बने," {HERO} ने एक सभा में कहा। 
+‘मैं चाहता हूँ कि यहाँ का हर बच्चा पढ़-लिख कर महान बने,’ {HERO} ने एक सभा में कहा। 
 गाँव वालों ने इस विचार का ज़ोरदार स्वागत किया। 
 विद्यालय का निर्माण कार्य {START_MONTH} में शुरू हुआ और {END_MONTH} तक पूरा हो गया। 
 उद्घाटन के दिन एक विशेष अतिथि को आमंत्रित किया गया था। वे थे प्रसिद्ध विद्वान डॉक्टर {SCHOLAR}। 
-डॉक्टर {SCHOLAR} ने अपने भाषण में कहा, "शिक्षा वह प्रकाश है जो अज्ञान के अंधकार को मिटा देती है। ५ + ४ = ९ होता है, यह केवल गणित नहीं, बल्कि जीवन का सत्य भी हो सकता है। यदि हम अपने ज्ञान को बाँटें, तो वह कभी ९ - ५ = ४ की तरह कम नहीं होता, बल्कि हमेशा बढ़ता है।" 
+डॉक्टर {SCHOLAR} ने अपने भाषण में कहा, ‘शिक्षा वह प्रकाश है जो अज्ञान के अंधकार को मिटा देती है। ५ + ४ = ९ होता है, यह केवल गणित नहीं, बल्कि जीवन का सत्य भी हो सकता है। यदि हम अपने ज्ञान को बाँटें, तो वह कभी ९ - ५ = ४ की तरह कम नहीं होता, बल्कि हमेशा बढ़ता है।’ 
 लोग यह सुनकर बहुत प्रेरित हुए। 
 विद्यालय में बच्चों को ऋग्वेद, विज्ञान, और गणित जैसे विषय पढ़ाए जाने लगे। 
 वहाँ के बच्चे बहुत ही चंचल और बुद्धिमान थे। वे हर नई चीज़ को जल्दी सीख लेते थे। 
@@ -2540,8 +2586,8 @@ var story1Template = `
 समय बीतता गया और वह विद्यालय पूरे राज्य में प्रसिद्ध हो गया। 
 {HERO} की मेहनत रंग लाई थी। 
 एक दिन, राज्य के मुख्यमंत्री ने {HERO} को राजधानी बुलाकर सम्मानित किया। 
-"आपके योगदान को कभी भुलाया नहीं जा सकता," मुख्यमंत्री ने कहा। 
-{HERO} ने नम्रतापूर्वक उत्तर दिया, "यह मेरा कर्तव्य था। मैंने वही किया जो मुझे सही लगा।" 
+‘आपके योगदान को कभी भुलाया नहीं जा सकता,’ मुख्यमंत्री ने कहा। 
+{HERO} ने नम्रतापूर्वक उत्तर दिया, ‘यह मेरा कर्तव्य था। मैंने वही किया जो मुझे सही लगा।’ 
 इस प्रकार, {HERO} ने अपने जीवन को एक उद्देश्य दे दिया। 
 आज भी जब लोग {PLACE} जाते हैं, तो वे उस विद्यालय को ज़रूर देखते हैं। 
 वहाँ की दीवारों पर बुद्ध के उपदेश, त्रिशूल के चित्र और महान ऋषियों की कहानियाँ लिखी हुई हैं। 
@@ -2564,16 +2610,16 @@ var story2Template = `
 {NAME} जंगल में घूम रहा था, तभी उसने देखा कि एक {VILLAIN_ANIMAL} किसी का पीछा कर रहा है। 
 वह कोई और नहीं बल्कि {NAME} का परम मित्र {FRIEND_ANIMAL} था। 
 {FRIEND_ANIMAL} अपनी जान बचाने के लिए भाग रहा था। 
-"बचाओ! बचाओ!" वह ज़ोर-ज़ोर से चिल्ला रहा था। 
+‘बचाओ। बचाओ।’ वह ज़ोर-ज़ोर से चिल्ला रहा था। 
 {NAME} ने बिना कुछ सोचे-समझे {VILLAIN_ANIMAL} पर छलाँग लगा दी। 
 दोनों के बीच एक भयंकर युद्ध शुरू हो गया। 
-{VILLAIN_ANIMAL} बहुत क्रुद्ध था। उसने कहा, ‘तुम मेरे शिकार के बीच में क्यों आ रहे हो?’ 
-{NAME} ने दृढ़ता से जवाब दिया, "मैं अपने मित्र को कभी मरने नहीं दूँगा!" 
+{VILLAIN_ANIMAL} बहुत क्रुद्ध था। उसने कहा, ‘तुम मेरे शिकार के बीच में क्यों आ रहे हो।’ 
+{NAME} ने दृढ़ता से जवाब दिया, ‘मैं अपने मित्र को कभी मरने नहीं दूँगा।’ 
 (यह सुनकर जंगल के बाकी जानवर भी वहाँ इकट्ठा हो गए|) 
 काफी देर तक संघर्ष चलता रहा। अंततः, {NAME} की जीत हुई और {VILLAIN_ANIMAL} को वहाँ से भागना पड़ा। 
 सभी जानवरों ने {NAME} की जय-जयकार की। 
 जंगल के राजा, {KING}, ने {NAME} को दरबार में बुलाया। 
-"तुमने आज बहुत ही वीरता का काम किया है। मैं तुम्हें इस जंगल का सेनापति नियुक्त करता हूँ," राजा ने घोषणा की। 
+‘तुमने आज बहुत ही वीरता का काम किया है। मैं तुम्हें इस जंगल का सेनापति नियुक्त करता हूँ,’ राजा ने घोषणा की। 
 {NAME} ने राजा को धन्यवाद दिया और अपनी नई ज़िम्मेदारी सँभाल ली। 
 सेनापति बनने के बाद, {NAME} ने जंगल की सुरक्षा के लिए कई नए नियम बनाए। 
 उसने सुनिश्चित किया कि कोई भी जानवर किसी कमज़ोर को परेशान न करे। 
@@ -2582,7 +2628,7 @@ var story2Template = `
 एक बार, कुछ शिकारी जंगल में घुस आए। उनके पास खतरनाक हथियार थे। 
 वे * जैसे चमकते हुए औजार लेकर आए थे। 
 {NAME} ने अपनी सेना के साथ उन शिकारियों का सामना किया। 
-"हम तुम्हें यहाँ से एक भी जानवर नहीं ले जाने देंगे," {NAME} ने ललकारा। 
+‘हम तुम्हें यहाँ से एक भी जानवर नहीं ले जाने देंगे,’ {NAME} ने ललकारा। 
 शिकारियों ने गोलियाँ चलानी शुरू कर दीं, लेकिन {NAME} की कुशल रणनीति के आगे उनकी एक न चली। 
 उस दिन जंगल के सभी जानवरों ने मिलकर काम किया। 
 चंचल बंदरों ने पेड़ों से पत्थर बरसाए, जबकि तेज़ दौड़ने वाले हिरणों ने शिकारियों को भ्रमित कर दिया। 
@@ -2590,7 +2636,7 @@ var story2Template = `
 इस घटना के बाद, {NAME} का सम्मान और भी बढ़ गया। 
 यहाँ तक कि दूर-दराज के जंगलों से भी जानवर उससे मिलने और ज्ञान प्राप्त करने आने लगे। 
 {NAME} ने उन्हें सिखाया कि एकता में ही बल है। 
-"अगर हम सब मिलकर रहें, तो कोई भी हमारा कुछ नहीं बिगाड़ सकता," उसने एक विशाल सभा में कहा। 
+‘अगर हम सब मिलकर रहें, तो कोई भी हमारा कुछ नहीं बिगाड़ सकता,’ उसने एक विशाल सभा में कहा। 
 उसकी बातें सुनकर सभी जानवरों में एक नई ऊर्जा का संचार हुआ। 
 धीरे-धीरे, वह जंगल दुनिया का सबसे सुरक्षित और खुशहाल जंगल बन गया। 
 वहाँ के निवासी शांति से रहने लगे। 
@@ -2752,7 +2798,7 @@ var vars$1 = {
 function fillTemplate$1(template) {
 	let filled = template;
 	for (const [key, values] of Object.entries(vars$1)) while (filled.includes(`{${key}}`)) {
-		const randomValue = values[Math.floor(Math.random() * values.length)];
+		const randomValue = values[Math.floor(Math.random() * values.length)] ?? "";
 		filled = filled.replace(`{${key}}`, randomValue);
 	}
 	return filled;
@@ -2799,7 +2845,7 @@ var newsTemplate = `
 आज की मुख्य ख़बरें:
 शिक्षा के क्षेत्र में एक नई {TECH_INNOVATION} का अनावरण किया गया है। 
 {CITY_NEWS} में आयोजित एक विशाल सम्मेलन में {MINISTER} ने इस नई योजना की घोषणा की। 
-"हमारा उद्देश्य हर बच्चे तक {TECH_INNOVATION} पहुँचाना है," {MINISTER} ने संवाददाताओं से कहा। 
+‘हमारा उद्देश्य हर बच्चे तक {TECH_INNOVATION} पहुँचाना है,’ {MINISTER} ने संवाददाताओं से कहा। 
 इस योजना से ५ + ४ = ९ लाख से अधिक छात्रों को लाभ मिलेगा। 
 एक अन्य समाचार में, विज्ञान के क्षेत्र में डॉ. {SCIENTIST} ने एक अभूतपूर्व खोज की है। 
 उन्होंने एक ऐसे {MATERIAL} का आविष्कार किया है जो पर्यावरण के अनुकूल है। 
@@ -2807,7 +2853,7 @@ var newsTemplate = `
 डॉ. {SCIENTIST} को उनके इस कार्य के लिए {AWARD} से सम्मानित किया गया है। 
 खेल जगत की बात करें तो, {CITY_SPORT} में खेले गए रोमांचक मैच में {TEAM_A} ने {TEAM_B} को हरा दिया है। 
 यह मैच अंतिम समय तक बहुत ही तनावपूर्ण रहा। 
-मैच के अंत में {TEAM_A} के कप्तान ने कहा, "यह जीत हमारे कठिन परिश्रम का परिणाम है।" 
+मैच के अंत में {TEAM_A} के कप्तान ने कहा, ‘यह जीत हमारे कठिन परिश्रम का परिणाम है।’ 
 पर्यावरण की दृष्टि से, {RIVER} नदी में जल स्तर लगातार बढ़ रहा है। 
 प्रशासन ने आस-पास के गाँवों में अलर्ट जारी कर दिया है। 
 सभी नागरिकों को सुरक्षित स्थानों पर जाने की सलाह दी गई है। 
@@ -2827,25 +2873,25 @@ var newsTemplate = `
 var dialogueTemplate = `
 {PERSON_A}: नमस्ते {PERSON_B}! आज तुम इतनी जल्दी कैसे आ गए?
 {PERSON_B}: नमस्ते {PERSON_A}। मुझे एक ज़रूरी काम था, इसलिए सुबह ही निकल गया। 
-{PERSON_A}: अच्छा, क्या काम था? क्या सब ठीक तो है?
+{PERSON_A}: अच्छा, क्या काम था। क्या सब ठीक तो है।
 {PERSON_B}: हाँ, सब ठीक है। दरअसल, मुझे अपने भाई के {EVENT} के लिए कुछ तैयारियाँ करनी थीं। 
-{PERSON_A}: यह तो बहुत अच्छी बात है! क्या मैं तुम्हारी कुछ मदद कर सकता हूँ?
+{PERSON_A}: यह तो बहुत अच्छी बात है। क्या मैं तुम्हारी कुछ मदद कर सकता हूँ।
 {PERSON_B}: अगर तुम मेरे साथ {PLACE_D} तक चल सको, तो बहुत मदद हो जाएगी। 
-{PERSON_A}: बिल्कुल! हम वहाँ से क्या-क्या लाएँगे?
+{PERSON_A}: बिल्कुल। हम वहाँ से क्या-क्या लाएँगे।
 {PERSON_B}: हमें कुछ सजावट का सामान, {FOOD_ITEM}, और मेहमानों के लिए {GIFT} लानी हैं। 
 {PERSON_A}: ठीक है, लेकिन हमें समय का ध्यान रखना होगा। अभी समय १०:३० हो रहा है। 
 {PERSON_B}: हाँ, हमें दोपहर २:४५ तक वापस आना होगा, क्योंकि शाम को ४ बजे से {EVENT} शुरू है। 
-{PERSON_A}: अरे! (चौंकते हुए) तो हमें जल्दी निकलना चाहिए| 
+{PERSON_A}: अरे। (चौंकते हुए) तो हमें जल्दी निकलना चाहिए। 
 {PERSON_B}: हाँ, मेरी गाड़ी बाहर ही खड़ी है। 
-{PERSON_A}: चलो चलते हैं। वैसे, तुम्हारे भाई की पढ़ाई कैसी चल रही है? 
+{PERSON_A}: चलो चलते हैं। वैसे, तुम्हारे भाई की पढ़ाई कैसी चल रही है। 
 {PERSON_B}: उसकी पढ़ाई बहुत अच्छी चल रही है। उसने अभी हाल ही में विज्ञान में एक प्रोजेक्ट पूरा किया है। 
-{PERSON_A}: क्या उसने डॉ. {SCIENTIST_D} की थ्योरी का इस्तेमाल किया?
-{PERSON_B}: हाँ! उसने बताया कि कैसे ५ + ४ = ९ होता है, लेकिन विज्ञान में कई बार समीकरण अलग तरीके से काम करते हैं। 
-{PERSON_A}: बहुत बढ़िया!
+{PERSON_A}: क्या उसने डॉ. {SCIENTIST_D} की थ्योरी का इस्तेमाल किया।
+{PERSON_B}: हाँ। उसने बताया कि कैसे ५ + ४ = ९ होता है, लेकिन विज्ञान में कई बार समीकरण अलग तरीके से काम करते हैं। 
+{PERSON_A}: बहुत बढ़िया।
 यहाँ कुछ और विशेष बातें हैं: ७ ८ ९ ऋ . ॅ व् ख् थ् श्र ग् ब् ण् ध् घ् ४ ६ ३ * ष्। 
 {PERSON_A}: तुम्हें पता है, कल मैंने एक डॉक्टर (ॅ) को देखा जो थ्, ळ, भ्, ष्, ब्, ण्, और घ् के उच्चारण पर बात कर रहा था।
 {PERSON_B}: हाँ, मैंने भी सुना है कि ६, ७, और ८ साल के बच्चों को ये अक्षर सिखाने में * और . जैसे निशानों का प्रयोग होता है।
-{PERSON_A}: यह दिलचस्प है। मैंने सुना है कि ५/१०/२०२३ को ‘शुद्ध’ (द्ध) उच्चारण के लिए एक क्लास है, क्या तुम भी ‘हाँ’ कहोगे?
+{PERSON_A}: यह दिलचस्प है। मैंने सुना है कि ५/१०/२०२३ को ‘शुद्ध’ (द्ध) उच्चारण के लिए एक क्लास है, क्या तुम भी ‘हाँ’ कहोगे।
 {PERSON_B}: अच्छा, हम {PLACE_D} पहुँच गए हैं। चलो अपना काम शुरू करते हैं। 
 {PERSON_A}: ठीक है। 
 `;
@@ -2855,33 +2901,33 @@ var adventureTemplate = `
 चारों तरफ घना अंधेरा था और तेज़ हवा चल रही थी। 
 {ADVENTURER} ने टॉर्च निकाली और बाहर निकला। 
 तभी उसे एक पुरानी, वीरान हवेली दिखाई दी। 
-"शायद वहाँ कोई मदद मिल जाए," उसने सोचा। 
+‘शायद वहाँ कोई मदद मिल जाए,’ उसने सोचा। 
 वह धीरे-धीरे हवेली के मुख्य दरवाज़े की ओर बढ़ा। 
 दरवाज़ा हल्का सा खुला था। उसने उसे धकेला तो एक डरावनी आवाज़ आई। 
 (अंदर बहुत धूल और मकड़ी के जाले थे|) 
 हवेली के अंदर एक बड़ी सी मेज़ पर एक {MYSTERY_OBJECT} रखा हुआ था। 
 जैसे ही {ADVENTURER} ने उसे छुआ, वहाँ रोशनी हो गई। 
-तभी एक आवाज़ गूँजी, "कौन हो तुम?"
+तभी एक आवाज़ गूँजी, ‘कौन हो तुम।’
 {ADVENTURER} ने मुड़कर देखा, वहाँ एक बूढ़ा व्यक्ति खड़ा था, जिसके हाथ में एक प्राचीन किताब थी। 
-"मैं {ADVENTURER} हूँ। मेरी गाड़ी खराब हो गई है। क्या आप मेरी मदद कर सकते हैं?" 
-बूढ़े ने कहा, "यहाँ जो भी आता है, वह अपनी इच्छा से वापस नहीं जा सकता।" 
-{ADVENTURER} को कुछ अजीब लगा। "मतलब? आप कौन हैं?" 
-"मेरा नाम {VILLAIN_A} है। मैं इस {MYSTERY_OBJECT} की रक्षा कर रहा हूँ।" 
+‘मैं {ADVENTURER} हूँ। मेरी गाड़ी खराब हो गई है। क्या आप मेरी मदद कर सकते हैं।’ 
+बूढ़े ने कहा, ‘यहाँ जो भी आता है, वह अपनी इच्छा से वापस नहीं जा सकता।’ 
+{ADVENTURER} को कुछ अजीब लगा। ‘मतलब। आप कौन हैं।’ 
+‘मेरा नाम {VILLAIN_A} है। मैं इस {MYSTERY_OBJECT} की रक्षा कर रहा हूँ।’ 
 {ADVENTURER} ने देखा कि उस किताब में अजीबोगरीब चित्र और संकेत बने हुए थे। 
-"यह किताब क्या है?" उसने पूछा। 
-"{VILLAIN_A} ने मुस्कुराते हुए कहा, 'यह ऋग्वेद के छिपे हुए रहस्यों की कुंजी है।'" 
+‘यह किताब क्या है।’ उसने पूछा। 
+{VILLAIN_A} ने मुस्कुराते हुए कहा, ‘यह ऋग्वेद के छिपे हुए रहस्यों की कुंजी है।’ 
 {ADVENTURER} समझ गया कि वह किसी बड़ी मुसीबत में फँस गया है। 
 उसने चतुराई से काम लेने का फैसला किया। 
-"अगर मैं आपके लिए एक पहेली सुलझा दूँ, तो क्या आप मुझे जाने देंगे?" 
-{VILLAIN_A} ज़ोर से हँसा। "ठीक है! बताओ, ५ + ४ = ९ तो होता है, लेकिन ९ - ५ = ४ कब नहीं होता?" 
-{ADVENTURER} ने थोड़ी देर सोचा और जवाब दिया, "जब बात ज्ञान की हो!" 
+‘अगर मैं आपके लिए एक पहेली सुलझा दूँ, तो क्या आप मुझे जाने देंगे।’ 
+{VILLAIN_A} ज़ोर से हँसा। ‘ठीक है। बताओ, ५ + ४ = ९ तो होता है, लेकिन ९ - ५ = ४ कब नहीं होता।’ 
+{ADVENTURER} ने थोड़ी देर सोचा और जवाब दिया, ‘जब बात ज्ञान की हो।’ 
 बूढ़ा हैरान रह गया। 
 यहाँ कुछ और विशेष बातें हैं: ७ ८ ९ ऋ . ॅ व् ख् थ् श्र ग् ब् ण् ध् घ् ४ ६ ३ * ष्। 
 उस रहस्यमयी किताब में ६, ७, ८, और ९ बजे के विशेष (ष्) अनुष्ठान लिखे थे। 
 डॉक्टर (ॅ) की लिखावट में थ्, ळ, भ्, ष्, ब्, ण्, और घ् जैसे अक्षर थे।
 हर पन्ने पर * और . के निशान बने हुए थे।
 १, २, और ० के साथ ‘हाँ’ और ‘ना’ (’) के चिह्न भी थे, जो कि एक बुद्ध (द्ध) प्रतिमा (म्) के पास रखे थे, जिससे उसे रूमाल (रू) और १/२ हिस्से का ज्ञान हुआ।
-बूढ़े ने कहा, "तुम बहुत चतुर हो। तुम जा सकते हो।" 
+बूढ़े ने कहा, ‘तुम बहुत चतुर हो। तुम जा सकते हो।’ 
 {ADVENTURER} तुरंत हवेली से बाहर निकला। 
 उसकी जीप अचानक चालू हो गई। 
 उसने राहत की साँस ली और वापस शहर की ओर निकल पड़ा। 
@@ -3034,7 +3080,7 @@ var templates = {
 function fillTemplate(template) {
 	let filled = template;
 	for (const [key, values] of Object.entries(vars)) while (filled.includes(`{${key}}`)) {
-		const randomValue = values[Math.floor(Math.random() * values.length)];
+		const randomValue = values[Math.floor(Math.random() * values.length)] ?? "";
 		filled = filled.replace(`{${key}}`, randomValue);
 	}
 	return filled;
