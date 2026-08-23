@@ -27,7 +27,7 @@ export function HindiKeyboard({ nextChar }: { nextChar?: string | undefined }) {
   const needsShift = target?.shift ?? false;
 
   return (
-    <div className="glass-strong rounded-3xl p-6 sm:p-8 mx-auto w-full border border-white/60 dark:border-white/10 shadow-sm">
+    <div className="glass-strong rounded-[24px] p-6 sm:p-8 mx-auto w-full border border-white/60 dark:bg-[#101F34] dark:border-[rgba(255,255,255,0.08)] dark:shadow-[0_16px_40px_rgba(0,0,0,0.18)] shadow-sm">
       <div className="flex flex-col gap-2 w-full">
         {keyboardRows.map((row, ri) => (
           <div key={ri} className="flex w-full gap-2">
@@ -43,21 +43,22 @@ export function HindiKeyboard({ nextChar }: { nextChar?: string | undefined }) {
                   style={{
                     flexGrow: key.width ?? 1,
                     flexBasis: `${(key.width ?? 1) * 2.25}rem`,
-                    borderBottomColor: fColor,
+                    borderBottomColor: isActive ? "transparent" : fColor,
                     borderBottomWidth: "3px",
                     borderBottomStyle: "solid",
-                    backgroundColor: fBg,
+                    backgroundColor: isActive ? undefined : fBg,
                   }}
                   className={cn(
-                    "key relative flex flex-col items-center justify-center rounded-[10px] h-[58px] transition-all duration-200 border border-white/70 dark:border-white/12",
-                    isActive && "active z-10",
-                    isShiftHint && "ring-2 ring-primary bg-primary/20",
+                    "key relative flex flex-col items-center justify-center rounded-[10px] h-[58px] transition-all duration-200 border border-white/70 dark:border-white/5",
+                    !isActive && "dark:bg-white/5",
+                    isActive && "active z-10 dark:!bg-[#2B6FFF] dark:border-transparent dark:shadow-[0_0_0_2px_rgba(43,111,255,0.25),0_8px_20px_rgba(43,111,255,0.22)]",
+                    isShiftHint && "ring-2 ring-primary bg-primary/20 dark:bg-primary/40",
                   )}
                 >
                   <span
                     className={cn(
                       "font-hindi leading-none font-semibold",
-                      isActive ? "text-[19px] text-white" : "text-sm sm:text-base text-foreground",
+                      isActive ? "text-[19px] text-white" : "text-sm sm:text-base text-foreground dark:text-[#EAF0F7]",
                     )}
                   >
                     {isActive && needsShift && key.shift ? key.shift : key.hi || key.en}
@@ -66,7 +67,7 @@ export function HindiKeyboard({ nextChar }: { nextChar?: string | undefined }) {
                     <span
                       className={cn(
                         "mt-0.5 leading-none",
-                        isActive ? "text-white/80 text-[11px]" : "text-muted-foreground text-[9px]",
+                        isActive ? "text-white/80 text-[11px]" : "text-muted-foreground dark:text-[#8FA2BC] text-[9px]",
                       )}
                     >
                       {key.en}

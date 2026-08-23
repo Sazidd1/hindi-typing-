@@ -513,14 +513,14 @@ export function TypingArena({
         <div className="flex flex-col flex-1 w-full gap-6 sm:gap-8">
 
           {!isFocusMode && (title || subtitle) && (
-            <h2 className="text-black text-center font-bold text-2xl sm:text-3xl px-2 mt-0 -mb-4 sm:-mb-6 relative z-10">
-              {title} {subtitle && <span className="font-hindi text-gray-500">( {subtitle} )</span>}
+            <h2 className="text-slate-900 dark:text-[#F4F7FB] text-center font-bold text-2xl sm:text-3xl px-2 mt-0 mb-6 sm:mb-8 relative z-10">
+              {title} {subtitle && <span className="font-hindi text-gray-500 dark:text-[#8FA2BC]">( {subtitle} )</span>}
             </h2>
           )}
 
       <div 
         className={cn(
-          "relative mx-auto w-full cursor-text rounded-3xl py-2 px-6 sm:py-3 sm:px-8 flex items-center justify-center bg-card/80 dark:bg-card/90 border border-border/60 shadow-sm backdrop-blur-xl transition-all duration-300 group overflow-hidden shrink-0",
+          "relative mx-auto w-full cursor-text rounded-[24px] py-2 px-6 sm:py-3 sm:px-8 flex items-center justify-center bg-card/80 dark:bg-[linear-gradient(145deg,#101F34,#0D1A2D)] border border-border/60 dark:border-[rgba(255,255,255,0.09)] shadow-[0_16px_40px_rgba(0,0,0,0.18)] backdrop-blur-xl transition-all duration-300 group overflow-hidden shrink-0",
           isFocusMode && ["ch-full-practice", "ch-full-practice-2", "ch-full-practice-3", "ch-story-practice-1", "ch-story-practice-2", "ch-news-practice", "ch-dialogue-practice", "ch-adventure-story"].includes(lessonSlug || "") ? "h-[220px] sm:h-[240px]" : "h-[170px] sm:h-[190px]",
           isFocusMode ? "max-w-[1100px]" : "max-w-[1000px]"
         )}
@@ -596,10 +596,10 @@ export function TypingArena({
                               className={cn(
                                 "transition-colors duration-200",
                                 ch === " " && "inline-block w-[0.5em]",
-                                isCurrent && "text-[#F59E0B] underline decoration-2 underline-offset-4",
-                                state === "correct" && !isCurrent && "text-[#16A34A]",
-                                state === "wrong" && !isCurrent && "text-[#EF4444]",
-                                state === "pending" && !isCurrent && "text-[#94A3B8]"
+                                isCurrent && "text-[#F59E0B] dark:text-[#F7C843] underline decoration-2 underline-offset-4",
+                                state === "correct" && !isCurrent && "text-[#16A34A] dark:text-[#12B76A]",
+                                state === "wrong" && !isCurrent && "text-[#EF4444] dark:text-[#F04452]",
+                                state === "pending" && !isCurrent && "text-[#94A3B8] dark:text-[#9AAAC0]"
                               )}
                             >
                               {ch}
@@ -632,25 +632,25 @@ export function TypingArena({
                       <div
                         key={cIdx}
                         className={cn(
-                          "flex items-center justify-center rounded-xl bg-card dark:bg-[oklch(0.24_0.038_260)] shadow-sm border border-border/50 transition-all duration-300 shrink-0",
+                          "flex items-center justify-center rounded-xl bg-card dark:bg-[#1C304A] shadow-sm border border-border/50 dark:border-[rgba(255,255,255,0.05)] transition-all duration-300 shrink-0",
                           isSpace 
                             ? (isFocusMode ? "w-16 sm:w-20" : "w-14 sm:w-16") 
                             : (isFocusMode ? "size-12 sm:size-14" : "size-11 sm:size-12"),
                           
-                          state === "pending" && !isCurrent && "border border-border/60 text-[#94A3B8]",
-                          isCurrent && "outline outline-[2.5px] outline-offset-[2.5px] outline-[#F59E0B] border-transparent z-10 shadow-[0_4px_14px_rgba(245,158,11,0.2)] text-[#F59E0B] scale-105",
-                          state === "correct" && !isCurrent && "border border-[#16A34A]/30 bg-[#16A34A]/8 text-[#16A34A]",
-                          state === "wrong" && !isCurrent && "border-2 border-[#EF4444] bg-[#EF4444]/10 text-[#EF4444]",
+                          state === "pending" && !isCurrent && "border border-border/60 text-[#94A3B8] dark:text-[#9AAAC0]",
+                          isCurrent && "outline outline-[2.5px] outline-offset-[2.5px] outline-[#F59E0B] dark:outline-[#F7C843] border-transparent z-10 shadow-[0_4px_14px_rgba(245,158,11,0.2)] dark:shadow-[0_4px_14px_rgba(247,200,67,0.25)] text-[#F59E0B] dark:text-[#F7C843] scale-105",
+                          state === "correct" && !isCurrent && "border border-[#16A34A]/30 dark:border-[#12B76A]/30 bg-[#16A34A]/8 dark:bg-[#12B76A]/8 text-[#16A34A] dark:text-[#12B76A]",
+                          state === "wrong" && !isCurrent && "border-2 border-[#EF4444] dark:border-[#F04452] bg-[#EF4444]/10 dark:bg-[#F04452]/10 text-[#EF4444] dark:text-[#F04452]",
                         )}
                       >
                         {isSpace ? (
                           <span className={cn(
                             "font-bold uppercase tracking-widest transition-all duration-300",
                             isFocusMode ? "text-[10px] sm:text-[11px]" : "text-[9px] sm:text-[10px]",
-                            state === "pending" ? "text-[#94A3B8]" :
-                            state === "correct" ? "text-[#16A34A]/70" :
-                            state === "wrong" ? "text-[#EF4444]" :
-                            "text-[#F59E0B]"
+                            state === "pending" ? "text-[#94A3B8] dark:text-[#9AAAC0]" :
+                            state === "correct" ? "text-[#16A34A]/70 dark:text-[#12B76A]/70" :
+                            state === "wrong" ? "text-[#EF4444] dark:text-[#F04452]" :
+                            "text-[#F59E0B] dark:text-[#F7C843]"
                           )}>
                             Space
                           </span>
@@ -757,41 +757,41 @@ export function TypingArena({
         "shrink-0 transition-all duration-300 ease-in-out",
         isFocusMode 
           ? "w-0 h-0 opacity-0 overflow-hidden m-0 p-0" 
-          : "w-full lg:w-[270px] space-y-4 sm:space-y-6 mt-6 lg:mt-0 opacity-100"
+          : "w-full lg:w-[30%] lg:max-w-[320px] lg:min-w-[280px] space-y-4 sm:space-y-6 mt-6 lg:mt-0 opacity-100"
       )}>
-        <div className="bg-card/60 dark:bg-card/80 rounded-[2rem] p-5 sm:p-6 shadow-sm border border-border/40 flex flex-col gap-5">
-          <h3 className="text-xl font-semibold tracking-tight text-foreground">Live Session</h3>
+        <div className="bg-card/60 dark:bg-[linear-gradient(145deg,#101F34,#0D1A2D)] rounded-[24px] p-5 sm:p-6 shadow-[0_16px_40px_rgba(0,0,0,0.18)] border border-border/40 dark:border-[rgba(255,255,255,0.09)] flex flex-col gap-5">
+          <h3 className="text-xl font-semibold tracking-tight text-foreground dark:text-[#F4F7FB]">Live Session</h3>
           
           {/* 2x2 Grid */}
           <div className="grid grid-cols-2 gap-3">
              {/* Speed */}
-             <div className="bg-background/80 dark:bg-background rounded-2xl p-4 shadow-sm border border-border/40 flex flex-col gap-1">
-               <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Speed</span>
+             <div className="bg-background/80 dark:bg-[#071426] rounded-[20px] p-4 shadow-sm border border-border/40 dark:border-[rgba(255,255,255,0.05)] flex flex-col gap-1">
+               <span className="text-[10px] font-bold text-muted-foreground dark:text-[#8FA2BC] uppercase tracking-wider">Speed</span>
                <div className="flex items-center gap-1">
-                 <span className="text-[28px] font-semibold tracking-tight text-primary">{wpm}</span>
-                 <span className="text-[13px] font-semibold text-muted-foreground">WPM</span>
+                 <span className="text-[28px] font-semibold tracking-tight text-primary dark:text-[#4B8BFF]">{wpm}</span>
+                 <span className="text-[13px] font-semibold text-muted-foreground dark:text-[#8FA2BC]">WPM</span>
                </div>
              </div>
              {/* Accuracy */}
-             <div className="bg-background/80 dark:bg-background rounded-2xl p-4 shadow-sm border border-border/40 flex flex-col gap-1">
-               <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Accuracy</span>
+             <div className="bg-background/80 dark:bg-[#071426] rounded-[20px] p-4 shadow-sm border border-border/40 dark:border-[rgba(255,255,255,0.05)] flex flex-col gap-1">
+               <span className="text-[10px] font-bold text-muted-foreground dark:text-[#8FA2BC] uppercase tracking-wider">Accuracy</span>
                <div className="flex items-center gap-1">
-                 <span className="text-[28px] font-semibold tracking-tight text-success">{accuracy}</span>
-                 <span className="text-[13px] font-semibold text-muted-foreground">%</span>
+                 <span className="text-[28px] font-semibold tracking-tight text-success dark:text-[#12B76A]">{accuracy}</span>
+                 <span className="text-[13px] font-semibold text-muted-foreground dark:text-[#8FA2BC]">%</span>
                </div>
              </div>
              {/* Time */}
-             <div className="bg-background/80 dark:bg-background rounded-2xl p-4 shadow-sm border border-border/40 flex flex-col gap-1">
-               <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Time</span>
+             <div className="bg-background/80 dark:bg-[#071426] rounded-[20px] p-4 shadow-sm border border-border/40 dark:border-[rgba(255,255,255,0.05)] flex flex-col gap-1">
+               <span className="text-[10px] font-bold text-muted-foreground dark:text-[#8FA2BC] uppercase tracking-wider">Time</span>
                <div className="flex items-center gap-1">
-                 <span className="text-[22px] font-semibold tracking-tight text-foreground">{formatTime(elapsed)}</span>
+                 <span className="text-[22px] font-semibold tracking-tight text-foreground dark:text-[#F4F7FB]">{formatTime(elapsed)}</span>
                </div>
              </div>
              {/* Streak */}
-             <div className="bg-background/80 dark:bg-background rounded-2xl p-4 shadow-sm border border-border/40 flex flex-col gap-1">
-               <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Streak</span>
+             <div className="bg-background/80 dark:bg-[#071426] rounded-[20px] p-4 shadow-sm border border-border/40 dark:border-[rgba(255,255,255,0.05)] flex flex-col gap-1">
+               <span className="text-[10px] font-bold text-muted-foreground dark:text-[#8FA2BC] uppercase tracking-wider">Streak</span>
                <div className="flex items-center gap-1">
-                 <span className="text-[22px] font-semibold tracking-tight text-orange-500">{currentStreak}</span>
+                 <span className="text-[22px] font-semibold tracking-tight text-orange-500 dark:text-[#F7C843]">{currentStreak}</span>
                  <span className="text-[20px]">🔥</span>
                </div>
              </div>
@@ -804,8 +804,8 @@ export function TypingArena({
             onClick={togglePause}
             disabled={finished}
             className={cn(
-              "w-full hover:bg-black text-white rounded-xl py-4 flex items-center justify-center gap-2 font-semibold transition-colors shadow-sm",
-              isPaused ? "bg-primary text-primary-foreground hover:bg-primary/90" : "bg-[#1a1b1e]",
+              "w-full text-white rounded-[14px] py-4 flex items-center justify-center gap-2 font-semibold transition-colors shadow-sm h-[56px]",
+              isPaused ? "bg-primary/80 hover:bg-primary text-white" : "bg-primary hover:bg-primary/90 dark:bg-[#2563eb] dark:hover:bg-[#1d4ed8]",
               finished && "opacity-50 cursor-not-allowed"
             )}
           >
@@ -826,11 +826,11 @@ export function TypingArena({
         {/* Focus Mode Toggle */}
         <div 
           onClick={() => setIsFocusMode(true)}
-          className="bg-background/80 dark:bg-background rounded-[2rem] p-5 sm:p-6 shadow-sm border border-border/40 flex items-center justify-between cursor-pointer hover:bg-secondary/30 transition-colors"
+          className="bg-background/80 dark:bg-[linear-gradient(145deg,#101F34,#0D1A2D)] rounded-[24px] p-5 sm:p-6 shadow-sm border border-border/40 dark:border-[rgba(255,255,255,0.09)] dark:shadow-[0_16px_40px_rgba(0,0,0,0.18)] flex items-center justify-between cursor-pointer hover:bg-secondary/30 dark:hover:bg-[#1C304A] transition-colors"
         >
            <div className="flex flex-col gap-0.5">
-             <span className="font-semibold text-sm text-foreground">Focus Mode</span>
-             <span className="text-[11px] text-muted-foreground font-medium">Hide distractions</span>
+             <span className="font-semibold text-sm text-foreground dark:text-[#F4F7FB]">Focus Mode</span>
+             <span className="text-[11px] text-muted-foreground dark:text-[#71839B] font-medium">Hide distractions</span>
            </div>
            {/* Toggle Switch */}
            <div className="w-11 h-6 bg-secondary/80 rounded-full relative shadow-inner border border-border/50">
