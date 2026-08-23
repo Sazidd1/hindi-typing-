@@ -67,7 +67,13 @@ export function HindiKeyboard({ nextChar, preset = "Default" }: HindiKeyboardPro
           <div key={ri} className="flex w-full gap-2">
             {row.map((key, ki) => {
               const isActive = activeKey === key.en;
-              const isShiftHint = needsShift && key.en === "Shift";
+              const isLeftHandKey = target?.key.finger?.startsWith("l-");
+              const isRightHandKey = target?.key.finger?.startsWith("r-");
+              const isShiftHint = needsShift && key.en === "Shift" && (
+                (isLeftHandKey && key.finger === "r-pinky") || 
+                (isRightHandKey && key.finger === "l-pinky") ||
+                (!isLeftHandKey && !isRightHandKey)
+              );
               
               const fColor = getFingerColorHex(key.finger);
               
@@ -140,7 +146,8 @@ export function HindiKeyboard({ nextChar, preset = "Default" }: HindiKeyboardPro
                   "rounded-xl border-b-4 shadow-sm",
                   isActive 
                     ? "bg-foreground text-background border-foreground shadow-xl z-10" 
-                    : "text-slate-800 dark:text-slate-200"
+                    : "text-slate-800 dark:text-slate-200",
+                  isShiftHint && "ring-4 ring-primary bg-primary/30 border-primary"
                 )
               );
 
