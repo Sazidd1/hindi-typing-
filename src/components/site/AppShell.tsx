@@ -34,7 +34,7 @@ function ThemeToggle() {
       onClick={toggleTheme}
       aria-label={theme === "dark" ? "Switch to Light Mode" : "Switch to Dark Mode"}
       title={theme === "dark" ? "Switch to Light Mode" : "Switch to Dark Mode"}
-      className="inline-flex size-9 items-center justify-center rounded-xl bg-secondary/60 border border-border/60 text-foreground transition-all duration-200 hover:bg-secondary hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+      className="inline-flex size-9 items-center justify-center rounded-xl bg-secondary/60 dark:bg-white/[0.04] border border-border/60 dark:border-white/[0.08] text-foreground transition-all duration-200 hover:bg-secondary dark:hover:bg-white/[0.08] hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
     >
       <span className="text-base leading-none select-none" aria-hidden="true">
         {theme === "dark" ? "☀️" : "🌙"}
@@ -65,7 +65,7 @@ export function AppShell({ children }: { children: ReactNode }) {
 
   return (
     <div className="surface-grid min-h-screen">
-      <header className="sticky top-0 z-50 border-b border-white/50 dark:border-white/8 bg-white/60 dark:bg-[oklch(0.20_0.035_260/0.85)] backdrop-blur-xl shadow-sm">
+      <header className="sticky top-0 z-50 border-b border-white/50 dark:border-white/[0.08] bg-white/60 dark:bg-[rgba(7,20,38,0.90)] backdrop-blur-xl shadow-sm">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-3">
           <Link to="/" className="flex items-center gap-2.5">
             <span
@@ -97,16 +97,9 @@ export function AppShell({ children }: { children: ReactNode }) {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent 
                       align="start" 
-                      className="w-[280px] rounded-[20px] p-2"
-                      style={{
-                        backgroundColor: "rgba(255, 255, 255, 0.68)",
-                        backdropFilter: "blur(20px)",
-                        WebkitBackdropFilter: "blur(20px)",
-                        border: "1px solid rgba(255, 255, 255, 0.75)",
-                        boxShadow: "0 12px 35px rgba(15, 23, 42, 0.16)"
-                      }}
+                      className="w-[280px] rounded-[20px] p-2 bg-white/70 dark:bg-[rgba(17,31,53,0.96)] backdrop-blur-[20px] dark:backdrop-blur-[16px] border border-white/75 dark:border-[rgba(255,255,255,0.10)] shadow-[0_12px_35px_rgba(15,23,42,0.16)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.35)]"
                     >
-                      <div className="px-3 py-2 text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
+                      <div className="px-3 py-2 text-[10px] font-bold text-muted-foreground dark:text-[#71839B] uppercase tracking-widest">
                         Keyboard Layout
                       </div>
                       {LAYOUTS.map((l) => (
@@ -116,12 +109,12 @@ export function AppShell({ children }: { children: ReactNode }) {
                           className={cn(
                             "rounded-[14px] cursor-pointer py-2.5 px-3 transition-all duration-200 my-0.5 font-medium flex items-center justify-between",
                             layout === l 
-                              ? "bg-[rgba(59,130,246,0.12)] text-[#2563eb] hover:bg-[rgba(59,130,246,0.16)] focus:bg-[rgba(59,130,246,0.16)] hover:text-[#2563eb] focus:text-[#2563eb]" 
-                              : "text-foreground hover:bg-black/5 dark:hover:bg-white/10 focus:bg-black/5 dark:focus:bg-white/10"
+                              ? "bg-[rgba(59,130,246,0.12)] dark:bg-[rgba(43,111,255,0.16)] text-[#2563eb] dark:text-[#5B8FFF]" 
+                              : "text-foreground dark:text-[#A9B8CC] hover:bg-black/5 dark:hover:bg-[rgba(255,255,255,0.06)] focus:bg-black/5 dark:focus:bg-[rgba(255,255,255,0.06)]"
                           )}
                         >
                           {l}
-                          {layout === l && <div className="size-2 rounded-full bg-[#2563eb]" />}
+                          {layout === l && <div className="size-2 rounded-full bg-[#2563eb] dark:bg-[#5B8FFF]" />}
                         </DropdownMenuItem>
                       ))}
                     </DropdownMenuContent>
@@ -135,7 +128,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                   to={item.to!}
                   activeOptions={{ exact: item.to === "/" }}
                   activeProps={{ className: "bg-primary text-primary-foreground" }}
-                  inactiveProps={{ className: "text-muted-foreground hover:bg-white/80 dark:hover:bg-white/10" }}
+                  inactiveProps={{ className: "text-muted-foreground dark:text-[#8EA0B8] hover:bg-white/80 dark:hover:bg-white/10 dark:hover:text-[#FFFFFF]" }}
                   className="rounded-full px-3.5 py-2 text-sm font-medium transition-all duration-200"
                 >
                   {item.label}
@@ -152,7 +145,7 @@ export function AppShell({ children }: { children: ReactNode }) {
               <>
                 <Link
                   to="/profile"
-                  className="hidden rounded-full border border-border bg-white/80 dark:bg-white/10 px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-white dark:hover:bg-white/20 md:inline-flex items-center gap-2"
+                  className="hidden rounded-full border border-border dark:border-white/10 bg-white/80 dark:bg-[#1C304D] px-4 py-2 text-sm font-medium text-foreground dark:text-[#F4F7FB] transition-colors hover:bg-white dark:hover:bg-[#1C304D]/80 md:inline-flex items-center gap-2"
                 >
                   <span className="flex size-5 items-center justify-center rounded-full bg-primary text-[10px] text-primary-foreground font-bold uppercase">
                     {currentUser[0]}
