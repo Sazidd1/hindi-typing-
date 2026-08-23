@@ -132,7 +132,7 @@ function fillTemplate(template: string) {
   let filled = template;
   for (const [key, values] of Object.entries(vars)) {
     while (filled.includes(`{${key}}`)) {
-      const randomValue = values[Math.floor(Math.random() * values.length)];
+      const randomValue = values[Math.floor(Math.random() * values.length)] ?? "";
       filled = filled.replace(`{${key}}`, randomValue);
     }
   }

@@ -199,6 +199,7 @@ function LessonsPage() {
             </div>
           </GlassCard>
 
+          {recommendedLesson && (
           <GlassCard className="group relative overflow-hidden border-accent-blue/20 p-0">
             <div className="relative p-4 sm:p-5 flex flex-col h-full justify-between">
               <div>
@@ -245,6 +246,7 @@ function LessonsPage() {
               </div>
             </div>
           </GlassCard>
+          )}
         </div>
       )}
 

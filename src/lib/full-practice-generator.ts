@@ -46,13 +46,13 @@ function buildCaches() {
           const targetId = `row:${rowName}:key:${key.en}:normal`;
           allTargetsCache!.push(targetId);
           if (!charIndexCache![key.hi]) charIndexCache![key.hi] = [];
-          charIndexCache![key.hi].push(targetId);
+          charIndexCache![key.hi]!.push(targetId);
         }
         if (key.shift) {
           const targetId = `row:${rowName}:key:${key.en}:shift`;
           allTargetsCache!.push(targetId);
           if (!charIndexCache![key.shift]) charIndexCache![key.shift] = [];
-          charIndexCache![key.shift].push(targetId);
+          charIndexCache![key.shift]!.push(targetId);
         }
       }
     });
@@ -105,9 +105,11 @@ export function generateFullPracticeSession(lessonSlug?: string) {
       for (const hiChar of Object.keys(charIndexCache!)) {
         if (word.includes(hiChar)) {
           const targetIds = charIndexCache![hiChar];
-          for (const tId of targetIds) {
-            if (remainingTargets.has(tId)) {
-              currentWordCoveredTargets.add(tId);
+          if (targetIds) {
+            for (const tId of targetIds) {
+              if (remainingTargets.has(tId)) {
+                currentWordCoveredTargets.add(tId);
+              }
             }
           }
         }
@@ -153,9 +155,11 @@ export function generateFullPracticeSession(lessonSlug?: string) {
   
   let overlapCount = 0;
   if (lessonSlug === 'ch-full-practice-3' && globalLessonSessions['ch-full-practice-2']) {
-    overlapCount = sessionWords.filter(w => globalLessonSessions['ch-full-practice-2'].includes(w)).length;
+    const list = globalLessonSessions['ch-full-practice-2'];
+    overlapCount = sessionWords.filter(w => list.includes(w)).length;
   } else if (lessonSlug === 'ch-full-practice-2' && globalLessonSessions['ch-full-practice-3']) {
-    overlapCount = sessionWords.filter(w => globalLessonSessions['ch-full-practice-3'].includes(w)).length;
+    const list = globalLessonSessions['ch-full-practice-3'];
+    overlapCount = sessionWords.filter(w => list.includes(w)).length;
   }
 
   const result = {

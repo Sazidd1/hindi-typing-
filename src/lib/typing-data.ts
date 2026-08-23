@@ -120,8 +120,11 @@ for (const row of keyboardRows) {
     if (key.en.length === 1 && key.shift) {
       if (key.en.match(/[a-zA-Z]/)) {
         HINDI_MAP[key.en.toUpperCase()] = key.shift;
-      } else if (EN_SHIFT_MAP[key.en]) {
-        HINDI_MAP[EN_SHIFT_MAP[key.en]] = key.shift;
+      } else {
+        const mappedShift = EN_SHIFT_MAP[key.en];
+        if (mappedShift !== undefined) {
+          HINDI_MAP[mappedShift] = key.shift;
+        }
       }
     }
     if (key.hi && !charIndex[key.hi]) {

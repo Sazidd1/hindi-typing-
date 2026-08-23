@@ -18,7 +18,12 @@ function shuffle<T>(array: T[], seedStr: string): T[] {
   const shuffled = [...array];
   for (let i = shuffled.length - 1; i > 0; i--) {
     const j = Math.floor(seedRandom(seed++) * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    const itemI = shuffled[i];
+    const itemJ = shuffled[j];
+    if (itemI !== undefined && itemJ !== undefined) {
+      shuffled[i] = itemJ;
+      shuffled[j] = itemI;
+    }
   }
   return shuffled;
 }
@@ -47,6 +52,7 @@ export function generateDailyChallenge(userId: string, progressData: Record<stri
 
   for (let i = 0; i < lessons.length; i++) {
     const l = lessons[i];
+    if (!l) break;
     if (!previousLessonCompleted) break;
     
     highestUnlockedIndex = i;
@@ -124,7 +130,8 @@ export function generateDailyChallenge(userId: string, progressData: Record<stri
       const shuffled = shuffle(pool, today + userId);
       // Generate a reasonable length text (around 25-35 words)
       while (practiceWords.length < 30 && shuffled.length > 0) {
-        practiceWords.push(shuffled[practiceWords.length % shuffled.length]);
+        const randomWord = shuffled[practiceWords.length % shuffled.length];
+        if (randomWord) practiceWords.push(randomWord);
         if (practiceWords.length >= 30) break;
       }
     } else {
@@ -150,7 +157,8 @@ export function generateDailyChallenge(userId: string, progressData: Record<stri
     // No specific weaknesses, general practice
     const shuffled = shuffle(Array.from(unlockedWords), today + userId);
     for (let i = 0; i < 30; i++) {
-      practiceWords.push(shuffled[i % shuffled.length]);
+      const randomWord = shuffled[i % shuffled.length];
+      if (randomWord) practiceWords.push(randomWord);
     }
   }
 

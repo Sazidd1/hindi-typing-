@@ -50,7 +50,7 @@ const podiumStyles = [
   }
 ];
 
-type Period = "Daily" | "Weekly" | "Monthly";
+type Period = "Daily" | "Weekly" | "Monthly" | "Overall";
 
 function LeaderboardPage() {
   const { currentUser } = useAuth();
@@ -85,7 +85,7 @@ function LeaderboardPage() {
       let highestAcc = 0;
       let totalXp = 0;
       
-      results.forEach(r => {
+      if (results) results.forEach(r => {
         if (!r.date || typeof r.date !== "string") return;
         if (leaderboardMode === "Typing Speed" && r.isBonus) return;
         

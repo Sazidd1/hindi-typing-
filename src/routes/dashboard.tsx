@@ -72,7 +72,7 @@ function DashboardPage() {
   }, [currentUser, isLoaded]);
 
   const userName = currentUser || "Guest";
-  const userInitial = userName.trim() ? userName.trim()[0].toUpperCase() : "G";
+  const userInitial = userName.trim() ? (userName.trim()[0]?.toUpperCase() ?? "G") : "G";
 
   // 1. Valid sessions are those with reasonable WPM (e.g., < 250) and Accuracy (0-100)
   const validHistory = useMemo(() => {
@@ -465,6 +465,7 @@ function DashboardPage() {
                     { b: "bg-teal-500/10", br: "border-teal-500/20", t: "text-teal-500", tb: "border-teal-500/15" },
                   ];
                   const a = accents[i % accents.length];
+                  if (!a) return null;
                   return (
                     <div key={char} className={cn("flex items-center gap-2.5 border px-3.5 py-2 rounded-2xl transition-transform hover:scale-105", a.b, a.br)}>
                       <span className={cn("font-hindi text-2xl font-bold leading-none", a.t)}>{char}</span>

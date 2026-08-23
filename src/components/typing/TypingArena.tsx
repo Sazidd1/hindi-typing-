@@ -33,6 +33,7 @@ export function tokenizeHindi(text: string): string[] {
     }
     if (!matched) {
       const char = Array.from(remaining)[0];
+      if (!char) break;
       tokens.push(char);
       remaining = remaining.slice(char.length);
     }
@@ -376,7 +377,7 @@ export function TypingArena({
         if (i >= typedChars.length || typedChars[i] === chars[i]) {
           newErrors++;
           const targetChar = chars[i];
-          if (targetChar !== ' ') {
+          if (targetChar && targetChar !== ' ') {
             charMistakesRef.current[targetChar] = (charMistakesRef.current[targetChar] || 0) + 1;
           }
         }
@@ -408,14 +409,16 @@ export function TypingArena({
     let curr = 0;
     for (let i = 0; i < words.length; i++) {
       starts.push(curr);
-      curr += words[i].length + 1; // Every word now has a trailing space
+      const w = words[i];
+      if (w !== undefined) curr += w.length + 1; // Every word now has a trailing space
     }
     return starts;
   }, [words]);
 
   let currentWordIndex = 0;
   for (let i = 0; i < wordStartIndices.length; i++) {
-    if (typedChars.length >= wordStartIndices[i]) {
+    const startIdx = wordStartIndices[i];
+    if (startIdx !== undefined && typedChars.length >= startIdx) {
       currentWordIndex = i;
     } else {
       break;
@@ -434,7 +437,7 @@ export function TypingArena({
   const startWordIdx = pageIndex * WORDS_PER_PAGE;
   const endWordIdx = Math.min(startWordIdx + WORDS_PER_PAGE, words.length);
   const visibleWords = words.slice(startWordIdx, endWordIdx);
-  const pageStartCharIndex = wordStartIndices[startWordIdx];
+  const pageStartCharIndex = wordStartIndices[startWordIdx] ?? 0;
 
   // Auto-save logic
   useEffect(() => {
@@ -538,20 +541,21 @@ export function TypingArena({
               const _dependentVowels = new Set([
                   '\u093E', '\u093F', '\u0940', '\u0941', '\u0942', '\u0947', '\u0948', '\u094B', '\u094C', '\u0943', '\u0902', '\u0901', '\u0903', '\u094D', '\u093C'
               ]);
-              const _isDependentVowelSign = (s: string) => {
+              const _isDependentVowelSign = (s: string | undefined) => {
                   if (!s || s.length === 0) return false;
                   if (s === 'ि') return true;
-                  return _dependentVowels.has(s[0]);
+                  return _dependentVowels.has(s[0] ?? '');
               };
               const _buildDisplayOrder = (hindiParts: string[]) => {
                   const order = [];
                   const buffer = [];
                   for (let ki = 0; ki < hindiParts.length; ki++) {
-                      if (_isDependentVowelSign(hindiParts[ki]) && order.length === 0) {
+                      const part = hindiParts[ki];
+                      if (part !== undefined && _isDependentVowelSign(part) && order.length === 0) {
                           buffer.push(ki);
                       } else {
                           order.push(ki);
-                          if (!_isDependentVowelSign(hindiParts[ki])) {
+                          if (part !== undefined && !_isDependentVowelSign(part)) {
                               for (const bki of buffer) order.push(bki);
                               buffer.length = 0;
                           }
@@ -592,7 +596,9 @@ export function TypingArena({
                         ref={wIdx === currentWordIndex ? activeWordRef : null}
                       >
                         {displayOrder.map((displayIdx) => {
-                          const { ch, cIdx, isCurrent, state } = mappedChars[displayIdx];
+                          const mappedChar = mappedChars[displayIdx];
+                          if (!mappedChar) return null;
+                          const { ch, cIdx, isCurrent, state } = mappedChar;
                           return (
                             <span
                               key={cIdx}

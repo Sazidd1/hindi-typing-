@@ -87,7 +87,7 @@ export function validateSession(
       totalAttempted,
       grade: null,
       xp: 0,
-      reason
+      reason: reason ?? "Invalid session"
     };
   }
 
