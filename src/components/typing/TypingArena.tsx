@@ -510,13 +510,16 @@ export function TypingArena({
       )}>
         
         {/* Left Side: Typing Area & Keyboard */}
-        <div className="flex flex-col flex-1 w-full gap-6 sm:gap-8">
+        <div className="flex flex-col flex-1 w-full gap-0">
 
           {!isFocusMode && (title || subtitle) && (
-            <h2 className="text-slate-900 dark:text-[#F4F7FB] text-center font-bold text-2xl sm:text-3xl px-2 mt-0 mb-6 sm:mb-8 relative z-10">
+            <h2 className="text-slate-900 dark:text-[#F4F7FB] text-center font-bold text-2xl sm:text-3xl leading-tight px-2 mt-0 mb-0 relative z-10">
               {title} {subtitle && <span className="font-hindi text-gray-500 dark:text-[#8FA2BC]">( {subtitle} )</span>}
             </h2>
           )}
+
+        {/* Wrapper for Passage and Keyboard to keep their internal spacing intact */}
+        <div className="flex flex-col w-full gap-6 sm:gap-8 mt-4">
 
       <div 
         className={cn(
@@ -749,6 +752,7 @@ export function TypingArena({
       )}>
         {showKeyboard && <HindiKeyboard nextChar={nextChar} />}
       </div>
+        </div> {/* Close Arena Wrapper */}
 
       </div> {/* Close Left Side */}
 
