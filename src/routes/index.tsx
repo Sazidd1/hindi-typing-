@@ -63,6 +63,7 @@ function Index() {
   const { currentUser } = useAuth();
   const [progressData, setProgressData] = useState<Record<string, any>>({});
   const [isTutorModalOpen, setIsTutorModalOpen] = useState(false);
+  const [activeLang, setActiveLang] = useState('Hindi');
 
   useEffect(() => {
     if (!currentUser) return;
@@ -162,26 +163,71 @@ function Index() {
             </p>
 
             {/* Option 1: Typing Tutor (Highlighted) */}
-            <div onClick={() => setIsTutorModalOpen(true)} className="group relative flex flex-col rounded-[20px] p-5 bg-white dark:bg-slate-800 border border-primary/30 shadow-md transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:border-primary/50 cursor-pointer overflow-hidden">
+            <div className="group relative flex flex-col rounded-[20px] p-5 bg-white dark:bg-slate-800 border border-primary/30 shadow-md transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:border-primary/50 overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-br from-primary/[0.08] to-transparent opacity-100 group-hover:opacity-100 transition-opacity duration-300" />
-              <div className="flex items-start gap-4 relative z-10">
+              <div className="flex items-center gap-4 relative z-10">
                 <div className="flex size-14 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary">
                   <span className="text-[26px]">⌨️</span>
                 </div>
                 <div className="flex-1 flex flex-col justify-center min-h-[56px]">
                   <h3 className="en font-bold text-slate-900 dark:text-slate-100 text-[18px] leading-tight">Typing Tutor</h3>
+                  <p className="en text-[12px] text-slate-500 font-medium mt-0.5">5 layouts available</p>
                 </div>
               </div>
-              <div className="mt-4 flex items-center justify-end relative z-10">
-                <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary transition-transform group-hover:translate-x-1">
-                  Start Learning <span className="text-lg leading-none">&rarr;</span>
-                </span>
+              <div className="mt-5 relative z-10 flex flex-col gap-2" onClick={(e) => e.stopPropagation()}>
+                {/* Top Primary Switcher */}
+                <div className="flex bg-[#f1f5f9] dark:bg-slate-800/80 p-1.5 rounded-[16px] border border-slate-200/50 dark:border-white/5">
+                  <div 
+                    onClick={() => setActiveLang('Hindi')}
+                    className={`flex-1 flex items-center justify-center h-[44px] rounded-[12px] text-[13px] font-bold cursor-pointer transition-all ${
+                      activeLang === 'Hindi' 
+                        ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-sm' 
+                        : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 font-medium'
+                    }`}
+                  >
+                    Hindi
+                  </div>
+                  <div 
+                    onClick={() => setActiveLang('English')}
+                    className={`flex-1 flex items-center justify-center h-[44px] rounded-[12px] text-[13px] font-bold cursor-pointer transition-all ${
+                      activeLang === 'English' 
+                        ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-sm' 
+                        : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 font-medium'
+                    }`}
+                  >
+                    English
+                  </div>
+                </div>
+
+                {/* Secondary Hindi Sub-Layouts */}
+                {activeLang === 'Hindi' && (
+                  <div className="grid grid-cols-2 gap-2 bg-[#f1f5f9] dark:bg-slate-800/80 p-3 rounded-[16px] border border-slate-200/50 dark:border-white/5">
+                    <Link 
+                      to="/lessons"
+                      className="flex items-center justify-center text-center h-[54px] px-2 rounded-[12px] text-[13px] leading-tight font-bold bg-[#2563eb] text-white shadow-[0_2px_8px_rgba(37,99,235,0.25)] transition-all cursor-pointer hover:opacity-90"
+                    >
+                      Remington GAIL
+                    </Link>
+                    <div className="flex items-center justify-center text-center h-[54px] px-2 rounded-[12px] text-[13px] leading-tight font-bold text-slate-700 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700/50 transition-all cursor-pointer">
+                      Remington CBI
+                    </div>
+                    <div className="flex items-center justify-center text-center h-[54px] px-2 rounded-[12px] text-[13px] leading-tight font-bold text-slate-700 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700/50 transition-all cursor-pointer">
+                      Kruti Dev
+                    </div>
+                    <div className="flex items-center justify-center text-center h-[54px] px-2 rounded-[12px] text-[13px] leading-tight font-bold text-slate-700 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700/50 transition-all cursor-pointer">
+                      Mangal InScript
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
 
             <div className="grid grid-cols-2 gap-3">
               {/* Option 2: Typing Test */}
               <Link to="/practice" className="group relative flex flex-col rounded-[18px] p-4 bg-white/70 dark:bg-slate-800/60 border border-slate-200 shadow-[0_4px_12px_rgba(30,80,140,0.06)] dark:border-white/10 transition-all duration-300 hover:bg-white/90 dark:hover:bg-slate-800/80 hover:shadow-[0_6px_16px_rgba(30,80,140,0.1)] hover:-translate-y-1 cursor-pointer">
+                <div className="absolute top-4 right-4 flex size-6 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400 transition-colors group-hover:bg-[#2563eb] group-hover:text-white">
+                  <span className="text-[12px] leading-none">&rarr;</span>
+                </div>
                 <div className="flex size-10 shrink-0 items-center justify-center rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 mb-3">
                   <span className="text-[20px]">⚡</span>
                 </div>
@@ -193,6 +239,9 @@ function Index() {
 
               {/* Option 3: Translator */}
               <Link to="/translator" className="group relative flex flex-col rounded-[18px] p-4 bg-white/70 dark:bg-slate-800/60 border border-slate-200 shadow-[0_4px_12px_rgba(30,80,140,0.06)] dark:border-white/10 transition-all duration-300 hover:bg-white/90 dark:hover:bg-slate-800/80 hover:shadow-[0_6px_16px_rgba(30,80,140,0.1)] hover:-translate-y-1 cursor-pointer">
+                <div className="absolute top-4 right-4 flex size-6 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400 transition-colors group-hover:bg-[#2563eb] group-hover:text-white">
+                  <span className="text-[12px] leading-none">&rarr;</span>
+                </div>
                 <div className="flex size-10 shrink-0 items-center justify-center rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 mb-3">
                   <span className="text-[20px]">🌐</span>
                 </div>

@@ -1,11 +1,12 @@
 import { i as __toESM } from "../_runtime.mjs";
-import { n as require_jsx_runtime, r as require_react } from "../_libs/react+tanstack__react-query.mjs";
+import { u as require_react } from "../_libs/@floating-ui/react-dom+[...].mjs";
+import { a as require_jsx_runtime } from "../_libs/@radix-ui/react-collection+[...].mjs";
 import { n as useAuth } from "./auth-CcoBRp2W.mjs";
 import { t as cn } from "./utils-C_uf36nf.mjs";
 import { n as SectionTitle, t as GlassCard } from "./GlassCard-DIxNQspi.mjs";
 import { t as StatCard } from "./StatCard-Cac9fzfv.mjs";
-import { _ as useNavigate, h as Link } from "../_libs/@tanstack/react-router+[...].mjs";
-import { A as Check, M as CalendarDays, P as Bell, T as Clock, a as Target, b as Gauge, c as SlidersHorizontal, k as ChevronRight, l as Share2, n as X, p as Pencil, r as Trophy, t as Zap, x as Flame } from "../_libs/lucide-react.mjs";
+import { g as useNavigate, h as Link } from "../_libs/@tanstack/react-router+[...].mjs";
+import { C as Flame, F as Check, L as CalendarDays, N as ChevronRight, O as Clock, S as Gauge, l as SlidersHorizontal, m as Pencil, n as X, o as Target, r as Trophy, t as Zap, u as Share2, z as Bell } from "../_libs/lucide-react.mjs";
 import { n as calculateXP, t as XP_PER_LEVEL } from "./scoring-D8JtVBFj.mjs";
 //#region node_modules/.nitro/vite/services/ssr/assets/profile--ZCmIf1Z.js
 var import_react = /* @__PURE__ */ __toESM(require_react());

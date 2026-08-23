@@ -1,5 +1,5 @@
 import { i as __toESM } from "../_runtime.mjs";
-import { r as require_react } from "./react+tanstack__react-query.mjs";
+import { u as require_react } from "./@floating-ui/react-dom+[...].mjs";
 //#region node_modules/lucide-react/dist/esm/shared/src/utils/mergeClasses.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 /**
@@ -122,6 +122,30 @@ var ArrowLeft = createLucideIcon("arrow-left", [["path", {
 	d: "M19 12H5",
 	key: "x3x0zl"
 }]]);
+/**
+* @license lucide-react v0.575.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
+var ArrowRightLeft = createLucideIcon("arrow-right-left", [
+	["path", {
+		d: "m16 3 4 4-4 4",
+		key: "1x1c3m"
+	}],
+	["path", {
+		d: "M20 7H4",
+		key: "zbl0bi"
+	}],
+	["path", {
+		d: "m8 21-4-4 4-4",
+		key: "h9nckh"
+	}],
+	["path", {
+		d: "M4 17h16",
+		key: "g4d7ey"
+	}]
+]);
 /**
 * @license lucide-react v0.575.0 - ISC
 *
@@ -268,6 +292,16 @@ var Check = createLucideIcon("check", [["path", {
 * This source code is licensed under the ISC license.
 * See the LICENSE file in the root directory of this source tree.
 */
+var ChevronDown = createLucideIcon("chevron-down", [["path", {
+	d: "m6 9 6 6 6-6",
+	key: "qrunsl"
+}]]);
+/**
+* @license lucide-react v0.575.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
 var ChevronRight = createLucideIcon("chevron-right", [["path", {
 	d: "m9 18 6-6-6-6",
 	key: "mthhwq"
@@ -328,6 +362,18 @@ var CircleX = createLucideIcon("circle-x", [
 * This source code is licensed under the ISC license.
 * See the LICENSE file in the root directory of this source tree.
 */
+var Circle = createLucideIcon("circle", [["circle", {
+	cx: "12",
+	cy: "12",
+	r: "10",
+	key: "1mglay"
+}]]);
+/**
+* @license lucide-react v0.575.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
 var Clock = createLucideIcon("clock", [["circle", {
 	cx: "12",
 	cy: "12",
@@ -336,6 +382,24 @@ var Clock = createLucideIcon("clock", [["circle", {
 }], ["path", {
 	d: "M12 6v6l4 2",
 	key: "mmk7yg"
+}]]);
+/**
+* @license lucide-react v0.575.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
+var Copy = createLucideIcon("copy", [["rect", {
+	width: "14",
+	height: "14",
+	x: "8",
+	y: "8",
+	rx: "2",
+	ry: "2",
+	key: "17jyea"
+}], ["path", {
+	d: "M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2",
+	key: "zix9uf"
 }]]);
 /**
 * @license lucide-react v0.575.0 - ISC
@@ -474,6 +538,38 @@ var Keyboard = createLucideIcon("keyboard", [
 		y: "4",
 		rx: "2",
 		key: "18n3k1"
+	}]
+]);
+/**
+* @license lucide-react v0.575.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
+var Languages = createLucideIcon("languages", [
+	["path", {
+		d: "m5 8 6 6",
+		key: "1wu5hv"
+	}],
+	["path", {
+		d: "m4 14 6-6 2-3",
+		key: "1k1g8d"
+	}],
+	["path", {
+		d: "M2 5h12",
+		key: "or177f"
+	}],
+	["path", {
+		d: "M7 2h1",
+		key: "1t2jsx"
+	}],
+	["path", {
+		d: "m22 22-5-10-5 10",
+		key: "don7ne"
+	}],
+	["path", {
+		d: "M14 18h6",
+		key: "1m8k6r"
 	}]
 ]);
 /**
@@ -761,6 +857,34 @@ var Target = createLucideIcon("target", [
 * This source code is licensed under the ISC license.
 * See the LICENSE file in the root directory of this source tree.
 */
+var Trash2 = createLucideIcon("trash-2", [
+	["path", {
+		d: "M10 11v6",
+		key: "nco0om"
+	}],
+	["path", {
+		d: "M14 11v6",
+		key: "outv1u"
+	}],
+	["path", {
+		d: "M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6",
+		key: "miytrc"
+	}],
+	["path", {
+		d: "M3 6h18",
+		key: "d0wm0j"
+	}],
+	["path", {
+		d: "M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2",
+		key: "e791ji"
+	}]
+]);
+/**
+* @license lucide-react v0.575.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
 var TriangleAlert = createLucideIcon("triangle-alert", [
 	["path", {
 		d: "m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3",
@@ -831,4 +955,4 @@ var Zap = createLucideIcon("zap", [["path", {
 	key: "1xq2db"
 }]]);
 //#endregion
-export { Check as A, EyeOff as C, CircleCheck as D, CircleX as E, Award as F, ArrowRight as I, ArrowLeft as L, CalendarDays as M, BookOpen as N, CircleCheckBig as O, Bell as P, Eye as S, Clock as T, LoaderCircle as _, Target as a, Gauge as b, SlidersHorizontal as c, RotateCcw as d, Play as f, Lock as g, Medal as h, TriangleAlert as i, ChartColumn as j, ChevronRight as k, Share2 as l, Menu as m, X as n, Star as o, Pencil as p, Trophy as r, Sparkles as s, Zap as t, Search as u, Keyboard as v, Crown as w, Flame as x, KeyRound as y };
+export { CircleX as A, Award as B, Flame as C, Copy as D, Crown as E, Check as F, ArrowRightLeft as H, ChartColumn as I, CalendarDays as L, CircleCheckBig as M, ChevronRight as N, Clock as O, ChevronDown as P, BookOpen as R, Gauge as S, EyeOff as T, ArrowLeft as U, ArrowRight as V, Lock as _, Trash2 as a, Keyboard as b, Sparkles as c, Search as d, RotateCcw as f, Medal as g, Menu as h, TriangleAlert as i, CircleCheck as j, Circle as k, SlidersHorizontal as l, Pencil as m, X as n, Target as o, Play as p, Trophy as r, Star as s, Zap as t, Share2 as u, LoaderCircle as v, Eye as w, KeyRound as x, Languages as y, Bell as z };

@@ -1,11 +1,11 @@
 {
-  "compatibility_date": "2026-08-16",
+  "compatibility_date": "2026-08-23",
   "main": "index.mjs",
   "assets": {
     "binding": "ASSETS",
     "directory": "..\\public"
   },
-  "name": "tanstack-start-ts",
+  "name": "sazidd1-hindi-typing-",
   "compatibility_flags": [
     "nodejs_compat"
   ],

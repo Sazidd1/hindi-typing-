@@ -1,9 +1,10 @@
 import { i as __toESM } from "../_runtime.mjs";
-import { n as require_jsx_runtime, r as require_react } from "../_libs/react+tanstack__react-query.mjs";
+import { u as require_react } from "../_libs/@floating-ui/react-dom+[...].mjs";
+import { a as require_jsx_runtime } from "../_libs/@radix-ui/react-collection+[...].mjs";
 import { n as useAuth } from "./auth-CcoBRp2W.mjs";
 import { t as cn } from "./utils-C_uf36nf.mjs";
 import { t as GlassCard } from "./GlassCard-DIxNQspi.mjs";
-import { h as Medal, r as Trophy, w as Crown } from "../_libs/lucide-react.mjs";
+import { E as Crown, g as Medal, r as Trophy } from "../_libs/lucide-react.mjs";
 import { n as calculateXP, t as XP_PER_LEVEL } from "./scoring-D8JtVBFj.mjs";
 //#region node_modules/.nitro/vite/services/ssr/assets/leaderboard-BE-5S-8i.js
 var import_react = /* @__PURE__ */ __toESM(require_react());

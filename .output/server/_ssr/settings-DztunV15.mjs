@@ -1,5 +1,6 @@
 import { i as __toESM } from "../_runtime.mjs";
-import { n as require_jsx_runtime, r as require_react } from "../_libs/react+tanstack__react-query.mjs";
+import { u as require_react } from "../_libs/@floating-ui/react-dom+[...].mjs";
+import { a as require_jsx_runtime } from "../_libs/@radix-ui/react-collection+[...].mjs";
 import { t as cn } from "./utils-C_uf36nf.mjs";
 import { n as SectionTitle, t as GlassCard } from "./GlassCard-DIxNQspi.mjs";
 import { t as useTheme } from "./theme-CcnM0qqy.mjs";
