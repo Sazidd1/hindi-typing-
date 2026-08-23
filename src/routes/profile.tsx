@@ -56,7 +56,7 @@ function ProfilePage() {
   const [isCopied, setIsCopied] = useState(false);
   
   const [isKeyboardModalOpen, setIsKeyboardModalOpen] = useState(false);
-  const presetOptions: KeyboardPreset[] = ["Classic Glass", "Classic", "Dark Pro", "Minimal", "High Contrast", "Focus", "Color Zones"];
+  const presetOptions: KeyboardPreset[] = ["Classic Glass", "Classic", "Dark Pro", "Minimal", "High Contrast", "Focus", "Color Zones", "Soft Pastel"];
   
   // Track temporary selection before Apply
   const [temporaryPreset, setTemporaryPreset] = useState<KeyboardPreset>("Color Zones");

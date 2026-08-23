@@ -8,7 +8,8 @@ export type KeyboardPreset =
   | "Minimal" 
   | "High Contrast" 
   | "Focus" 
-  | "Color Zones";
+  | "Color Zones"
+  | "Soft Pastel";
 
 function getFingerColorHex(finger: Finger | undefined): string {
   if (!finger) return "#e2e8f0";
@@ -30,6 +31,26 @@ function getFingerBgRgba(finger: Finger | undefined, alpha: number = 0.1): strin
   return `rgba(226, 232, 240, ${alpha})`;
 }
 
+function getSoftPastelFingerBgHex(finger: Finger | undefined): string {
+  if (!finger) return "#e6e9ed"; // Modifiers
+  if (finger.includes("pinky")) return "#f9d8d6"; // Soft Pink
+  if (finger.includes("ring")) return "#f8e5b6"; // Soft Yellow
+  if (finger.includes("middle")) return "#c6e7cb"; // Soft Green
+  if (finger.includes("index")) return "#c7daf1"; // Soft Blue
+  if (finger === "thumb") return "#e6e9ed"; // Soft Gray
+  return "#e6e9ed";
+}
+
+function getSoftPastelActiveBorderHex(finger: Finger | undefined): string {
+  if (!finger) return "#94a3b8"; // Modifiers
+  if (finger.includes("pinky")) return "#f87171"; // Stronger pink
+  if (finger.includes("ring")) return "#fbbf24"; // Stronger yellow
+  if (finger.includes("middle")) return "#34d399"; // Stronger green
+  if (finger.includes("index")) return "#38bdf8"; // Stronger blue
+  if (finger === "thumb") return "#a78bfa"; // Stronger purple
+  return "#94a3b8";
+}
+
 interface HindiKeyboardProps {
   nextChar?: string | undefined;
   preset?: KeyboardPreset | string;
@@ -47,6 +68,7 @@ export function HindiKeyboard({ nextChar, preset = "Color Zones" }: HindiKeyboar
   const isHighContrast = preset === "High Contrast";
   const isFocus = preset === "Focus";
   const isColorZones = preset === "Color Zones";
+  const isSoftPastel = preset === "Soft Pastel";
 
   // Wrapper Styles
   const wrapperClass = cn(
@@ -57,7 +79,8 @@ export function HindiKeyboard({ nextChar, preset = "Color Zones" }: HindiKeyboar
     isMinimal && "bg-transparent p-6 sm:p-8",
     isHighContrast && "bg-black rounded-none p-6 sm:p-8 border-4 border-white",
     isFocus && "bg-background rounded-2xl p-6 sm:p-8",
-    isColorZones && "bg-slate-50 dark:bg-slate-950 rounded-3xl p-6 sm:p-8 shadow-inner"
+    isColorZones && "bg-slate-50 dark:bg-slate-950 rounded-3xl p-6 sm:p-8 shadow-inner",
+    isSoftPastel && "bg-[#eff1f4] dark:bg-[#1a1c20] rounded-[24px] p-6 sm:p-8 border border-white/40 dark:border-white/5"
   );
 
   return (
@@ -148,6 +171,13 @@ export function HindiKeyboard({ nextChar, preset = "Color Zones" }: HindiKeyboar
                     ? "bg-foreground text-background border-foreground shadow-xl z-10" 
                     : "text-slate-800 dark:text-slate-200",
                   isShiftHint && "ring-4 ring-primary bg-primary/30 border-primary"
+                ),
+
+                // Soft Pastel logic
+                isSoftPastel && cn(
+                  "rounded-[8px] transition-transform duration-100",
+                  isActive ? "z-10" : "",
+                  isShiftHint && "ring-2 ring-primary/50 bg-primary/10"
                 )
               );
 
@@ -162,6 +192,21 @@ export function HindiKeyboard({ nextChar, preset = "Color Zones" }: HindiKeyboar
                 customStyles.backgroundColor = getFingerBgRgba(key.finger, 0.25);
                 customStyles.borderBottomColor = getFingerBgRgba(key.finger, 0.6);
               }
+              if (isSoftPastel) {
+                customStyles.backgroundColor = getSoftPastelFingerBgHex(key.finger);
+                if (isActive) {
+                  const activeBorder = getSoftPastelActiveBorderHex(key.finger);
+                  customStyles.borderColor = activeBorder;
+                  customStyles.borderWidth = "2px";
+                  customStyles.borderStyle = "solid";
+                  customStyles.boxShadow = `0 3px 0px ${activeBorder}`;
+                  customStyles.transform = "translateY(-1px)";
+                } else {
+                  customStyles.border = "1px solid rgba(0,0,0,0.03)";
+                  customStyles.boxShadow = "0 2px 0px rgba(0,0,0,0.05), inset 0 1px 0 rgba(255,255,255,0.4)";
+                  customStyles.transform = "none";
+                }
+              }
 
               // Text Style Construction
               const mainTextClass = cn(
@@ -172,7 +217,11 @@ export function HindiKeyboard({ nextChar, preset = "Color Zones" }: HindiKeyboar
                 isMinimal && "text-lg",
                 isHighContrast && "text-base font-bold",
                 isFocus && "text-base font-bold",
-                isColorZones && "text-base font-bold"
+                isColorZones && "text-base font-bold",
+                isSoftPastel && cn(
+                  "font-bold",
+                  isActive ? "text-[#0f172a]" : "text-[#64748b]"
+                )
               );
 
               const subTextClass = cn(
@@ -183,7 +232,11 @@ export function HindiKeyboard({ nextChar, preset = "Color Zones" }: HindiKeyboar
                 isMinimal && "text-[10px] opacity-50",
                 isHighContrast && "text-[10px]",
                 isFocus && "text-[10px]",
-                isColorZones && "text-[10px] opacity-80"
+                isColorZones && "text-[10px] opacity-80",
+                isSoftPastel && cn(
+                  "absolute top-[6px] left-[8px] text-[10px] font-medium",
+                  isActive ? "text-[#475569]" : "text-[#94a3b8]"
+                )
               );
 
               return (
@@ -207,8 +260,8 @@ export function HindiKeyboard({ nextChar, preset = "Color Zones" }: HindiKeyboar
         ))}
       </div>
 
-      {/* Legend - Only show on Classic Glass and Color Zones */}
-      {(isClassicGlass || isColorZones) && (
+      {/* Legend - Only show on Classic Glass, Color Zones, and Soft Pastel */}
+      {(isClassicGlass || isColorZones || isSoftPastel) && (
         <div className="mt-8 flex flex-wrap justify-center gap-4 text-[13px] text-muted-foreground">
           {[
             { c: "#f97316", l: "Little finger" },

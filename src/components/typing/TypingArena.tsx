@@ -139,6 +139,7 @@ export function TypingArena({
     setElapsed(0);
     setErrors(0);
     setFinished(false);
+    setForceFinish(false);
     completedRef.current = false;
     charMistakesRef.current = {};
     inputRef.current?.focus();
