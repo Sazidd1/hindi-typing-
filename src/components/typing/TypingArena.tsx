@@ -150,6 +150,16 @@ export function TypingArena({
     
     // Auto-restore saved progress on mount or lesson change
     if (!lessonSlug || !currentUser) return;
+
+    // Disable auto-restore for regular lessons 1 to 80
+    const match = lessonSlug.match(/^ch(\d+)$/);
+    if (match) {
+      const lessonNum = parseInt(match[1]);
+      if (lessonNum >= 1 && lessonNum <= 80) {
+        return;
+      }
+    }
+
     const savedStr = localStorage.getItem(`lesson_state_${currentUser}_${lessonSlug}`);
     if (savedStr) {
       try {
