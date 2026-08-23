@@ -22,6 +22,7 @@ import { StatCard } from "@/components/kit/StatCard";
 import { useAuth } from "@/lib/auth";
 import { calculateXP, XP_PER_LEVEL, MAX_DISPLAY_LEVEL } from "@/lib/scoring";
 import { cn } from "@/lib/utils";
+import { HindiKeyboard, type KeyboardPreset } from "@/components/typing/HindiKeyboard";
 
 export const Route = createFileRoute("/profile")({
   head: () => ({
@@ -55,14 +56,21 @@ function ProfilePage() {
   const [isCopied, setIsCopied] = useState(false);
   
   const [isKeyboardModalOpen, setIsKeyboardModalOpen] = useState(false);
-  const presetOptions = ["Default", "Classic", "Dark Pro", "Minimal", "High Contrast", "Focus", "Color Zones"];
-  const [keyboardPreset, setKeyboardPreset] = useState(() => {
-    return localStorage.getItem("settings_keyboard_preset") || "Default";
-  });
+  const presetOptions: KeyboardPreset[] = ["Default", "Classic", "Dark Pro", "Minimal", "High Contrast", "Focus", "Color Zones"];
   
-  const handleSelectPreset = (p: string) => {
-    setKeyboardPreset(p);
-    localStorage.setItem("settings_keyboard_preset", p);
+  // Track temporary selection before Apply
+  const [temporaryPreset, setTemporaryPreset] = useState<KeyboardPreset>("Default");
+
+  const openKeyboardModal = () => {
+    const saved = localStorage.getItem("settings_keyboard_preset") as KeyboardPreset || "Default";
+    setTemporaryPreset(saved);
+    setIsKeyboardModalOpen(true);
+  };
+
+  const handleApplyPreset = () => {
+    localStorage.setItem("settings_keyboard_preset", temporaryPreset);
+    window.dispatchEvent(new Event("keyboardPresetUpdated"));
+    setIsKeyboardModalOpen(false);
   };
 
   useEffect(() => {
@@ -445,7 +453,7 @@ function ProfilePage() {
 
           {/* Keyboard Preset */}
           <button
-            onClick={() => setIsKeyboardModalOpen(true)}
+            onClick={openKeyboardModal}
             className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-border/50 bg-secondary/30 hover:bg-primary/8 hover:border-primary/30 hover:text-primary text-xs font-medium text-muted-foreground transition-all group cursor-pointer"
             title="Change keyboard appearance"
           >
@@ -590,47 +598,63 @@ function ProfilePage() {
         </div>
       )}
 
-      {/* Keyboard Preset Modal */}
+      {/* Keyboard Preset Modal (Live Preview) */}
       {isKeyboardModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs p-4 animate-in fade-in duration-200">
-          <div className="w-full max-w-md rounded-3xl bg-background border border-border p-6 shadow-2xl space-y-5">
-            <div className="flex items-center justify-between">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+          <div className="w-full max-w-5xl rounded-3xl bg-background border border-border p-6 sm:p-8 shadow-2xl flex flex-col gap-6 max-h-[95vh] overflow-y-auto custom-scrollbar">
+            
+            <div className="flex items-start justify-between shrink-0">
                <div>
-                 <h3 className="text-lg font-bold text-foreground">Keyboard Preset</h3>
-                 <p className="text-xs text-muted-foreground mt-0.5">Choose your preferred keyboard style for typing practice.</p>
+                 <h3 className="text-xl font-bold text-foreground">Keyboard Preset</h3>
+                 <p className="text-sm text-muted-foreground mt-1">
+                   Choose your preferred keyboard style. The preview below updates instantly.
+                 </p>
                </div>
                <button
                  onClick={() => setIsKeyboardModalOpen(false)}
-                 className="rounded-full p-1 text-muted-foreground hover:bg-secondary hover:text-foreground transition-colors cursor-pointer self-start"
+                 className="rounded-full p-2 bg-secondary/50 text-muted-foreground hover:bg-secondary hover:text-foreground transition-colors cursor-pointer"
                >
                  <X className="size-5" />
                </button>
             </div>
 
-            <div className="flex flex-wrap gap-3 pt-2">
+            {/* Live Keyboard Preview */}
+            <div className="w-full bg-secondary/20 rounded-2xl p-4 sm:p-8 border border-border/50 flex flex-col items-center justify-center min-h-[350px] shrink-0">
+               <HindiKeyboard nextChar="क" preset={temporaryPreset} />
+            </div>
+
+            {/* Preset Selection Options */}
+            <div className="flex flex-wrap gap-3 pt-2 shrink-0">
               {presetOptions.map((o) => (
                 <button
                   key={o}
-                  onClick={() => handleSelectPreset(o)}
-                  aria-pressed={keyboardPreset === o}
+                  onClick={() => setTemporaryPreset(o)}
+                  aria-pressed={temporaryPreset === o}
                   className={cn(
                     "rounded-2xl px-5 py-3 text-sm font-semibold border transition-all duration-200 cursor-pointer",
-                    keyboardPreset === o
-                      ? "bg-primary text-primary-foreground border-primary shadow-sm"
+                    temporaryPreset === o
+                      ? "bg-primary text-primary-foreground border-primary shadow-md scale-105"
                       : "bg-secondary/50 text-muted-foreground border-border/60 hover:bg-secondary hover:text-foreground"
                   )}
                 >
                   {o}
+                  {temporaryPreset === o && <Check className="inline-block ml-2 size-4" />}
                 </button>
               ))}
             </div>
 
-            <div className="flex justify-end pt-2">
+            <div className="flex justify-end gap-3 pt-4 border-t border-border/50 shrink-0">
               <button
                 onClick={() => setIsKeyboardModalOpen(false)}
-                className="px-4 py-2 text-sm font-semibold bg-primary text-primary-foreground rounded-xl hover:bg-primary/90 transition-colors shadow-xs cursor-pointer"
+                className="px-6 py-2.5 text-sm font-semibold text-muted-foreground hover:bg-secondary rounded-xl transition-colors cursor-pointer"
               >
-                Done
+                Cancel
+              </button>
+              <button
+                onClick={handleApplyPreset}
+                className="px-6 py-2.5 text-sm font-semibold bg-primary text-primary-foreground rounded-xl hover:bg-primary/90 transition-colors shadow-xs cursor-pointer"
+              >
+                Apply Keyboard
               </button>
             </div>
           </div>

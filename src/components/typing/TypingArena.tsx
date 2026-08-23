@@ -98,6 +98,16 @@ export function TypingArena({
   const charMistakesRef = useRef<Record<string, number>>({});
   const { currentUser } = useAuth();
 
+  const [keyboardPreset, setKeyboardPreset] = useState<string>("Default");
+  useEffect(() => {
+    const updatePreset = () => {
+      setKeyboardPreset(localStorage.getItem("settings_keyboard_preset") || "Default");
+    };
+    updatePreset();
+    window.addEventListener("keyboardPresetUpdated", updatePreset);
+    return () => window.removeEventListener("keyboardPresetUpdated", updatePreset);
+  }, []);
+
   // isWordPractice is now defined at the top of the component
 
   const typedChars = useMemo(() => tokenizeHindi(typed), [typed]);
@@ -759,7 +769,7 @@ export function TypingArena({
         "mx-auto w-full transition-all duration-300 ease-in-out",
         isFocusMode ? "h-0 max-w-[1050px] opacity-0 overflow-hidden m-0 p-0" : "h-auto max-w-[850px] opacity-100 -mt-2 sm:-mt-4"
       )}>
-        {showKeyboard && <HindiKeyboard nextChar={nextChar} />}
+        {showKeyboard && <HindiKeyboard nextChar={nextChar} preset={keyboardPreset} />}
       </div>
         </div> {/* Close Arena Wrapper */}
 
