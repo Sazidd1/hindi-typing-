@@ -14,6 +14,7 @@ import {
   Trophy,
   X,
   Zap,
+  Keyboard,
 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { GlassCard, SectionTitle } from "@/components/kit/GlassCard";
@@ -52,6 +53,17 @@ function ProfilePage() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [newUserName, setNewUserName] = useState("");
   const [isCopied, setIsCopied] = useState(false);
+  
+  const [isKeyboardModalOpen, setIsKeyboardModalOpen] = useState(false);
+  const presetOptions = ["Default", "Classic", "Dark Pro", "Minimal", "High Contrast", "Focus", "Color Zones"];
+  const [keyboardPreset, setKeyboardPreset] = useState(() => {
+    return localStorage.getItem("settings_keyboard_preset") || "Default";
+  });
+  
+  const handleSelectPreset = (p: string) => {
+    setKeyboardPreset(p);
+    localStorage.setItem("settings_keyboard_preset", p);
+  };
 
   useEffect(() => {
     if (isLoaded && !currentUser) {
@@ -430,6 +442,17 @@ function ProfilePage() {
             <span>Preferences</span>
             <ChevronRight className="size-3 opacity-50 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all" />
           </Link>
+
+          {/* Keyboard Preset */}
+          <button
+            onClick={() => setIsKeyboardModalOpen(true)}
+            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-border/50 bg-secondary/30 hover:bg-primary/8 hover:border-primary/30 hover:text-primary text-xs font-medium text-muted-foreground transition-all group cursor-pointer"
+            title="Change keyboard appearance"
+          >
+            <Keyboard className="size-3.5" />
+            <span>Keyboard</span>
+            <ChevronRight className="size-3 opacity-50 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all" />
+          </button>
         </div>
       </GlassCard>
 
@@ -561,6 +584,53 @@ function ProfilePage() {
                 className="px-4 py-2 text-sm font-semibold bg-primary text-primary-foreground rounded-xl hover:bg-primary/90 disabled:opacity-50 transition-colors shadow-xs cursor-pointer"
               >
                 Save Changes
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Keyboard Preset Modal */}
+      {isKeyboardModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs p-4 animate-in fade-in duration-200">
+          <div className="w-full max-w-md rounded-3xl bg-background border border-border p-6 shadow-2xl space-y-5">
+            <div className="flex items-center justify-between">
+               <div>
+                 <h3 className="text-lg font-bold text-foreground">Keyboard Preset</h3>
+                 <p className="text-xs text-muted-foreground mt-0.5">Choose your preferred keyboard style for typing practice.</p>
+               </div>
+               <button
+                 onClick={() => setIsKeyboardModalOpen(false)}
+                 className="rounded-full p-1 text-muted-foreground hover:bg-secondary hover:text-foreground transition-colors cursor-pointer self-start"
+               >
+                 <X className="size-5" />
+               </button>
+            </div>
+
+            <div className="flex flex-wrap gap-3 pt-2">
+              {presetOptions.map((o) => (
+                <button
+                  key={o}
+                  onClick={() => handleSelectPreset(o)}
+                  aria-pressed={keyboardPreset === o}
+                  className={cn(
+                    "rounded-2xl px-5 py-3 text-sm font-semibold border transition-all duration-200 cursor-pointer",
+                    keyboardPreset === o
+                      ? "bg-primary text-primary-foreground border-primary shadow-sm"
+                      : "bg-secondary/50 text-muted-foreground border-border/60 hover:bg-secondary hover:text-foreground"
+                  )}
+                >
+                  {o}
+                </button>
+              ))}
+            </div>
+
+            <div className="flex justify-end pt-2">
+              <button
+                onClick={() => setIsKeyboardModalOpen(false)}
+                className="px-4 py-2 text-sm font-semibold bg-primary text-primary-foreground rounded-xl hover:bg-primary/90 transition-colors shadow-xs cursor-pointer"
+              >
+                Done
               </button>
             </div>
           </div>
