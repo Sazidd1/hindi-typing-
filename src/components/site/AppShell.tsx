@@ -92,7 +92,6 @@ export function AppShell({ children }: { children: ReactNode }) {
                     <DropdownMenuTrigger className="flex items-center gap-1 rounded-full px-3.5 py-2 text-sm font-medium text-muted-foreground transition-all duration-200 hover:bg-white/80 dark:hover:bg-white/10 outline-none data-[state=open]:bg-white/80 dark:data-[state=open]:bg-white/10">
                       <div className="flex items-center gap-1.5">
                         <span>{item.label}</span>
-                        <span className="text-[10px] font-semibold opacity-60">({layout})</span>
                       </div>
                       <ChevronDown className="size-4 opacity-50" />
                     </DropdownMenuTrigger>
@@ -195,7 +194,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                   return (
                     <div key="layout-selector" className="flex flex-col mb-1">
                       <div className="px-3 py-2 text-sm font-semibold text-foreground/80">
-                        {item.label} <span className="text-xs opacity-60 font-normal ml-1">({layout})</span>
+                        {item.label}
                       </div>
                       <div className="flex flex-col ml-3 pl-3 border-l-2 border-border/50">
                         {LAYOUTS.map((l) => (
