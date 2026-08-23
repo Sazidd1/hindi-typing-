@@ -40,9 +40,9 @@ function PracticePage() {
     if (active.slug.startsWith("ch-full-practice")) {
       const session = generateFullPracticeSession(active.slug);
       
-      let title = "Full Practice";
-      if (active.slug === "ch-full-practice-2") title = "Full Practice 2";
-      if (active.slug === "ch-full-practice-3") title = "Full Practice 3";
+      let title = "Drill 1";
+      if (active.slug === "ch-full-practice-2") title = "Drill 2";
+      if (active.slug === "ch-full-practice-3") title = "Drill 3";
       
       console.log(`[${title}]\nUnique words: ${session.totalUniqueWords}\nCoverage: ${session.coveragePercentage}%`);
       if (active.slug !== "ch-full-practice") {

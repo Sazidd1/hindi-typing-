@@ -14,13 +14,34 @@ export function LessonCard({ item, setLockedLessonIntent }: { item: any, setLock
   
   const { currentUser } = useAuth();
 
+  const getLessonTitle = () => {
+    if (item.slug) {
+      const specialLessonNumbers: Record<string, number> = {
+        'ch-full-practice': 73,
+        'ch-full-practice-2': 74,
+        'ch-full-practice-3': 75,
+        'ch-story-practice-1': 76,
+        'ch-story-practice-2': 77,
+        'ch-news-practice': 78,
+        'ch-dialogue-practice': 79,
+        'ch-adventure-story': 80,
+      };
+      
+      if (specialLessonNumbers[item.slug]) {
+        return `Lesson ${specialLessonNumbers[item.slug]}`;
+      }
+      return `Lesson ${item.slug.replace('ch', '')}`;
+    }
+    return item.title;
+  };
+
   return (
     <div className="group flex flex-col rounded-[16px] overflow-hidden border border-[#e6ebf2] bg-[#ffffff] transition-all duration-200 hover:-translate-y-[3px] hover:shadow-[0_14px_28px_rgba(20,30,60,0.08)] h-full">
       
       {/* HEADER STRIP */}
       <div className={`px-[20px] py-[10px] ${headerBg}`}>
         <span className={`font-bold text-[11px] uppercase tracking-[0.5px] ${headerTextColor}`}>
-          {item.slug ? `Lesson ${item.slug.replace('ch', '')}` : item.title}
+          {getLessonTitle()}
         </span>
       </div>
 
