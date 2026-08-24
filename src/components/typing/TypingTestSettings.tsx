@@ -35,6 +35,11 @@ export default function TypingTestSettings({ onClose }: { onClose?: () => void }
   const statusTimer = useRef<NodeJS.Timeout | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [dims, setDims] = useState({ w: 1200, h: 800 });
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     const el = containerRef.current;
@@ -113,7 +118,7 @@ export default function TypingTestSettings({ onClose }: { onClose?: () => void }
 
 
       const rot = (Math.random() * 60 - 30).toFixed(1);
-      const colorKey = COLOR_KEYS[Math.floor(Math.random() * COLOR_KEYS.length)];
+      const colorKey = COLOR_KEYS[Math.floor(Math.random() * COLOR_KEYS.length)]!;
       const r = Math.random();
       const opacity = r > 0.93 ? 0.26 : r > 0.8 ? 0.5 : 0.9;
       items.push({
@@ -148,12 +153,14 @@ export default function TypingTestSettings({ onClose }: { onClose?: () => void }
     <div
       ref={containerRef}
       style={{
-        position: "fixed",
-        inset: 0,
-        zIndex: 50,
+        position: "absolute",
+        top: 0,
+        left: 0,
+        right: 0,
+        minHeight: "100vh",
+        zIndex: 100,
         background: "radial-gradient(circle at center, #ffffff 20%, #f1f7fe 70%, #e6f0fa 100%)",
         display: "flex",
-        overflowY: "auto",
         padding: "40px 24px",
         fontFamily: "'Inter', sans-serif",
         color: "#161a2b",
@@ -269,34 +276,36 @@ export default function TypingTestSettings({ onClose }: { onClose?: () => void }
       )}
 
       {/* scattered background keys */}
-      <div style={{ position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none" }}>
-        {floatingKeys.map((k) => (
-          <div
-            key={k.id}
-            style={{
-              position: "absolute",
-              top: k.top,
-              left: k.left,
-              width: k.size,
-              height: k.size,
-              fontSize: k.size * 0.4,
-              transform: `rotate(${k.rot}deg)`,
-              borderRadius: 9,
-              opacity: k.opacity,
-              boxShadow: "0 5px 0 rgba(0,0,0,.16)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontFamily: "'JetBrains Mono', monospace",
-              fontWeight: 700,
-              color: "rgba(255,255,255,.92)",
-              background: KEY_COLORS[k.colorKey],
-            }}
-          >
-            {k.char}
-          </div>
-        ))}
-      </div>
+      {mounted && (
+        <div style={{ position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none", overflow: "hidden" }}>
+          {floatingKeys.map((k) => (
+            <div
+              key={k.id}
+              style={{
+                position: "absolute",
+                top: k.top,
+                left: k.left,
+                width: k.size,
+                height: k.size,
+                fontSize: k.size * 0.4,
+                transform: `rotate(${k.rot}deg)`,
+                borderRadius: 9,
+                opacity: k.opacity,
+                boxShadow: "0 5px 0 rgba(0,0,0,.16)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontFamily: "'JetBrains Mono', monospace",
+                fontWeight: 700,
+                color: "rgba(255,255,255,.92)",
+                background: KEY_COLORS[k.colorKey],
+              }}
+            >
+              {k.char}
+            </div>
+          ))}
+        </div>
+      )}
 
 
       {/* card */}

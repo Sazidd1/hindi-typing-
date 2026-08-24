@@ -1,4 +1,4 @@
-//#region node_modules/.nitro/vite/services/ssr/assets/_tanstack-start-manifest_v-CbyAwbCp.js
+//#region node_modules/.nitro/vite/services/ssr/assets/_tanstack-start-manifest_v-yx6jkn0l.js
 var tsrStartManifest = () => ({ routes: {
 	__root__: {
 		filePath: "C:/Users/Pikachu/Desktop/tem/hindi-typing-project/src/routes/__root.tsx",
@@ -16,7 +16,7 @@ var tsrStartManifest = () => ({ routes: {
 			"/translator"
 		],
 		preloads: [
-			"/assets/index-D1jGCKZu.js",
+			"/assets/index-Dz5BevsS.js",
 			"/assets/jsx-runtime-B-hcVAMW.js",
 			"/assets/link-CzqW9V16.js",
 			"/assets/preload-helper-D42ASfUS.js",
@@ -24,6 +24,7 @@ var tsrStartManifest = () => ({ routes: {
 			"/assets/useNavigate-BkLYxs6i.js",
 			"/assets/createLucideIcon-CLdWFMku.js",
 			"/assets/check-36OnHiEM.js",
+			"/assets/chevron-down-DxUrtHFo.js",
 			"/assets/chevron-right-CHJcvRU6.js",
 			"/assets/keyboard-kMJgIfGT.js",
 			"/assets/x-CGuQtexA.js",
@@ -31,19 +32,20 @@ var tsrStartManifest = () => ({ routes: {
 			"/assets/theme-DQKZaIZ_.js",
 			"/assets/utils-B6KiDbIe.js",
 			"/assets/lessons-CNb3VMxz.js",
-			"/assets/practice-CZmLayVV.js"
+			"/assets/practice-C3Ba-Y5Z.js"
 		],
 		scripts: [{ attrs: {
 			type: "module",
 			async: !0,
-			src: "/assets/index-D1jGCKZu.js"
+			src: "/assets/index-Dz5BevsS.js"
 		} }]
 	},
 	"/": {
 		filePath: "C:/Users/Pikachu/Desktop/tem/hindi-typing-project/src/routes/index.tsx",
 		children: void 0,
 		preloads: [
-			"/assets/routes-BlDbUNyl.js",
+			"/assets/routes-C1Zu4MEj.js",
+			"/assets/arrow-left-Bdt1PfM_.js",
 			"/assets/LessonCard-Bu06ESL1.js",
 			"/assets/book-open-D5-VjScL.js",
 			"/assets/gauge-gxv4Qjm8.js",
@@ -73,7 +75,8 @@ var tsrStartManifest = () => ({ routes: {
 		filePath: "C:/Users/Pikachu/Desktop/tem/hindi-typing-project/src/routes/forgot-password.tsx",
 		children: void 0,
 		preloads: [
-			"/assets/forgot-password-BjHbR2Ms.js",
+			"/assets/forgot-password-CV4R6dx1.js",
+			"/assets/arrow-left-Bdt1PfM_.js",
 			"/assets/loader-circle-NEOay2w5.js",
 			"/assets/GlassCard-DTkfYs2Z.js"
 		]
@@ -110,7 +113,7 @@ var tsrStartManifest = () => ({ routes: {
 		filePath: "C:/Users/Pikachu/Desktop/tem/hindi-typing-project/src/routes/practice.tsx",
 		children: void 0,
 		preloads: [
-			"/assets/practice-f3GFV_ja.js",
+			"/assets/practice-AE-ohj4U.js",
 			"/assets/circle-check-big-CKDJV1eo.js",
 			"/assets/play-CPV0a6Tn.js",
 			"/assets/zap-D1212EZv.js",

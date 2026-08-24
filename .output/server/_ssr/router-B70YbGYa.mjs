@@ -6,15 +6,15 @@ import { t as cn } from "./utils-C_uf36nf.mjs";
 import { _ as useRouter, c as HeadContent, d as Outlet, f as lazyRouteComponent, g as useNavigate, h as Link, m as createRootRouteWithContext, p as createFileRoute, s as Scripts, u as createRouter } from "../_libs/@tanstack/react-router+[...].mjs";
 import { F as Check, N as ChevronRight, P as ChevronDown, b as Keyboard, h as Menu, k as Circle, n as X } from "../_libs/lucide-react.mjs";
 import { t as Route$10 } from "./lessons-D_j7lGJZ.mjs";
-import { t as Route$11 } from "./practice-CZyeiKV_.mjs";
+import { t as Route$11 } from "./practice-BO1UW0w_.mjs";
 import { t as useTheme } from "./theme-CcnM0qqy.mjs";
 import { t as QueryClient } from "../_libs/tanstack__query-core.mjs";
 import { t as QueryClientProvider } from "../_libs/tanstack__react-query.mjs";
 import { a as Label2, c as Root2, d as SubTrigger2, f as Trigger, i as ItemIndicator2, l as Separator2, n as Content2, o as Portal2, r as Item2, s as RadioItem2, t as CheckboxItem2, u as SubContent2 } from "../_libs/@radix-ui/react-dropdown-menu+[...].mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/router-C8PIh0wE.js
+//#region node_modules/.nitro/vite/services/ssr/assets/router-B70YbGYa.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
-var styles_default = "/assets/styles-BO9hzM4C.css";
+var styles_default = "/assets/styles-BGKY8BwX.css";
 function reportLovableError(error, context = {}) {
 	if (typeof window === "undefined") return;
 	window.__lovableEvents?.captureException?.(error, {
@@ -474,7 +474,7 @@ function RootComponent() {
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthProvider, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AppShell, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Outlet, {}) }) })
 	});
 }
-var $$splitComponentImporter$8 = () => import("./routes-DpFfv3_c.mjs");
+var $$splitComponentImporter$8 = () => import("./routes-CIqyEYb6.mjs");
 var Route$8 = createFileRoute("/")({
 	head: () => ({ meta: [
 		{ title: "Hindi Typing Practice — Abhyas Studio" },

@@ -11,6 +11,11 @@ import { useAuth } from "@/lib/auth";
 import { BookOpen, X, ChevronRight, ChevronDown } from "lucide-react";
 
 export const Route = createFileRoute("/")({
+  validateSearch: (search: Record<string, unknown>) => {
+    return {
+      test: search.test === true || search.test === 'true' ? true : undefined,
+    };
+  },
   head: () => ({
     meta: [
       { title: "Hindi Typing Practice — Abhyas Studio" },
@@ -64,9 +69,10 @@ function Index() {
   const { currentUser } = useAuth();
   const [progressData, setProgressData] = useState<Record<string, any>>({});
   const [isTutorModalOpen, setIsTutorModalOpen] = useState(false);
-  const [isTestSettingsOpen, setIsTestSettingsOpen] = useState(false);
+  const search = Route.useSearch();
+  const isTestSettingsOpen = !!search.test;
   const [activeLang, setActiveLang] = useState('Hindi');
-  const [isHindiExpanded, setIsHindiExpanded] = useState(true);
+  const [isHindiExpanded, setIsHindiExpanded] = useState(false);
 
   useEffect(() => {
     if (!currentUser) return;
@@ -108,6 +114,10 @@ function Index() {
       return item;
     });
   }, [progressData]);
+
+  if (isTestSettingsOpen) {
+    return <TypingTestSettings onClose={() => window.history.back()} />;
+  }
 
   return (
     <div className="space-y-20">
@@ -246,9 +256,11 @@ function Index() {
 
             <div className="grid grid-cols-2 gap-3">
               {/* Option 2: Typing Test */}
-              <div 
-                onClick={() => setIsTestSettingsOpen(true)}
+              <Link 
+                to="/"
+                search={{ test: true }}
                 className="group relative flex flex-col rounded-[18px] p-4 bg-white/70 dark:bg-[#111F35] border border-slate-200 shadow-[0_4px_12px_rgba(30,80,140,0.06)] dark:border-[rgba(255,255,255,0.10)] transition-all duration-300 hover:bg-white/90 dark:hover:bg-[#1C304D] hover:shadow-[0_6px_16px_rgba(30,80,140,0.1)] hover:-translate-y-1 cursor-pointer"
+                style={{ textDecoration: 'none' }}
               >
                 <div className="absolute top-4 right-4 flex size-6 items-center justify-center rounded-full bg-slate-100 dark:bg-[#172943] text-slate-400 transition-colors group-hover:bg-[#2563eb] group-hover:text-white">
                   <span className="text-[12px] leading-none">&rarr;</span>
@@ -260,7 +272,7 @@ function Index() {
                   <h3 className="en font-bold text-slate-800 dark:text-[#F4F7FB] text-[15px] leading-tight">Typing Test</h3>
                   <p className="en text-[12px] text-slate-600 dark:text-[#A9B8CC] font-medium mt-1">Speed & Accuracy</p>
                 </div>
-              </div>
+              </Link>
 
               {/* Option 3: Translator */}
               <Link to="/translator" className="group relative flex flex-col rounded-[18px] p-4 bg-white/70 dark:bg-[#111F35] border border-slate-200 shadow-[0_4px_12px_rgba(30,80,140,0.06)] dark:border-[rgba(255,255,255,0.10)] transition-all duration-300 hover:bg-white/90 dark:hover:bg-[#1C304D] hover:shadow-[0_6px_16px_rgba(30,80,140,0.1)] hover:-translate-y-1 cursor-pointer">
@@ -348,10 +360,6 @@ function Index() {
           <HindiKeyboard nextChar="क" />
         </div>
       </section>
-
-      {isTestSettingsOpen && (
-        <TypingTestSettings onClose={() => setIsTestSettingsOpen(false)} />
-      )}
 
       {isTutorModalOpen && (
         <div 

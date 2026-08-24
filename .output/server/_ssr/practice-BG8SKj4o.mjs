@@ -7,10 +7,10 @@ import { n as keyboardRows, r as lessons, t as HINDI_MAP } from "./typing-data-D
 import { h as Link } from "../_libs/@tanstack/react-router+[...].mjs";
 import { A as CircleX, M as CircleCheckBig, f as RotateCcw, i as TriangleAlert, j as CircleCheck, o as Target, p as Play, r as Trophy, t as Zap } from "../_libs/lucide-react.mjs";
 import { r as validateSession } from "./scoring-C2r0ix1P.mjs";
-import { t as Route } from "./practice-CZyeiKV_.mjs";
+import { t as Route } from "./practice-BO1UW0w_.mjs";
 import { t as HindiKeyboard } from "./HindiKeyboard-DGIBPTxP.mjs";
 import { t as toast } from "../_libs/sonner.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/practice-DhfpPjM3.js
+//#region node_modules/.nitro/vite/services/ssr/assets/practice-BG8SKj4o.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 var import_react_dom = /* @__PURE__ */ __toESM(require_react_dom());
@@ -342,6 +342,7 @@ function TypingArena({ lessonSlug, text, title, subtitle, timeLimit, showKeyboar
 		setElapsed(0);
 		setErrors(0);
 		setFinished(false);
+		setForceFinish(false);
 		completedRef.current = false;
 		charMistakesRef.current = {};
 		inputRef.current?.focus();
@@ -349,6 +350,11 @@ function TypingArena({ lessonSlug, text, title, subtitle, timeLimit, showKeyboar
 	(0, import_react.useEffect)(() => {
 		reset();
 		if (!lessonSlug || !currentUser) return;
+		const match = lessonSlug.match(/^ch(\d+)$/);
+		if (match) {
+			const lessonNum = parseInt(match[1]);
+			if (lessonNum >= 1 && lessonNum <= 80) return;
+		}
 		const savedStr = localStorage.getItem(`lesson_state_${currentUser}_${lessonSlug}`);
 		if (savedStr) try {
 			const saved = JSON.parse(savedStr);
