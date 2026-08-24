@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useRef, useEffect } from "react";
+import { useNavigate } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
 
 const LEGENDS = [
@@ -21,6 +22,14 @@ const COLOR_KEYS = Object.keys(KEY_COLORS) as (keyof typeof KEY_COLORS)[];
 
 const SCHEMES = ["Remington GAIL", "Remington CBI", "Kruti Dev", "Mangal InScript", "English"];
 
+const STORY_SLUG_MAP: Record<string, string> = {
+  "1. ईमानदार लकड़हारा": "story-woodcutter",
+  "2. प्यासा कौआ": "story-thirsty-crow",
+  "3. खरगोश और कछुआ": "story-tortoise-hare",
+  "4. चींटी और टिड्डा": "story-ant-grasshopper",
+  "5. शेर और चूहा": "story-lion-mouse"
+};
+
 export default function TypingTestSettings({ onClose }: { onClose?: () => void }) {
   const [name, setName] = useState("");
   const [testTime, setTestTime] = useState("1 Minute");
@@ -36,6 +45,7 @@ export default function TypingTestSettings({ onClose }: { onClose?: () => void }
   const containerRef = useRef<HTMLDivElement>(null);
   const [dims, setDims] = useState({ w: 1200, h: 800 });
   const [mounted, setMounted] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setMounted(true);
@@ -143,10 +153,20 @@ export default function TypingTestSettings({ onClose }: { onClose?: () => void }
   }
 
   function handlePractice() {
-    flashStatus(`Practice mode started — ${scheme}`);
+    const slug = STORY_SLUG_MAP[passageType];
+    if (slug) {
+      navigate({ to: "/practice", search: { lesson: slug } });
+    } else {
+      flashStatus(`Practice mode started — ${scheme}`);
+    }
   }
   function handleExam() {
-    flashStatus(`Exam mode started — ${scheme}`);
+    const slug = STORY_SLUG_MAP[passageType];
+    if (slug) {
+      navigate({ to: "/practice", search: { lesson: slug } });
+    } else {
+      flashStatus(`Exam mode started — ${scheme}`);
+    }
   }
 
   return (
@@ -409,7 +429,7 @@ export default function TypingTestSettings({ onClose }: { onClose?: () => void }
             onChange={(e) => setPassageType(e.target.value)}
             style={{ ...inputStyle(), textAlign: "left", cursor: "pointer", paddingRight: 30 }}
           >
-            {["Random words", "Common sentences", "News excerpts", "Story passages"].map((t) => (
+            {["Random words", "Common sentences", "News excerpts", "1. ईमानदार लकड़हारा", "2. प्यासा कौआ", "3. खरगोश और कछुआ", "4. चींटी और टिड्डा", "5. शेर और चूहा"].map((t) => (
               <option key={t}>{t}</option>
             ))}
           </select>
