@@ -7,7 +7,7 @@ import { LessonCard } from "@/components/typing/LessonCard";
 import { lessons } from "@/lib/typing-data";
 import { categories } from "@/routes/lessons";
 import { useAuth } from "@/lib/auth";
-import { BookOpen, X, ChevronRight } from "lucide-react";
+import { BookOpen, X, ChevronRight, ChevronDown } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -64,6 +64,7 @@ function Index() {
   const [progressData, setProgressData] = useState<Record<string, any>>({});
   const [isTutorModalOpen, setIsTutorModalOpen] = useState(false);
   const [activeLang, setActiveLang] = useState('Hindi');
+  const [isHindiExpanded, setIsHindiExpanded] = useState(true);
 
   useEffect(() => {
     if (!currentUser) return;
@@ -174,21 +175,34 @@ function Index() {
                   <p className="en text-[13px] text-slate-500 dark:text-[#71839B] font-medium mt-0.5">5 layouts available</p>
                 </div>
               </div>
-              <div className="mt-5 relative z-10 flex flex-col gap-2" onClick={(e) => e.stopPropagation()}>
+              <div className="mt-5 relative z-10 flex flex-col" onClick={(e) => e.stopPropagation()}>
                 {/* Top Primary Switcher */}
                 <div className="flex bg-[#f1f5f9] dark:bg-[rgba(8,20,38,0.45)] p-1.5 rounded-[16px] border border-slate-200/50 dark:border-[rgba(255,255,255,0.06)]">
                   <div 
-                    onClick={() => setActiveLang('Hindi')}
+                    onClick={() => {
+                      setActiveLang('Hindi');
+                      setIsHindiExpanded(prev => !prev);
+                    }}
                     className={`flex-1 flex items-center justify-center h-[44px] rounded-[12px] text-[13px] font-bold cursor-pointer transition-all ${
                       activeLang === 'Hindi' 
                         ? 'bg-white dark:bg-[#334762] text-slate-900 dark:text-[#FFFFFF] shadow-sm' 
                         : 'text-slate-500 hover:text-slate-700 dark:text-[#91A2B8] dark:hover:bg-[rgba(255,255,255,0.05)] font-medium'
                     }`}
                   >
-                    Hindi
+                    <span className="flex items-center gap-1.5">
+                      Hindi
+                      <ChevronDown 
+                        className={`size-3.5 opacity-80 transition-transform duration-300 ${
+                          isHindiExpanded ? 'rotate-180' : ''
+                        }`} 
+                      />
+                    </span>
                   </div>
                   <div 
-                    onClick={() => setActiveLang('English')}
+                    onClick={() => {
+                      setActiveLang('English');
+                      setIsHindiExpanded(false);
+                    }}
                     className={`flex-1 flex items-center justify-center h-[44px] rounded-[12px] text-[13px] font-bold cursor-pointer transition-all ${
                       activeLang === 'English' 
                         ? 'bg-white dark:bg-[#334762] text-slate-900 dark:text-[#FFFFFF] shadow-sm' 
@@ -200,8 +214,13 @@ function Index() {
                 </div>
 
                 {/* Secondary Hindi Sub-Layouts */}
-                {activeLang === 'Hindi' && (
-                  <div className="grid grid-cols-2 gap-2 bg-[#f1f5f9] dark:bg-transparent p-3 rounded-[16px] border border-slate-200/50 dark:border-none">
+                <div 
+                  className={`grid transition-[grid-template-rows,opacity,margin] duration-300 ease-in-out ${
+                    isHindiExpanded ? "grid-rows-[1fr] opacity-100 mt-2" : "grid-rows-[0fr] opacity-0 mt-0"
+                  }`}
+                >
+                  <div className="overflow-hidden">
+                    <div className="grid grid-cols-2 gap-2 bg-[#f1f5f9] dark:bg-transparent p-3 rounded-[16px] border border-slate-200/50 dark:border-none">
                     <Link 
                       to="/lessons"
                       className="flex items-center justify-center text-center h-[54px] px-2 rounded-[12px] text-[13px] leading-tight font-bold bg-[#2563eb] dark:bg-[#2B6FFF] text-white shadow-[0_2px_8px_rgba(37,99,235,0.25)] dark:shadow-[0_8px_20px_rgba(43,111,255,0.22)] transition-all cursor-pointer hover:opacity-90"
@@ -218,7 +237,8 @@ function Index() {
                       Mangal InScript
                     </div>
                   </div>
-                )}
+                  </div>
+                </div>
               </div>
             </div>
 
