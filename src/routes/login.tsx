@@ -158,7 +158,7 @@ function LoginPage() {
         .login-root {
           --ink:#122043; --muted:#6b7590; --primary:#2b52ff; --amber:#ff8a3d; --teal:#12b3a6; --success:#12b76a; --danger:#f04452; --line:#e3e8f2;
           margin:0; min-height:100vh; font-family:'Inter',sans-serif; color:var(--ink);
-          background: radial-gradient(circle at 20% 15%, #1c2c58 0%, transparent 45%), radial-gradient(circle at 82% 85%, #0d3f52 0%, transparent 45%), linear-gradient(160deg,#0a0f24,#101a3d 55%,#0a0f24);
+          background: #FFFFFF;
           display:flex; align-items:center; justify-content:center;
           position:relative; overflow:hidden; padding:24px;
         }
@@ -181,7 +181,7 @@ function LoginPage() {
         .iso-key.dim { opacity:.45; }
         .iso-key.faint { opacity:.22; }
 
-        .vignette { position:fixed; inset:0; z-index:1; pointer-events:none; background:radial-gradient(circle at 50% 55%, transparent 0%, transparent 18%, rgba(10,15,36,.55) 46%, rgba(10,15,36,.92) 72%); }
+        .vignette { position:fixed; inset:0; z-index:1; pointer-events:none; }
 
         .card { position:relative; z-index:2; width:100%; max-width:400px; background:#fff; border-radius:24px; padding:38px 34px 30px; box-shadow:0 40px 80px -25px rgba(0,0,0,.6), 0 0 0 1px rgba(255,255,255,.06); }
         .badge-wrap { display:flex; justify-content:center; margin-bottom:18px; }
