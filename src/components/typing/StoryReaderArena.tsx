@@ -192,10 +192,10 @@ export function StoryReaderArena({
   }, [startedAt, finished]);
 
   return (
-    <div className="mx-auto w-[98%] max-w-[1350px] flex flex-col lg:flex-row gap-6 lg:gap-8 animate-in fade-in slide-in-from-bottom-4 duration-700 px-2 sm:px-4 -mt-4 sm:-mt-6">
+    <div className="mx-auto w-[98%] max-w-[1400px] flex flex-col lg:flex-row justify-center gap-6 lg:gap-12 animate-in fade-in slide-in-from-bottom-4 duration-700 px-2 sm:px-4 -mt-4 sm:-mt-6">
       
       {/* Left Side: Modern Reader Card */}
-      <div className="flex flex-col flex-1 w-full gap-4">
+      <div className="flex flex-col w-full lg:max-w-[850px] gap-4">
         
         {(title || subtitle) && (
           <h2 className="text-slate-900 dark:text-[#F4F7FB] text-center font-bold text-2xl sm:text-3xl leading-tight px-2 mt-0 mb-4 relative z-10">
@@ -379,42 +379,6 @@ export function StoryReaderArena({
              </div>
           </div>
 
-          {/* Action Button */}
-          <button 
-            onClick={togglePause}
-            disabled={finished}
-            className={cn(
-              "w-full text-white rounded-[14px] py-4 flex items-center justify-center gap-2 font-semibold transition-colors shadow-sm h-[56px]",
-              isPaused ? "bg-[#5b56e8]/80 hover:bg-[#5b56e8]" : "bg-[#5b56e8] hover:bg-[#4a45d0]",
-              finished && "opacity-50 cursor-not-allowed"
-            )}
-          >
-            {finished ? (
-              <Trophy className="size-4" />
-            ) : isPaused || startedAt === null ? (
-              <Play className="size-4 fill-current" />
-            ) : (
-              <div className="flex gap-1 items-center">
-                <span className="w-1.5 h-3.5 bg-white/90 rounded-sm"></span>
-                <span className="w-1.5 h-3.5 bg-white/90 rounded-sm"></span>
-              </div>
-            )}
-            {finished ? "Session Complete" : startedAt === null ? "Start Session" : isPaused ? "Resume Session" : "Pause Session"}
-          </button>
-
-          {/* Submit Button */}
-          <button 
-            onClick={() => setForceFinish(true)}
-            disabled={finished || startedAt === null}
-            className={cn(
-              "w-full text-foreground rounded-[14px] py-4 flex items-center justify-center gap-2 font-semibold transition-colors shadow-sm h-[56px] border border-border/40",
-              "bg-secondary/30 hover:bg-secondary/50 dark:bg-[#071426] dark:hover:bg-[#1C304A]",
-              (finished || startedAt === null) && "opacity-50 cursor-not-allowed"
-            )}
-          >
-            <CheckCircle className="size-4" />
-            Finish Session
-          </button>
         </div>
       </div>
 
