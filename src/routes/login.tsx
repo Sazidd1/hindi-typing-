@@ -184,7 +184,8 @@ function LoginPage() {
         .vignette { position:fixed; inset:0; z-index:1; pointer-events:none; }
 
         .card { position:relative; z-index:2; width:100%; max-width:440px; background:#fff; border-radius:16px; padding:48px 40px; box-shadow:0 12px 40px -12px rgba(0,0,0,.08), 0 0 0 1px rgba(0,0,0,.04); }
-        .brand-logo { font-family:'Manrope', sans-serif; font-weight:800; font-size:26px; text-align:center; margin-bottom:8px; letter-spacing:-0.5px; }
+        .brand-logo { display:flex; align-items:center; justify-content:center; gap:10px; font-family:'Manrope', sans-serif; font-weight:800; font-size:26px; margin-bottom:8px; letter-spacing:-0.5px; }
+        .iso-key-logo { width:36px; height:36px; border-radius:6px; background:linear-gradient(160deg,#2b52ff,#1b3ad1); box-shadow:0 4px 0 rgba(0,0,0,.28); display:flex; align-items:center; justify-content:center; color:rgba(255,255,255,.85); font-size:18px; margin-top:-4px; }
         .brand-typing { color:#0a1330; }
         .brand-abhyas { color:var(--primary); }
         .card h1 { font-family:'Manrope',sans-serif; font-weight:800; font-size:28px; text-align:center; margin:0 0 32px; color:#101828; letter-spacing:-0.5px; }
@@ -237,8 +238,11 @@ function LoginPage() {
       <div className="card">
         <div className={`form-view ${successView ? 'hide' : ''}`}>
           <div className="brand-logo">
-            <span className="brand-typing">Typing</span>
-            <span className="brand-abhyas">Abhyas</span>
+            <div className="iso-key-logo">अ</div>
+            <div>
+              <span className="brand-typing">Typing</span>
+              <span className="brand-abhyas">Abhyas</span>
+            </div>
           </div>
           <h1>{isSignup ? 'Create account' : 'Login'}</h1>
 

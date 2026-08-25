@@ -68,6 +68,9 @@ export function AppShell({ children }: { children: ReactNode }) {
       <header className="sticky top-0 z-50 border-b border-white/50 dark:border-white/[0.08] bg-white/60 dark:bg-[rgba(7,20,38,0.90)] backdrop-blur-xl shadow-sm">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-3">
           <Link to="/" className="flex items-center gap-2.5">
+            <div className="flex items-center justify-center text-white/[0.85] font-[Manrope] font-extrabold text-[18px] w-[36px] h-[36px] rounded-[6px] opacity-90 shadow-[0_4px_0_rgba(0,0,0,0.28)] bg-gradient-to-br from-[#2b52ff] to-[#1b3ad1]">
+              अ
+            </div>
             <span className="text-2xl font-bold tracking-tight">
               <span className="text-slate-900 dark:text-slate-100">Typing</span>
               <span className="text-primary">Abhyas</span>
@@ -248,10 +251,15 @@ export function AppShell({ children }: { children: ReactNode }) {
       <footer className="border-t border-white/50 dark:border-white/8 bg-white/60 dark:bg-[oklch(0.20_0.035_260/0.85)] backdrop-blur-xl">
         <div className="mx-auto flex max-w-7xl flex-col gap-2 px-5 py-8 text-sm text-muted-foreground md:flex-row md:items-center md:justify-between">
           <div className="flex flex-col gap-1">
-            <span className="text-xl font-bold tracking-tight">
-              <span className="text-slate-900 dark:text-slate-100">Typing</span>
-              <span className="text-primary">Abhyas</span>
-            </span>
+            <Link to="/" className="flex items-center gap-2.5">
+              <div className="flex items-center justify-center text-white/[0.85] font-[Manrope] font-extrabold text-[15px] w-[28px] h-[28px] rounded-[5px] opacity-90 shadow-[0_3px_0_rgba(0,0,0,0.28)] bg-gradient-to-br from-[#2b52ff] to-[#1b3ad1]">
+                अ
+              </div>
+              <span className="text-xl font-bold tracking-tight">
+                <span className="text-slate-900 dark:text-slate-100">Typing</span>
+                <span className="text-primary">Abhyas</span>
+              </span>
+            </Link>
             <p className="mt-2 text-sm text-muted-foreground">For any queries or suggestions, feel free to reach out.</p>
           </div>
           <div className="flex items-center gap-4 mt-4 md:mt-0">
