@@ -68,19 +68,9 @@ export function AppShell({ children }: { children: ReactNode }) {
       <header className="sticky top-0 z-50 border-b border-white/50 dark:border-white/[0.08] bg-white/60 dark:bg-[rgba(7,20,38,0.90)] backdrop-blur-xl shadow-sm">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-3">
           <Link to="/" className="flex items-center gap-2.5">
-            <span
-              className="flex size-10 items-center justify-center rounded-xl text-primary-foreground"
-              style={{ background: "var(--gradient-primary)" }}
-            >
-              <Keyboard className="size-5" />
-            </span>
-            <span className="leading-tight">
-              <span className="block font-hindi text-base font-semibold text-foreground">
-                हिंदी टाइपिंग
-              </span>
-              <span className="block text-[11px] tracking-[0.18em] text-muted-foreground uppercase">
-                Abhyas Studio
-              </span>
+            <span className="text-2xl font-bold tracking-tight">
+              <span className="text-slate-900 dark:text-slate-100">Typing</span>
+              <span className="text-primary">Abhyas</span>
             </span>
           </Link>
 
@@ -257,9 +247,15 @@ export function AppShell({ children }: { children: ReactNode }) {
 
       <footer className="border-t border-white/50 dark:border-white/8 bg-white/60 dark:bg-[oklch(0.20_0.035_260/0.85)] backdrop-blur-xl">
         <div className="mx-auto flex max-w-7xl flex-col gap-2 px-5 py-8 text-sm text-muted-foreground md:flex-row md:items-center md:justify-between">
-          <p className="font-hindi">हिंदी टाइपिंग अभ्यास — रोज़ अभ्यास, तेज़ प्रगति।</p>
-          <div className="flex items-center gap-4">
-            <p>© {new Date().getFullYear()} Abhyas Studio. Remington (GAIL) layout.</p>
+          <div className="flex flex-col gap-1">
+            <span className="text-xl font-bold tracking-tight">
+              <span className="text-slate-900 dark:text-slate-100">Typing</span>
+              <span className="text-primary">Abhyas</span>
+            </span>
+            <p className="mt-2 text-sm text-muted-foreground">For any queries or suggestions, feel free to reach out.</p>
+          </div>
+          <div className="flex items-center gap-4 mt-4 md:mt-0">
+            <p>© {new Date().getFullYear()} TypingAbhyas. All rights reserved.</p>
           </div>
         </div>
       </footer>
