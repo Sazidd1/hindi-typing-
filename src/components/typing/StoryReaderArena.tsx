@@ -192,16 +192,23 @@ export function StoryReaderArena({
   }, [startedAt, finished]);
 
   return (
-    <div className="mx-auto w-[98%] max-w-[1400px] flex flex-col lg:flex-row justify-center gap-6 lg:gap-12 animate-in fade-in slide-in-from-bottom-4 duration-700 px-2 sm:px-4 -mt-4 sm:-mt-6">
+    <div className="mx-auto w-[98%] max-w-[1400px] flex flex-col animate-in fade-in slide-in-from-bottom-4 duration-700 px-2 sm:px-4 -mt-4 sm:-mt-6">
       
-      {/* Left Side: Modern Reader Card */}
-      <div className="flex flex-col w-full lg:max-w-[850px] gap-4">
+      {/* Title Centered for the entire page */}
+      {(title || subtitle) && (
+        <h2 className="text-slate-900 dark:text-[#F4F7FB] text-center font-bold text-2xl sm:text-3xl leading-tight px-2 mt-0 mb-6 relative z-10">
+          {title} {subtitle && <span className="font-hindi text-gray-500 dark:text-[#8FA2BC]">( {subtitle} )</span>}
+        </h2>
+      )}
+
+      {/* Main Content Layout */}
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] gap-6 lg:gap-8 items-start w-full">
         
-        {(title || subtitle) && (
-          <h2 className="text-slate-900 dark:text-[#F4F7FB] text-center font-bold text-2xl sm:text-3xl leading-tight px-2 mt-0 mb-4 relative z-10">
-            {title} {subtitle && <span className="font-hindi text-gray-500 dark:text-[#8FA2BC]">( {subtitle} )</span>}
-          </h2>
-        )}
+        {/* Empty left column for center alignment */}
+        <div className="hidden lg:block"></div>
+        
+        {/* Center Box: Modern Reader Card */}
+        <div className="flex flex-col w-full lg:w-[850px] gap-4 max-w-full">
 
         {/* Reader Card */}
         <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden flex flex-col w-full relative">
@@ -339,8 +346,8 @@ export function StoryReaderArena({
         )}
       </div>
 
-      {/* Right Side: Live Session Stats Panel */}
-      <div className="shrink-0 transition-all duration-300 ease-in-out w-full lg:w-[30%] lg:max-w-[320px] lg:min-w-[280px] space-y-4 sm:space-y-6 mt-6 lg:mt-0 opacity-100">
+        {/* Right Side: Live Session Stats Panel */}
+        <div className="transition-all duration-300 ease-in-out w-full lg:w-[320px] justify-self-end space-y-4 sm:space-y-6 opacity-100">
         <div className="bg-card/60 dark:bg-[linear-gradient(145deg,#101F34,#0D1A2D)] rounded-[24px] p-5 sm:p-6 shadow-[0_16px_40px_rgba(0,0,0,0.18)] border border-border/40 dark:border-[rgba(255,255,255,0.09)] flex flex-col gap-5">
           <h3 className="text-xl font-semibold tracking-tight text-foreground dark:text-[#F4F7FB]">Live Session</h3>
           
@@ -379,6 +386,7 @@ export function StoryReaderArena({
              </div>
           </div>
 
+        </div>
         </div>
       </div>
 
