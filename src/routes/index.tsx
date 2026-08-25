@@ -10,12 +10,14 @@ import { categories } from "@/routes/lessons";
 import { useAuth } from "@/lib/auth";
 import { BookOpen, X, ChevronRight, ChevronDown } from "lucide-react";
 
+import { z } from "zod";
+
+const searchSchema = z.object({
+  test: z.boolean().optional().catch(undefined),
+});
+
 export const Route = createFileRoute("/")({
-  validateSearch: (search: Record<string, unknown>) => {
-    return {
-      test: search.test === true || search.test === 'true' ? true : undefined,
-    };
-  },
+  validateSearch: searchSchema,
   head: () => ({
     meta: [
       { title: "Hindi Typing Practice — Abhyas Studio" },

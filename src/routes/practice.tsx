@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { z } from "zod";
 import { TypingArena } from "@/components/typing/TypingArena";
+import { StoryReaderArena } from "@/components/typing/StoryReaderArena";
 import { lessons } from "@/lib/typing-data";
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
@@ -73,16 +74,28 @@ function PracticePage() {
     }
   }, [active.slug, active.text]);
 
+  const isStoryMode = active.slug.startsWith("story-");
+
   return (
     <div className="w-full">
-      <TypingArena 
-        lessonSlug={active.slug}
-        text={dynamicText} 
-        title={active.title} 
-        subtitle={active.hindiTitle} 
-        timeLimit={active.minutes * 60}
-        isParagraphMode={active.title === "Word Practice" || ["ch11", "ch22", "ch23", "ch24", "ch35", "ch36", "ch37", "ch43", "ch44", "ch45", "ch-full-practice", "ch-full-practice-2", "ch-full-practice-3", "ch-story-practice-1", "ch-story-practice-2", "ch-news-practice", "ch-dialogue-practice", "ch-adventure-story"].includes(active.slug)}
-      />
+      {isStoryMode ? (
+        <StoryReaderArena 
+          lessonSlug={active.slug}
+          text={dynamicText} 
+          title={active.title} 
+          subtitle={active.hindiTitle} 
+          timeLimit={active.minutes * 60}
+        />
+      ) : (
+        <TypingArena 
+          lessonSlug={active.slug}
+          text={dynamicText} 
+          title={active.title} 
+          subtitle={active.hindiTitle} 
+          timeLimit={active.minutes * 60}
+          isParagraphMode={active.title === "Word Practice" || ["ch11", "ch22", "ch23", "ch24", "ch35", "ch36", "ch37", "ch43", "ch44", "ch45", "ch-full-practice", "ch-full-practice-2", "ch-full-practice-3", "ch-story-practice-1", "ch-story-practice-2", "ch-news-practice", "ch-dialogue-practice", "ch-adventure-story"].includes(active.slug)}
+        />
+      )}
     </div>
   );
 }

@@ -36,7 +36,10 @@ export default function TypingTestSettings({ onClose }: { onClose?: () => void }
   const [paraMode, setParaMode] = useState("Default");
   const [passageType, setPassageType] = useState("Random words");
   const [scheme, setScheme] = useState("Remington GAIL");
-  const [backspace, setBackspace] = useState(true);
+  const [backspace, setBackspace] = useState(() => {
+    const saved = localStorage.getItem("settings_backspace");
+    return saved !== null ? saved === "true" : true;
+  });
   const [highlight, setHighlight] = useState(true);
   const [wordLimitOn, setWordLimitOn] = useState(false);
   const [wordLimit, setWordLimit] = useState<number | string>(35);
@@ -480,7 +483,13 @@ export default function TypingTestSettings({ onClose }: { onClose?: () => void }
         </div>
 
         <Row label="Backspace:">
-          <Switch checked={backspace} onChange={setBackspace} />
+          <Switch 
+            checked={backspace} 
+            onChange={(val) => {
+              setBackspace(val);
+              localStorage.setItem("settings_backspace", String(val));
+            }} 
+          />
         </Row>
 
         <Row label="Highlight & Auto Scroll:">

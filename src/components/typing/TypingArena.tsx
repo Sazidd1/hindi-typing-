@@ -99,7 +99,14 @@ export function TypingArena({
   const { currentUser } = useAuth();
 
   const [keyboardPreset, setKeyboardPreset] = useState<string>("Color Zones");
+  const [backspaceEnabled, setBackspaceEnabled] = useState<boolean>(true);
+
   useEffect(() => {
+    const savedBackspace = localStorage.getItem("settings_backspace");
+    if (savedBackspace !== null) {
+      setBackspaceEnabled(savedBackspace === "true");
+    }
+
     const updatePreset = () => {
       let savedPreset = localStorage.getItem("settings_keyboard_preset");
       if (savedPreset === "Default") {
@@ -388,8 +395,11 @@ export function TypingArena({
       const mappedAdded = Array.from(added).map(ch => HINDI_MAP[ch] || ch).join('');
       mappedValue = typed + mappedAdded;
     } else if (value.length < typed.length) {
-      // Strict Rule 1: Backspace is disabled
-      return;
+      // Respect backspace setting
+      if (!backspaceEnabled) {
+        return;
+      }
+      mappedValue = value;
     } else {
       mappedValue = Array.from(value).map(ch => HINDI_MAP[ch] || ch).join('');
     }
@@ -418,11 +428,12 @@ export function TypingArena({
       setErrors((e) => e + newErrors);
     }
     
-    // In Bubble Mode (not paragraph), block completely on ANY wrong character
-    if (hasError && !isParagraphMode) {
+    // In basic drill Bubble Mode (paginated), block on ANY wrong character.
+    // In continuous mode or paragraph mode, allow progress with errors (word will turn RED).
+    if (hasError && !isParagraphMode && isBasicDrill) {
       return;
     }
-    
+
     setTyped(next.join(""));
   }
 
@@ -432,18 +443,20 @@ export function TypingArena({
   const nextLesson = currentLessonIndex !== -1 && currentLessonIndex < lessons.length - 1 ? lessons[currentLessonIndex + 1] : null;
 
   // Group into words for the tile layout
+  // wordStartIndices uses tokenized character indices (not string byte positions)
   const words = useMemo(() => text.split(" "), [text]);
 
+  const wordTokenLengths = useMemo(() => words.map(w => tokenizeHindi(w).length), [words]);
+
   const wordStartIndices = useMemo(() => {
-    const starts = [];
+    const starts: number[] = [];
     let curr = 0;
-    for (let i = 0; i < words.length; i++) {
+    for (let i = 0; i < wordTokenLengths.length; i++) {
       starts.push(curr);
-      const w = words[i];
-      if (w !== undefined) curr += w.length + 1; // Every word now has a trailing space
+      curr += (wordTokenLengths[i] ?? 0) + 1; // +1 for space token
     }
     return starts;
-  }, [words]);
+  }, [wordTokenLengths]);
 
   let currentWordIndex = 0;
   for (let i = 0; i < wordStartIndices.length; i++) {
@@ -455,19 +468,50 @@ export function TypingArena({
     }
   }
 
-  // Auto-scroll paragraph mode
-  useEffect(() => {
-    if (isParagraphMode && activeWordRef.current) {
-      activeWordRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
-  }, [currentWordIndex, isParagraphMode]);
+  // Passage container ref for scroll containment (scrolls within box, not browser page)
+  const passageContainerRef = useRef<HTMLDivElement>(null);
 
-  const WORDS_PER_PAGE = 4;
+  // Auto-scroll: scroll within passage container only
+  useEffect(() => {
+    if (activeWordRef.current && passageContainerRef.current) {
+      const container = passageContainerRef.current;
+      const el = activeWordRef.current;
+      const containerRect = container.getBoundingClientRect();
+      const elRect = el.getBoundingClientRect();
+      const elTop = elRect.top - containerRect.top + container.scrollTop;
+      const targetScroll = elTop - container.clientHeight / 2 + elRect.height / 2;
+      container.scrollTo({ top: Math.max(0, targetScroll), behavior: 'smooth' });
+    }
+  }, [currentWordIndex]);
+
+  // Decide continuous mode for Bubble Mode rendering
+  // Basic chapter drills (ch1..ch80) keep 4-word pagination.
+  // Typing Tests render all words continuously.
+  const isBasicDrill = !!lessonSlug && /^ch[0-9]+$/.test(lessonSlug);
+  const continuousMode = !isParagraphMode && !isBasicDrill;
+  const WORDS_PER_PAGE = continuousMode ? Math.max(1, words.length) : 4;
   const pageIndex = Math.floor(currentWordIndex / WORDS_PER_PAGE);
   const startWordIdx = pageIndex * WORDS_PER_PAGE;
   const endWordIdx = Math.min(startWordIdx + WORDS_PER_PAGE, words.length);
   const visibleWords = words.slice(startWordIdx, endWordIdx);
   const pageStartCharIndex = wordStartIndices[startWordIdx] ?? 0;
+
+  // Compute word-level validation states using tokenized char indices
+  const getWordState = (wIdx: number): "pending" | "current" | "correct" | "wrong" => {
+    const startIdx = wordStartIndices[wIdx] ?? 0;
+    const tokenLen = wordTokenLengths[wIdx] ?? 0;
+    const wordEndIdx = startIdx + tokenLen - 1;
+
+    if (typedChars.length <= startIdx) return "pending";
+    // Currently typing this word
+    if (typedChars.length <= wordEndIdx + 1) return "current";
+
+    // Word completed — compare char by char
+    for (let i = startIdx; i <= wordEndIdx; i++) {
+      if (typedChars[i] !== chars[i]) return "wrong";
+    }
+    return "correct";
+  };
 
   // Auto-save logic
   useEffect(() => {
@@ -562,10 +606,12 @@ export function TypingArena({
         )}
         onClick={() => inputRef.current?.focus()}
       >
-        <div className={cn(
-          "flex flex-col w-full h-full items-center overflow-y-auto overflow-x-hidden custom-scrollbar",
-          isParagraphMode ? "justify-start pt-4 sm:pt-6 pb-8" : "justify-center"
-        )}>
+        <div
+          ref={passageContainerRef}
+          className={cn(
+            "flex flex-col w-full h-full items-center overflow-y-auto overflow-x-hidden custom-scrollbar",
+            isParagraphMode || continuousMode ? "justify-start pt-4 sm:pt-6 pb-8" : "justify-center"
+          )}>
           {(() => {
             if (isParagraphMode) {
               const _dependentVowels = new Set([
@@ -629,6 +675,7 @@ export function TypingArena({
                           const mappedChar = mappedChars[displayIdx];
                           if (!mappedChar) return null;
                           const { ch, cIdx, isCurrent, state } = mappedChar;
+                          const wState = getWordState(wIdx);
                           return (
                             <span
                               key={cIdx}
@@ -636,9 +683,10 @@ export function TypingArena({
                                 "transition-colors duration-200",
                                 ch === " " && "inline-block w-[0.5em]",
                                 isCurrent && "text-[#F59E0B] dark:text-[#F7C843] underline decoration-2 underline-offset-4",
-                                state === "correct" && !isCurrent && "text-[#16A34A] dark:text-[#12B76A]",
-                                state === "wrong" && !isCurrent && "text-[#EF4444] dark:text-[#F04452]",
-                                state === "pending" && !isCurrent && "text-[#94A3B8] dark:text-[#9AAAC0]"
+                                wState === "correct" && !isCurrent && "text-[#16A34A] dark:text-[#12B76A]",
+                                wState === "wrong" && !isCurrent && "text-[#EF4444] dark:text-[#F04452]",
+                                wState === "pending" && !isCurrent && "text-[#94A3B8] dark:text-[#9AAAC0]",
+                                wState === "current" && !isCurrent && "text-foreground dark:text-[#F4F7FB]"
                               )}
                             >
                               {ch}
@@ -662,11 +710,9 @@ export function TypingArena({
                 <div className="flex gap-1.5 sm:gap-2 shrink-0">
                   {charsWithSpace.map((ch, cIdx) => {
                     const i = globalIndex++;
-                    const typedCh = typedChars[i];
                     const isCurrent = i === typedChars.length;
-                    const state = typedCh === undefined ? "pending" : typedCh === ch ? "correct" : "wrong";
                     const isSpace = ch === " ";
-                    
+                    const wState = getWordState(wIdxInPage);
                     return (
                       <div
                         key={cIdx}
@@ -676,20 +722,24 @@ export function TypingArena({
                             ? (isFocusMode ? "w-16 sm:w-20" : "w-14 sm:w-16") 
                             : (isFocusMode ? "size-12 sm:size-14" : "size-11 sm:size-12"),
                           
-                          state === "pending" && !isCurrent && "border border-border/60 text-[#94A3B8] dark:text-[#9AAAC0]",
+                          wState === "pending" && !isCurrent && "border border-border/60 text-[#94A3B8] dark:text-[#9AAAC0]",
                           isCurrent && "outline outline-[2.5px] outline-offset-[2.5px] outline-[#F59E0B] dark:outline-[#F7C843] border-transparent z-10 shadow-[0_4px_14px_rgba(245,158,11,0.2)] dark:shadow-[0_4px_14px_rgba(247,200,67,0.25)] text-[#F59E0B] dark:text-[#F7C843] scale-105",
-                          state === "correct" && !isCurrent && "border border-[#16A34A]/30 dark:border-[#12B76A]/30 bg-[#16A34A]/8 dark:bg-[#12B76A]/8 text-[#16A34A] dark:text-[#12B76A]",
-                          state === "wrong" && !isCurrent && "border-2 border-[#EF4444] dark:border-[#F04452] bg-[#EF4444]/10 dark:bg-[#F04452]/10 text-[#EF4444] dark:text-[#F04452]",
+                          // CORRECT (exact match) → GREEN
+                          wState === "correct" && !isCurrent && "border border-[#16A34A]/30 dark:border-[#12B76A]/30 bg-[#16A34A]/8 dark:bg-[#12B76A]/8 text-[#16A34A] dark:text-[#12B76A]",
+                          // WRONG (any mismatch) → RED
+                          wState === "wrong" && !isCurrent && "border-2 border-[#EF4444] dark:border-[#F04452] bg-[#EF4444]/10 dark:bg-[#F04452]/10 text-[#EF4444] dark:text-[#F04452]",
+                          wState === "current" && !isCurrent && "border border-border/60 text-foreground dark:text-[#F4F7FB]"
                         )}
                       >
                         {isSpace ? (
                           <span className={cn(
                             "font-bold uppercase tracking-widest transition-all duration-300",
                             isFocusMode ? "text-[10px] sm:text-[11px]" : "text-[9px] sm:text-[10px]",
-                            state === "pending" ? "text-[#94A3B8] dark:text-[#9AAAC0]" :
-                            state === "correct" ? "text-[#16A34A]/70 dark:text-[#12B76A]/70" :
-                            state === "wrong" ? "text-[#EF4444] dark:text-[#F04452]" :
-                            "text-[#F59E0B] dark:text-[#F7C843]"
+                            wState === "pending" ? "text-[#94A3B8] dark:text-[#9AAAC0]" :
+                            // CORRECT space → GREEN
+                            wState === "correct" ? "text-[#16A34A]/70 dark:text-[#12B76A]/70" :
+                            wState === "wrong" ? "text-[#EF4444] dark:text-[#F04452]" :
+                            "text-foreground dark:text-[#F4F7FB]"
                           )}>
                             Space
                           </span>
@@ -709,12 +759,20 @@ export function TypingArena({
             };
 
             return (
-              <div className="grid grid-cols-2 gap-x-10 sm:gap-x-16 gap-y-5 sm:gap-y-7 w-max mx-auto px-2">
+              <div className={cn(
+                continuousMode
+                  ? "flex flex-wrap gap-x-4 gap-y-5 sm:gap-y-7 px-2 pb-6 w-full justify-start"
+                  : "grid grid-cols-2 gap-x-10 sm:gap-x-16 gap-y-5 sm:gap-y-7 w-max mx-auto px-2"
+              )}>
                 {visibleWords.map((word, wIdx) => {
                   const absoluteWIdx = startWordIdx + wIdx;
                   const isLastWordInText = absoluteWIdx === words.length - 1;
                   return (
-                    <div key={wIdx} className="flex justify-start shrink-0">
+                    <div 
+                      key={absoluteWIdx} 
+                      className="flex justify-start shrink-0"
+                      ref={absoluteWIdx === currentWordIndex ? activeWordRef : null}
+                    >
                       {renderWord(word, absoluteWIdx, isLastWordInText)}
                     </div>
                   );
@@ -724,15 +782,12 @@ export function TypingArena({
           })()}
         </div>
 
+        {/* Hidden capture textarea — always present to capture all keystrokes */}
         <textarea
           ref={inputRef}
           value={typed}
           onChange={(e) => handleChange(e.target.value)}
-          onKeyDown={() => {
-            if (isPaused) {
-              setIsPaused(false);
-            }
-          }}
+          onKeyDown={() => { if (isPaused) setIsPaused(false); }}
           spellCheck={false}
           autoComplete="off"
           autoCorrect="off"
@@ -780,6 +835,31 @@ export function TypingArena({
           />
         )}
       </div>
+
+      {/* Visible typing display — read-only mirror, shown only outside focus mode */}
+      {!isFocusMode && !isParagraphMode && (
+        <div className="mx-auto w-full max-w-[1000px] mt-3" onClick={() => inputRef.current?.focus()}>
+          <div
+            className={cn(
+              "w-full font-hindi text-lg sm:text-xl rounded-[20px] border-2 border-border/60 dark:border-[rgba(255,255,255,0.10)] px-5 py-4",
+              "bg-card/90 dark:bg-[#071426] text-foreground dark:text-[#F4F7FB]",
+              "shadow-[0_2px_12px_rgba(0,0,0,0.05)] transition-all duration-300",
+              "overflow-y-auto custom-scrollbar",
+              "leading-relaxed whitespace-pre-wrap break-words",
+              "cursor-text select-none",
+              "min-h-[6.5rem] max-h-[9rem]" // ~4 visible lines; internal scroll beyond
+            )}
+          >
+            {typed ? (
+              typed
+            ) : (
+              <span className="text-muted-foreground/50 dark:text-[#4A5E77] font-sans text-sm font-normal">
+                यहाँ टाइप करें — Click on the passage above and start typing…
+              </span>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Preserved Keyboard Component */}
       <div className={cn(
