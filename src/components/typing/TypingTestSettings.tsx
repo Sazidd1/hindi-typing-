@@ -425,18 +425,6 @@ export default function TypingTestSettings({ onClose }: { onClose?: () => void }
           </div>
         </Row>
 
-        <Row label="Paragraph Passages">
-          <select
-            className="tts-input tts-select tts-input-main"
-            value={passageType}
-            onChange={(e) => setPassageType(e.target.value)}
-            style={{ ...inputStyle(), textAlign: "left", cursor: "pointer", paddingRight: 30 }}
-          >
-            {["Random words", "Common sentences", "News excerpts", "1. ईमानदार लकड़हारा", "2. प्यासा कौआ", "3. खरगोश और कछुआ", "4. चींटी और टिड्डा", "5. शेर और चूहा"].map((t) => (
-              <option key={t}>{t}</option>
-            ))}
-          </select>
-        </Row>
 
         <div
           style={{
@@ -481,6 +469,19 @@ export default function TypingTestSettings({ onClose }: { onClose?: () => void }
             );
           })}
         </div>
+
+        <Row label="Paragraph Passages">
+          <select
+            className="tts-input tts-select tts-input-main"
+            value={passageType}
+            onChange={(e) => setPassageType(e.target.value)}
+            style={{ ...inputStyle(), textAlign: "left", cursor: "pointer", paddingRight: 30 }}
+          >
+            {["Random words", "Common sentences", "News excerpts", "1. ईमानदार लकड़हारा", "2. प्यासा कौआ", "3. खरगोश और कछुआ", "4. चींटी और टिड्डा", "5. शेर और चूहा"].map((t) => (
+              <option key={t}>{t}</option>
+            ))}
+          </select>
+        </Row>
 
         <Row label="Backspace:">
           <Switch 
