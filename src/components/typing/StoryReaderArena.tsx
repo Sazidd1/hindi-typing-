@@ -36,7 +36,7 @@ export function StoryReaderArena({
   const words = useMemo(() => dynamicText.trim().split(/\s+/), [dynamicText]);
   
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
-  const [typedWord, setTypedWord] = useState("");
+  const [typedText, setTypedText] = useState("");
   const [startedAt, setStartedAt] = useState<number | null>(null);
   const [isPaused, setIsPaused] = useState(false);
   const [elapsed, setElapsed] = useState(0);
@@ -52,7 +52,7 @@ export function StoryReaderArena({
   const [isBold, setIsBold] = useState(false);
   const [isItalic, setIsItalic] = useState(false);
 
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
   const activeWordRef = useRef<HTMLSpanElement>(null);
   const lastActiveTimeRef = useRef<number | null>(null);
   const completedRef = useRef(false);
@@ -61,7 +61,7 @@ export function StoryReaderArena({
   // Reset function
   const reset = useCallback(() => {
     setCurrentWordIndex(0);
-    setTypedWord("");
+    setTypedText("");
     setStartedAt(null);
     setIsPaused(false);
     setElapsed(0);
@@ -121,55 +121,61 @@ export function StoryReaderArena({
     }
   }, [elapsed, timeLimit, currentWordIndex, words.length, finished, startedAt, forceFinish, wpm, accuracy, errors, onComplete]);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     if (finished || isPaused) return;
     if (startedAt === null) setStartedAt(Date.now());
     
     const value = e.target.value;
     
-    // Map physical English keystrokes to Hindi chars
     let mappedValue = value;
-    if (value.startsWith(typedWord) && value.length > typedWord.length) {
-      const added = value.slice(typedWord.length);
+    if (value.startsWith(typedText) && value.length > typedText.length) {
+      const added = value.slice(typedText.length);
       const mappedAdded = Array.from(added).map(ch => HINDI_MAP[ch] || ch).join('');
-      mappedValue = typedWord + mappedAdded;
+      mappedValue = typedText + mappedAdded;
     } else {
       mappedValue = Array.from(value).map(ch => HINDI_MAP[ch] || ch).join('');
     }
     
-    setTypedWord(mappedValue);
+    setTypedText(mappedValue);
 
-    const targetWord = words[currentWordIndex] || "";
-    if (mappedValue.trim() === targetWord) {
-      submitWord(mappedValue);
-    }
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (finished || isPaused) return;
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      submitWord(typedWord);
-    }
-  };
-
-  const submitWord = (wordToSubmit = typedWord) => {
-    if (finished || isPaused || currentWordIndex >= words.length) return;
-    if (wordToSubmit.trim() === '') return;
-
-    const targetWord = words[currentWordIndex] || "";
+    const inputStr = mappedValue.trimStart();
+    const typedWords = inputStr ? inputStr.split(/\s+/) : [];
     
-    if (wordToSubmit.trim() === targetWord) {
-      setCorrectWordsCount(prev => prev + 1);
-      setCorrectCharsCount(prev => prev + targetWord.length + 1); // +1 for space
-      setCurrentStreak(prev => prev + 1);
-    } else {
-      setErrors(prev => prev + 1);
-      setCurrentStreak(0);
-    }
+    const activeIdx = Math.max(0, typedWords.length - 1);
+    setCurrentWordIndex(activeIdx);
 
-    setTypedWord("");
-    setCurrentWordIndex(prev => prev + 1);
+    let correct = 0;
+    let errs = 0;
+    let chars = 0;
+    let streak = 0;
+    
+    const committedWords = typedWords.slice(0, -1);
+    
+    committedWords.forEach((tw, i) => {
+       const target = words[i] || "";
+       if (tw === target) {
+           correct++;
+           chars += target.length + 1; // +1 for space
+           streak++;
+       } else {
+           errs++;
+           streak = 0;
+       }
+    });
+
+    setCorrectWordsCount(correct);
+    setCorrectCharsCount(chars);
+    setErrors(errs);
+    setCurrentStreak(streak);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (finished || isPaused) return;
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      const fakeEvent = { target: { value: typedText + " " } } as React.ChangeEvent<HTMLTextAreaElement>;
+      handleInputChange(fakeEvent);
+    }
   };
 
   const togglePause = useCallback(() => {
@@ -237,7 +243,7 @@ export function StoryReaderArena({
                     className={cn(
                       "transition-all duration-200",
                       isActive && "bg-[#eeecfd] text-[#5b56e8] font-bold px-2 py-0.5 rounded-md shadow-sm scale-105",
-                      isCompleted && "text-slate-400 font-normal",
+                      isCompleted && "text-[#16A34A] font-medium opacity-100",
                       isPending && "text-slate-800 font-normal"
                     )}
                   >
@@ -251,17 +257,16 @@ export function StoryReaderArena({
           {/* Input Box & Toolbar Area */}
           <div className="p-6 bg-slate-50 border-t border-slate-100 flex flex-col gap-4">
             
-            <input
+            <textarea
               ref={inputRef}
-              type="text"
-              value={typedWord}
+              value={typedText}
               onChange={handleInputChange}
               onKeyDown={handleKeyDown}
               disabled={finished || isPaused}
               placeholder="हाइलाइट किया हुआ शब्द टाइप करें..."
               autoComplete="off"
               spellCheck="false"
-              className="w-full text-lg sm:text-xl font-hindi px-5 py-4 rounded-xl border border-slate-200 bg-white shadow-inner focus:outline-none focus:border-[#5b56e8] focus:ring-2 focus:ring-[#5b56e8]/20 transition-all placeholder:text-slate-400 placeholder:font-sans text-slate-800"
+              className="w-full text-lg sm:text-xl font-hindi px-5 py-4 rounded-xl border border-slate-200 bg-white shadow-inner focus:outline-none focus:border-[#5b56e8] focus:ring-2 focus:ring-[#5b56e8]/20 transition-all placeholder:text-slate-400 placeholder:font-sans text-slate-800 resize-none h-[120px] break-all"
             />
 
             {/* Bottom Toolbar */}
@@ -285,8 +290,13 @@ export function StoryReaderArena({
                   Retake
                 </button>
                 <button 
-                  onClick={() => submitWord(typedWord)}
-                  disabled={finished || isPaused || typedWord.trim() === ''}
+                  onClick={() => {
+                    if (finished || isPaused || !typedText || /\s$/.test(typedText)) return;
+                    const fakeEvent = { target: { value: typedText + " " } } as React.ChangeEvent<HTMLTextAreaElement>;
+                    handleInputChange(fakeEvent);
+                    inputRef.current?.focus();
+                  }}
+                  disabled={finished || isPaused || !typedText || /\s$/.test(typedText)}
                   className="flex-1 sm:flex-none px-8 py-2.5 rounded-lg bg-[#5b56e8] hover:bg-[#4a45d0] text-white font-semibold shadow-md shadow-[#5b56e8]/20 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Submit
