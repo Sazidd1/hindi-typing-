@@ -183,38 +183,37 @@ function LoginPage() {
 
         .vignette { position:fixed; inset:0; z-index:1; pointer-events:none; }
 
-        .card { position:relative; z-index:2; width:100%; max-width:400px; background:#fff; border-radius:24px; padding:38px 34px 30px; box-shadow:0 40px 80px -25px rgba(0,0,0,.6), 0 0 0 1px rgba(255,255,255,.06); }
-        .badge-wrap { display:flex; justify-content:center; margin-bottom:18px; }
-        .badge { width:54px; height:54px; border-radius:16px; background:linear-gradient(135deg,var(--primary),var(--teal)); display:flex; align-items:center; justify-content:center; box-shadow:0 12px 22px -8px rgba(43,82,255,.5); }
-        .badge svg { width:24px; height:24px; }
-        .card h1 { font-family:'Manrope',sans-serif; font-weight:800; font-size:24px; text-align:center; margin:0 0 4px; color:var(--ink); }
-        .sub { text-align:center; color:var(--muted); font-size:13.5px; margin:0 0 26px; font-family:'Inter',sans-serif; }
+        .card { position:relative; z-index:2; width:100%; max-width:440px; background:#fff; border-radius:16px; padding:48px 40px; box-shadow:0 12px 40px -12px rgba(0,0,0,.08), 0 0 0 1px rgba(0,0,0,.04); }
+        .brand-logo { font-family:'Manrope', sans-serif; font-weight:800; font-size:26px; text-align:center; margin-bottom:8px; letter-spacing:-0.5px; }
+        .brand-typing { color:#0a1330; }
+        .brand-abhyas { color:var(--primary); }
+        .card h1 { font-family:'Manrope',sans-serif; font-weight:800; font-size:28px; text-align:center; margin:0 0 32px; color:#101828; letter-spacing:-0.5px; }
 
-        .field { margin-bottom:16px; text-align:left; }
-        .field label { display:block; font-size:13px; font-weight:700; color:var(--ink); margin-bottom:6px; font-family:'Inter',sans-serif; }
-        .input-shell { position:relative; display:flex; align-items:center; background:#fff; border-radius:12px; border:1.5px solid var(--line); transition:.15s ease; }
+        .field { margin-bottom:20px; text-align:left; }
+        .field label { display:block; font-size:14px; font-weight:600; color:#344054; margin-bottom:8px; font-family:'Inter',sans-serif; }
+        .input-shell { position:relative; display:flex; align-items:center; background:#fff; border-radius:10px; border:1px solid #d0d5dd; transition:all .2s ease; box-shadow:0 1px 2px rgba(16,24,40,.05); }
         .input-shell:focus-within:not(.error) { border-color:var(--primary); box-shadow:0 0 0 4px rgba(43,82,255,.12); }
         .input-shell.error { border-color:var(--danger); box-shadow:0 0 0 4px rgba(240,68,82,.1); }
-        .input-shell input { flex:1; border:none; outline:none; background:transparent; padding:12px 14px; font-size:14.5px; font-family:'Inter',sans-serif; color:var(--ink); border-radius:12px; width:100%; }
-        .input-shell input::placeholder { color:#a7b0c4; }
-        .eye-btn { background:none; border:none; cursor:pointer; padding:8px 12px 8px 4px; color:var(--muted); display:flex; }
-        .eye-btn:hover { color:var(--ink); }
-        .err-msg { font-size:11.5px; color:var(--danger); margin-top:5px; height:14px; opacity:0; transition:.15s ease; text-align:left; }
+        .input-shell input { flex:1; border:none; outline:none; background:transparent; padding:14px 16px; font-size:15px; font-family:'Inter',sans-serif; color:#101828; border-radius:10px; width:100%; }
+        .input-shell input::placeholder { color:#98a2b3; }
+        .eye-btn { background:none; border:none; cursor:pointer; padding:8px 12px 8px 4px; color:#98a2b3; display:flex; transition:color .2s; }
+        .eye-btn:hover { color:#344054; }
+        .err-msg { font-size:13px; color:var(--danger); margin-top:6px; height:18px; opacity:0; transition:.15s ease; text-align:left; }
         .err-msg.show { opacity:1; }
 
-        .row-between { display:flex; justify-content:flex-end; margin:2px 0 20px; }
-        .link { color:var(--primary); font-size:13px; font-weight:600; text-decoration:none; cursor:pointer; }
-        .link:hover { text-decoration:underline; }
+        .row-between { display:flex; justify-content:flex-end; margin:4px 0 24px; }
+        .link { color:var(--primary); font-size:14px; font-weight:600; text-decoration:none; cursor:pointer; transition:color .2s; }
+        .link:hover { color:#1b3ad1; }
 
-        .submit-btn { width:100%; border:none; border-radius:12px; padding:14px; background:var(--ink); color:#fff; font-family:'Manrope',sans-serif; font-weight:800; font-size:15px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; transition:transform .12s ease, background .2s ease; }
-        .submit-btn:hover { background:#0a1330; }
+        .submit-btn { width:100%; border:none; border-radius:10px; padding:14px; background:var(--primary); color:#fff; font-family:'Inter',sans-serif; font-weight:600; font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; transition:all .2s ease; box-shadow:0 1px 2px rgba(16,24,40,.05); margin-top:8px; }
+        .submit-btn:hover { background:#1b3ad1; }
         .submit-btn:active { transform:scale(.98); }
         .submit-btn:disabled { opacity:.75; cursor:default; }
-        .spinner { width:15px;height:15px;border-radius:50%; border:2px solid rgba(255,255,255,.35); border-top-color:#fff; animation:spin .7s linear infinite; display:none; }
+        .spinner { width:18px;height:18px;border-radius:50%; border:2.5px solid rgba(255,255,255,.35); border-top-color:#fff; animation:spin .7s linear infinite; display:none; }
         .submit-btn.loading .spinner { display:inline-block; }
         @keyframes spin { to { transform:rotate(360deg); } }
 
-        .footer-line { text-align:center; margin-top:22px; font-size:13.5px; color:var(--muted); }
+        .footer-line { text-align:center; margin-top:32px; font-size:14px; color:#475467; }
 
         .success-view { display:none; text-align:center; }
         .success-view.show { display:block; animation:fadeUp .5s ease forwards; }
@@ -236,15 +235,12 @@ function LoginPage() {
       <div className="vignette" />
 
       <div className="card">
-        <div className="badge-wrap">
-          <div className="badge">
-            <svg viewBox="0 0 24 24" fill="none"><rect x="2" y="6" width="20" height="13" rx="3" stroke="white" strokeWidth={1.8}/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M6 14h8" stroke="white" strokeWidth={1.8} strokeLinecap="round"/></svg>
-          </div>
-        </div>
-
         <div className={`form-view ${successView ? 'hide' : ''}`}>
-          <h1>{isSignup ? 'Create account' : 'Welcome back'}</h1>
-          <p className="sub">{isSignup ? 'नया खाता बनाएं' : 'अपने खाते में प्रवेश करें'}</p>
+          <div className="brand-logo">
+            <span className="brand-typing">Typing</span>
+            <span className="brand-abhyas">Abhyas</span>
+          </div>
+          <h1>{isSignup ? 'Create account' : 'Login'}</h1>
 
           <form onSubmit={handleSubmit}>
             {isSignup && (
