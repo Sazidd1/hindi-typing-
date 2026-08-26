@@ -8,7 +8,7 @@ import TypingTestSettings from "@/components/typing/TypingTestSettings";
 import { lessons } from "@/lib/typing-data";
 import { categories } from "@/routes/lessons";
 import { useAuth } from "@/lib/auth";
-import { BookOpen, X, ChevronRight, ChevronDown } from "lucide-react";
+import { BookOpen, X, ChevronRight } from "lucide-react";
 
 import { z } from "zod";
 
@@ -170,32 +170,32 @@ function Index() {
         </div>
 
         <div className="flex-[1_1_min(100%,350px)] lg:max-w-[42%]">
-          <div className="animate-float-soft p-4 sm:p-[24px] rounded-2xl bg-white/80 dark:bg-[linear-gradient(145deg,#162943,#102139)] backdrop-blur-[20px] border border-[rgba(255,255,255,0.85)] dark:border-[rgba(80,130,220,0.28)] shadow-[0_8px_32px_rgba(30,80,140,0.12)] dark:shadow-[0_18px_45px_rgba(0,0,0,0.18)] flex flex-col gap-3 relative overflow-hidden">
+          <div className="animate-float-soft p-3 sm:p-[16px] rounded-2xl bg-white/80 dark:bg-[linear-gradient(145deg,#162943,#102139)] backdrop-blur-[20px] border border-[rgba(255,255,255,0.85)] dark:border-[rgba(80,130,220,0.28)] shadow-[0_8px_32px_rgba(30,80,140,0.12)] dark:shadow-[0_18px_45px_rgba(0,0,0,0.18)] flex flex-col gap-2 relative overflow-hidden">
             <div className="absolute top-0 right-0 -mt-10 -mr-10 size-40 bg-primary/20 blur-[50px] rounded-full pointer-events-none" />
             
-            <p className="en text-[clamp(0.7rem,1.5vw,0.75rem)] font-bold tracking-widest text-muted-foreground dark:text-[#71839B] uppercase mb-1 px-1">
+            <p className="en text-[clamp(0.7rem,1.5vw,0.75rem)] font-bold tracking-widest text-muted-foreground dark:text-[#71839B] uppercase mb-0 px-1">
               Explore
             </p>
 
             {/* Option 1: Typing Tutor (Highlighted) */}
-            <div className="group relative flex flex-col rounded-2xl p-5 bg-white dark:bg-slate-800 border border-primary/30 shadow-md transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:border-primary/50 overflow-hidden">
+            <div className="group relative flex flex-col rounded-2xl p-3.5 bg-white dark:bg-slate-800 border border-primary/30 shadow-md transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:border-primary/50 overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-br from-primary/[0.08] to-transparent opacity-100 group-hover:opacity-100 transition-opacity duration-300" />
-              <div className="flex items-center gap-4 relative z-10">
+              <div className="flex items-center gap-3 relative z-10">
                 <div className="flex size-14 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary dark:bg-[#0D203A] dark:text-[#3B82F6]">
                   <span className="text-2xl">⌨️</span>
                 </div>
-                <div className="flex-1 flex flex-col justify-center min-h-[56px]">
+                <div className="flex-1 flex flex-col justify-center">
                   <h3 className="en font-bold text-slate-900 dark:text-[#F4F7FB] text-xl leading-tight">Typing Tutor</h3>
                   <p className="en text-sm text-slate-500 dark:text-[#71839B] font-medium mt-0.5">5 layouts available</p>
                 </div>
               </div>
-              <div className="mt-5 relative z-10 flex flex-col" onClick={(e) => e.stopPropagation()}>
+              <div className="mt-3.5 relative z-10 flex flex-col" onClick={(e) => e.stopPropagation()}>
                 {/* Top Primary Switcher */}
-                <div className="flex bg-[#f1f5f9] dark:bg-[rgba(8,20,38,0.45)] p-1.5 rounded-2xl border border-slate-200/50 dark:border-[rgba(255,255,255,0.06)]">
+                <div className="flex bg-[#f1f5f9] dark:bg-[rgba(8,20,38,0.45)] p-1 rounded-2xl border border-slate-200/50 dark:border-[rgba(255,255,255,0.06)]">
                   <div 
                     onClick={() => {
                       setActiveLang('Hindi');
-                      setIsHindiExpanded(prev => !prev);
+                      setIsHindiExpanded(true);
                     }}
                     className={`flex-1 flex items-center justify-center h-[44px] rounded-xl text-sm font-bold cursor-pointer transition-all ${
                       activeLang === 'Hindi' 
@@ -203,14 +203,7 @@ function Index() {
                         : 'text-slate-500 hover:text-slate-700 dark:text-[#91A2B8] dark:hover:bg-[rgba(255,255,255,0.05)] font-medium'
                     }`}
                   >
-                    <span className="flex items-center gap-1.5">
-                      Hindi
-                      <ChevronDown 
-                        className={`size-3.5 opacity-80 transition-transform duration-300 ${
-                          isHindiExpanded ? 'rotate-180' : ''
-                        }`} 
-                      />
-                    </span>
+                    Hindi
                   </div>
                   <div 
                     onClick={() => {
@@ -230,11 +223,11 @@ function Index() {
                 {/* Secondary Hindi Sub-Layouts */}
                 <div 
                   className={`grid transition-[grid-template-rows,opacity,margin] duration-300 ease-in-out ${
-                    isHindiExpanded ? "grid-rows-[1fr] opacity-100 mt-2" : "grid-rows-[0fr] opacity-0 mt-0"
+                    isHindiExpanded ? "grid-rows-[1fr] opacity-100 mt-1.5" : "grid-rows-[0fr] opacity-0 mt-0"
                   }`}
                 >
                   <div className="overflow-hidden">
-                    <div className="grid grid-cols-2 gap-2 bg-[#f1f5f9] dark:bg-transparent p-3 rounded-2xl border border-slate-200/50 dark:border-none">
+                    <div className="grid grid-cols-2 gap-1.5 bg-[#f1f5f9] dark:bg-transparent p-2 rounded-2xl border border-slate-200/50 dark:border-none">
                     <Link 
                       to="/lessons"
                       className="flex items-center justify-center text-center h-[54px] px-2 rounded-xl text-sm leading-tight font-bold bg-[#2563eb] dark:bg-[#2B6FFF] text-white shadow-[0_2px_8px_rgba(37,99,235,0.25)] dark:shadow-[0_8px_20px_rgba(43,111,255,0.22)] transition-all cursor-pointer hover:opacity-90"
@@ -256,37 +249,37 @@ function Index() {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-2">
               {/* Option 2: Typing Test */}
               <Link 
                 to="/"
                 search={{ test: true }}
-                className="group relative flex flex-col rounded-2xl p-4 bg-white/70 dark:bg-[#111F35] border border-slate-200 shadow-[0_4px_12px_rgba(30,80,140,0.06)] dark:border-[rgba(255,255,255,0.10)] transition-all duration-300 hover:bg-white/90 dark:hover:bg-[#1C304D] hover:shadow-[0_6px_16px_rgba(30,80,140,0.1)] hover:-translate-y-1 cursor-pointer"
+                className="group relative flex flex-col rounded-2xl p-3 bg-white/70 dark:bg-[#111F35] border border-slate-200 shadow-[0_4px_12px_rgba(30,80,140,0.06)] dark:border-[rgba(255,255,255,0.10)] transition-all duration-300 hover:bg-white/90 dark:hover:bg-[#1C304D] hover:shadow-[0_6px_16px_rgba(30,80,140,0.1)] hover:-translate-y-1 cursor-pointer"
                 style={{ textDecoration: 'none' }}
               >
-                <div className="absolute top-4 right-4 flex size-6 items-center justify-center rounded-full bg-slate-100 dark:bg-[#172943] text-slate-400 transition-colors group-hover:bg-[#2563eb] group-hover:text-white">
+                <div className="absolute top-3 right-3 flex size-6 items-center justify-center rounded-full bg-slate-100 dark:bg-[#172943] text-slate-400 transition-colors group-hover:bg-[#2563eb] group-hover:text-white">
                   <span className="text-xs leading-none">&rarr;</span>
                 </div>
-                <div className="flex size-10 shrink-0 items-center justify-center rounded-2xl bg-slate-100 dark:bg-[#172943] text-slate-600 dark:text-[#F4F7FB] mb-3">
+                <div className="flex size-10 shrink-0 items-center justify-center rounded-2xl bg-slate-100 dark:bg-[#172943] text-slate-600 dark:text-[#F4F7FB] mb-2">
                   <span className="text-xl">⚡</span>
                 </div>
                 <div>
                   <h3 className="en font-bold text-slate-800 dark:text-[#F4F7FB] text-base leading-tight">Typing Test</h3>
-                  <p className="en text-xs text-slate-600 dark:text-[#A9B8CC] font-medium mt-1">Speed & Accuracy</p>
+                  <p className="en text-xs text-slate-600 dark:text-[#A9B8CC] font-medium mt-0.5">Speed & Accuracy</p>
                 </div>
               </Link>
 
               {/* Option 3: Translator */}
-              <Link to="/translator" className="group relative flex flex-col rounded-2xl p-4 bg-white/70 dark:bg-[#111F35] border border-slate-200 shadow-[0_4px_12px_rgba(30,80,140,0.06)] dark:border-[rgba(255,255,255,0.10)] transition-all duration-300 hover:bg-white/90 dark:hover:bg-[#1C304D] hover:shadow-[0_6px_16px_rgba(30,80,140,0.1)] hover:-translate-y-1 cursor-pointer">
-                <div className="absolute top-4 right-4 flex size-6 items-center justify-center rounded-full bg-slate-100 dark:bg-[#172943] text-slate-400 transition-colors group-hover:bg-[#2563eb] group-hover:text-white">
+              <Link to="/translator" className="group relative flex flex-col rounded-2xl p-3 bg-white/70 dark:bg-[#111F35] border border-slate-200 shadow-[0_4px_12px_rgba(30,80,140,0.06)] dark:border-[rgba(255,255,255,0.10)] transition-all duration-300 hover:bg-white/90 dark:hover:bg-[#1C304D] hover:shadow-[0_6px_16px_rgba(30,80,140,0.1)] hover:-translate-y-1 cursor-pointer">
+                <div className="absolute top-3 right-3 flex size-6 items-center justify-center rounded-full bg-slate-100 dark:bg-[#172943] text-slate-400 transition-colors group-hover:bg-[#2563eb] group-hover:text-white">
                   <span className="text-xs leading-none">&rarr;</span>
                 </div>
-                <div className="flex size-10 shrink-0 items-center justify-center rounded-2xl bg-slate-100 dark:bg-[#172943] text-slate-600 dark:text-[#F4F7FB] mb-3">
+                <div className="flex size-10 shrink-0 items-center justify-center rounded-2xl bg-slate-100 dark:bg-[#172943] text-slate-600 dark:text-[#F4F7FB] mb-2">
                   <span className="text-xl">🌐</span>
                 </div>
                 <div>
                   <h3 className="en font-bold text-slate-800 dark:text-[#F4F7FB] text-base leading-tight">Translator</h3>
-                  <p className="en text-xs text-slate-600 dark:text-[#A9B8CC] font-medium mt-1">Hindi ↔ English</p>
+                  <p className="en text-xs text-slate-600 dark:text-[#A9B8CC] font-medium mt-0.5">Hindi ↔ English</p>
                 </div>
               </Link>
             </div>
