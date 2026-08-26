@@ -8,7 +8,7 @@ import TypingTestSettings from "@/components/typing/TypingTestSettings";
 import { lessons } from "@/lib/typing-data";
 import { categories } from "@/routes/lessons";
 import { useAuth } from "@/lib/auth";
-import { BookOpen, X, ChevronRight } from "lucide-react";
+import { BookOpen, X, ChevronRight, ChevronDown } from "lucide-react";
 
 import { z } from "zod";
 
@@ -195,7 +195,7 @@ function Index() {
                   <div 
                     onClick={() => {
                       setActiveLang('Hindi');
-                      setIsHindiExpanded(true);
+                      setIsHindiExpanded(prev => !prev);
                     }}
                     className={`flex-1 flex items-center justify-center h-[44px] rounded-xl text-sm font-bold cursor-pointer transition-all ${
                       activeLang === 'Hindi' 
@@ -203,7 +203,14 @@ function Index() {
                         : 'text-slate-500 hover:text-slate-700 dark:text-[#91A2B8] dark:hover:bg-[rgba(255,255,255,0.05)] font-medium'
                     }`}
                   >
-                    Hindi
+                    <span className="flex items-center gap-1.5">
+                      Hindi
+                      <ChevronDown 
+                        className={`size-3.5 opacity-80 transition-transform duration-300 ${
+                          isHindiExpanded ? 'rotate-180' : ''
+                        }`} 
+                      />
+                    </span>
                   </div>
                   <div 
                     onClick={() => {
