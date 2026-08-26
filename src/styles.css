@@ -329,8 +329,8 @@ html {
   color: #fff;
   border: none;
   padding: 15px 30px;
-  border-radius: 12px;
-  font-size: 15px;
+  border-radius: 0.75rem;
+  font-size: 1rem;
   font-weight: 700;
   cursor: pointer;
   box-shadow: 0 10px 24px rgba(37,99,235,0.35), 0 2px 4px rgba(37,99,235,0.2);

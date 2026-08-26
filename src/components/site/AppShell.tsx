@@ -68,7 +68,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       <header className="sticky top-0 z-50 border-b border-white/50 dark:border-white/[0.08] bg-white/60 dark:bg-[rgba(7,20,38,0.90)] backdrop-blur-xl shadow-sm">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-3">
           <Link to="/" className="flex items-center gap-2.5">
-            <div className="flex items-center justify-center text-white/[0.85] font-[Manrope] font-extrabold text-[18px] w-[36px] h-[36px] rounded-[6px] opacity-90 shadow-[0_4px_0_rgba(0,0,0,0.28)] bg-gradient-to-br from-[#2b52ff] to-[#1b3ad1]">
+            <div className="flex items-center justify-center text-white/[0.85] font-[Manrope] font-extrabold text-[18px] w-[36px] h-[36px] rounded-md opacity-90 shadow-[0_4px_0_rgba(0,0,0,0.28)] bg-gradient-to-br from-[#2b52ff] to-[#1b3ad1]">
               अ
             </div>
             <span className="text-2xl font-bold tracking-tight">
@@ -90,7 +90,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent 
                       align="start" 
-                      className="w-[280px] rounded-[20px] p-2 bg-white/70 dark:bg-[rgba(17,31,53,0.96)] backdrop-blur-[20px] dark:backdrop-blur-[16px] border border-white/75 dark:border-[rgba(255,255,255,0.10)] shadow-[0_12px_35px_rgba(15,23,42,0.16)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.35)]"
+                      className="w-[280px] rounded-2xl p-2 bg-white/70 dark:bg-[rgba(17,31,53,0.96)] backdrop-blur-[20px] dark:backdrop-blur-[16px] border border-white/75 dark:border-[rgba(255,255,255,0.10)] shadow-[0_12px_35px_rgba(15,23,42,0.16)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.35)]"
                     >
                       <div className="px-3 py-2 text-[10px] font-bold text-muted-foreground dark:text-[#71839B] uppercase tracking-widest">
                         Keyboard Layout
@@ -100,7 +100,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                           key={l} 
                           onClick={() => handleLayoutSelect(l)}
                           className={cn(
-                            "rounded-[14px] cursor-pointer py-2.5 px-3 transition-all duration-200 my-0.5 font-medium flex items-center justify-between",
+                            "rounded-xl cursor-pointer py-2.5 px-3 transition-all duration-200 my-0.5 font-medium flex items-center justify-between",
                             layout === l 
                               ? "bg-[rgba(59,130,246,0.12)] dark:bg-[rgba(43,111,255,0.16)] text-[#2563eb] dark:text-[#5B8FFF]" 
                               : "text-foreground dark:text-[#A9B8CC] hover:bg-black/5 dark:hover:bg-[rgba(255,255,255,0.06)] focus:bg-black/5 dark:focus:bg-[rgba(255,255,255,0.06)]"
@@ -147,8 +147,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                 </Link>
                 <button
                   onClick={handleLogout}
-                  className="hidden rounded-full px-4 py-2 text-sm font-semibold text-primary-foreground transition-transform hover:scale-105 md:inline-flex"
-                  style={{ background: "var(--gradient-primary)" }}
+                  className="hidden rounded-full border border-border dark:border-white/10 px-4 py-2 text-sm font-semibold text-foreground dark:text-[#F4F7FB] transition-colors hover:bg-secondary dark:hover:bg-white/10 md:inline-flex"
                 >
                   Logout
                 </button>
@@ -252,7 +251,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         <div className="mx-auto flex max-w-7xl flex-col gap-2 px-5 py-8 text-sm text-muted-foreground md:flex-row md:items-center md:justify-between">
           <div className="flex flex-col gap-1">
             <Link to="/" className="flex items-center gap-2.5">
-              <div className="flex items-center justify-center text-white/[0.85] font-[Manrope] font-extrabold text-[15px] w-[28px] h-[28px] rounded-[5px] opacity-90 shadow-[0_3px_0_rgba(0,0,0,0.28)] bg-gradient-to-br from-[#2b52ff] to-[#1b3ad1]">
+              <div className="flex items-center justify-center text-white/[0.85] font-[Manrope] font-extrabold text-[15px] w-[28px] h-[28px] rounded-md opacity-90 shadow-[0_3px_0_rgba(0,0,0,0.28)] bg-gradient-to-br from-[#2b52ff] to-[#1b3ad1]">
                 अ
               </div>
               <span className="text-xl font-bold tracking-tight">
