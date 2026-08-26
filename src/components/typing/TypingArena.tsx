@@ -682,11 +682,18 @@ export function TypingArena({
                               className={cn(
                                 "transition-colors duration-200",
                                 ch === " " && "inline-block w-[0.5em]",
+                                // Current cursor → yellow
                                 isCurrent && "text-[#F59E0B] dark:text-[#F7C843] underline decoration-2 underline-offset-4",
-                                wState === "correct" && !isCurrent && "text-[#16A34A] dark:text-[#12B76A]",
-                                wState === "wrong" && !isCurrent && "text-[#EF4444] dark:text-[#F04452]",
-                                wState === "pending" && !isCurrent && "text-[#94A3B8] dark:text-[#9AAAC0]",
-                                wState === "current" && !isCurrent && "text-foreground dark:text-[#F4F7FB]"
+                                // Current word (not cursor) → char-level: green if correct, red if wrong, grey if pending
+                                !isCurrent && wState === "current" && state === "correct" && "text-[#16A34A] dark:text-[#12B76A]",
+                                !isCurrent && wState === "current" && state === "wrong" && "text-[#EF4444] dark:text-[#F04452]",
+                                !isCurrent && wState === "current" && state === "pending" && "text-[#94A3B8] dark:text-[#9AAAC0]",
+                                // Completed correct word → green
+                                !isCurrent && wState === "correct" && "text-[#16A34A] dark:text-[#12B76A]",
+                                // Completed wrong word → red
+                                !isCurrent && wState === "wrong" && "text-[#EF4444] dark:text-[#F04452]",
+                                // Pending word → grey
+                                !isCurrent && wState === "pending" && "text-[#94A3B8] dark:text-[#9AAAC0]",
                               )}
                             >
                               {ch}
@@ -712,7 +719,9 @@ export function TypingArena({
                     const i = globalIndex++;
                     const isCurrent = i === typedChars.length;
                     const isSpace = ch === " ";
-                    const wState = getWordState(wIdxInPage);
+                    const isTyped = i < typedChars.length;
+                    const isCorrect = isTyped && typedChars[i] === ch;
+                    const isWrong = isTyped && typedChars[i] !== ch;
                     return (
                       <div
                         key={cIdx}
@@ -721,32 +730,35 @@ export function TypingArena({
                           isSpace 
                             ? (isFocusMode ? "w-16 sm:w-20" : "w-14 sm:w-16") 
                             : (isFocusMode ? "size-12 sm:size-14" : "size-11 sm:size-12"),
-                          
-                          wState === "pending" && !isCurrent && "border border-border/60 text-[#94A3B8] dark:text-[#9AAAC0]",
-                          isCurrent && "outline outline-[2.5px] outline-offset-[2.5px] outline-[#F59E0B] dark:outline-[#F7C843] border-transparent z-10 shadow-[0_4px_14px_rgba(245,158,11,0.2)] dark:shadow-[0_4px_14px_rgba(247,200,67,0.25)] text-[#F59E0B] dark:text-[#F7C843] scale-105",
-                          // CORRECT (exact match) → GREEN
-                          wState === "correct" && !isCurrent && "border border-[#16A34A]/30 dark:border-[#12B76A]/30 bg-[#16A34A]/8 dark:bg-[#12B76A]/8 text-[#16A34A] dark:text-[#12B76A]",
-                          // WRONG (any mismatch) → RED
-                          wState === "wrong" && !isCurrent && "border-2 border-[#EF4444] dark:border-[#F04452] bg-[#EF4444]/10 dark:bg-[#F04452]/10 text-[#EF4444] dark:text-[#F04452]",
-                          wState === "current" && !isCurrent && "border border-border/60 text-foreground dark:text-[#F4F7FB]"
+                          // PENDING → grey
+                          !isTyped && !isCurrent && "border border-border/60",
+                          // CURRENT → yellow outline
+                          isCurrent && "outline outline-[2.5px] outline-offset-[2.5px] outline-[#F59E0B] dark:outline-[#F7C843] border-transparent z-10 shadow-[0_4px_14px_rgba(245,158,11,0.2)] dark:shadow-[0_4px_14px_rgba(247,200,67,0.25)] scale-105",
+                          // CORRECT → GREEN
+                          isCorrect && "border border-[#16A34A]/30 dark:border-[#12B76A]/30 bg-[#16A34A]/8 dark:bg-[#12B76A]/8",
+                          // WRONG → RED
+                          isWrong && "border-2 border-[#EF4444] dark:border-[#F04452] bg-[#EF4444]/10 dark:bg-[#F04452]/10",
                         )}
                       >
                         {isSpace ? (
                           <span className={cn(
                             "font-bold uppercase tracking-widest transition-all duration-300",
                             isFocusMode ? "text-[10px] sm:text-[11px]" : "text-[9px] sm:text-[10px]",
-                            wState === "pending" ? "text-[#94A3B8] dark:text-[#9AAAC0]" :
-                            // CORRECT space → GREEN
-                            wState === "correct" ? "text-[#16A34A]/70 dark:text-[#12B76A]/70" :
-                            wState === "wrong" ? "text-[#EF4444] dark:text-[#F04452]" :
-                            "text-foreground dark:text-[#F4F7FB]"
+                            isCurrent ? "text-[#F59E0B] dark:text-[#F7C843]" :
+                            isCorrect ? "text-[#16A34A]/70 dark:text-[#12B76A]/70" :
+                            isWrong ? "text-[#EF4444] dark:text-[#F04452]" :
+                            "text-[#94A3B8] dark:text-[#9AAAC0]"
                           )}>
                             Space
                           </span>
                         ) : (
                           <span className={cn(
                             "font-hindi font-bold transition-all duration-300",
-                            isFocusMode ? "text-2xl sm:text-[28px]" : "text-xl sm:text-2xl"
+                            isFocusMode ? "text-2xl sm:text-[28px]" : "text-xl sm:text-2xl",
+                            isCurrent && "text-[#F59E0B] dark:text-[#F7C843]",
+                            isCorrect && "text-[#16A34A] dark:text-[#12B76A]",
+                            isWrong && "text-[#EF4444] dark:text-[#F04452]",
+                            !isTyped && !isCurrent && "text-[#94A3B8] dark:text-[#9AAAC0]"
                           )}>
                             {ch}
                           </span>
@@ -836,30 +848,7 @@ export function TypingArena({
         )}
       </div>
 
-      {/* Visible typing display — read-only mirror, shown only outside focus mode */}
-      {!isFocusMode && !isParagraphMode && (
-        <div className="mx-auto w-full max-w-[1000px] mt-3" onClick={() => inputRef.current?.focus()}>
-          <div
-            className={cn(
-              "w-full font-hindi text-lg sm:text-xl rounded-[20px] border-2 border-border/60 dark:border-[rgba(255,255,255,0.10)] px-5 py-4",
-              "bg-card/90 dark:bg-[#071426] text-foreground dark:text-[#F4F7FB]",
-              "shadow-[0_2px_12px_rgba(0,0,0,0.05)] transition-all duration-300",
-              "overflow-y-auto custom-scrollbar",
-              "leading-relaxed whitespace-pre-wrap break-words",
-              "cursor-text select-none",
-              "min-h-[6.5rem] max-h-[9rem]" // ~4 visible lines; internal scroll beyond
-            )}
-          >
-            {typed ? (
-              typed
-            ) : (
-              <span className="text-muted-foreground/50 dark:text-[#4A5E77] font-sans text-sm font-normal">
-                यहाँ टाइप करें — Click on the passage above and start typing…
-              </span>
-            )}
-          </div>
-        </div>
-      )}
+
 
       {/* Preserved Keyboard Component */}
       <div className={cn(
