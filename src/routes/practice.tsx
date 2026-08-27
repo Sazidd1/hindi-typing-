@@ -3,13 +3,14 @@ import { z } from "zod";
 import { TypingArena } from "@/components/typing/TypingArena";
 import { StoryReaderArena } from "@/components/typing/StoryReaderArena";
 import { lessons } from "@/lib/typing-data";
+import { typingStories } from "@/lib/typing-stories";
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { generateFullPracticeSession } from "@/lib/full-practice-generator";
 import { generateStoryPracticeSession } from "@/lib/story-generator";
 import { generateExtendedPracticeSession } from "@/lib/extended-generator";
 
-const searchSchema = z.object({ lesson: z.string().optional() });
+const searchSchema = z.object({ lesson: z.string().optional(), story: z.string().optional() });
 
 export const Route = createFileRoute("/practice")({
   validateSearch: searchSchema,
@@ -32,8 +33,24 @@ export const Route = createFileRoute("/practice")({
 });
 
 function PracticePage() {
-  const { lesson } = Route.useSearch();
-  const active = lessons.find((l) => l.slug === lesson) ?? lessons[0]!;
+  const { lesson, story } = Route.useSearch();
+  
+  const activeLesson = lesson ? lessons.find((l) => l.slug === lesson) : null;
+  const activeStory = story ? typingStories.find((s) => s.slug === story) : null;
+
+  if (story && !activeStory) {
+    return (
+      <div className="w-full min-h-[60vh] flex flex-col items-center justify-center text-center p-8">
+        <h2 className="text-2xl font-bold text-slate-800 mb-4">Story Not Found</h2>
+        <p className="text-slate-600 mb-6">The typing test story you selected could not be found.</p>
+        <Link to="/" className="px-6 py-2 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 transition">
+          Return to Dashboard
+        </Link>
+      </div>
+    );
+  }
+
+  const active = activeStory ?? activeLesson ?? lessons[0]!;
 
   const [dynamicText, setDynamicText] = useState(active.text);
 

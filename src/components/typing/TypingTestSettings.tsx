@@ -158,7 +158,7 @@ export default function TypingTestSettings({ onClose }: { onClose?: () => void }
   function handlePractice() {
     const slug = STORY_SLUG_MAP[passageType];
     if (slug) {
-      navigate({ to: "/practice", search: { lesson: slug } });
+      navigate({ to: "/practice", search: { story: slug } });
     } else {
       flashStatus(`Practice mode started — ${scheme}`);
     }
@@ -166,7 +166,7 @@ export default function TypingTestSettings({ onClose }: { onClose?: () => void }
   function handleExam() {
     const slug = STORY_SLUG_MAP[passageType];
     if (slug) {
-      navigate({ to: "/practice", search: { lesson: slug } });
+      navigate({ to: "/practice", search: { story: slug } });
     } else {
       flashStatus(`Exam mode started — ${scheme}`);
     }
