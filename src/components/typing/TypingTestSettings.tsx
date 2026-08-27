@@ -27,7 +27,32 @@ const STORY_SLUG_MAP: Record<string, string> = {
   "2. प्यासा कौआ": "story-thirsty-crow",
   "3. खरगोश और कछुआ": "story-tortoise-hare",
   "4. चींटी और टिड्डा": "story-ant-grasshopper",
-  "5. शेर और चूहा": "story-lion-mouse"
+  "5. शेर और चूहा": "story-lion-mouse",
+  "6. सच्चा मित्र": "story-true-friend",
+  "7. लालची किसान": "story-greedy-farmer",
+  "8. बुद्धिमान चरवाहा": "story-smart-shepherd",
+  "9. ईमानदार व्यापारी": "story-honest-merchant",
+  "10. समझदार राजा": "story-wise-king",
+  "11. मेहनती किसान": "story-hardworking-farmer",
+  "12. दो मित्र और जंगल": "story-two-friends-jungle",
+  "13. चतुर लोमड़ी": "story-clever-fox",
+  "14. दयालु राजकुमार": "story-kind-prince",
+  "15. साहसी लड़की": "story-brave-girl",
+  "16. पुराना कुआँ": "story-old-well",
+  "17. गाँव का शिक्षक": "story-village-teacher",
+  "18. छोटा दीपक": "story-small-lamp",
+  "19. मेहनत का फल": "story-fruit-of-hardwork",
+  "20. समय का महत्व": "story-value-of-time",
+  "तकनीक और बदलती दुनिया": "expert-technology-changing-world",
+  "पर्यावरण और हमारी जिम्मेदारी": "expert-environment-responsibility",
+  "समय, अनुशासन और सफलता": "expert-time-discipline-success",
+  "शिक्षा का बदलता स्वरूप": "expert-changing-education",
+  "भारत की विविधता और एकता": "expert-india-diversity-unity",
+  "स्वास्थ्य और स्वस्थ जीवनशैली": "expert-health-healthy-lifestyle",
+  "विज्ञान और मानव जीवन": "expert-science-human-life",
+  "जल संरक्षण और भविष्य": "expert-water-conservation-future",
+  "पुस्तकें और ज्ञान की शक्ति": "expert-books-power-of-knowledge",
+  "आत्मनिर्भरता और कौशल विकास": "expert-self-reliance-skill-development"
 };
 
 export default function TypingTestSettings({ onClose }: { onClose?: () => void }) {
@@ -477,7 +502,7 @@ export default function TypingTestSettings({ onClose }: { onClose?: () => void }
             onChange={(e) => setPassageType(e.target.value)}
             style={{ ...inputStyle(), textAlign: "left", cursor: "pointer", paddingRight: 30 }}
           >
-            {["Random words", "Common sentences", "News excerpts", "1. ईमानदार लकड़हारा", "2. प्यासा कौआ", "3. खरगोश और कछुआ", "4. चींटी और टिड्डा", "5. शेर और चूहा"].map((t) => (
+            {["Random words", "Common sentences", "News excerpts", "1. ईमानदार लकड़हारा", "2. प्यासा कौआ", "3. खरगोश और कछुआ", "4. चींटी और टिड्डा", "5. शेर और चूहा", "6. सच्चा मित्र", "7. लालची किसान", "8. बुद्धिमान चरवाहा", "9. ईमानदार व्यापारी", "10. समझदार राजा", "11. मेहनती किसान", "12. दो मित्र और जंगल", "13. चतुर लोमड़ी", "14. दयालु राजकुमार", "15. साहसी लड़की", "16. पुराना कुआँ", "17. गाँव का शिक्षक", "18. छोटा दीपक", "19. मेहनत का फल", "20. समय का महत्व", "तकनीक और बदलती दुनिया", "पर्यावरण और हमारी जिम्मेदारी", "समय, अनुशासन और सफलता", "शिक्षा का बदलता स्वरूप", "भारत की विविधता और एकता", "स्वास्थ्य और स्वस्थ जीवनशैली", "विज्ञान और मानव जीवन", "जल संरक्षण और भविष्य", "पुस्तकें और ज्ञान की शक्ति", "आत्मनिर्भरता और कौशल विकास"].map((t) => (
               <option key={t}>{t}</option>
             ))}
           </select>
