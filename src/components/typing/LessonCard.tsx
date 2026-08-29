@@ -107,6 +107,7 @@ export function LessonCard({ item, setLockedLessonIntent }: { item: any, setLock
             <Link
               to={item.path as any || "/practice"}
               search={item.search || { lesson: item.slug } as any}
+              params={item.params}
               className={`flex w-full items-center justify-center gap-2 rounded-xl px-3 py-2.5 text-[11px] font-bold leading-none transition-colors ${
                 isCompleted
                   ? "bg-green-500 text-white hover:bg-green-600"

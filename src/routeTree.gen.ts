@@ -20,6 +20,8 @@ import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as TranslatorRouteImport } from './routes/translator'
+import { Route as LessonsKrutiDevIndexRouteImport } from './routes/lessons_.kruti-dev.index'
+import { Route as LessonsKrutiDevLessonIdRouteImport } from './routes/lessons_.kruti-dev_.$lessonId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -76,6 +78,16 @@ const TranslatorRoute = TranslatorRouteImport.update({
   path: '/translator',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LessonsKrutiDevIndexRoute = LessonsKrutiDevIndexRouteImport.update({
+  id: '/lessons_/kruti-dev/',
+  path: '/lessons/kruti-dev/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LessonsKrutiDevLessonIdRoute = LessonsKrutiDevLessonIdRouteImport.update({
+  id: '/lessons_/kruti-dev_/$lessonId',
+  path: '/lessons/kruti-dev/$lessonId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -89,6 +101,8 @@ export interface FileRoutesByFullPath {
   '/settings': typeof SettingsRoute
   '/signup': typeof SignupRoute
   '/translator': typeof TranslatorRoute
+  '/lessons/kruti-dev/$lessonId': typeof LessonsKrutiDevLessonIdRoute
+  '/lessons/kruti-dev/': typeof LessonsKrutiDevIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -102,6 +116,8 @@ export interface FileRoutesByTo {
   '/settings': typeof SettingsRoute
   '/signup': typeof SignupRoute
   '/translator': typeof TranslatorRoute
+  '/lessons/kruti-dev/$lessonId': typeof LessonsKrutiDevLessonIdRoute
+  '/lessons/kruti-dev': typeof LessonsKrutiDevIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -116,6 +132,8 @@ export interface FileRoutesById {
   '/settings': typeof SettingsRoute
   '/signup': typeof SignupRoute
   '/translator': typeof TranslatorRoute
+  '/lessons_/kruti-dev_/$lessonId': typeof LessonsKrutiDevLessonIdRoute
+  '/lessons_/kruti-dev/': typeof LessonsKrutiDevIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -131,6 +149,8 @@ export interface FileRouteTypes {
     | '/settings'
     | '/signup'
     | '/translator'
+    | '/lessons/kruti-dev/$lessonId'
+    | '/lessons/kruti-dev/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -144,6 +164,8 @@ export interface FileRouteTypes {
     | '/settings'
     | '/signup'
     | '/translator'
+    | '/lessons/kruti-dev/$lessonId'
+    | '/lessons/kruti-dev'
   id:
     | '__root__'
     | '/'
@@ -157,6 +179,8 @@ export interface FileRouteTypes {
     | '/settings'
     | '/signup'
     | '/translator'
+    | '/lessons_/kruti-dev_/$lessonId'
+    | '/lessons_/kruti-dev/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -171,6 +195,8 @@ export interface RootRouteChildren {
   SettingsRoute: typeof SettingsRoute
   SignupRoute: typeof SignupRoute
   TranslatorRoute: typeof TranslatorRoute
+  LessonsKrutiDevLessonIdRoute: typeof LessonsKrutiDevLessonIdRoute
+  LessonsKrutiDevIndexRoute: typeof LessonsKrutiDevIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -252,6 +278,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TranslatorRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/lessons_/kruti-dev/': {
+      id: '/lessons_/kruti-dev/'
+      path: '/lessons/kruti-dev'
+      fullPath: '/lessons/kruti-dev/'
+      preLoaderRoute: typeof LessonsKrutiDevIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lessons_/kruti-dev_/$lessonId': {
+      id: '/lessons_/kruti-dev_/$lessonId'
+      path: '/lessons/kruti-dev/$lessonId'
+      fullPath: '/lessons/kruti-dev/$lessonId'
+      preLoaderRoute: typeof LessonsKrutiDevLessonIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -267,6 +307,8 @@ const rootRouteChildren: RootRouteChildren = {
   SettingsRoute: SettingsRoute,
   SignupRoute: SignupRoute,
   TranslatorRoute: TranslatorRoute,
+  LessonsKrutiDevLessonIdRoute: LessonsKrutiDevLessonIdRoute,
+  LessonsKrutiDevIndexRoute: LessonsKrutiDevIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -1,0 +1,19 @@
+{
+  "users": [
+    {
+      "id": "sajid",
+      "name": "sajid",
+      "email": "saziddss1@gmail.com",
+      "passwordHash": "615846cb5cdf816d841ed1d8ef350e5b5448a43c1c066c34b66c8b0c09470da5bc5a4ef251958f038b11fb630ad59a5633d1ba5acfac4f089cb165ea797bfa15",
+      "salt": "d86b0b4c414e71543c64e69d0c01c2cb",
+      "createdAt": "2026-08-29T07:45:26.338Z"
+    }
+  ],
+  "sessions": [
+    {
+      "id": "35df20f67adf7aa643c64008bf440ba39972a3b71b60048e960ca386945199c2",
+      "userId": "sajid",
+      "createdAt": 1787989565716
+    }
+  ]
+}

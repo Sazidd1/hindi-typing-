@@ -237,9 +237,9 @@ function Index() {
                     <div className="flex items-center justify-center text-center h-[54px] px-2 rounded-xl text-sm leading-tight font-bold text-slate-700 dark:text-[#C4CFDD] dark:bg-transparent hover:bg-white dark:hover:bg-[rgba(255,255,255,0.05)] transition-all cursor-pointer">
                       Remington CBI
                     </div>
-                    <div className="flex items-center justify-center text-center h-[54px] px-2 rounded-xl text-sm leading-tight font-bold text-slate-700 dark:text-[#C4CFDD] dark:bg-transparent hover:bg-white dark:hover:bg-[rgba(255,255,255,0.05)] transition-all cursor-pointer">
+                    <Link to="/lessons/kruti-dev" className="flex items-center justify-center text-center h-[54px] px-2 rounded-xl text-sm leading-tight font-bold text-slate-700 dark:text-[#C4CFDD] dark:bg-transparent hover:bg-white dark:hover:bg-[rgba(255,255,255,0.05)] transition-all cursor-pointer">
                       Kruti Dev
-                    </div>
+                    </Link>
                     <div className="flex items-center justify-center text-center h-[54px] px-2 rounded-xl text-sm leading-tight font-bold text-slate-700 dark:text-[#C4CFDD] dark:bg-transparent hover:bg-white dark:hover:bg-[rgba(255,255,255,0.05)] transition-all cursor-pointer">
                       Mangal InScript
                     </div>
