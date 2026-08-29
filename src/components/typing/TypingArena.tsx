@@ -81,6 +81,7 @@ export function TypingArena({
   const normalizedText = useMemo(() => dynamicText.trim(), [dynamicText]);
   const chars = useMemo(() => tokenizeHindi(normalizedText), [normalizedText]);
   const [typed, setTyped] = useState("");
+  const [rawVisualTyped, setRawVisualTyped] = useState("");
   const [startedAt, setStartedAt] = useState<number | null>(null);
   const [isPaused, setIsPaused] = useState(false);
   const [isFocusMode, setIsFocusMode] = useState(false);
@@ -141,6 +142,7 @@ export function TypingArena({
 
   const reset = useCallback(() => {
     setTyped("");
+    setRawVisualTyped("");
     setStartedAt(null);
     setIsPaused(false);
     setElapsed(0);
@@ -389,19 +391,30 @@ export function TypingArena({
     
     // Map physical English keystrokes to Hindi chars if OS keyboard is English
     // Only map the newly added characters to avoid re-mapping already typed Hindi chars
-    let mappedValue = value;
+    let newRawVisual = rawVisualTyped;
     if (value.startsWith(typed) && value.length > typed.length) {
       const added = value.slice(typed.length);
       const mappedAdded = Array.from(added).map(ch => HINDI_MAP[ch] || ch).join('');
-      mappedValue = typed + mappedAdded;
+      newRawVisual = rawVisualTyped + mappedAdded;
     } else if (value.length < typed.length) {
       // Respect backspace setting
       if (!backspaceEnabled) {
         return;
       }
-      mappedValue = value;
-    } else {
-      mappedValue = Array.from(value).map(ch => HINDI_MAP[ch] || ch).join('');
+      const deletedCount = typed.length - value.length;
+      newRawVisual = rawVisualTyped.slice(0, Math.max(0, rawVisualTyped.length - deletedCount));
+    } else if (!value.startsWith(typed)) {
+      newRawVisual = Array.from(value).map(ch => HINDI_MAP[ch] || ch).join('');
+    }
+    
+    setRawVisualTyped(newRawVisual);
+
+    let mappedValue = newRawVisual;
+    // Fix: Convert Kruti Dev visual order of chhoti ee ki matra to Unicode logical order
+    // Only apply this for generated lessons (Unicode) to avoid breaking basic drill visual sequences.
+    const isUnicodeLesson = ["ch-full-practice", "ch-full-practice-2", "ch-full-practice-3", "ch-story-practice-1", "ch-story-practice-2", "ch-news-practice", "ch-dialogue-practice", "ch-adventure-story"].includes(lessonSlug || "");
+    if (isUnicodeLesson) {
+      mappedValue = mappedValue.replace(/\u093F((?:[\u0915-\u0939\u0958-\u095F]\u093C?\u094D)*[\u0915-\u0939\u0958-\u095F]\u093C?)/g, '$1\u093F');
     }
 
     const next = tokenizeHindi(mappedValue).slice(0, chars.length);

@@ -37,6 +37,7 @@ export function StoryReaderArena({
   
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [typedText, setTypedText] = useState("");
+  const [rawVisualText, setRawVisualText] = useState("");
   const [startedAt, setStartedAt] = useState<number | null>(null);
   const [isPaused, setIsPaused] = useState(false);
   const [elapsed, setElapsed] = useState(0);
@@ -71,6 +72,7 @@ export function StoryReaderArena({
     setCorrectWordsCount(0);
     setCorrectCharsCount(0);
     setCurrentStreak(0);
+    setRawVisualText("");
     completedRef.current = false;
     setTimeout(() => inputRef.current?.focus(), 10);
   }, []);
@@ -127,18 +129,27 @@ export function StoryReaderArena({
     
     const value = e.target.value;
     
-    let mappedValue = value;
+    let newRawVisual = rawVisualText;
     if (value.startsWith(typedText) && value.length > typedText.length) {
       const added = value.slice(typedText.length);
       const mappedAdded = Array.from(added).map(ch => HINDI_MAP[ch] || ch).join('');
-      mappedValue = typedText + mappedAdded;
-    } else {
-      mappedValue = Array.from(value).map(ch => HINDI_MAP[ch] || ch).join('');
+      newRawVisual = rawVisualText + mappedAdded;
+    } else if (value.length < typedText.length) {
+      const deletedCount = typedText.length - value.length;
+      newRawVisual = rawVisualText.slice(0, Math.max(0, rawVisualText.length - deletedCount));
+    } else if (!value.startsWith(typedText)) {
+      newRawVisual = Array.from(value).map(ch => HINDI_MAP[ch] || ch).join('');
     }
     
-    setTypedText(mappedValue);
+    setRawVisualText(newRawVisual);
 
-    const inputStr = mappedValue.trimStart();
+    // Fix: Convert Kruti Dev visual order of chhoti ee ki matra to Unicode logical order
+    // This swaps 'ि' with the immediately following consonant or consonant cluster
+    const logicalValue = newRawVisual.replace(/\u093F((?:[\u0915-\u0939\u0958-\u095F]\u093C?\u094D)*[\u0915-\u0939\u0958-\u095F]\u093C?)/g, '$1\u093F');
+    
+    setTypedText(logicalValue);
+
+    const inputStr = logicalValue.trimStart();
     const typedWords = inputStr ? inputStr.split(/\s+/) : [];
     
     const activeIdx = Math.max(0, typedWords.length - 1);
