@@ -6,7 +6,7 @@
  * but all account validation and database persistence happens on the server.
  */
 
-import { registerUserFn, loginUserFn, getSessionUserFn, logoutUserFn, resetPasswordFn } from '../server/auth-api';
+import { registerUserFn, loginUserFn, getSessionUserFn, logoutUserFn, resetPasswordFn } from './auth-api';
 
 export interface User {
   id: string;
