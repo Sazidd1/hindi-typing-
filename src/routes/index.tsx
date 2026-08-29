@@ -145,7 +145,7 @@ function Index() {
             </Link>
             <Link
               to="/lessons"
-              className="inline-flex justify-center items-center rounded-full border border-border bg-card/80 px-6 py-3.5 sm:py-3 text-[clamp(0.875rem,2vw,0.875rem)] sm:text-[1rem] font-semibold text-foreground transition-colors hover:bg-card"
+              className="inline-flex justify-center items-center rounded-full border border-border bg-card/80 px-6 py-3.5 sm:py-3 text-[clamp(0.875rem,2vw,0.875rem)] sm:text-[1rem] font-semibold text-foreground transition-colors hover:bg-card dark:bg-[rgba(255,255,255,0.04)] dark:backdrop-blur-[16px] dark:backdrop-saturate-[120%] dark:border-[rgba(255,255,255,0.1)] dark:shadow-[0_4px_12px_rgba(0,0,0,0.1)] dark:hover:bg-[rgba(255,255,255,0.06)]"
             >
               पाठ देखें
             </Link>
@@ -170,7 +170,7 @@ function Index() {
         </div>
 
         <div className="flex-[1_1_min(100%,350px)] lg:max-w-[42%]">
-          <div className="animate-float-soft p-3 sm:p-[16px] rounded-2xl bg-white/80 dark:bg-[linear-gradient(145deg,#162943,#102139)] backdrop-blur-[20px] border border-[rgba(255,255,255,0.85)] dark:border-[rgba(80,130,220,0.28)] shadow-[0_8px_32px_rgba(30,80,140,0.12)] dark:shadow-[0_18px_45px_rgba(0,0,0,0.18)] flex flex-col gap-2 relative overflow-hidden">
+          <div className="animate-float-soft p-3 sm:p-[16px] rounded-2xl bg-white/80 dark:bg-[rgba(255,255,255,0.04)] backdrop-blur-[20px] dark:backdrop-saturate-[120%] border border-[rgba(255,255,255,0.85)] dark:border-[rgba(255,255,255,0.1)] shadow-[0_8px_32px_rgba(30,80,140,0.12)] dark:shadow-[0_16px_40px_rgba(0,0,0,0.2)] flex flex-col gap-2 relative overflow-hidden">
             <div className="absolute top-0 right-0 -mt-10 -mr-10 size-40 bg-primary/20 blur-[50px] rounded-full pointer-events-none" />
             
             <p className="en text-[clamp(0.7rem,1.5vw,0.75rem)] font-bold tracking-widest text-muted-foreground dark:text-[#71839B] uppercase mb-0 px-1">
@@ -178,7 +178,7 @@ function Index() {
             </p>
 
             {/* Option 1: Typing Tutor (Highlighted) */}
-            <div className="group relative flex flex-col rounded-2xl p-3.5 bg-white dark:bg-slate-800 border border-primary/30 shadow-md transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:border-primary/50 overflow-hidden">
+            <div className="group relative flex flex-col rounded-2xl p-3.5 bg-white dark:bg-[rgba(255,255,255,0.03)] border border-primary/30 shadow-md transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:border-primary/50 overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-br from-primary/[0.08] to-transparent opacity-100 group-hover:opacity-100 transition-opacity duration-300" />
               <div className="flex items-center gap-3 relative z-10">
                 <div className="flex size-14 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary dark:bg-[#0D203A] dark:text-[#3B82F6]">
@@ -254,13 +254,13 @@ function Index() {
               <Link 
                 to="/"
                 search={{ test: true }}
-                className="group relative flex flex-col rounded-2xl p-3 bg-white/70 dark:bg-[#111F35] border border-slate-200 shadow-[0_4px_12px_rgba(30,80,140,0.06)] dark:border-[rgba(255,255,255,0.10)] transition-all duration-300 hover:bg-white/90 dark:hover:bg-[#1C304D] hover:shadow-[0_6px_16px_rgba(30,80,140,0.1)] hover:-translate-y-1 cursor-pointer"
+                className="group relative flex flex-col rounded-2xl p-3 bg-white/70 dark:bg-[rgba(255,255,255,0.02)] border border-slate-200 shadow-[0_4px_12px_rgba(30,80,140,0.06)] dark:border-[rgba(255,255,255,0.06)] transition-all duration-300 hover:bg-white/90 dark:hover:bg-[rgba(255,255,255,0.06)] hover:shadow-[0_6px_16px_rgba(30,80,140,0.1)] dark:hover:shadow-[0_6px_16px_rgba(0,0,0,0.2)] hover:-translate-y-1 cursor-pointer"
                 style={{ textDecoration: 'none' }}
               >
-                <div className="absolute top-3 right-3 flex size-6 items-center justify-center rounded-full bg-slate-100 dark:bg-[#172943] text-slate-400 transition-colors group-hover:bg-[#2563eb] group-hover:text-white">
+                <div className="absolute top-3 right-3 flex size-6 items-center justify-center rounded-full bg-slate-100 dark:bg-[rgba(255,255,255,0.08)] text-slate-400 transition-colors group-hover:bg-[#2563eb] group-hover:text-white">
                   <span className="text-xs leading-none">&rarr;</span>
                 </div>
-                <div className="flex size-10 shrink-0 items-center justify-center rounded-2xl bg-slate-100 dark:bg-[#172943] text-slate-600 dark:text-[#F4F7FB] mb-2">
+                <div className="flex size-10 shrink-0 items-center justify-center rounded-2xl bg-slate-100 dark:bg-[rgba(255,255,255,0.08)] text-slate-600 dark:text-[#F4F7FB] mb-2">
                   <span className="text-xl">⚡</span>
                 </div>
                 <div>
@@ -270,11 +270,11 @@ function Index() {
               </Link>
 
               {/* Option 3: Translator */}
-              <Link to="/translator" className="group relative flex flex-col rounded-2xl p-3 bg-white/70 dark:bg-[#111F35] border border-slate-200 shadow-[0_4px_12px_rgba(30,80,140,0.06)] dark:border-[rgba(255,255,255,0.10)] transition-all duration-300 hover:bg-white/90 dark:hover:bg-[#1C304D] hover:shadow-[0_6px_16px_rgba(30,80,140,0.1)] hover:-translate-y-1 cursor-pointer">
-                <div className="absolute top-3 right-3 flex size-6 items-center justify-center rounded-full bg-slate-100 dark:bg-[#172943] text-slate-400 transition-colors group-hover:bg-[#2563eb] group-hover:text-white">
+              <Link to="/translator" className="group relative flex flex-col rounded-2xl p-3 bg-white/70 dark:bg-[rgba(255,255,255,0.02)] border border-slate-200 shadow-[0_4px_12px_rgba(30,80,140,0.06)] dark:border-[rgba(255,255,255,0.06)] transition-all duration-300 hover:bg-white/90 dark:hover:bg-[rgba(255,255,255,0.06)] hover:shadow-[0_6px_16px_rgba(30,80,140,0.1)] dark:hover:shadow-[0_6px_16px_rgba(0,0,0,0.2)] hover:-translate-y-1 cursor-pointer">
+                <div className="absolute top-3 right-3 flex size-6 items-center justify-center rounded-full bg-slate-100 dark:bg-[rgba(255,255,255,0.08)] text-slate-400 transition-colors group-hover:bg-[#2563eb] group-hover:text-white">
                   <span className="text-xs leading-none">&rarr;</span>
                 </div>
-                <div className="flex size-10 shrink-0 items-center justify-center rounded-2xl bg-slate-100 dark:bg-[#172943] text-slate-600 dark:text-[#F4F7FB] mb-2">
+                <div className="flex size-10 shrink-0 items-center justify-center rounded-2xl bg-slate-100 dark:bg-[rgba(255,255,255,0.08)] text-slate-600 dark:text-[#F4F7FB] mb-2">
                   <span className="text-xl">🌐</span>
                 </div>
                 <div>

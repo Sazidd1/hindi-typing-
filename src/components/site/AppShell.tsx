@@ -90,7 +90,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent 
                       align="start" 
-                      className="w-[280px] rounded-2xl p-2 bg-white/70 dark:bg-[rgba(17,31,53,0.96)] backdrop-blur-[20px] dark:backdrop-blur-[16px] border border-white/75 dark:border-[rgba(255,255,255,0.10)] shadow-[0_12px_35px_rgba(15,23,42,0.16)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.35)]"
+                      className="w-[280px] rounded-2xl p-2 bg-white/70 dark:bg-[rgba(10,10,10,0.75)] backdrop-blur-[20px] dark:backdrop-blur-[16px] dark:backdrop-saturate-[120%] border border-white/75 dark:border-[rgba(255,255,255,0.10)] shadow-[0_12px_35px_rgba(15,23,42,0.16)] dark:shadow-[0_8px_30px_rgba(0,0,0,0.25)]"
                     >
                       <div className="px-3 py-2 text-[10px] font-bold text-muted-foreground dark:text-[#71839B] uppercase tracking-widest">
                         Keyboard Layout
