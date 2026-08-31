@@ -83,7 +83,7 @@ function KrutiDevLessonsPage() {
             <h1 className="text-3xl font-extrabold text-slate-800 dark:text-white tracking-tight mb-2 flex items-center gap-3">
               Kruti Dev Lessons
               <span className="px-2.5 py-0.5 rounded-full bg-indigo-100 dark:bg-indigo-500/20 text-indigo-700 dark:text-indigo-400 text-sm font-bold tracking-normal uppercase border border-indigo-200 dark:border-indigo-500/30">
-                Isolated System
+                Isolated
               </span>
             </h1>
             <p className="text-slate-600 dark:text-slate-400 max-w-2xl text-lg">

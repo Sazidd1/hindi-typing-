@@ -25,7 +25,7 @@ export function KrutiDevLessonCard({ item, setLockedLessonIntent }: { item: any,
       {/* Left Vertical Spine */}
       <div className={`w-[90px] shrink-0 ${theme.bg} flex flex-col items-center justify-center text-white relative shadow-[inset_-4px_0_12px_rgba(0,0,0,0.15)]`}>
         <div className="flex flex-col items-center">
-          <span className="text-[10px] font-bold uppercase tracking-widest opacity-90 mb-1">LESSON</span>
+          <span className="text-[10px] font-bold uppercase tracking-widest opacity-100 mb-1 drop-shadow-md">LESSON</span>
           <span className="text-4xl font-extrabold tracking-tighter leading-none">{formattedNum}</span>
         </div>
       </div>
@@ -74,9 +74,9 @@ export function KrutiDevLessonCard({ item, setLockedLessonIntent }: { item: any,
       
       {/* Overlay for locked state */}
       {isLocked && (
-        <div className="absolute inset-0 bg-white/60 backdrop-blur-[1px] flex items-center justify-center z-10">
-          <div className="bg-white px-4 py-2 rounded-full shadow-md flex items-center gap-2 text-slate-500 text-sm font-bold">
-            Locked
+        <div className="absolute inset-0 bg-white/30 backdrop-blur-[1px] flex items-center justify-center z-10">
+          <div className="bg-white px-4 py-2 rounded-full shadow-md flex items-center gap-2 text-slate-700 text-sm font-bold">
+            Coming Soon
           </div>
         </div>
       )}
