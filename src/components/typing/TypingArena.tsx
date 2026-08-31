@@ -40,6 +40,34 @@ export function tokenizeHindi(text: string): string[] {
   }
   return tokens;
 }
+
+const _dependentVowels = new Set([
+  '\u093E', '\u093F', '\u0940', '\u0941', '\u0942', '\u0947', '\u0948', '\u094B', '\u094C', '\u0943', '\u0902', '\u0901', '\u0903', '\u094D', '\u093C'
+]);
+const _isDependentVowelSign = (s: string | undefined) => {
+  if (!s || s.length === 0) return false;
+  if (s === 'ि') return true;
+  return _dependentVowels.has(s[0] ?? '');
+};
+const _buildDisplayOrder = (hindiParts: (string | undefined)[]) => {
+  const order = [];
+  const buffer = [];
+  for (let ki = 0; ki < hindiParts.length; ki++) {
+      const part = hindiParts[ki];
+      if (part !== undefined && _isDependentVowelSign(part) && order.length === 0) {
+          buffer.push(ki);
+      } else {
+          order.push(ki);
+          if (part !== undefined && !_isDependentVowelSign(part)) {
+              for (const bki of buffer) order.push(bki);
+              buffer.length = 0;
+          }
+      }
+  }
+  for (const bki of buffer) order.push(bki);
+  return order;
+};
+
 import { toast } from "sonner";
 
 export type TypingResult = {
@@ -450,7 +478,33 @@ export function TypingArena({
     setTyped(next.join(""));
   }
 
-  const nextChar = chars[typedChars.length];
+  let nextChar = chars[typedChars.length];
+  
+  // Fix for Remington GAIL Lesson 80: The keyboard must highlight the VISUAL next character 
+  // because the text is in Unicode logical order but the user types in visual order.
+  const isRemingtonGailLesson80 = lessonSlug === "ch-adventure-story";
+  if (isRemingtonGailLesson80 && isParagraphMode) {
+    const typedWords = typed.split(" ");
+    const currentWordIdx = typedWords.length - 1;
+    // We must lazily calculate `words` to avoid reference error (words is declared below),
+    // but we can just split `text` directly.
+    const allWords = text.split(" ");
+    if (currentWordIdx >= 0 && currentWordIdx < allWords.length) {
+      const currentWord = allWords[currentWordIdx] || "";
+      const wordChars = tokenizeHindi(currentWord);
+      const charsWithSpace = [...wordChars, " "];
+      
+      const displayOrder = _buildDisplayOrder(charsWithSpace);
+      const visualSequence = displayOrder.map(idx => charsWithSpace[idx]);
+      
+      const currentWordTyped = typedWords[currentWordIdx] || "";
+      const typedWordChars = tokenizeHindi(currentWordTyped);
+      
+      if (typedWordChars.length < visualSequence.length) {
+        nextChar = visualSequence[typedWordChars.length];
+      }
+    }
+  }
   
   const currentLessonIndex = lessons.findIndex((l) => l.slug === lessonSlug);
   const nextLesson = currentLessonIndex !== -1 && currentLessonIndex < lessons.length - 1 ? lessons[currentLessonIndex + 1] : null;
@@ -627,32 +681,7 @@ export function TypingArena({
           )}>
           {(() => {
             if (isParagraphMode) {
-              const _dependentVowels = new Set([
-                  '\u093E', '\u093F', '\u0940', '\u0941', '\u0942', '\u0947', '\u0948', '\u094B', '\u094C', '\u0943', '\u0902', '\u0901', '\u0903', '\u094D', '\u093C'
-              ]);
-              const _isDependentVowelSign = (s: string | undefined) => {
-                  if (!s || s.length === 0) return false;
-                  if (s === 'ि') return true;
-                  return _dependentVowels.has(s[0] ?? '');
-              };
-              const _buildDisplayOrder = (hindiParts: string[]) => {
-                  const order = [];
-                  const buffer = [];
-                  for (let ki = 0; ki < hindiParts.length; ki++) {
-                      const part = hindiParts[ki];
-                      if (part !== undefined && _isDependentVowelSign(part) && order.length === 0) {
-                          buffer.push(ki);
-                      } else {
-                          order.push(ki);
-                          if (part !== undefined && !_isDependentVowelSign(part)) {
-                              for (const bki of buffer) order.push(bki);
-                              buffer.length = 0;
-                          }
-                      }
-                  }
-                  for (const bki of buffer) order.push(bki);
-                  return order;
-              };
+              // _buildDisplayOrder is now defined at module level
 
               let globalIndex = 0;
               return (
@@ -676,7 +705,12 @@ export function TypingArena({
                     });
 
                     // Build display order for this word (reordering 'ि' after its consonant)
-                    const displayOrder = _buildDisplayOrder(mappedChars.map(m => m.ch));
+                    // Fix for Remington GAIL Lesson 11 (ch11): DO NOT reorder characters,
+                    // so the highlight sequence perfectly matches the typing index left-to-right.
+                    const isRemingtonGailLesson11 = lessonSlug === "ch11";
+                    const displayOrder = isRemingtonGailLesson11 
+                      ? mappedChars.map((_, i) => i) 
+                      : _buildDisplayOrder(mappedChars.map(m => m.ch));
 
                     return (
                       <div 
