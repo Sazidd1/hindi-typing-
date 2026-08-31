@@ -96,11 +96,8 @@ function Index() {
   }, [currentUser]);
 
   const displayLessons = useMemo(() => {
-    let previousLessonCompleted = true; // First lesson always unlocked
-    
     return lessons.slice(0, 6).map((baseItem) => {
       const saved = progressData[baseItem.slug] || { progress: 0, completed: false };
-      const isLocked = !previousLessonCompleted;
       
       const item = {
         ...baseItem,
@@ -109,10 +106,9 @@ function Index() {
         search: { lesson: baseItem.slug },
         progress: saved.progress || 0,
         isCompleted: saved.completed || false,
-        isLocked,
+        isLocked: false,
       };
 
-      previousLessonCompleted = item.isCompleted;
       return item;
     });
   }, [progressData]);

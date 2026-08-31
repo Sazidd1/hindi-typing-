@@ -80,24 +80,15 @@ function LessonsPage() {
   }, [loadProgress]);
 
   const extendedCurriculum = useMemo(() => {
-    let previousLessonCompleted = true; // First lesson is always unlocked
-    
     return extendedCurriculumBase.map((baseItem) => {
       const saved = progressData[baseItem.slug] || { progress: 0, completed: false };
-      
-      const isTest = baseItem.type === "test";
-      const isLocked = !isTest && !previousLessonCompleted;
       
       const item = {
         ...baseItem,
         progress: saved.progress || 0,
         isCompleted: saved.completed || false,
-        isLocked,
+        isLocked: false,
       };
-
-      if (!isTest) {
-        previousLessonCompleted = item.isCompleted;
-      }
       
       return item;
     });
