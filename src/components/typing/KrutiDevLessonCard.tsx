@@ -18,9 +18,6 @@ export function KrutiDevLessonCard({ item, setLockedLessonIntent }: { item: any,
   const formattedNum = lessonNum.toString().padStart(2, '0');
   const theme = themeColors[(lessonNum - 1) % themeColors.length];
 
-  const getLessonTitle = () => {
-    return `Lesson ${lessonNum}`;
-  };
 
   const cardContent = (
     <div className="group flex rounded-[16px] overflow-hidden border border-slate-200/60 bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-slate-200/50 h-[160px] relative w-full">
@@ -28,7 +25,7 @@ export function KrutiDevLessonCard({ item, setLockedLessonIntent }: { item: any,
       {/* Left Vertical Spine */}
       <div className={`w-[90px] shrink-0 ${theme.bg} flex flex-col items-center justify-center text-white relative shadow-[inset_-4px_0_12px_rgba(0,0,0,0.15)]`}>
         <div className="flex flex-col items-center">
-          <span className="text-[10px] font-bold uppercase tracking-widest opacity-90 mb-1">Chapter</span>
+          <span className="text-[10px] font-bold uppercase tracking-widest opacity-90 mb-1">LESSON</span>
           <span className="text-4xl font-extrabold tracking-tighter leading-none">{formattedNum}</span>
         </div>
       </div>
@@ -40,10 +37,6 @@ export function KrutiDevLessonCard({ item, setLockedLessonIntent }: { item: any,
           <div className={`w-full h-full ${theme.text} opacity-80`} style={{ clipPath: "polygon(0 0, 100% 0, 100% 100%, 50% 80%, 0 100%)", backgroundColor: "currentColor" }} />
         </div>
 
-        {/* Top Row */}
-        <div className="flex justify-between items-start pr-10">
-          <h3 className={`font-bold text-lg ${theme.text}`}>{getLessonTitle()}</h3>
-        </div>
 
         {/* Middle Content */}
         <div className="flex flex-col mt-2">
@@ -68,18 +61,12 @@ export function KrutiDevLessonCard({ item, setLockedLessonIntent }: { item: any,
               <div className="flex-1 h-1.5 rounded-full bg-[#16A34A]" />
               <CheckCircle className="size-5 text-[#16A34A] shrink-0" fill="currentColor" color="white" />
             </div>
-          ) : progress > 0 ? (
+          ) : (
             <div className="flex flex-col w-full gap-1.5">
               <span className={`text-xs font-bold ${theme.text}`}>{progress}% पूर्ण</span>
               <div className="w-full h-1.5 rounded-full bg-slate-100 overflow-hidden">
                 <div className={`h-full rounded-full ${theme.bg}`} style={{ width: `${progress}%` }} />
               </div>
-            </div>
-          ) : (
-            <div className="flex w-full justify-end items-center mt-2">
-              <span className={`text-sm font-bold flex items-center gap-1 ${theme.text}`}>
-                शुरू करें <ArrowRight className="size-4" />
-              </span>
             </div>
           )}
         </div>
