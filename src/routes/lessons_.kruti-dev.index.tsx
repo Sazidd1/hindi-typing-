@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useAuth } from "@/lib/auth";
 import { BookOpen } from "lucide-react";
-import { LessonCard } from "@/components/typing/LessonCard";
+import { KrutiDevLessonCard } from "@/components/typing/KrutiDevLessonCard";
 import { krutiDevLessons } from "@/lib/kruti-dev-typing-data";
 
 export const Route = createFileRoute("/lessons_/kruti-dev/")({
@@ -110,7 +110,7 @@ function KrutiDevLessonsPage() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {displayedLessons.map((item) => (
-            <LessonCard 
+            <KrutiDevLessonCard 
               key={item.slug} 
               item={item as any} 
               setLockedLessonIntent={() => setLockedLessonIntent(item)} 
