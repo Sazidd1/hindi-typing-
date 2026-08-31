@@ -76,7 +76,7 @@ function KrutiDevLessonsPage() {
   }, [activeCategory, extendedCurriculum]);
 
   return (
-    <div className="min-h-[calc(100vh-64px)] bg-[#f8fafc] dark:bg-[#0B1120] p-6 lg:p-8">
+    <div className="min-h-[calc(100vh-64px)] p-6 lg:p-8">
       <div className="max-w-6xl mx-auto space-y-8">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-8">
           <div>
