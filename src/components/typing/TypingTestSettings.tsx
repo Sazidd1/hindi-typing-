@@ -165,18 +165,45 @@ export default function TypingTestSettings({ onClose }: { onClose?: () => void }
     statusTimer.current = setTimeout(() => setStatus(""), 2200);
   }
 
+  function buildSearchParams() {
+    const search: { limit?: number; time?: number; lesson?: string; story?: string; mode?: string } = {};
+    if (wordLimitOn && wordLimit) {
+      search.limit = Number(wordLimit);
+    }
+    const timeMatch = testTime.match(/(\d+)/);
+    if (timeMatch) {
+      search.time = Number(timeMatch[1]);
+    }
+    return search;
+  }
+
   function handlePractice() {
+    const search = buildSearchParams();
+    if (passageType === "Random words") {
+      search.mode = "randomWords";
+      navigate({ to: "/practice", search });
+      return;
+    }
     const slug = STORY_SLUG_MAP[passageType];
     if (slug) {
-      navigate({ to: "/practice", search: { story: slug } });
+      search.story = slug;
+      navigate({ to: "/practice", search });
     } else {
       flashStatus(`Practice mode started — ${scheme}`);
     }
   }
+
   function handleExam() {
+    const search = buildSearchParams();
+    if (passageType === "Random words") {
+      search.mode = "randomWords";
+      navigate({ to: "/practice", search });
+      return;
+    }
     const slug = STORY_SLUG_MAP[passageType];
     if (slug) {
-      navigate({ to: "/practice", search: { story: slug } });
+      search.story = slug;
+      navigate({ to: "/practice", search });
     } else {
       flashStatus(`Exam mode started — ${scheme}`);
     }
