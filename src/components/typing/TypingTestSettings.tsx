@@ -304,7 +304,7 @@ export default function TypingTestSettings({ onClose }: { onClose?: () => void }
       </div>
 
       {/* Main Content Area */}
-      <div style={{ position: "relative", zIndex: 10, padding: "24px 24px 64px", flex: 1, display: "flex", flexDirection: "column" }}>
+      <div style={{ position: "relative", zIndex: 10, padding: "16px 24px 32px", flex: 1, display: "flex", flexDirection: "column" }}>
 
         {/* Page Title */}
         <div style={{ textAlign: "center", marginBottom: 8 }}>
@@ -328,14 +328,14 @@ export default function TypingTestSettings({ onClose }: { onClose?: () => void }
           backdropFilter: "blur(24px)",
           WebkitBackdropFilter: "blur(24px)",
           borderRadius: 32,
-          padding: "16px clamp(32px, 5vw, 48px) 40px",
+          padding: "16px clamp(32px, 5vw, 48px) 24px",
           boxShadow: "0 24px 64px rgba(184,138,68,0.06), inset 0 0 0 1px rgba(255,255,255,0.9)",
         }}>
 
           {/* Sections */}
           <div style={{ 
-            marginBottom: 16, 
-            padding: "16px 24px",
+            marginBottom: 12, 
+            padding: "12px 24px",
             background: "rgba(255, 255, 255, 0.6)",
             border: "1px solid rgba(255, 255, 255, 0.9)",
             borderRadius: 20,
@@ -359,14 +359,14 @@ export default function TypingTestSettings({ onClose }: { onClose?: () => void }
           </div>
 
           <div style={{
-            marginBottom: 16,
-            padding: "16px 24px",
+            marginBottom: 12,
+            padding: "12px 24px",
             background: "rgba(255, 255, 255, 0.6)",
             border: "1px solid rgba(255, 255, 255, 0.9)",
             borderRadius: 20,
             boxShadow: "0 8px 32px rgba(184, 138, 68, 0.04), inset 0 2px 0 rgba(255,255,255,1)"
           }}>
-            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", minHeight: 40, gap: 16 }}>
                 <div style={{ fontSize: 13, fontWeight: 700, color: "#a89f91", letterSpacing: "0.15em", textTransform: "uppercase" }}>
                   TEST MODE
@@ -417,17 +417,17 @@ export default function TypingTestSettings({ onClose }: { onClose?: () => void }
           </div>
 
           <div style={{
-            marginBottom: 16,
-            padding: "16px 24px",
+            marginBottom: 12,
+            padding: "12px 24px",
             background: "rgba(255, 255, 255, 0.6)",
             border: "1px solid rgba(255, 255, 255, 0.9)",
             borderRadius: 20,
             boxShadow: "0 8px 32px rgba(184, 138, 68, 0.04), inset 0 2px 0 rgba(255,255,255,1)"
           }}>
-            <div style={{ fontSize: 13, fontWeight: 700, color: "#a89f91", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 12 }}>
+            <div style={{ fontSize: 13, fontWeight: 700, color: "#a89f91", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 8 }}>
               KEYBOARD LAYOUT
             </div>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 12 }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 8 }}>
               {SCHEMES.map((s) => {
                 const active = scheme === s;
                 return (
@@ -461,16 +461,16 @@ export default function TypingTestSettings({ onClose }: { onClose?: () => void }
 
           <div style={{
             marginBottom: 0,
-            padding: "16px 24px",
+            padding: "12px 24px",
             background: "rgba(255, 255, 255, 0.6)",
             border: "1px solid rgba(255, 255, 255, 0.9)",
             borderRadius: 20,
             boxShadow: "0 8px 32px rgba(184, 138, 68, 0.04), inset 0 2px 0 rgba(255,255,255,1)"
           }}>
-            <div style={{ fontSize: 13, fontWeight: 700, color: "#a89f91", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 12 }}>
+            <div style={{ fontSize: 13, fontWeight: 700, color: "#a89f91", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 8 }}>
               OPTIONS
             </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
 
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", minHeight: 40, gap: 16 }}>
                 <div style={{ fontSize: 15, fontWeight: 600, color: "#44403c" }}>Paragraph Passages</div>
@@ -529,7 +529,7 @@ export default function TypingTestSettings({ onClose }: { onClose?: () => void }
           </div>
 
           {/* Action Buttons */}
-          <div style={{ display: "flex", flexDirection: "column", gap: 12, marginTop: 24 }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 12, marginTop: 16 }}>
             <button
               className="tts-primary-btn"
               onClick={handlePractice}
@@ -560,7 +560,7 @@ export default function TypingTestSettings({ onClose }: { onClose?: () => void }
               textAlign: "center",
               fontSize: 13,
               color: "#3f7d5c",
-              marginTop: status ? 24 : 0,
+              marginTop: status ? 12 : 0,
               height: status ? 20 : 0,
               opacity: status ? 1 : 0,
               transition: ".2s ease",
