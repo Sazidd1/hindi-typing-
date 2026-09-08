@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as EnglishLessonsRouteImport } from './routes/english-lessons'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as LeaderboardRouteImport } from './routes/leaderboard'
 import { Route as LessonsRouteImport } from './routes/lessons'
@@ -20,6 +21,7 @@ import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as TranslatorRouteImport } from './routes/translator'
+import { Route as EnglishLessonsLessonIdRouteImport } from './routes/english-lessons_.$lessonId'
 import { Route as LessonsKrutiDevIndexRouteImport } from './routes/lessons_.kruti-dev.index'
 import { Route as LessonsKrutiDevLessonIdRouteImport } from './routes/lessons_.kruti-dev_.$lessonId'
 
@@ -31,6 +33,11 @@ const IndexRoute = IndexRouteImport.update({
 const DashboardRoute = DashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EnglishLessonsRoute = EnglishLessonsRouteImport.update({
+  id: '/english-lessons',
+  path: '/english-lessons',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
@@ -78,6 +85,11 @@ const TranslatorRoute = TranslatorRouteImport.update({
   path: '/translator',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EnglishLessonsLessonIdRoute = EnglishLessonsLessonIdRouteImport.update({
+  id: '/english-lessons_/$lessonId',
+  path: '/english-lessons/$lessonId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LessonsKrutiDevIndexRoute = LessonsKrutiDevIndexRouteImport.update({
   id: '/lessons_/kruti-dev/',
   path: '/lessons/kruti-dev/',
@@ -92,6 +104,7 @@ const LessonsKrutiDevLessonIdRoute = LessonsKrutiDevLessonIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRoute
+  '/english-lessons': typeof EnglishLessonsRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/leaderboard': typeof LeaderboardRoute
   '/lessons': typeof LessonsRoute
@@ -101,12 +114,14 @@ export interface FileRoutesByFullPath {
   '/settings': typeof SettingsRoute
   '/signup': typeof SignupRoute
   '/translator': typeof TranslatorRoute
+  '/english-lessons/$lessonId': typeof EnglishLessonsLessonIdRoute
   '/lessons/kruti-dev/$lessonId': typeof LessonsKrutiDevLessonIdRoute
   '/lessons/kruti-dev/': typeof LessonsKrutiDevIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRoute
+  '/english-lessons': typeof EnglishLessonsRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/leaderboard': typeof LeaderboardRoute
   '/lessons': typeof LessonsRoute
@@ -116,6 +131,7 @@ export interface FileRoutesByTo {
   '/settings': typeof SettingsRoute
   '/signup': typeof SignupRoute
   '/translator': typeof TranslatorRoute
+  '/english-lessons/$lessonId': typeof EnglishLessonsLessonIdRoute
   '/lessons/kruti-dev/$lessonId': typeof LessonsKrutiDevLessonIdRoute
   '/lessons/kruti-dev': typeof LessonsKrutiDevIndexRoute
 }
@@ -123,6 +139,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRoute
+  '/english-lessons': typeof EnglishLessonsRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/leaderboard': typeof LeaderboardRoute
   '/lessons': typeof LessonsRoute
@@ -132,6 +149,7 @@ export interface FileRoutesById {
   '/settings': typeof SettingsRoute
   '/signup': typeof SignupRoute
   '/translator': typeof TranslatorRoute
+  '/english-lessons_/$lessonId': typeof EnglishLessonsLessonIdRoute
   '/lessons_/kruti-dev_/$lessonId': typeof LessonsKrutiDevLessonIdRoute
   '/lessons_/kruti-dev/': typeof LessonsKrutiDevIndexRoute
 }
@@ -140,6 +158,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/dashboard'
+    | '/english-lessons'
     | '/forgot-password'
     | '/leaderboard'
     | '/lessons'
@@ -149,12 +168,14 @@ export interface FileRouteTypes {
     | '/settings'
     | '/signup'
     | '/translator'
+    | '/english-lessons/$lessonId'
     | '/lessons/kruti-dev/$lessonId'
     | '/lessons/kruti-dev/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/dashboard'
+    | '/english-lessons'
     | '/forgot-password'
     | '/leaderboard'
     | '/lessons'
@@ -164,12 +185,14 @@ export interface FileRouteTypes {
     | '/settings'
     | '/signup'
     | '/translator'
+    | '/english-lessons/$lessonId'
     | '/lessons/kruti-dev/$lessonId'
     | '/lessons/kruti-dev'
   id:
     | '__root__'
     | '/'
     | '/dashboard'
+    | '/english-lessons'
     | '/forgot-password'
     | '/leaderboard'
     | '/lessons'
@@ -179,6 +202,7 @@ export interface FileRouteTypes {
     | '/settings'
     | '/signup'
     | '/translator'
+    | '/english-lessons_/$lessonId'
     | '/lessons_/kruti-dev_/$lessonId'
     | '/lessons_/kruti-dev/'
   fileRoutesById: FileRoutesById
@@ -186,6 +210,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   DashboardRoute: typeof DashboardRoute
+  EnglishLessonsRoute: typeof EnglishLessonsRoute
   ForgotPasswordRoute: typeof ForgotPasswordRoute
   LeaderboardRoute: typeof LeaderboardRoute
   LessonsRoute: typeof LessonsRoute
@@ -195,6 +220,7 @@ export interface RootRouteChildren {
   SettingsRoute: typeof SettingsRoute
   SignupRoute: typeof SignupRoute
   TranslatorRoute: typeof TranslatorRoute
+  EnglishLessonsLessonIdRoute: typeof EnglishLessonsLessonIdRoute
   LessonsKrutiDevLessonIdRoute: typeof LessonsKrutiDevLessonIdRoute
   LessonsKrutiDevIndexRoute: typeof LessonsKrutiDevIndexRoute
 }
@@ -213,6 +239,13 @@ declare module '@tanstack/react-router' {
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof DashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/english-lessons': {
+      id: '/english-lessons'
+      path: '/english-lessons'
+      fullPath: '/english-lessons'
+      preLoaderRoute: typeof EnglishLessonsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/forgot-password': {
@@ -278,6 +311,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TranslatorRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/english-lessons_/$lessonId': {
+      id: '/english-lessons_/$lessonId'
+      path: '/english-lessons/$lessonId'
+      fullPath: '/english-lessons/$lessonId'
+      preLoaderRoute: typeof EnglishLessonsLessonIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/lessons_/kruti-dev/': {
       id: '/lessons_/kruti-dev/'
       path: '/lessons/kruti-dev'
@@ -298,6 +338,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DashboardRoute: DashboardRoute,
+  EnglishLessonsRoute: EnglishLessonsRoute,
   ForgotPasswordRoute: ForgotPasswordRoute,
   LeaderboardRoute: LeaderboardRoute,
   LessonsRoute: LessonsRoute,
@@ -307,6 +348,7 @@ const rootRouteChildren: RootRouteChildren = {
   SettingsRoute: SettingsRoute,
   SignupRoute: SignupRoute,
   TranslatorRoute: TranslatorRoute,
+  EnglishLessonsLessonIdRoute: EnglishLessonsLessonIdRoute,
   LessonsKrutiDevLessonIdRoute: LessonsKrutiDevLessonIdRoute,
   LessonsKrutiDevIndexRoute: LessonsKrutiDevIndexRoute,
 }

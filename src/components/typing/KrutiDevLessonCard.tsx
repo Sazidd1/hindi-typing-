@@ -16,7 +16,7 @@ export function KrutiDevLessonCard({ item, setLockedLessonIntent }: { item: any,
 
   const lessonNum = parseInt(item.slug.replace(/\D/g, '')) || 1;
   const formattedNum = lessonNum.toString().padStart(2, '0');
-  const theme = themeColors[(lessonNum - 1) % themeColors.length];
+  const theme = themeColors[(lessonNum - 1) % themeColors.length]!;
 
 
   const cardContent = (

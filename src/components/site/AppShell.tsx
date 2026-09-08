@@ -90,9 +90,9 @@ export function AppShell({ children }: { children: ReactNode }) {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent 
                       align="start" 
-                      className="w-[280px] rounded-2xl p-2 bg-white/70 dark:bg-[rgba(10,10,10,0.75)] backdrop-blur-[20px] dark:backdrop-blur-[16px] dark:backdrop-saturate-[120%] border border-white/75 dark:border-[rgba(255,255,255,0.10)] shadow-[0_12px_35px_rgba(15,23,42,0.16)] dark:shadow-[0_8px_30px_rgba(0,0,0,0.25)]"
+                      className="w-[280px] rounded-2xl p-2 bg-white/70 dark:bg-[#0f172a] backdrop-blur-[20px] dark:backdrop-blur-[16px] dark:backdrop-saturate-[120%] border border-white/75 dark:border-slate-800 shadow-[0_12px_35px_rgba(15,23,42,0.16)] dark:shadow-[0_8px_30px_rgba(0,0,0,0.5)]"
                     >
-                      <div className="px-3 py-2 text-[10px] font-bold text-muted-foreground dark:text-[#71839B] uppercase tracking-widest">
+                      <div className="px-3 py-2 text-[10px] font-bold text-muted-foreground dark:text-slate-400 uppercase tracking-widest">
                         Keyboard Layout
                       </div>
                       {LAYOUTS.map((l) => (
@@ -102,12 +102,12 @@ export function AppShell({ children }: { children: ReactNode }) {
                           className={cn(
                             "rounded-xl cursor-pointer py-2.5 px-3 transition-all duration-200 my-0.5 font-medium flex items-center justify-between",
                             layout === l 
-                              ? "bg-[rgba(59,130,246,0.12)] dark:bg-[rgba(43,111,255,0.16)] text-[#2563eb] dark:text-[#5B8FFF]" 
-                              : "text-foreground dark:text-[#A9B8CC] hover:bg-black/5 dark:hover:bg-[rgba(255,255,255,0.06)] focus:bg-black/5 dark:focus:bg-[rgba(255,255,255,0.06)]"
+                              ? "bg-[rgba(59,130,246,0.12)] dark:bg-blue-500/20 text-[#2563eb] dark:text-blue-400" 
+                              : "text-foreground dark:text-slate-200 hover:bg-black/5 dark:hover:bg-slate-800 focus:bg-black/5 dark:focus:bg-slate-800"
                           )}
                         >
                           {l}
-                          {layout === l && <div className="size-2 rounded-full bg-[#2563eb] dark:bg-[#5B8FFF]" />}
+                          {layout === l && <div className="size-2 rounded-full bg-[#2563eb] dark:bg-blue-400" />}
                         </DropdownMenuItem>
                       ))}
                     </DropdownMenuContent>

@@ -191,7 +191,7 @@ function Index() {
                   <div 
                     onClick={() => {
                       setActiveLang('Hindi');
-                      setIsHindiExpanded(true);
+                      setIsHindiExpanded(prev => !prev);
                     }}
                     className={`flex-1 flex items-center justify-center h-[44px] rounded-xl text-sm font-bold cursor-pointer transition-all ${
                       activeLang === 'Hindi' 
@@ -201,11 +201,8 @@ function Index() {
                   >
                     Hindi
                   </div>
-                  <div 
-                    onClick={() => {
-                      setActiveLang('English');
-                      setIsHindiExpanded(false);
-                    }}
+                  <Link 
+                    to="/english-lessons"
                     className={`flex-1 flex items-center justify-center h-[44px] rounded-xl text-sm font-bold cursor-pointer transition-all ${
                       activeLang === 'English' 
                         ? 'bg-white dark:bg-[#334762] text-slate-900 dark:text-[#FFFFFF] shadow-sm' 
@@ -213,7 +210,7 @@ function Index() {
                     }`}
                   >
                     English
-                  </div>
+                  </Link>
                 </div>
 
                 {/* Secondary Hindi Sub-Layouts */}
