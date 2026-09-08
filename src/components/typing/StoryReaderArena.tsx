@@ -203,12 +203,20 @@ export function StoryReaderArena({
   }, [startedAt, finished]);
 
   return (
-    <div className="mx-auto w-[98%] max-w-[1400px] flex flex-col animate-in fade-in slide-in-from-bottom-4 duration-700 px-2 sm:px-4 -mt-4 sm:-mt-6">
+    <>
+      {/* Premium background layer for Story mode ONLY */}
+      <div 
+        className="fixed inset-0 z-[-1]" 
+        style={{
+          background: "radial-gradient(ellipse at top, #fffdf8 0%, #f6ecd6 100%)"
+        }}
+      />
+      <div className="mx-auto w-[98%] max-w-[1400px] flex flex-col animate-in fade-in slide-in-from-bottom-4 duration-700 px-2 sm:px-4 py-8 font-sans text-slate-800">
       
       {/* Title Centered for the entire page */}
       {(title || subtitle) && (
-        <h2 className="text-slate-900 dark:text-[#F4F7FB] text-center font-bold text-2xl sm:text-3xl leading-tight px-2 mt-0 mb-6 relative z-10">
-          {title} {subtitle && <span className="font-hindi text-gray-500 dark:text-[#8FA2BC]">( {subtitle} )</span>}
+        <h2 className="text-[#1c1917] text-center font-bold text-2xl sm:text-3xl leading-tight px-2 mt-0 mb-6 relative z-10">
+          {title} {subtitle && <span className="font-hindi text-[#8c734b] font-medium">( {subtitle} )</span>}
         </h2>
       )}
 
@@ -222,15 +230,15 @@ export function StoryReaderArena({
         <div className="flex flex-col w-full lg:w-[850px] gap-4 max-w-full">
 
         {/* Reader Card */}
-        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden flex flex-col w-full relative">
+        <div className="bg-white rounded-2xl border border-[rgba(193,158,84,0.15)] shadow-[0_12px_32px_rgba(184,138,68,0.06),0_4px_12px_rgba(184,138,68,0.04)] overflow-hidden flex flex-col w-full relative">
           
           {/* Card Header */}
-          <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 bg-slate-50/50">
+          <div className="flex items-center justify-between px-6 py-4 border-b border-[rgba(193,158,84,0.15)] bg-gradient-to-r from-[#fffdf8] to-[#fcfaf5]">
             <div className="flex items-center gap-2">
-              <div className="w-2.5 h-2.5 rounded-full bg-[#5b56e8] animate-pulse shadow-[0_0_8px_rgba(91,86,232,0.4)]"></div>
-              <span className="font-semibold text-slate-700 text-sm tracking-wide">Word Highlight Practice</span>
+              <div className="w-2.5 h-2.5 rounded-full bg-[#c19e54] animate-pulse shadow-[0_0_8px_rgba(193,158,84,0.4)]"></div>
+              <span className="font-semibold text-[#1c1917] text-sm tracking-wide">Word Highlight Practice</span>
             </div>
-            <div className="text-sm font-medium text-slate-500 bg-white px-3 py-1 rounded-full border border-slate-100 shadow-sm">
+            <div className="text-sm font-medium text-[#8c734b] bg-white px-3 py-1 rounded-full border border-[rgba(193,158,84,0.2)] shadow-sm">
               Word {Math.min(currentWordIndex + 1, words.length)} of {words.length}
             </div>
           </div>
@@ -260,9 +268,9 @@ export function StoryReaderArena({
                     ref={isActive ? activeWordRef : null}
                     className={cn(
                       "transition-all duration-200",
-                      isActive && "bg-[#eeecfd] text-[#5b56e8] font-bold px-2 py-0.5 rounded-md shadow-sm scale-105",
-                      isCompleted && "text-[#16A34A] font-medium opacity-100",
-                      isPending && "text-slate-800 font-normal"
+                      isActive && "bg-[#f9f5ed] text-[#c19e54] font-bold px-2 py-0.5 rounded-md shadow-sm scale-105",
+                      isCompleted && "text-green-600 font-medium opacity-100",
+                      isPending && "text-slate-700 font-normal"
                     )}
                   >
                     {word}
@@ -273,7 +281,7 @@ export function StoryReaderArena({
           </div>
 
           {/* Input Box & Toolbar Area */}
-          <div className="p-6 bg-slate-50 border-t border-slate-100 flex flex-col gap-4">
+          <div className="p-6 bg-[#faf8f3] border-t border-[rgba(193,158,84,0.15)] flex flex-col gap-4">
             
             <textarea
               ref={inputRef}
@@ -284,7 +292,7 @@ export function StoryReaderArena({
               placeholder="हाइलाइट किया हुआ शब्द टाइप करें..."
               autoComplete="off"
               spellCheck="false"
-              className="w-full text-lg sm:text-xl font-hindi px-5 py-4 rounded-xl border border-slate-200 bg-white shadow-inner focus:outline-none focus:border-[#5b56e8] focus:ring-2 focus:ring-[#5b56e8]/20 transition-all placeholder:text-slate-400 placeholder:font-sans text-slate-800 resize-none h-[120px] break-all"
+              className="w-full text-lg sm:text-xl font-hindi px-5 py-4 rounded-xl border border-[rgba(193,158,84,0.3)] bg-white shadow-inner focus:outline-none focus:border-[#c19e54] focus:ring-[3px] focus:ring-[#c19e54]/15 transition-all placeholder:text-slate-400 placeholder:font-sans text-[#1c1917] resize-none h-[120px] break-all"
             />
 
             {/* Bottom Toolbar */}
@@ -292,18 +300,18 @@ export function StoryReaderArena({
               
               {/* Text Formatting Pills */}
               <div className="flex items-center gap-2">
-                <button onClick={() => setFontSize(f => Math.min(f + 2, 32))} className="w-10 h-10 flex items-center justify-center rounded-lg bg-white border border-slate-200 text-slate-700 font-bold hover:bg-slate-100 hover:text-[#5b56e8] transition-colors shadow-sm" aria-label="Increase text size">A+</button>
-                <button onClick={() => setFontSize(f => Math.max(f - 2, 14))} className="w-10 h-10 flex items-center justify-center rounded-lg bg-white border border-slate-200 text-slate-700 font-bold hover:bg-slate-100 hover:text-[#5b56e8] transition-colors shadow-sm" aria-label="Decrease text size">A-</button>
-                <div className="w-px h-6 bg-slate-200 mx-1"></div>
-                <button onClick={() => setIsBold(b => !b)} className={cn("w-10 h-10 flex items-center justify-center rounded-lg border font-serif font-bold transition-colors shadow-sm", isBold ? "bg-[#eeecfd] border-[#5b56e8]/30 text-[#5b56e8]" : "bg-white border-slate-200 text-slate-700 hover:bg-slate-100")}>B</button>
-                <button onClick={() => setIsItalic(i => !i)} className={cn("w-10 h-10 flex items-center justify-center rounded-lg border font-serif italic transition-colors shadow-sm", isItalic ? "bg-[#eeecfd] border-[#5b56e8]/30 text-[#5b56e8]" : "bg-white border-slate-200 text-slate-700 hover:bg-slate-100")}>I</button>
+                <button onClick={() => setFontSize(f => Math.min(f + 2, 32))} className="w-10 h-10 flex items-center justify-center rounded-lg bg-white border border-[rgba(193,158,84,0.2)] text-[#1c1917] font-bold hover:bg-[#f6ecd6] hover:text-[#c19e54] transition-colors shadow-sm" aria-label="Increase text size">A+</button>
+                <button onClick={() => setFontSize(f => Math.max(f - 2, 14))} className="w-10 h-10 flex items-center justify-center rounded-lg bg-white border border-[rgba(193,158,84,0.2)] text-[#1c1917] font-bold hover:bg-[#f6ecd6] hover:text-[#c19e54] transition-colors shadow-sm" aria-label="Decrease text size">A-</button>
+                <div className="w-px h-6 bg-[rgba(193,158,84,0.2)] mx-1"></div>
+                <button onClick={() => setIsBold(b => !b)} className={cn("w-10 h-10 flex items-center justify-center rounded-lg border font-serif font-bold transition-colors shadow-sm", isBold ? "bg-[#f9f5ed] border-[#c19e54]/40 text-[#c19e54]" : "bg-white border-[rgba(193,158,84,0.2)] text-[#1c1917] hover:bg-[#f6ecd6]")}>B</button>
+                <button onClick={() => setIsItalic(i => !i)} className={cn("w-10 h-10 flex items-center justify-center rounded-lg border font-serif italic transition-colors shadow-sm", isItalic ? "bg-[#f9f5ed] border-[#c19e54]/40 text-[#c19e54]" : "bg-white border-[rgba(193,158,84,0.2)] text-[#1c1917] hover:bg-[#f6ecd6]")}>I</button>
               </div>
 
               {/* Action Buttons */}
               <div className="flex items-center gap-3 w-full sm:w-auto">
                 <button 
                   onClick={reset}
-                  className="flex-1 sm:flex-none px-6 py-2.5 rounded-lg border-2 border-[#5b56e8]/20 text-[#5b56e8] font-semibold hover:bg-[#5b56e8]/5 transition-colors bg-white"
+                  className="flex-1 sm:flex-none px-6 py-2.5 rounded-lg border-2 border-[#c19e54]/30 text-[#c19e54] font-semibold hover:bg-[#c19e54]/5 transition-colors bg-white"
                 >
                   Retake
                 </button>
@@ -315,7 +323,7 @@ export function StoryReaderArena({
                     inputRef.current?.focus();
                   }}
                   disabled={finished || isPaused || !typedText || /\s$/.test(typedText)}
-                  className="flex-1 sm:flex-none px-8 py-2.5 rounded-lg bg-[#5b56e8] hover:bg-[#4a45d0] text-white font-semibold shadow-md shadow-[#5b56e8]/20 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex-1 sm:flex-none px-8 py-2.5 rounded-lg bg-[#c19e54] hover:bg-[#b88a44] text-white font-semibold shadow-md shadow-[#c19e54]/20 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Submit
                 </button>
@@ -333,7 +341,7 @@ export function StoryReaderArena({
           >
             <span 
               className={cn(
-                "text-2xl font-bold text-[#5b56e8] drop-shadow-sm transition-all duration-200 animate-pulse px-6 py-3 bg-white rounded-xl shadow-lg border border-[#5b56e8]/20",
+                "text-2xl font-bold text-[#c19e54] drop-shadow-sm transition-all duration-200 animate-pulse px-6 py-3 bg-white rounded-xl shadow-lg border border-[#c19e54]/30",
                 isPaused && !finished ? "scale-100 opacity-100" : "scale-95 opacity-0"
               )}
             >
@@ -359,39 +367,39 @@ export function StoryReaderArena({
 
         {/* Right Side: Live Session Stats Panel */}
         <div className="transition-all duration-300 ease-in-out w-full lg:w-[320px] justify-self-end space-y-4 sm:space-y-6 opacity-100">
-        <div className="bg-card/60 dark:bg-[linear-gradient(145deg,#101F34,#0D1A2D)] rounded-[24px] p-5 sm:p-6 shadow-[0_16px_40px_rgba(0,0,0,0.18)] border border-border/40 dark:border-[rgba(255,255,255,0.09)] flex flex-col gap-5">
-          <h3 className="text-xl font-semibold tracking-tight text-foreground dark:text-[#F4F7FB]">Live Session</h3>
+        <div className="bg-white/90 backdrop-blur-md rounded-[24px] p-5 sm:p-6 shadow-[0_16px_40px_rgba(184,138,68,0.08)] border border-[rgba(193,158,84,0.15)] flex flex-col gap-5">
+          <h3 className="text-xl font-semibold tracking-tight text-[#1c1917]">Live Session</h3>
           
           {/* 2x2 Grid */}
           <div className="grid grid-cols-2 gap-3">
              {/* Speed */}
-             <div className="bg-background/80 dark:bg-[#071426] rounded-[20px] p-4 shadow-sm border border-border/40 dark:border-[rgba(255,255,255,0.05)] flex flex-col gap-1">
-               <span className="text-[10px] font-bold text-muted-foreground dark:text-[#8FA2BC] uppercase tracking-wider">Speed</span>
+             <div className="bg-white rounded-[20px] p-4 shadow-sm border border-[rgba(193,158,84,0.1)] flex flex-col gap-1">
+               <span className="text-[10px] font-bold text-[#8c734b] uppercase tracking-wider">Speed</span>
                <div className="flex items-center gap-1">
-                 <span className="text-[28px] font-semibold tracking-tight text-primary dark:text-[#4B8BFF]">{wpm}</span>
-                 <span className="text-[13px] font-semibold text-muted-foreground dark:text-[#8FA2BC]">WPM</span>
+                 <span className="text-[28px] font-semibold tracking-tight text-[#c19e54]">{wpm}</span>
+                 <span className="text-[13px] font-semibold text-[#8c734b]">WPM</span>
                </div>
              </div>
              {/* Accuracy */}
-             <div className="bg-background/80 dark:bg-[#071426] rounded-[20px] p-4 shadow-sm border border-border/40 dark:border-[rgba(255,255,255,0.05)] flex flex-col gap-1">
-               <span className="text-[10px] font-bold text-muted-foreground dark:text-[#8FA2BC] uppercase tracking-wider">Accuracy</span>
+             <div className="bg-white rounded-[20px] p-4 shadow-sm border border-[rgba(193,158,84,0.1)] flex flex-col gap-1">
+               <span className="text-[10px] font-bold text-[#8c734b] uppercase tracking-wider">Accuracy</span>
                <div className="flex items-center gap-1">
-                 <span className="text-[28px] font-semibold tracking-tight text-success dark:text-[#12B76A]">{accuracy}</span>
-                 <span className="text-[13px] font-semibold text-muted-foreground dark:text-[#8FA2BC]">%</span>
+                 <span className="text-[28px] font-semibold tracking-tight text-green-600">{accuracy}</span>
+                 <span className="text-[13px] font-semibold text-[#8c734b]">%</span>
                </div>
              </div>
              {/* Time */}
-             <div className="bg-background/80 dark:bg-[#071426] rounded-[20px] p-4 shadow-sm border border-border/40 dark:border-[rgba(255,255,255,0.05)] flex flex-col gap-1">
-               <span className="text-[10px] font-bold text-muted-foreground dark:text-[#8FA2BC] uppercase tracking-wider">Time</span>
+             <div className="bg-white rounded-[20px] p-4 shadow-sm border border-[rgba(193,158,84,0.1)] flex flex-col gap-1">
+               <span className="text-[10px] font-bold text-[#8c734b] uppercase tracking-wider">Time</span>
                <div className="flex items-center gap-1">
-                 <span className="text-[22px] font-semibold tracking-tight text-foreground dark:text-[#F4F7FB]">{formatTime(elapsed)}</span>
+                 <span className="text-[22px] font-semibold tracking-tight text-[#1c1917]">{formatTime(elapsed)}</span>
                </div>
              </div>
              {/* Streak */}
-             <div className="bg-background/80 dark:bg-[#071426] rounded-[20px] p-4 shadow-sm border border-border/40 dark:border-[rgba(255,255,255,0.05)] flex flex-col gap-1">
-               <span className="text-[10px] font-bold text-muted-foreground dark:text-[#8FA2BC] uppercase tracking-wider">Streak</span>
+             <div className="bg-white rounded-[20px] p-4 shadow-sm border border-[rgba(193,158,84,0.1)] flex flex-col gap-1">
+               <span className="text-[10px] font-bold text-[#8c734b] uppercase tracking-wider">Streak</span>
                <div className="flex items-center gap-1">
-                 <span className="text-[22px] font-semibold tracking-tight text-orange-500 dark:text-[#F7C843]">{currentStreak}</span>
+                 <span className="text-[22px] font-semibold tracking-tight text-orange-500">{currentStreak}</span>
                  <span className="text-[20px]">🔥</span>
                </div>
              </div>
@@ -400,8 +408,8 @@ export function StoryReaderArena({
         </div>
         </div>
       </div>
-
     </div>
+    </>
   );
 }
 
