@@ -1,6 +1,13 @@
 export type Finger =
-  | "l-pinky" | "l-ring" | "l-middle" | "l-index"
-  | "r-index" | "r-middle" | "r-ring" | "r-pinky" | "thumb";
+  | "l-pinky"
+  | "l-ring"
+  | "l-middle"
+  | "l-index"
+  | "r-index"
+  | "r-middle"
+  | "r-ring"
+  | "r-pinky"
+  | "thumb";
 
 export const englishFingerLabels: Record<Finger, string> = {
   "l-pinky": "Left Pinky",
@@ -78,7 +85,7 @@ export const englishKeyboardRows: KeyDef[][] = [
     { en: "k", shift: "K", finger: "r-middle" },
     { en: "l", shift: "L", finger: "r-ring" },
     { en: ";", shift: ":", finger: "r-pinky" },
-    { en: "'", shift: "\"", finger: "r-pinky" },
+    { en: "'", shift: '"', finger: "r-pinky" },
     { en: "Enter", finger: "r-pinky", width: 2.1 },
   ],
   [
@@ -95,12 +102,13 @@ export const englishKeyboardRows: KeyDef[][] = [
     { en: "/", shift: "?", finger: "r-pinky" },
     { en: "Shift", finger: "r-pinky", width: 2.4 },
   ],
-  [
-    { en: "Space", finger: "thumb", width: 6 },
-  ],
+  [{ en: "Space", finger: "thumb", width: 6 }],
 ];
 
-const englishCharIndex: Record<string, { key: KeyDef; shift: boolean; rowIndex: number; colIndex: number }> = {};
+const englishCharIndex: Record<
+  string,
+  { key: KeyDef; shift: boolean; rowIndex: number; colIndex: number }
+> = {};
 englishKeyboardRows.forEach((row, ri) => {
   row.forEach((key, ci) => {
     englishCharIndex[key.en] = { key, shift: false, rowIndex: ri, colIndex: ci };
@@ -126,11 +134,210 @@ export type Lesson = {
 };
 
 export const englishLessons: Lesson[] = [
-  { slug: 'eng-ch1', title: 'Lesson 1', englishTitle: 'a s d f j k l ;', description: 'Home Row', level: 'Beginner', keys: 'a s d f j k l ;', minutes: 3, text: 'asdf jkl; asdf jkl; asdf jkl; a s d f j k l ; fdsa ;lkj fdsa ;lkj asdf jkl; fdsa ;lkj asdf jkl;' },
-  { slug: 'eng-ch2', title: 'Lesson 2', englishTitle: 'q w e r t y u i o p', description: 'Top Row', level: 'Beginner', keys: 'q w e r t y u i o p', minutes: 3, text: 'qwer tyui op qwer tyui op qwer tyui op q w e r t y u i o p rewq poiu ytre rewq poiu ytre qwer tyui op' },
-  { slug: 'eng-ch3', title: 'Lesson 3', englishTitle: 'z x c v b n m , . /', description: 'Bottom Row', level: 'Beginner', keys: 'z x c v b n m , . /', minutes: 3, text: 'zxcv bnm, ./ zxcv bnm, ./ z x c v b n m , . / vcxx mnb, ./ zxcv bnm, ./' },
-  { slug: 'eng-ch4', title: 'Word Practice 1', englishTitle: 'Home Row Words', description: 'Mixed', level: 'Beginner', keys: 'Home Row Words', minutes: 3, text: 'sad fad lad dad lass fall glass flak flask alas alas add all ask' },
-  { slug: 'eng-ch5', title: 'Word Practice 2', englishTitle: 'Top & Home Row Words', description: 'Mixed', level: 'Intermediate', keys: 'Top & Home Row Words', minutes: 3, text: 'their there where what why who how are you today good great well' },
+  // Home Row
+  {
+    slug: "eng-ch1",
+    title: "Lesson 1",
+    englishTitle: "Home Row: f j",
+    description: "Home Row",
+    level: "Beginner",
+    keys: "f j",
+    minutes: 2,
+    text: "f j f j f j f j ff jj fj jf ff jj fj jf f j f j f j f j f j f j f j f j ff jj fj jf",
+  },
+  {
+    slug: "eng-ch2",
+    title: "Lesson 2",
+    englishTitle: "Home Row: d k",
+    description: "Home Row",
+    level: "Beginner",
+    keys: "d k",
+    minutes: 2,
+    text: "d k d k d k d k dd kk dk kd dd kk dk kd d k d k d k d k d k d k d k d k dd kk dk kd",
+  },
+  {
+    slug: "eng-ch3",
+    title: "Lesson 3",
+    englishTitle: "Home Row: s l",
+    description: "Home Row",
+    level: "Beginner",
+    keys: "s l",
+    minutes: 2,
+    text: "s l s l s l s l ss ll sl ls ss ll sl ls s l s l s l s l s l s l s l s l ss ll sl ls",
+  },
+  {
+    slug: "eng-ch4",
+    title: "Lesson 4",
+    englishTitle: "Home Row: a ;",
+    description: "Home Row",
+    level: "Beginner",
+    keys: "a ;",
+    minutes: 2,
+    text: "a ; a ; a ; a ; aa ;; a; ;a aa ;; a; ;a a ; a ; a ; a ; a ; a ; a ; a ; aa ;; a; ;a",
+  },
+  {
+    slug: "eng-ch5",
+    title: "Lesson 5",
+    englishTitle: "Home Row: g h",
+    description: "Home Row",
+    level: "Beginner",
+    keys: "g h",
+    minutes: 3,
+    text: "g h g h g h g h gg hh gh hg gg hh gh hg f g h j f g h j g h g h g h gg hh gh hg g h",
+  },
+  {
+    slug: "eng-ch6",
+    title: "Lesson 6",
+    englishTitle: "Home Row Words",
+    description: "Home Row",
+    level: "Intermediate",
+    keys: "Home Row Words",
+    minutes: 3,
+    text: "sad fad lad dad lass fall glass flak flask alas alas add all ask ash dash flash slash gash hash jag lag sag flag",
+  },
+  // Top Row
+  {
+    slug: "eng-ch7",
+    title: "Lesson 7",
+    englishTitle: "Top Row: r u",
+    description: "Top Row",
+    level: "Beginner",
+    keys: "r u",
+    minutes: 2,
+    text: "r u r u r u r u rr uu ru ur rr uu ru ur f r j u f r j u r u r u r u r u rr uu ru ur",
+  },
+  {
+    slug: "eng-ch8",
+    title: "Lesson 8",
+    englishTitle: "Top Row: e i",
+    description: "Top Row",
+    level: "Beginner",
+    keys: "e i",
+    minutes: 2,
+    text: "e i e i e i e i ee ii ei ie ee ii ei ie d e k i d e k i e i e i e i e i ee ii ei ie",
+  },
+  {
+    slug: "eng-ch9",
+    title: "Lesson 9",
+    englishTitle: "Top Row: w o",
+    description: "Top Row",
+    level: "Beginner",
+    keys: "w o",
+    minutes: 2,
+    text: "w o w o w o w o ww oo wo ow ww oo wo ow s w l o s w l o w o w o w o w o ww oo wo ow",
+  },
+  {
+    slug: "eng-ch10",
+    title: "Lesson 10",
+    englishTitle: "Top Row: q p",
+    description: "Top Row",
+    level: "Beginner",
+    keys: "q p",
+    minutes: 2,
+    text: "q p q p q p q p qq pp qp pq qq pp qp pq a q ; p a q ; p q p q p q p q p qq pp qp pq",
+  },
+  {
+    slug: "eng-ch11",
+    title: "Lesson 11",
+    englishTitle: "Top Row: t y",
+    description: "Top Row",
+    level: "Beginner",
+    keys: "t y",
+    minutes: 3,
+    text: "t y t y t y t y tt yy ty yt tt yy ty yt f t j y f t j y t y t y t y tt yy ty yt t y",
+  },
+  {
+    slug: "eng-ch12",
+    title: "Lesson 12",
+    englishTitle: "Top Row Words",
+    description: "Top Row",
+    level: "Intermediate",
+    keys: "Top Row Words",
+    minutes: 3,
+    text: "their there where what why who how are you today good great well tree free see out our pout route quiet pet pit put",
+  },
+  // Bottom Row
+  {
+    slug: "eng-ch13",
+    title: "Lesson 13",
+    englishTitle: "Bottom Row: v m",
+    description: "Bottom Row",
+    level: "Beginner",
+    keys: "v m",
+    minutes: 2,
+    text: "v m v m v m v m vv mm vm mv vv mm vm mv f v j m f v j m v m v m v m v m vv mm vm mv",
+  },
+  {
+    slug: "eng-ch14",
+    title: "Lesson 14",
+    englishTitle: "Bottom Row: c ,",
+    description: "Bottom Row",
+    level: "Beginner",
+    keys: "c ,",
+    minutes: 2,
+    text: "c , c , c , c , cc ,, c, ,c cc ,, c, ,c d c k , d c k , c , c , c , c , cc ,, c, ,c",
+  },
+  {
+    slug: "eng-ch15",
+    title: "Lesson 15",
+    englishTitle: "Bottom Row: x .",
+    description: "Bottom Row",
+    level: "Beginner",
+    keys: "x .",
+    minutes: 2,
+    text: "x . x . x . x . xx .. x. .x xx .. x. .x s x l . s x l . x . x . x . x . xx .. x. .x",
+  },
+  {
+    slug: "eng-ch16",
+    title: "Lesson 16",
+    englishTitle: "Bottom Row: z /",
+    description: "Bottom Row",
+    level: "Beginner",
+    keys: "z /",
+    minutes: 2,
+    text: "z / z / z / z / zz // z/ /z zz // z/ /z a z ; / a z ; / z / z / z / z / zz // z/ /z",
+  },
+  {
+    slug: "eng-ch17",
+    title: "Lesson 17",
+    englishTitle: "Bottom Row: b n",
+    description: "Bottom Row",
+    level: "Beginner",
+    keys: "b n",
+    minutes: 3,
+    text: "b n b n b n b n bb nn bn nb bb nn bn nb f b j n f b j n b n b n b n bb nn bn nb b n",
+  },
+  {
+    slug: "eng-ch18",
+    title: "Lesson 18",
+    englishTitle: "Bottom Row Words",
+    description: "Bottom Row",
+    level: "Intermediate",
+    keys: "Bottom Row Words",
+    minutes: 3,
+    text: "can came bam van man pan ban bin pin win tin sin din fin x-ray zip zap zoom zed zone none bone cone done",
+  },
+  // Mixed
+  {
+    slug: "eng-ch19",
+    title: "Lesson 19",
+    englishTitle: "Mixed QWERTY Words",
+    description: "Mixed",
+    level: "Advanced",
+    keys: "Mixed QWERTY Words",
+    minutes: 5,
+    text: "keyboard typing practice learn quick fast slow steady rhythm focus mind fingers touch screen monitor computer mouse table chair house school education progress",
+  },
+  {
+    slug: "eng-ch20",
+    title: "Lesson 20",
+    englishTitle: "English Sentences",
+    description: "Mixed",
+    level: "Advanced",
+    keys: "English Sentences",
+    minutes: 5,
+    text: "The quick brown fox jumps over the lazy dog. Pack my box with five dozen liquor jugs. How quickly daft jumping zebras vex. Sphinx of black quartz, judge my vow. Two driven jocks help fax my big quiz.",
+  },
 ];
 
 export const englishCurriculumBase = [
@@ -142,7 +349,9 @@ export const englishCurriculumBase = [
     description: "Learn the middle row of the keyboard.",
     isCategory: true,
   },
-  ...englishLessons.filter((l) => l.description === "Home Row").map((l) => ({ ...l, category: "Home Row", isCategory: false })),
+  ...englishLessons
+    .filter((l) => l.description === "Home Row")
+    .map((l) => ({ ...l, category: "Home Row", isCategory: false })),
   {
     category: "Top Row",
     slug: "eng-top-row-category",
@@ -151,7 +360,9 @@ export const englishCurriculumBase = [
     description: "Learn the top row of the keyboard.",
     isCategory: true,
   },
-  ...englishLessons.filter((l) => l.description === "Top Row").map((l) => ({ ...l, category: "Top Row", isCategory: false })),
+  ...englishLessons
+    .filter((l) => l.description === "Top Row")
+    .map((l) => ({ ...l, category: "Top Row", isCategory: false })),
   {
     category: "Bottom Row",
     slug: "eng-bottom-row-category",
@@ -160,7 +371,9 @@ export const englishCurriculumBase = [
     description: "Learn the bottom row of the keyboard.",
     isCategory: true,
   },
-  ...englishLessons.filter((l) => l.description === "Bottom Row").map((l) => ({ ...l, category: "Bottom Row", isCategory: false })),
+  ...englishLessons
+    .filter((l) => l.description === "Bottom Row")
+    .map((l) => ({ ...l, category: "Bottom Row", isCategory: false })),
   {
     category: "Mixed",
     slug: "eng-mixed-category",
@@ -169,5 +382,7 @@ export const englishCurriculumBase = [
     description: "Practice typing words.",
     isCategory: true,
   },
-  ...englishLessons.filter((l) => l.description === "Mixed").map((l) => ({ ...l, category: "Mixed", isCategory: false })),
+  ...englishLessons
+    .filter((l) => l.description === "Mixed")
+    .map((l) => ({ ...l, category: "Mixed", isCategory: false })),
 ];

@@ -73,32 +73,34 @@ function Index() {
   const [isTutorModalOpen, setIsTutorModalOpen] = useState(false);
   const search = Route.useSearch();
   const isTestSettingsOpen = !!search.test;
-  const [activeLang, setActiveLang] = useState('Hindi');
+  const [activeLang, setActiveLang] = useState("Hindi");
   const [isHindiExpanded, setIsHindiExpanded] = useState(false);
 
   useEffect(() => {
     if (!currentUser) return;
-    
+
     const loadData = () => {
       const data: Record<string, any> = {};
       for (const l of lessons) {
-         const saved = localStorage.getItem(`lesson_state_${currentUser}_${l.slug}`);
-         if (saved) {
-           try { data[l.slug] = JSON.parse(saved); } catch (e) {}
-         }
+        const saved = localStorage.getItem(`lesson_state_${currentUser}_${l.slug}`);
+        if (saved) {
+          try {
+            data[l.slug] = JSON.parse(saved);
+          } catch (e) {}
+        }
       }
       setProgressData(data);
     };
 
     loadData();
-    window.addEventListener('lessonProgressUpdated', loadData);
-    return () => window.removeEventListener('lessonProgressUpdated', loadData);
+    window.addEventListener("lessonProgressUpdated", loadData);
+    return () => window.removeEventListener("lessonProgressUpdated", loadData);
   }, [currentUser]);
 
   const displayLessons = useMemo(() => {
     return lessons.slice(0, 6).map((baseItem) => {
       const saved = progressData[baseItem.slug] || { progress: 0, completed: false };
-      
+
       const item = {
         ...baseItem,
         icon: BookOpen,
@@ -129,8 +131,8 @@ function Index() {
             <span className="text-gradient block mt-1">तेज़ी और शुद्धता के साथ</span>
           </h1>
           <p className="mt-5 max-w-xl font-hindi text-[clamp(1rem,2vw,1.125rem)] leading-relaxed text-muted-foreground">
-            संरचित पाठ, परीक्षा-स्तरीय अभ्यास और रीयल-टाइम विश्लेषण — सब कुछ एक सुंदर,
-            सहज इंटरफ़ेस में।
+            संरचित पाठ, परीक्षा-स्तरीय अभ्यास और रीयल-टाइम विश्लेषण — सब कुछ एक सुंदर, सहज इंटरफ़ेस
+            में।
           </p>
           <div className="mt-8 flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4">
             <Link
@@ -147,20 +149,34 @@ function Index() {
             </Link>
           </div>
           <div className="mt-10 grid max-w-lg grid-cols-3 gap-3 sm:gap-4">
-            <Link to="/lessons" className="col-span-2 grid grid-cols-2 gap-3 sm:gap-4 group cursor-pointer hover:-translate-y-0.5 transition-transform duration-200">
+            <Link
+              to="/lessons"
+              className="col-span-2 grid grid-cols-2 gap-3 sm:gap-4 group cursor-pointer hover:-translate-y-0.5 transition-transform duration-200"
+            >
               {[
                 { k: `${lessons.length}+`, v: "Lessons" },
                 { k: `${categories.length}+`, v: "Lesson Tracks" },
               ].map((s) => (
-                <div key={s.v} className="bg-white/90 backdrop-blur-md border border-[rgba(255,255,255,0.9)] shadow-[0_6px_18px_rgba(30,80,140,0.08)] rounded-2xl px-2 py-3.5 sm:px-4 text-center flex flex-col justify-center gap-1 transition-colors duration-200 group-hover:bg-primary/5 group-hover:border-primary/20">
-                  <p className="en text-[clamp(1.25rem,3vw,1.5rem)] font-semibold text-primary leading-none">{s.k}</p>
-                  <p className="en text-[clamp(0.65rem,1.5vw,0.75rem)] text-muted-foreground leading-snug text-balance">{s.v}</p>
+                <div
+                  key={s.v}
+                  className="bg-white/90 backdrop-blur-md border border-[rgba(255,255,255,0.9)] shadow-[0_6px_18px_rgba(30,80,140,0.08)] rounded-2xl px-2 py-3.5 sm:px-4 text-center flex flex-col justify-center gap-1 transition-colors duration-200 group-hover:bg-primary/5 group-hover:border-primary/20"
+                >
+                  <p className="en text-[clamp(1.25rem,3vw,1.5rem)] font-semibold text-primary leading-none">
+                    {s.k}
+                  </p>
+                  <p className="en text-[clamp(0.65rem,1.5vw,0.75rem)] text-muted-foreground leading-snug text-balance">
+                    {s.v}
+                  </p>
                 </div>
               ))}
             </Link>
             <div className="bg-white/90 backdrop-blur-md border border-[rgba(255,255,255,0.9)] shadow-[0_6px_18px_rgba(30,80,140,0.08)] rounded-2xl px-2 py-3.5 sm:px-4 text-center flex flex-col justify-center gap-1">
-              <p className="en text-[clamp(1.25rem,3vw,1.5rem)] font-semibold text-primary leading-none">100%</p>
-              <p className="en text-[clamp(0.65rem,1.5vw,0.75rem)] text-muted-foreground leading-snug text-balance">Free to use</p>
+              <p className="en text-[clamp(1.25rem,3vw,1.5rem)] font-semibold text-primary leading-none">
+                100%
+              </p>
+              <p className="en text-[clamp(0.65rem,1.5vw,0.75rem)] text-muted-foreground leading-snug text-balance">
+                Free to use
+              </p>
             </div>
           </div>
         </div>
@@ -168,7 +184,7 @@ function Index() {
         <div className="flex-[1_1_min(100%,350px)] lg:max-w-[42%]">
           <div className="animate-float-soft p-3 sm:p-[16px] rounded-2xl bg-white/80 dark:bg-[rgba(255,255,255,0.04)] backdrop-blur-[20px] dark:backdrop-saturate-[120%] border border-[rgba(255,255,255,0.85)] dark:border-[rgba(255,255,255,0.1)] shadow-[0_8px_32px_rgba(30,80,140,0.12)] dark:shadow-[0_16px_40px_rgba(0,0,0,0.2)] flex flex-col gap-2 relative overflow-hidden">
             <div className="absolute top-0 right-0 -mt-10 -mr-10 size-40 bg-primary/20 blur-[50px] rounded-full pointer-events-none" />
-            
+
             <p className="en text-[clamp(0.7rem,1.5vw,0.75rem)] font-bold tracking-widest text-muted-foreground dark:text-[#71839B] uppercase mb-0 px-1">
               Explore
             </p>
@@ -181,32 +197,39 @@ function Index() {
                   <span className="text-2xl">⌨️</span>
                 </div>
                 <div className="flex-1 flex flex-col justify-center">
-                  <h3 className="en font-bold text-slate-900 dark:text-[#F4F7FB] text-xl leading-tight">Typing Tutor</h3>
-                  <p className="en text-sm text-slate-500 dark:text-[#71839B] font-medium mt-0.5">5 layouts available</p>
+                  <h3 className="en font-bold text-slate-900 dark:text-[#F4F7FB] text-xl leading-tight">
+                    Typing Tutor
+                  </h3>
+                  <p className="en text-sm text-slate-500 dark:text-[#71839B] font-medium mt-0.5">
+                    5 layouts available
+                  </p>
                 </div>
               </div>
-              <div className="mt-3.5 relative z-10 flex flex-col" onClick={(e) => e.stopPropagation()}>
+              <div
+                className="mt-3.5 relative z-10 flex flex-col"
+                onClick={(e) => e.stopPropagation()}
+              >
                 {/* Top Primary Switcher */}
                 <div className="flex bg-[#f1f5f9] dark:bg-[rgba(8,20,38,0.45)] p-1 rounded-2xl border border-slate-200/50 dark:border-[rgba(255,255,255,0.06)]">
-                  <div 
+                  <div
                     onClick={() => {
-                      setActiveLang('Hindi');
-                      setIsHindiExpanded(prev => !prev);
+                      setActiveLang("Hindi");
+                      setIsHindiExpanded((prev) => !prev);
                     }}
                     className={`flex-1 flex items-center justify-center h-[44px] rounded-xl text-sm font-bold cursor-pointer transition-all ${
-                      activeLang === 'Hindi' 
-                        ? 'bg-white dark:bg-[#334762] text-slate-900 dark:text-[#FFFFFF] shadow-sm' 
-                        : 'text-slate-500 hover:text-slate-700 dark:text-[#91A2B8] dark:hover:bg-[rgba(255,255,255,0.05)] font-medium'
+                      activeLang === "Hindi"
+                        ? "bg-white dark:bg-[#334762] text-slate-900 dark:text-[#FFFFFF] shadow-sm"
+                        : "text-slate-500 hover:text-slate-700 dark:text-[#91A2B8] dark:hover:bg-[rgba(255,255,255,0.05)] font-medium"
                     }`}
                   >
                     Hindi
                   </div>
-                  <Link 
+                  <Link
                     to="/english-lessons"
                     className={`flex-1 flex items-center justify-center h-[44px] rounded-xl text-sm font-bold cursor-pointer transition-all ${
-                      activeLang === 'English' 
-                        ? 'bg-white dark:bg-[#334762] text-slate-900 dark:text-[#FFFFFF] shadow-sm' 
-                        : 'text-slate-500 hover:text-slate-700 dark:text-[#91A2B8] dark:hover:bg-[rgba(255,255,255,0.05)] font-medium'
+                      activeLang === "English"
+                        ? "bg-white dark:bg-[#334762] text-slate-900 dark:text-[#FFFFFF] shadow-sm"
+                        : "text-slate-500 hover:text-slate-700 dark:text-[#91A2B8] dark:hover:bg-[rgba(255,255,255,0.05)] font-medium"
                     }`}
                   >
                     English
@@ -214,29 +237,34 @@ function Index() {
                 </div>
 
                 {/* Secondary Hindi Sub-Layouts */}
-                <div 
+                <div
                   className={`grid transition-[grid-template-rows,opacity,margin] duration-300 ease-in-out ${
-                    isHindiExpanded ? "grid-rows-[1fr] opacity-100 mt-1.5" : "grid-rows-[0fr] opacity-0 mt-0"
+                    isHindiExpanded
+                      ? "grid-rows-[1fr] opacity-100 mt-1.5"
+                      : "grid-rows-[0fr] opacity-0 mt-0"
                   }`}
                 >
                   <div className="overflow-hidden">
                     <div className="grid grid-cols-2 gap-1.5 bg-[#f1f5f9] dark:bg-transparent p-2 rounded-2xl border border-slate-200/50 dark:border-none">
-                    <Link 
-                      to="/lessons"
-                      className="flex items-center justify-center text-center h-[54px] px-2 rounded-xl text-sm leading-tight font-bold bg-[#2563eb] dark:bg-[#2B6FFF] text-white shadow-[0_2px_8px_rgba(37,99,235,0.25)] dark:shadow-[0_8px_20px_rgba(43,111,255,0.22)] transition-all cursor-pointer hover:opacity-90"
-                    >
-                      Remington GAIL
-                    </Link>
-                    <div className="flex items-center justify-center text-center h-[54px] px-2 rounded-xl text-sm leading-tight font-bold text-slate-700 dark:text-[#C4CFDD] dark:bg-transparent hover:bg-white dark:hover:bg-[rgba(255,255,255,0.05)] transition-all cursor-pointer">
-                      Remington CBI
+                      <Link
+                        to="/lessons"
+                        className="flex items-center justify-center text-center h-[54px] px-2 rounded-xl text-sm leading-tight font-bold bg-[#2563eb] dark:bg-[#2B6FFF] text-white shadow-[0_2px_8px_rgba(37,99,235,0.25)] dark:shadow-[0_8px_20px_rgba(43,111,255,0.22)] transition-all cursor-pointer hover:opacity-90"
+                      >
+                        Remington GAIL
+                      </Link>
+                      <div className="flex items-center justify-center text-center h-[54px] px-2 rounded-xl text-sm leading-tight font-bold text-slate-700 dark:text-[#C4CFDD] dark:bg-transparent hover:bg-white dark:hover:bg-[rgba(255,255,255,0.05)] transition-all cursor-pointer">
+                        Remington CBI
+                      </div>
+                      <Link
+                        to="/lessons/kruti-dev"
+                        className="flex items-center justify-center text-center h-[54px] px-2 rounded-xl text-sm leading-tight font-bold text-slate-700 dark:text-[#C4CFDD] dark:bg-transparent hover:bg-white dark:hover:bg-[rgba(255,255,255,0.05)] transition-all cursor-pointer"
+                      >
+                        Kruti Dev
+                      </Link>
+                      <div className="flex items-center justify-center text-center h-[54px] px-2 rounded-xl text-sm leading-tight font-bold text-slate-700 dark:text-[#C4CFDD] dark:bg-transparent hover:bg-white dark:hover:bg-[rgba(255,255,255,0.05)] transition-all cursor-pointer">
+                        Mangal InScript
+                      </div>
                     </div>
-                    <Link to="/lessons/kruti-dev" className="flex items-center justify-center text-center h-[54px] px-2 rounded-xl text-sm leading-tight font-bold text-slate-700 dark:text-[#C4CFDD] dark:bg-transparent hover:bg-white dark:hover:bg-[rgba(255,255,255,0.05)] transition-all cursor-pointer">
-                      Kruti Dev
-                    </Link>
-                    <div className="flex items-center justify-center text-center h-[54px] px-2 rounded-xl text-sm leading-tight font-bold text-slate-700 dark:text-[#C4CFDD] dark:bg-transparent hover:bg-white dark:hover:bg-[rgba(255,255,255,0.05)] transition-all cursor-pointer">
-                      Mangal InScript
-                    </div>
-                  </div>
                   </div>
                 </div>
               </div>
@@ -244,11 +272,11 @@ function Index() {
 
             <div className="grid grid-cols-2 gap-2">
               {/* Option 2: Typing Test */}
-              <Link 
+              <Link
                 to="/"
                 search={{ test: true }}
                 className="group relative flex flex-col rounded-2xl p-3 bg-white/70 dark:bg-[rgba(255,255,255,0.02)] border border-slate-200 shadow-[0_4px_12px_rgba(30,80,140,0.06)] dark:border-[rgba(255,255,255,0.06)] transition-all duration-300 hover:bg-white/90 dark:hover:bg-[rgba(255,255,255,0.06)] hover:shadow-[0_6px_16px_rgba(30,80,140,0.1)] dark:hover:shadow-[0_6px_16px_rgba(0,0,0,0.2)] hover:-translate-y-1 cursor-pointer"
-                style={{ textDecoration: 'none' }}
+                style={{ textDecoration: "none" }}
               >
                 <div className="absolute top-3 right-3 flex size-6 items-center justify-center rounded-full bg-slate-100 dark:bg-[rgba(255,255,255,0.08)] text-slate-400 transition-colors group-hover:bg-[#2563eb] group-hover:text-white">
                   <span className="text-xs leading-none">&rarr;</span>
@@ -257,13 +285,20 @@ function Index() {
                   <span className="text-xl">⚡</span>
                 </div>
                 <div>
-                  <h3 className="en font-bold text-slate-800 dark:text-[#F4F7FB] text-base leading-tight">Typing Test</h3>
-                  <p className="en text-xs text-slate-600 dark:text-[#A9B8CC] font-medium mt-0.5">Speed & Accuracy</p>
+                  <h3 className="en font-bold text-slate-800 dark:text-[#F4F7FB] text-base leading-tight">
+                    Typing Test
+                  </h3>
+                  <p className="en text-xs text-slate-600 dark:text-[#A9B8CC] font-medium mt-0.5">
+                    Speed & Accuracy
+                  </p>
                 </div>
               </Link>
 
               {/* Option 3: Translator */}
-              <Link to="/translator" className="group relative flex flex-col rounded-2xl p-3 bg-white/70 dark:bg-[rgba(255,255,255,0.02)] border border-slate-200 shadow-[0_4px_12px_rgba(30,80,140,0.06)] dark:border-[rgba(255,255,255,0.06)] transition-all duration-300 hover:bg-white/90 dark:hover:bg-[rgba(255,255,255,0.06)] hover:shadow-[0_6px_16px_rgba(30,80,140,0.1)] dark:hover:shadow-[0_6px_16px_rgba(0,0,0,0.2)] hover:-translate-y-1 cursor-pointer">
+              <Link
+                to="/translator"
+                className="group relative flex flex-col rounded-2xl p-3 bg-white/70 dark:bg-[rgba(255,255,255,0.02)] border border-slate-200 shadow-[0_4px_12px_rgba(30,80,140,0.06)] dark:border-[rgba(255,255,255,0.06)] transition-all duration-300 hover:bg-white/90 dark:hover:bg-[rgba(255,255,255,0.06)] hover:shadow-[0_6px_16px_rgba(30,80,140,0.1)] dark:hover:shadow-[0_6px_16px_rgba(0,0,0,0.2)] hover:-translate-y-1 cursor-pointer"
+              >
                 <div className="absolute top-3 right-3 flex size-6 items-center justify-center rounded-full bg-slate-100 dark:bg-[rgba(255,255,255,0.08)] text-slate-400 transition-colors group-hover:bg-[#2563eb] group-hover:text-white">
                   <span className="text-xs leading-none">&rarr;</span>
                 </div>
@@ -271,12 +306,15 @@ function Index() {
                   <span className="text-xl">🌐</span>
                 </div>
                 <div>
-                  <h3 className="en font-bold text-slate-800 dark:text-[#F4F7FB] text-base leading-tight">Translator</h3>
-                  <p className="en text-xs text-slate-600 dark:text-[#A9B8CC] font-medium mt-0.5">Hindi ↔ English</p>
+                  <h3 className="en font-bold text-slate-800 dark:text-[#F4F7FB] text-base leading-tight">
+                    Translator
+                  </h3>
+                  <p className="en text-xs text-slate-600 dark:text-[#A9B8CC] font-medium mt-0.5">
+                    Hindi ↔ English
+                  </p>
                 </div>
               </Link>
             </div>
-            
           </div>
         </div>
       </section>
@@ -307,8 +345,12 @@ function Index() {
               >
                 <f.icon className="w-[20px] h-[20px] text-white" />
               </div>
-              <h3 className="en text-base font-bold text-foreground dark:text-[#0f172a] mb-[6px]">{f.title}</h3>
-              <p className="font-hindi text-sm text-[#64748b] dark:text-[#64748b] leading-[1.6]">{f.text}</p>
+              <h3 className="en text-base font-bold text-foreground dark:text-[#0f172a] mb-[6px]">
+                {f.title}
+              </h3>
+              <p className="font-hindi text-sm text-[#64748b] dark:text-[#64748b] leading-[1.6]">
+                {f.text}
+              </p>
             </Link>
           ))}
         </div>
@@ -330,10 +372,7 @@ function Index() {
         </div>
         <div className="mt-8 grid gap-4 sm:gap-5 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-6">
           {displayLessons.map((l) => (
-            <LessonCard 
-              key={l.slug} 
-              item={l} 
-            />
+            <LessonCard key={l.slug} item={l} />
           ))}
         </div>
       </section>
@@ -350,64 +389,80 @@ function Index() {
       </section>
 
       {isTutorModalOpen && (
-        <div 
+        <div
           className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/20 backdrop-blur-md"
-          style={{ animation: 'fadeIn 200ms ease-out' }}
+          style={{ animation: "fadeIn 200ms ease-out" }}
           onClick={(e) => {
             if (e.target === e.currentTarget) setIsTutorModalOpen(false);
           }}
         >
-          <div 
+          <div
             className="relative w-full max-w-[460px] rounded-3xl bg-[rgba(255,255,255,0.65)] backdrop-blur-[20px] border border-[rgba(255,255,255,0.75)] shadow-[0_24px_48px_rgba(30,80,140,0.12),0_0_40px_rgba(56,189,248,0.15)] p-6 sm:p-7"
-            style={{ animation: 'scaleIn 200ms ease-out' }}
+            style={{ animation: "scaleIn 200ms ease-out" }}
           >
             <style>{`
               @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
               @keyframes scaleIn { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: scale(1); } }
             `}</style>
-            
-            <button 
-              onClick={() => setIsTutorModalOpen(false)} 
+
+            <button
+              onClick={() => setIsTutorModalOpen(false)}
               className="absolute top-5 right-5 p-2 text-slate-500 hover:text-slate-800 hover:bg-white/40 rounded-full transition-colors focus:outline-none"
             >
               <X className="size-5" />
             </button>
-            
-            <h2 className="en text-xl font-extrabold text-slate-800 mb-5 px-1 tracking-tight">Choose Typing Tutor</h2>
-            
-            <div className="flex flex-col gap-3">
-               <Link 
-                 to="/lessons" 
-                 onClick={() => setIsTutorModalOpen(false)}
-                 className="group flex flex-col sm:flex-row sm:items-center justify-between p-4 sm:p-5 rounded-2xl bg-white/50 border border-white/80 shadow-sm hover:shadow-md hover:bg-white/80 hover:border-primary/40 hover:-translate-y-0.5 transition-all duration-200 cursor-pointer relative overflow-hidden gap-3"
-               >
-                  <div className="absolute inset-0 bg-primary/[0.04] opacity-0 group-hover:opacity-100 transition-opacity" />
-                  <div className="relative z-10 flex flex-col">
-                     <span className="en font-bold text-slate-900 text-base">Hindi Typing — Remington GAIL</span>
-                     <span className="en text-sm text-slate-600 mt-0.5 font-medium">Hindi Remington GAIL typing practice</span>
-                  </div>
-                  <div className="relative z-10 flex items-center justify-between sm:justify-end gap-3">
-                     <span className="en text-xs font-bold text-primary bg-primary/10 px-2.5 py-1 rounded-full uppercase tracking-widest">Available</span>
-                     <ChevronRight className="size-4 text-primary transition-transform group-hover:translate-x-1 hidden sm:block" />
-                  </div>
-               </Link>
 
-               {[
-                 { title: "Hindi Typing — Remington CBI", sub: "Hindi Remington CBI typing practice" },
-                 { title: "Hindi Typing — KrutiDev", sub: "KrutiDev typing practice" },
-                 { title: "Hindi Typing — Mangal Inscript", sub: "Mangal Inscript typing practice" },
-                 { title: "English Typing Tutor", sub: "English typing practice" }
-               ].map((item) => (
-                 <div key={item.title} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 sm:p-5 rounded-2xl bg-white/20 border border-white/30 cursor-not-allowed gap-3">
-                    <div className="flex flex-col opacity-75">
-                       <span className="en font-bold text-slate-700 text-base">{item.title}</span>
-                       <span className="en text-sm text-slate-600 mt-0.5 font-medium">{item.sub}</span>
-                    </div>
-                    <div className="flex items-center">
-                       <span className="en text-xs font-bold text-slate-600 bg-white/40 px-2.5 py-1 rounded-full uppercase tracking-widest">Coming Soon</span>
-                    </div>
-                 </div>
-               ))}
+            <h2 className="en text-xl font-extrabold text-slate-800 mb-5 px-1 tracking-tight">
+              Choose Typing Tutor
+            </h2>
+
+            <div className="flex flex-col gap-3">
+              <Link
+                to="/lessons"
+                onClick={() => setIsTutorModalOpen(false)}
+                className="group flex flex-col sm:flex-row sm:items-center justify-between p-4 sm:p-5 rounded-2xl bg-white/50 border border-white/80 shadow-sm hover:shadow-md hover:bg-white/80 hover:border-primary/40 hover:-translate-y-0.5 transition-all duration-200 cursor-pointer relative overflow-hidden gap-3"
+              >
+                <div className="absolute inset-0 bg-primary/[0.04] opacity-0 group-hover:opacity-100 transition-opacity" />
+                <div className="relative z-10 flex flex-col">
+                  <span className="en font-bold text-slate-900 text-base">
+                    Hindi Typing — Remington GAIL
+                  </span>
+                  <span className="en text-sm text-slate-600 mt-0.5 font-medium">
+                    Hindi Remington GAIL typing practice
+                  </span>
+                </div>
+                <div className="relative z-10 flex items-center justify-between sm:justify-end gap-3">
+                  <span className="en text-xs font-bold text-primary bg-primary/10 px-2.5 py-1 rounded-full uppercase tracking-widest">
+                    Available
+                  </span>
+                  <ChevronRight className="size-4 text-primary transition-transform group-hover:translate-x-1 hidden sm:block" />
+                </div>
+              </Link>
+
+              {[
+                {
+                  title: "Hindi Typing — Remington CBI",
+                  sub: "Hindi Remington CBI typing practice",
+                },
+                { title: "Hindi Typing — KrutiDev", sub: "KrutiDev typing practice" },
+                { title: "Hindi Typing — Mangal Inscript", sub: "Mangal Inscript typing practice" },
+                { title: "English Typing Tutor", sub: "English typing practice" },
+              ].map((item) => (
+                <div
+                  key={item.title}
+                  className="flex flex-col sm:flex-row sm:items-center justify-between p-4 sm:p-5 rounded-2xl bg-white/20 border border-white/30 cursor-not-allowed gap-3"
+                >
+                  <div className="flex flex-col opacity-75">
+                    <span className="en font-bold text-slate-700 text-base">{item.title}</span>
+                    <span className="en text-sm text-slate-600 mt-0.5 font-medium">{item.sub}</span>
+                  </div>
+                  <div className="flex items-center">
+                    <span className="en text-xs font-bold text-slate-600 bg-white/40 px-2.5 py-1 rounded-full uppercase tracking-widest">
+                      Coming Soon
+                    </span>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -415,4 +470,3 @@ function Index() {
     </div>
   );
 }
-

@@ -1,12 +1,18 @@
 /**
  * Backend Service (Migrated to real backend logic)
- * 
+ *
  * This service connects the frontend to the backend server functions.
  * The session token is stored temporarily in localStorage for the active session,
  * but all account validation and database persistence happens on the server.
  */
 
-import { registerUserFn, loginUserFn, getSessionUserFn, logoutUserFn, resetPasswordFn } from './auth-api';
+import {
+  registerUserFn,
+  loginUserFn,
+  getSessionUserFn,
+  logoutUserFn,
+  resetPasswordFn,
+} from "./auth-api";
 
 export interface User {
   id: string;
@@ -18,7 +24,11 @@ export interface User {
 const SESSION_KEY = "mock_session_token";
 
 export const mockBackend = {
-  async register(name: string, email: string, password: string): Promise<{ user: User | null; error: string | null }> {
+  async register(
+    name: string,
+    email: string,
+    password: string,
+  ): Promise<{ user: User | null; error: string | null }> {
     try {
       const result = await registerUserFn({ data: { name, email, password } });
       if (result.user && result.sessionToken) {
@@ -31,7 +41,10 @@ export const mockBackend = {
     }
   },
 
-  async login(email: string, password: string): Promise<{ user: User | null; error: string | null }> {
+  async login(
+    email: string,
+    password: string,
+  ): Promise<{ user: User | null; error: string | null }> {
     try {
       const result = await loginUserFn({ data: { email, password } });
       if (result.user && result.sessionToken) {
@@ -59,7 +72,7 @@ export const mockBackend = {
   async getSessionUser(): Promise<User | null> {
     const token = localStorage.getItem(SESSION_KEY);
     if (!token) return null;
-    
+
     try {
       const result = await getSessionUserFn({ data: { sessionToken: token } });
       if (!result.user) {
@@ -72,7 +85,7 @@ export const mockBackend = {
       return null;
     }
   },
-  
+
   async resetPassword(email: string): Promise<{ success: boolean; error: string | null }> {
     try {
       const result = await resetPasswordFn({ data: { email } });
@@ -81,5 +94,5 @@ export const mockBackend = {
       console.error("Reset password failed:", error);
       return { success: false, error: "An unexpected error occurred." };
     }
-  }
+  },
 };

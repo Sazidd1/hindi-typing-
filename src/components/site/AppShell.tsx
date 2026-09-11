@@ -16,7 +16,7 @@ const LAYOUTS = [
   "Hindi Remington CBI",
   "Kruti Dev",
   "Mangal InScript",
-  "English"
+  "English",
 ];
 
 const navItems = [
@@ -46,7 +46,9 @@ function ThemeToggle() {
 export function AppShell({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
   const [layout, setLayout] = useState(() => {
-    return typeof window !== "undefined" ? (localStorage.getItem("selected_layout") || "Hindi Remington GAIL") : "Hindi Remington GAIL";
+    return typeof window !== "undefined"
+      ? localStorage.getItem("selected_layout") || "Hindi Remington GAIL"
+      : "Hindi Remington GAIL";
   });
   const { currentUser, logout } = useAuth();
   const navigate = useNavigate();
@@ -88,26 +90,28 @@ export function AppShell({ children }: { children: ReactNode }) {
                       </div>
                       <ChevronDown className="size-4 opacity-50" />
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent 
-                      align="start" 
+                    <DropdownMenuContent
+                      align="start"
                       className="w-[280px] rounded-2xl p-2 bg-white/70 dark:bg-[#0f172a] backdrop-blur-[20px] dark:backdrop-blur-[16px] dark:backdrop-saturate-[120%] border border-white/75 dark:border-slate-800 shadow-[0_12px_35px_rgba(15,23,42,0.16)] dark:shadow-[0_8px_30px_rgba(0,0,0,0.5)]"
                     >
                       <div className="px-3 py-2 text-[10px] font-bold text-muted-foreground dark:text-slate-400 uppercase tracking-widest">
                         Keyboard Layout
                       </div>
                       {LAYOUTS.map((l) => (
-                        <DropdownMenuItem 
-                          key={l} 
+                        <DropdownMenuItem
+                          key={l}
                           onClick={() => handleLayoutSelect(l)}
                           className={cn(
                             "rounded-xl cursor-pointer py-2.5 px-3 transition-all duration-200 my-0.5 font-medium flex items-center justify-between",
-                            layout === l 
-                              ? "bg-[rgba(59,130,246,0.12)] dark:bg-blue-500/20 text-[#2563eb] dark:text-blue-400" 
-                              : "text-foreground dark:text-slate-200 hover:bg-black/5 dark:hover:bg-slate-800 focus:bg-black/5 dark:focus:bg-slate-800"
+                            layout === l
+                              ? "bg-[rgba(59,130,246,0.12)] dark:bg-blue-500/20 text-[#2563eb] dark:text-blue-400"
+                              : "text-foreground dark:text-slate-200 hover:bg-black/5 dark:hover:bg-slate-800 focus:bg-black/5 dark:focus:bg-slate-800",
                           )}
                         >
                           {l}
-                          {layout === l && <div className="size-2 rounded-full bg-[#2563eb] dark:bg-blue-400" />}
+                          {layout === l && (
+                            <div className="size-2 rounded-full bg-[#2563eb] dark:bg-blue-400" />
+                          )}
                         </DropdownMenuItem>
                       ))}
                     </DropdownMenuContent>
@@ -121,7 +125,10 @@ export function AppShell({ children }: { children: ReactNode }) {
                   to={item.to!}
                   activeOptions={{ exact: item.to === "/" }}
                   activeProps={{ className: "bg-primary text-primary-foreground" }}
-                  inactiveProps={{ className: "text-muted-foreground dark:text-[#8EA0B8] hover:bg-white/80 dark:hover:bg-white/10 dark:hover:text-[#FFFFFF]" }}
+                  inactiveProps={{
+                    className:
+                      "text-muted-foreground dark:text-[#8EA0B8] hover:bg-white/80 dark:hover:bg-white/10 dark:hover:text-[#FFFFFF]",
+                  }}
                   className="rounded-full px-3.5 py-2 text-sm font-medium transition-all duration-200"
                 >
                   {item.label}
@@ -183,19 +190,22 @@ export function AppShell({ children }: { children: ReactNode }) {
                       </div>
                       <div className="flex flex-col ml-3 pl-3 border-l-2 border-border/50">
                         {LAYOUTS.map((l) => (
-                           <button
-                             key={l}
-                             onClick={() => { handleLayoutSelect(l); setOpen(false); }}
-                             className={cn(
-                               "text-left rounded-lg px-3 py-2.5 text-sm font-medium transition-colors mb-0.5 flex items-center justify-between", 
-                               layout === l 
-                                 ? "text-[#2563eb] bg-[rgba(59,130,246,0.1)]" 
-                                 : "text-muted-foreground hover:text-foreground hover:bg-secondary/60"
-                             )}
-                           >
-                             {l}
-                             {layout === l && <div className="size-1.5 rounded-full bg-[#2563eb]" />}
-                           </button>
+                          <button
+                            key={l}
+                            onClick={() => {
+                              handleLayoutSelect(l);
+                              setOpen(false);
+                            }}
+                            className={cn(
+                              "text-left rounded-lg px-3 py-2.5 text-sm font-medium transition-colors mb-0.5 flex items-center justify-between",
+                              layout === l
+                                ? "text-[#2563eb] bg-[rgba(59,130,246,0.1)]"
+                                : "text-muted-foreground hover:text-foreground hover:bg-secondary/60",
+                            )}
+                          >
+                            {l}
+                            {layout === l && <div className="size-1.5 rounded-full bg-[#2563eb]" />}
+                          </button>
                         ))}
                       </div>
                     </div>
@@ -259,7 +269,9 @@ export function AppShell({ children }: { children: ReactNode }) {
                 <span className="text-primary">Abhyas</span>
               </span>
             </Link>
-            <p className="mt-2 text-sm text-muted-foreground">For any queries or suggestions, feel free to reach out.</p>
+            <p className="mt-2 text-sm text-muted-foreground">
+              For any queries or suggestions, feel free to reach out.
+            </p>
           </div>
           <div className="flex items-center gap-4 mt-4 md:mt-0">
             <p>© {new Date().getFullYear()} TypingAbhyas. All rights reserved.</p>

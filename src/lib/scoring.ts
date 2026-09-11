@@ -35,7 +35,7 @@ export function validateSession(
   expectedChars: string[],
   elapsedSeconds: number,
   recordedErrors: number,
-  isParagraphMode: boolean
+  isParagraphMode: boolean,
 ): ValidationResult {
   // 1. Recalculate strictly matching correct characters (index-by-index)
   let correctCount = 0;
@@ -49,18 +49,22 @@ export function validateSession(
   let minutes = elapsedSeconds / 60;
   // Prevent divide-by-zero
   if (minutes <= 0) minutes = 0.001;
-  
-  let wpm = Math.max(0, Math.round((correctCount / 5) / minutes));
+
+  let wpm = Math.max(0, Math.round(correctCount / 5 / minutes));
 
   // 3. Accuracy Calculation
   // Total attempted is based strictly on typed characters plus any blocked errors
-  const totalAttempted = isParagraphMode 
-    ? Math.max(typedChars.length, expectedChars.length > 0 && typedChars.length === expectedChars.length ? typedChars.length : 0) 
+  const totalAttempted = isParagraphMode
+    ? Math.max(
+        typedChars.length,
+        expectedChars.length > 0 && typedChars.length === expectedChars.length
+          ? typedChars.length
+          : 0,
+      )
     : typedChars.length + recordedErrors;
-    
-  let accuracy = totalAttempted > 0 
-    ? Math.max(0, Math.round((correctCount / totalAttempted) * 100))
-    : 0;
+
+  let accuracy =
+    totalAttempted > 0 ? Math.max(0, Math.round((correctCount / totalAttempted) * 100)) : 0;
 
   // 4. Session Validation Rules
   let isValid = true;
@@ -87,7 +91,7 @@ export function validateSession(
       totalAttempted,
       grade: null,
       xp: 0,
-      reason: reason ?? "Invalid session"
+      reason: reason ?? "Invalid session",
     };
   }
 

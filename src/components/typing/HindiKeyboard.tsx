@@ -1,13 +1,13 @@
 import { cn } from "@/lib/utils";
 import { keyboardRows, lookupChar, type Finger } from "@/lib/typing-data";
 
-export type KeyboardPreset = 
-  | "Classic Glass" 
-  | "Classic" 
-  | "Dark Pro" 
-  | "Minimal" 
-  | "High Contrast" 
-  | "Focus" 
+export type KeyboardPreset =
+  | "Classic Glass"
+  | "Classic"
+  | "Dark Pro"
+  | "Minimal"
+  | "High Contrast"
+  | "Focus"
   | "Color Zones"
   | "Soft Pastel";
 
@@ -73,14 +73,17 @@ export function HindiKeyboard({ nextChar, preset = "Color Zones" }: HindiKeyboar
   // Wrapper Styles
   const wrapperClass = cn(
     "mx-auto w-full flex flex-col gap-2 transition-all duration-300",
-    isClassicGlass && "glass-strong rounded-[24px] p-6 sm:p-8 border border-white/60 dark:bg-[#101F34] dark:border-[rgba(255,255,255,0.08)] dark:shadow-[0_16px_40px_rgba(0,0,0,0.18)] shadow-sm",
-    isClassic && "bg-slate-200 dark:bg-slate-800 rounded-xl p-6 sm:p-8 border border-slate-300 dark:border-slate-700 shadow-md",
+    isClassicGlass &&
+      "glass-strong rounded-[24px] p-6 sm:p-8 border border-white/60 dark:bg-[#101F34] dark:border-[rgba(255,255,255,0.08)] dark:shadow-[0_16px_40px_rgba(0,0,0,0.18)] shadow-sm",
+    isClassic &&
+      "bg-slate-200 dark:bg-slate-800 rounded-xl p-6 sm:p-8 border border-slate-300 dark:border-slate-700 shadow-md",
     isDarkPro && "bg-[#0a0a0a] rounded-2xl p-6 sm:p-8 border border-neutral-800 shadow-2xl",
     isMinimal && "bg-transparent p-6 sm:p-8",
     isHighContrast && "bg-black rounded-none p-6 sm:p-8 border-4 border-white",
     isFocus && "bg-background rounded-2xl p-6 sm:p-8",
     isColorZones && "bg-slate-50 dark:bg-slate-950 rounded-3xl p-6 sm:p-8 shadow-inner",
-    isSoftPastel && "bg-[#eff1f4] dark:bg-[#1a1c20] rounded-[24px] p-6 sm:p-8 border border-white/40 dark:border-white/5"
+    isSoftPastel &&
+      "bg-[#eff1f4] dark:bg-[#1a1c20] rounded-[24px] p-6 sm:p-8 border border-white/40 dark:border-white/5",
   );
 
   return (
@@ -92,14 +95,15 @@ export function HindiKeyboard({ nextChar, preset = "Color Zones" }: HindiKeyboar
               const isActive = activeKey === key.en;
               const isLeftHandKey = target?.key.finger?.startsWith("l-");
               const isRightHandKey = target?.key.finger?.startsWith("r-");
-              const isShiftHint = needsShift && key.en === "Shift" && (
-                (isLeftHandKey && key.finger === "r-pinky") || 
-                (isRightHandKey && key.finger === "l-pinky") ||
-                (!isLeftHandKey && !isRightHandKey)
-              );
-              
+              const isShiftHint =
+                needsShift &&
+                key.en === "Shift" &&
+                ((isLeftHandKey && key.finger === "r-pinky") ||
+                  (isRightHandKey && key.finger === "l-pinky") ||
+                  (!isLeftHandKey && !isRightHandKey));
+
               const fColor = getFingerColorHex(key.finger);
-              
+
               // Base custom styles for layout sizing
               const customStyles: React.CSSProperties = {
                 flexGrow: key.width ?? 1,
@@ -109,76 +113,84 @@ export function HindiKeyboard({ nextChar, preset = "Color Zones" }: HindiKeyboar
               // Key Class Construction
               const keyClass = cn(
                 "key relative flex flex-col items-center justify-center h-[58px] transition-all duration-200",
-                
+
                 // Classic Glass logic
-                isClassicGlass && cn(
-                  "rounded-[10px] border",
-                  isActive 
-                    ? "active z-10 bg-primary border-transparent text-white dark:!bg-[#2B6FFF] dark:shadow-[0_0_0_2px_rgba(43,111,255,0.25),0_8px_20px_rgba(43,111,255,0.22)]" 
-                    : "border-white/70 dark:border-white/5 dark:bg-white/5",
-                  isShiftHint && "ring-2 ring-primary bg-primary/20 dark:bg-primary/40"
-                ),
+                isClassicGlass &&
+                  cn(
+                    "rounded-[10px] border",
+                    isActive
+                      ? "active z-10 bg-primary border-transparent text-white dark:!bg-[#2B6FFF] dark:shadow-[0_0_0_2px_rgba(43,111,255,0.25),0_8px_20px_rgba(43,111,255,0.22)]"
+                      : "border-white/70 dark:border-white/5 dark:bg-white/5",
+                    isShiftHint && "ring-2 ring-primary bg-primary/20 dark:bg-primary/40",
+                  ),
 
                 // Classic logic
-                isClassic && cn(
-                  "rounded-md border-x border-t",
-                  isActive 
-                    ? "bg-primary text-white border-primary translate-y-[2px] border-b-2" 
-                    : "bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-600 border-b-4 border-slate-300 dark:border-slate-900 shadow-sm",
-                  isShiftHint && "ring-2 ring-blue-500 bg-blue-100 dark:bg-blue-900"
-                ),
+                isClassic &&
+                  cn(
+                    "rounded-md border-x border-t",
+                    isActive
+                      ? "bg-primary text-white border-primary translate-y-[2px] border-b-2"
+                      : "bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-600 border-b-4 border-slate-300 dark:border-slate-900 shadow-sm",
+                    isShiftHint && "ring-2 ring-blue-500 bg-blue-100 dark:bg-blue-900",
+                  ),
 
                 // Dark Pro logic
-                isDarkPro && cn(
-                  "rounded-lg border border-neutral-800",
-                  isActive 
-                    ? "bg-indigo-600 text-white shadow-[0_0_15px_rgba(79,70,229,0.5)] border-indigo-500 z-10" 
-                    : "bg-[#171717] hover:bg-[#262626] text-neutral-300",
-                  isShiftHint && "ring-1 ring-indigo-500 bg-indigo-500/20"
-                ),
+                isDarkPro &&
+                  cn(
+                    "rounded-lg border border-neutral-800",
+                    isActive
+                      ? "bg-indigo-600 text-white shadow-[0_0_15px_rgba(79,70,229,0.5)] border-indigo-500 z-10"
+                      : "bg-[#171717] hover:bg-[#262626] text-neutral-300",
+                    isShiftHint && "ring-1 ring-indigo-500 bg-indigo-500/20",
+                  ),
 
                 // Minimal logic
-                isMinimal && cn(
-                  "rounded-lg border-0",
-                  isActive 
-                    ? "bg-primary/10 text-primary font-bold scale-110 z-10 shadow-sm" 
-                    : "bg-transparent text-slate-600 dark:text-slate-300",
-                  isShiftHint && "bg-primary/5 text-primary"
-                ),
+                isMinimal &&
+                  cn(
+                    "rounded-lg border-0",
+                    isActive
+                      ? "bg-primary/10 text-primary font-bold scale-110 z-10 shadow-sm"
+                      : "bg-transparent text-slate-600 dark:text-slate-300",
+                    isShiftHint && "bg-primary/5 text-primary",
+                  ),
 
                 // High Contrast logic
-                isHighContrast && cn(
-                  "rounded-none border-2",
-                  isActive 
-                    ? "bg-yellow-400 text-black border-yellow-400 z-10" 
-                    : "bg-black text-white border-white",
-                  isShiftHint && "border-yellow-400 text-yellow-400"
-                ),
+                isHighContrast &&
+                  cn(
+                    "rounded-none border-2",
+                    isActive
+                      ? "bg-yellow-400 text-black border-yellow-400 z-10"
+                      : "bg-black text-white border-white",
+                    isShiftHint && "border-yellow-400 text-yellow-400",
+                  ),
 
                 // Focus logic
-                isFocus && cn(
-                  "rounded-xl border border-transparent",
-                  isActive 
-                    ? "bg-primary text-white scale-110 z-20 shadow-lg" 
-                    : "bg-muted/30 text-muted-foreground opacity-20",
-                  isShiftHint && "opacity-60 bg-primary/20 ring-1 ring-primary"
-                ),
+                isFocus &&
+                  cn(
+                    "rounded-xl border border-transparent",
+                    isActive
+                      ? "bg-primary text-white scale-110 z-20 shadow-lg"
+                      : "bg-muted/30 text-muted-foreground opacity-20",
+                    isShiftHint && "opacity-60 bg-primary/20 ring-1 ring-primary",
+                  ),
 
                 // Color Zones logic
-                isColorZones && cn(
-                  "rounded-xl border-b-4 shadow-sm",
-                  isActive 
-                    ? "bg-foreground text-background border-foreground shadow-xl z-10" 
-                    : "text-slate-800 dark:text-slate-200",
-                  isShiftHint && "ring-4 ring-primary bg-primary/30 border-primary"
-                ),
+                isColorZones &&
+                  cn(
+                    "rounded-xl border-b-4 shadow-sm",
+                    isActive
+                      ? "bg-foreground text-background border-foreground shadow-xl z-10"
+                      : "text-slate-800 dark:text-slate-200",
+                    isShiftHint && "ring-4 ring-primary bg-primary/30 border-primary",
+                  ),
 
                 // Soft Pastel logic
-                isSoftPastel && cn(
-                  "rounded-[8px] transition-transform duration-100",
-                  isActive ? "z-10" : "",
-                  isShiftHint && "ring-2 ring-primary/50 bg-primary/10"
-                )
+                isSoftPastel &&
+                  cn(
+                    "rounded-[8px] transition-transform duration-100",
+                    isActive ? "z-10" : "",
+                    isShiftHint && "ring-2 ring-primary/50 bg-primary/10",
+                  ),
               );
 
               // Inline Style overrides based on preset
@@ -203,7 +215,8 @@ export function HindiKeyboard({ nextChar, preset = "Color Zones" }: HindiKeyboar
                   customStyles.transform = "translateY(-1px)";
                 } else {
                   customStyles.border = "1px solid rgba(0,0,0,0.03)";
-                  customStyles.boxShadow = "0 2px 0px rgba(0,0,0,0.05), inset 0 1px 0 rgba(255,255,255,0.4)";
+                  customStyles.boxShadow =
+                    "0 2px 0px rgba(0,0,0,0.05), inset 0 1px 0 rgba(255,255,255,0.4)";
                   customStyles.transform = "none";
                 }
               }
@@ -211,48 +224,44 @@ export function HindiKeyboard({ nextChar, preset = "Color Zones" }: HindiKeyboar
               // Text Style Construction
               const mainTextClass = cn(
                 "font-hindi leading-none",
-                isClassicGlass && (isActive ? "text-[19px] font-semibold text-white" : "text-sm sm:text-base font-semibold text-foreground dark:text-[#EAF0F7]"),
+                isClassicGlass &&
+                  (isActive
+                    ? "text-[19px] font-semibold text-white"
+                    : "text-sm sm:text-base font-semibold text-foreground dark:text-[#EAF0F7]"),
                 isClassic && "text-sm sm:text-base font-bold",
                 isDarkPro && "text-sm sm:text-base font-medium",
                 isMinimal && "text-lg",
                 isHighContrast && "text-base font-bold",
                 isFocus && "text-base font-bold",
                 isColorZones && "text-base font-bold",
-                isSoftPastel && cn(
-                  "font-bold",
-                  isActive ? "text-[#0f172a]" : "text-[#64748b]"
-                )
+                isSoftPastel && cn("font-bold", isActive ? "text-[#0f172a]" : "text-[#64748b]"),
               );
 
               const subTextClass = cn(
                 "mt-0.5 leading-none",
-                isClassicGlass && (isActive ? "text-white/80 text-[11px]" : "text-[9px] text-muted-foreground dark:text-[#8FA2BC]"),
+                isClassicGlass &&
+                  (isActive
+                    ? "text-white/80 text-[11px]"
+                    : "text-[9px] text-muted-foreground dark:text-[#8FA2BC]"),
                 isClassic && "text-[9px] opacity-70",
                 isDarkPro && "text-[9px] opacity-60",
                 isMinimal && "text-[10px] opacity-50",
                 isHighContrast && "text-[10px]",
                 isFocus && "text-[10px]",
                 isColorZones && "text-[10px] opacity-80",
-                isSoftPastel && cn(
-                  "absolute top-[6px] left-[8px] text-[10px] font-medium",
-                  isActive ? "text-[#475569]" : "text-[#94a3b8]"
-                )
+                isSoftPastel &&
+                  cn(
+                    "absolute top-[6px] left-[8px] text-[10px] font-medium",
+                    isActive ? "text-[#475569]" : "text-[#94a3b8]",
+                  ),
               );
 
               return (
-                <div
-                  key={`${ri}-${ki}`}
-                  style={customStyles}
-                  className={keyClass}
-                >
+                <div key={`${ri}-${ki}`} style={customStyles} className={keyClass}>
                   <span className={mainTextClass}>
                     {isActive && needsShift && key.shift ? key.shift : key.hi || key.en}
                   </span>
-                  {key.hi ? (
-                    <span className={subTextClass}>
-                      {key.en}
-                    </span>
-                  ) : null}
+                  {key.hi ? <span className={subTextClass}>{key.en}</span> : null}
                 </div>
               );
             })}

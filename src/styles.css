@@ -32,8 +32,16 @@
 
 @utility surface-grid {
   background-image:
-    radial-gradient(circle at 15% 10%, color-mix(in oklab, var(--primary) 22%, transparent), transparent 45%),
-    radial-gradient(circle at 85% 0%, color-mix(in oklab, var(--accent-blue) 25%, transparent), transparent 40%),
+    radial-gradient(
+      circle at 15% 10%,
+      color-mix(in oklab, var(--primary) 22%, transparent),
+      transparent 45%
+    ),
+    radial-gradient(
+      circle at 85% 0%,
+      color-mix(in oklab, var(--accent-blue) 25%, transparent),
+      transparent 40%
+    ),
     linear-gradient(180deg, oklch(0.985 0.012 250), oklch(0.965 0.02 245));
 }
 
@@ -47,31 +55,66 @@
 }
 
 @keyframes float-soft {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }
 @keyframes key-pop {
-  0% { transform: translateY(0) scale(1); }
-  40% { transform: translateY(2px) scale(0.96); }
-  100% { transform: translateY(0) scale(1); }
+  0% {
+    transform: translateY(0) scale(1);
+  }
+  40% {
+    transform: translateY(2px) scale(0.96);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+  }
 }
 @keyframes rise-in {
-  from { opacity: 0; transform: translateY(18px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 @keyframes caret-blink {
-  0%, 45% { opacity: 1; }
-  55%, 100% { opacity: 0.15; }
+  0%,
+  45% {
+    opacity: 1;
+  }
+  55%,
+  100% {
+    opacity: 0.15;
+  }
 }
 @keyframes shimmer {
-  from { background-position: 200% 0; }
-  to { background-position: -200% 0; }
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
 }
 
-@utility animate-float-soft { animation: float-soft 6s ease-in-out infinite; }
-@utility animate-key-pop { animation: key-pop 0.18s ease-out; }
-@utility animate-rise-in { animation: rise-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both; }
-@utility animate-caret { animation: caret-blink 1s steps(1, end) infinite; }
+@utility animate-float-soft {
+  animation: float-soft 6s ease-in-out infinite;
+}
+@utility animate-key-pop {
+  animation: key-pop 0.18s ease-out;
+}
+@utility animate-rise-in {
+  animation: rise-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@utility animate-caret {
+  animation: caret-blink 1s steps(1, end) infinite;
+}
 
 /*
  * Design system definition.
@@ -166,7 +209,11 @@
   --glass-strong: color-mix(in oklab, white 82%, transparent);
   --glass-border: color-mix(in oklab, white 75%, transparent);
   --gradient-primary: linear-gradient(135deg, oklch(0.55 0.2 258), oklch(0.7 0.15 228));
-  --gradient-soft: linear-gradient(135deg, color-mix(in oklab, var(--primary) 12%, white), color-mix(in oklab, var(--accent-blue) 14%, white));
+  --gradient-soft: linear-gradient(
+    135deg,
+    color-mix(in oklab, var(--primary) 12%, white),
+    color-mix(in oklab, var(--accent-blue) 14%, white)
+  );
   --shadow-glass: 0 12px 40px -18px color-mix(in oklab, var(--primary) 45%, transparent);
   --shadow-elevated: 0 24px 60px -24px color-mix(in oklab, var(--primary) 55%, transparent);
   --chart-1: oklch(0.646 0.222 41.116);
@@ -216,7 +263,7 @@
   --destructive-foreground: #f5f5f5;
   --success: oklch(0.68 0.18 152);
   --danger: oklch(0.68 0.22 25);
-  --warning: oklch(0.80 0.16 75);
+  --warning: oklch(0.8 0.16 75);
 
   /* Borders & inputs */
   --border: #202020;
@@ -240,7 +287,7 @@
   --chart-1: oklch(0.55 0.22 258);
   --chart-2: oklch(0.65 0.17 162);
   --chart-3: oklch(0.75 0.18 70);
-  --chart-4: oklch(0.60 0.24 303);
+  --chart-4: oklch(0.6 0.24 303);
   --chart-5: oklch(0.62 0.24 16);
 
   /* Sidebar */
@@ -265,13 +312,15 @@
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
-    font-family: 'Noto Sans Devanagari', sans-serif;
-    transition: background-color 0.25s ease, color 0.25s ease;
+    font-family: "Noto Sans Devanagari", sans-serif;
+    transition:
+      background-color 0.25s ease,
+      color 0.25s ease;
   }
 }
 
 .en {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 /* ─────────────────────────────────────────
@@ -301,7 +350,9 @@
 html {
   transition: none;
 }
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   transition-property: background-color, border-color, color, box-shadow;
   transition-duration: 0.25s;
   transition-timing-function: ease;
@@ -336,24 +387,39 @@ html {
   font-size: 1rem;
   font-weight: 700;
   cursor: pointer;
-  box-shadow: 0 10px 24px rgba(37,99,235,0.35), 0 2px 4px rgba(37,99,235,0.2);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  box-shadow:
+    0 10px 24px rgba(37, 99, 235, 0.35),
+    0 2px 4px rgba(37, 99, 235, 0.2);
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
 }
 
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 14px 28px rgba(37,99,235,0.42);
+  box-shadow: 0 14px 28px rgba(37, 99, 235, 0.42);
 }
 
 .key.active {
   background: linear-gradient(135deg, #2563eb, #1d4ed8) !important;
   border-color: #1e3a8a !important;
-  box-shadow: 0 0 0 4px rgba(37,99,235,0.18), 0 8px 18px rgba(37,99,235,0.4) !important;
+  box-shadow:
+    0 0 0 4px rgba(37, 99, 235, 0.18),
+    0 8px 18px rgba(37, 99, 235, 0.4) !important;
   animation: pulse-key 1.6s ease-in-out infinite !important;
   color: white !important;
 }
 
 @keyframes pulse-key {
-  0%, 100% { box-shadow: 0 0 0 4px rgba(37,99,235,0.18), 0 8px 18px rgba(37,99,235,0.4); }
-  50% { box-shadow: 0 0 0 8px rgba(37,99,235,0.10), 0 8px 18px rgba(37,99,235,0.4); }
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 4px rgba(37, 99, 235, 0.18),
+      0 8px 18px rgba(37, 99, 235, 0.4);
+  }
+  50% {
+    box-shadow:
+      0 0 0 8px rgba(37, 99, 235, 0.1),
+      0 8px 18px rgba(37, 99, 235, 0.4);
+  }
 }

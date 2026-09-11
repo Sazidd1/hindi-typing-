@@ -14,37 +14,37 @@ function SignupPage() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  
+
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  
+
   const { signup } = useAuth();
   const navigate = useNavigate();
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
-    
+
     if (!name.trim() || !email.trim() || !password.trim()) {
       setError("Please fill out all fields.");
       return;
     }
-    
+
     if (password.length < 6) {
       setError("Password must be at least 6 characters long.");
       return;
     }
-    
+
     if (password !== confirmPassword) {
       setError("Passwords do not match.");
       return;
     }
-    
+
     setIsLoading(true);
-    
+
     try {
       const result = await signup(name, email, password);
-      
+
       if (result.error) {
         setError(result.error);
         setIsLoading(false);
@@ -67,9 +67,7 @@ function SignupPage() {
         <h1 className="mb-2 text-2xl font-bold tracking-tight text-foreground">
           Create an Account
         </h1>
-        <p className="mb-8 font-hindi text-muted-foreground">
-          नया खाता बनाएँ
-        </p>
+        <p className="mb-8 font-hindi text-muted-foreground">नया खाता बनाएँ</p>
 
         {error && (
           <div className="mb-6 rounded-xl bg-danger/10 px-4 py-3 text-sm font-medium text-danger text-left">
@@ -89,7 +87,7 @@ function SignupPage() {
               className="w-full rounded-xl border border-input bg-background/50 px-4 py-3 text-lg font-medium text-foreground outline-none transition-all placeholder:text-muted-foreground/60 focus:border-primary focus:ring-2 focus:ring-primary/20"
             />
           </div>
-          
+
           <div className="space-y-1.5">
             <label className="text-sm font-medium text-foreground ml-1">Email</label>
             <input
@@ -100,7 +98,7 @@ function SignupPage() {
               className="w-full rounded-xl border border-input bg-background/50 px-4 py-3 text-lg font-medium text-foreground outline-none transition-all placeholder:text-muted-foreground/60 focus:border-primary focus:ring-2 focus:ring-primary/20"
             />
           </div>
-          
+
           <div className="space-y-1.5 relative">
             <label className="text-sm font-medium text-foreground ml-1">Password</label>
             <div className="relative">
@@ -120,7 +118,7 @@ function SignupPage() {
               </button>
             </div>
           </div>
-          
+
           <div className="space-y-1.5 relative">
             <label className="text-sm font-medium text-foreground ml-1">Confirm Password</label>
             <div className="relative">
@@ -142,7 +140,7 @@ function SignupPage() {
           >
             {isLoading ? <Loader2 className="size-5 animate-spin" /> : "Create Account"}
           </button>
-          
+
           <p className="mt-4 text-center text-sm text-muted-foreground">
             Already have an account?{" "}
             <Link to="/login" className="font-semibold text-primary hover:underline">

@@ -7,9 +7,7 @@ import { krutiDevLessons } from "@/lib/kruti-dev-typing-data";
 
 export const Route = createFileRoute("/lessons_/kruti-dev/")({
   head: () => ({
-    meta: [
-      { title: "Kruti Dev Typing Lessons" },
-    ],
+    meta: [{ title: "Kruti Dev Typing Lessons" }],
   }),
   component: KrutiDevLessonsPage,
 });
@@ -17,7 +15,11 @@ export const Route = createFileRoute("/lessons_/kruti-dev/")({
 export const categories = ["All", "Home Row", "Top Row", "Bottom Row", "Mixed"];
 
 // Filter out stories and full practices to keep it simple and strictly "lessons 1-80"
-const standardLessons = krutiDevLessons.filter(l => l.slug.match(/^kd-ch\d+$/) || l.slug.startsWith('kd-ch') && !l.slug.includes('practice') && !l.slug.includes('story'));
+const standardLessons = krutiDevLessons.filter(
+  (l) =>
+    l.slug.match(/^kd-ch\d+$/) ||
+    (l.slug.startsWith("kd-ch") && !l.slug.includes("practice") && !l.slug.includes("story")),
+);
 
 function KrutiDevLessonsPage() {
   const { currentUser } = useAuth();
@@ -29,30 +31,32 @@ function KrutiDevLessonsPage() {
     if (!currentUser) return;
     const data: Record<string, any> = {};
     for (const l of standardLessons) {
-       const saved = localStorage.getItem(`lesson_state_${currentUser}_${l.slug}`);
-       if (saved) {
-         try { data[l.slug] = JSON.parse(saved); } catch (e) {}
-       }
+      const saved = localStorage.getItem(`lesson_state_${currentUser}_${l.slug}`);
+      if (saved) {
+        try {
+          data[l.slug] = JSON.parse(saved);
+        } catch (e) {}
+      }
     }
     setProgressData(data);
   }, [currentUser]);
 
   useEffect(() => {
     loadProgress();
-    window.addEventListener('lessonProgressUpdated', loadProgress);
-    return () => window.removeEventListener('lessonProgressUpdated', loadProgress);
+    window.addEventListener("lessonProgressUpdated", loadProgress);
+    return () => window.removeEventListener("lessonProgressUpdated", loadProgress);
   }, [loadProgress]);
 
   const extendedCurriculum = useMemo(() => {
     let previousLessonCompleted = true; // First lesson is always unlocked
-    
+
     return standardLessons.map((baseItem) => {
       const saved = progressData[baseItem.slug] || { progress: 0, completed: false };
-      
+
       const isLocked = !previousLessonCompleted;
-      
+
       // Extract lesson number for the route
-      const lessonId = baseItem.slug.replace('kd-ch', '');
+      const lessonId = baseItem.slug.replace("kd-ch", "");
 
       const item = {
         ...baseItem,
@@ -110,10 +114,10 @@ function KrutiDevLessonsPage() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {displayedLessons.map((item) => (
-            <KrutiDevLessonCard 
-              key={item.slug} 
-              item={item as any} 
-              setLockedLessonIntent={() => setLockedLessonIntent(item)} 
+            <KrutiDevLessonCard
+              key={item.slug}
+              item={item as any}
+              setLockedLessonIntent={() => setLockedLessonIntent(item)}
             />
           ))}
         </div>

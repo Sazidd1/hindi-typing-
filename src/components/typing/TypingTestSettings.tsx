@@ -3,11 +3,78 @@ import { useNavigate } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
 
 const LEGENDS = [
-  "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z",
-  "अ", "आ", "इ", "ई", "उ", "ऊ", "ऋ", "ए", "ऐ", "ओ", "औ",
-  "क", "ख", "ग", "घ", "च", "छ", "ज", "झ", "ट", "ठ", "ड", "ढ", "ण",
-  "त", "थ", "द", "ध", "न", "प", "फ", "ब", "भ", "म", "य", "र", "ल", "व", "श", "ष", "स", "ह",
-  "⏎", "⇧", "␣", "⌫"
+  "A",
+  "B",
+  "C",
+  "D",
+  "E",
+  "F",
+  "G",
+  "H",
+  "I",
+  "J",
+  "K",
+  "L",
+  "M",
+  "N",
+  "O",
+  "P",
+  "Q",
+  "R",
+  "S",
+  "T",
+  "U",
+  "V",
+  "W",
+  "X",
+  "Y",
+  "Z",
+  "अ",
+  "आ",
+  "इ",
+  "ई",
+  "उ",
+  "ऊ",
+  "ऋ",
+  "ए",
+  "ऐ",
+  "ओ",
+  "औ",
+  "क",
+  "ख",
+  "ग",
+  "घ",
+  "च",
+  "छ",
+  "ज",
+  "झ",
+  "ट",
+  "ठ",
+  "ड",
+  "ढ",
+  "ण",
+  "त",
+  "थ",
+  "द",
+  "ध",
+  "न",
+  "प",
+  "फ",
+  "ब",
+  "भ",
+  "म",
+  "य",
+  "र",
+  "ल",
+  "व",
+  "श",
+  "ष",
+  "स",
+  "ह",
+  "⏎",
+  "⇧",
+  "␣",
+  "⌫",
 ];
 
 const SCHEMES = ["Remington GAIL", "Remington CBI", "Kruti Dev", "Mangal InScript", "English"];
@@ -42,7 +109,7 @@ const STORY_SLUG_MAP: Record<string, string> = {
   "विज्ञान और मानव जीवन": "expert-science-human-life",
   "जल संरक्षण और भविष्य": "expert-water-conservation-future",
   "पुस्तकें और ज्ञान की शक्ति": "expert-books-power-of-knowledge",
-  "आत्मनिर्भरता और कौशल विकास": "expert-self-reliance-skill-development"
+  "आत्मनिर्भरता और कौशल विकास": "expert-self-reliance-skill-development",
 };
 
 export default function TypingTestSettings({ onClose }: { onClose?: () => void }) {
@@ -115,8 +182,8 @@ export default function TypingTestSettings({ onClose }: { onClose?: () => void }
           if (!isLeft && left < maxX) wrongSide = true;
         }
 
-        const isInsideX = (left + size > minX) && (left < maxX);
-        const isInsideY = (top + size > minY) && (top < maxY);
+        const isInsideX = left + size > minX && left < maxX;
+        const isInsideY = top + size > minY && top < maxY;
         const overlapForm = isInsideX && isInsideY;
 
         let tooClose = false;
@@ -166,7 +233,13 @@ export default function TypingTestSettings({ onClose }: { onClose?: () => void }
   }
 
   function buildSearchParams() {
-    const search: { limit?: number; time?: number; lesson?: string; story?: string; mode?: string } = {};
+    const search: {
+      limit?: number;
+      time?: number;
+      lesson?: string;
+      story?: string;
+      mode?: string;
+    } = {};
     if (wordLimitOn && wordLimit) {
       search.limit = Number(wordLimit);
     }
@@ -267,7 +340,15 @@ export default function TypingTestSettings({ onClose }: { onClose?: () => void }
 
       {/* Floating keys */}
       {mounted && (
-        <div style={{ position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none", overflow: "hidden" }}>
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            zIndex: 1,
+            pointerEvents: "none",
+            overflow: "hidden",
+          }}
+        >
           {floatingKeys.map((k) => (
             <div
               key={k.id}
@@ -281,7 +362,8 @@ export default function TypingTestSettings({ onClose }: { onClose?: () => void }
                 transform: `rotate(${k.rot}deg)`,
                 borderRadius: k.size * 0.2,
                 opacity: k.opacity,
-                boxShadow: "0 12px 32px rgba(184,138,68,0.06), 0 4px 12px rgba(184,138,68,0.04), inset 0 2px 0 rgba(255,255,255,1), inset 0 -2px 0 rgba(0,0,0,0.02)",
+                boxShadow:
+                  "0 12px 32px rgba(184,138,68,0.06), 0 4px 12px rgba(184,138,68,0.04), inset 0 2px 0 rgba(255,255,255,1), inset 0 -2px 0 rgba(0,0,0,0.02)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -299,7 +381,19 @@ export default function TypingTestSettings({ onClose }: { onClose?: () => void }
       )}
 
       {/* Top Header Buttons */}
-      <div style={{ position: "absolute", top: 32, left: 0, right: 0, padding: "0 32px", display: "flex", justifyContent: "space-between", zIndex: 50, pointerEvents: "none" }}>
+      <div
+        style={{
+          position: "absolute",
+          top: 32,
+          left: 0,
+          right: 0,
+          padding: "0 32px",
+          display: "flex",
+          justifyContent: "space-between",
+          zIndex: 50,
+          pointerEvents: "none",
+        }}
+      >
         {onClose ? (
           <button
             onClick={onClose}
@@ -321,57 +415,104 @@ export default function TypingTestSettings({ onClose }: { onClose?: () => void }
               fontSize: 14,
               cursor: "pointer",
               boxShadow: "0 4px 16px rgba(184,138,68,0.05)",
-              transition: "all 0.2s"
+              transition: "all 0.2s",
             }}
           >
             <ArrowLeft size={18} />
             Back
           </button>
-        ) : <div />}
+        ) : (
+          <div />
+        )}
       </div>
 
       {/* Main Content Area */}
-      <div style={{ position: "relative", zIndex: 10, padding: "16px 24px 32px", flex: 1, display: "flex", flexDirection: "column" }}>
-
+      <div
+        style={{
+          position: "relative",
+          zIndex: 10,
+          padding: "16px 24px 32px",
+          flex: 1,
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
         {/* Page Title */}
         <div style={{ textAlign: "center", marginBottom: 8 }}>
-          <p style={{ color: "#c19e54", fontWeight: 700, fontSize: 13, letterSpacing: "0.15em", textTransform: "uppercase", margin: 0, marginBottom: 4 }}>
+          <p
+            style={{
+              color: "#c19e54",
+              fontWeight: 700,
+              fontSize: 13,
+              letterSpacing: "0.15em",
+              textTransform: "uppercase",
+              margin: 0,
+              marginBottom: 4,
+            }}
+          >
             THE ART OF PRECISION
           </p>
-          <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(2.5rem, 5vw, 3.5rem)", color: "#1c1917", margin: 0, fontWeight: 500, letterSpacing: "-0.02em", lineHeight: 1 }}>
+          <h1
+            style={{
+              fontFamily: "'Playfair Display', serif",
+              fontSize: "clamp(2.5rem, 5vw, 3.5rem)",
+              color: "#1c1917",
+              margin: 0,
+              fontWeight: 500,
+              letterSpacing: "-0.02em",
+              lineHeight: 1,
+            }}
+          >
             Typing Test
           </h1>
-          <p style={{ color: "#78716c", fontSize: "clamp(1rem, 2vw, 1.125rem)", margin: 0, marginTop: 4, fontWeight: 400 }}>
+          <p
+            style={{
+              color: "#78716c",
+              fontSize: "clamp(1rem, 2vw, 1.125rem)",
+              margin: 0,
+              marginTop: 4,
+              fontWeight: 400,
+            }}
+          >
             Choose your layout & configure the session
           </p>
         </div>
 
         {/* Settings Panel */}
-        <div style={{
-          width: "100%",
-          maxWidth: 860,
-          margin: "0 auto",
-          background: "linear-gradient(180deg, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.6) 100%)",
-          backdropFilter: "blur(24px)",
-          WebkitBackdropFilter: "blur(24px)",
-          borderRadius: 32,
-          padding: "16px clamp(32px, 5vw, 48px) 24px",
-          boxShadow: "0 24px 64px rgba(184,138,68,0.06), inset 0 0 0 1px rgba(255,255,255,0.9)",
-        }}>
-
+        <div
+          style={{
+            width: "100%",
+            maxWidth: 860,
+            margin: "0 auto",
+            background:
+              "linear-gradient(180deg, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.6) 100%)",
+            backdropFilter: "blur(24px)",
+            WebkitBackdropFilter: "blur(24px)",
+            borderRadius: 32,
+            padding: "16px clamp(32px, 5vw, 48px) 24px",
+            boxShadow: "0 24px 64px rgba(184,138,68,0.06), inset 0 0 0 1px rgba(255,255,255,0.9)",
+          }}
+        >
           {/* Sections */}
-          <div style={{ 
-            marginBottom: 12, 
-            padding: "12px 24px",
-            background: "rgba(255, 255, 255, 0.6)",
-            border: "1px solid rgba(255, 255, 255, 0.9)",
-            borderRadius: 20,
-            boxShadow: "0 8px 32px rgba(184, 138, 68, 0.04), inset 0 2px 0 rgba(255,255,255,1)"
-          }}>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16 }}>
-              <div style={{ fontSize: 15, fontWeight: 600, color: "#44403c" }}>
-                Name
-              </div>
+          <div
+            style={{
+              marginBottom: 12,
+              padding: "12px 24px",
+              background: "rgba(255, 255, 255, 0.6)",
+              border: "1px solid rgba(255, 255, 255, 0.9)",
+              borderRadius: 20,
+              boxShadow: "0 8px 32px rgba(184, 138, 68, 0.04), inset 0 2px 0 rgba(255,255,255,1)",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                gap: 16,
+              }}
+            >
+              <div style={{ fontSize: 15, fontWeight: 600, color: "#44403c" }}>Name</div>
               <div style={{ flex: 1, display: "flex", justifyContent: "flex-end" }}>
                 <input
                   type="text"
@@ -385,21 +526,48 @@ export default function TypingTestSettings({ onClose }: { onClose?: () => void }
             </div>
           </div>
 
-          <div style={{
-            marginBottom: 12,
-            padding: "12px 24px",
-            background: "rgba(255, 255, 255, 0.6)",
-            border: "1px solid rgba(255, 255, 255, 0.9)",
-            borderRadius: 20,
-            boxShadow: "0 8px 32px rgba(184, 138, 68, 0.04), inset 0 2px 0 rgba(255,255,255,1)"
-          }}>
+          <div
+            style={{
+              marginBottom: 12,
+              padding: "12px 24px",
+              background: "rgba(255, 255, 255, 0.6)",
+              border: "1px solid rgba(255, 255, 255, 0.9)",
+              borderRadius: 20,
+              boxShadow: "0 8px 32px rgba(184, 138, 68, 0.04), inset 0 2px 0 rgba(255,255,255,1)",
+            }}
+          >
             <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", minHeight: 40, gap: 16 }}>
-                <div style={{ fontSize: 13, fontWeight: 700, color: "#a89f91", letterSpacing: "0.15em", textTransform: "uppercase" }}>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  minHeight: 40,
+                  gap: 16,
+                }}
+              >
+                <div
+                  style={{
+                    fontSize: 13,
+                    fontWeight: 700,
+                    color: "#a89f91",
+                    letterSpacing: "0.15em",
+                    textTransform: "uppercase",
+                  }}
+                >
                   TEST MODE
                 </div>
                 <div style={{ flex: 1, display: "flex", justifyContent: "flex-end" }}>
-                  <div style={{ display: "flex", background: "rgba(240, 235, 225, 0.6)", borderRadius: 100, padding: 4, width: 220, boxShadow: "inset 0 2px 4px rgba(0,0,0,0.02)" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      background: "rgba(240, 235, 225, 0.6)",
+                      borderRadius: 100,
+                      padding: 4,
+                      width: 220,
+                      boxShadow: "inset 0 2px 4px rgba(0,0,0,0.02)",
+                    }}
+                  >
                     {["Default", "Custom"].map((v) => (
                       <button
                         key={v}
@@ -413,10 +581,13 @@ export default function TypingTestSettings({ onClose }: { onClose?: () => void }
                           color: paraMode === v ? "#1c1917" : "#78716c",
                           fontWeight: 600,
                           fontSize: 13,
-                          boxShadow: paraMode === v ? "0 2px 8px rgba(184,138,68,0.1), 0 1px 2px rgba(184,138,68,0.06)" : "none",
+                          boxShadow:
+                            paraMode === v
+                              ? "0 2px 8px rgba(184,138,68,0.1), 0 1px 2px rgba(184,138,68,0.06)"
+                              : "none",
                           cursor: "pointer",
                           transition: "all 0.2s cubic-bezier(0.16, 1, 0.3, 1)",
-                          fontFamily: "'Inter', sans-serif"
+                          fontFamily: "'Inter', sans-serif",
                         }}
                       >
                         {v}
@@ -425,7 +596,15 @@ export default function TypingTestSettings({ onClose }: { onClose?: () => void }
                   </div>
                 </div>
               </div>
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", minHeight: 40, gap: 16 }}>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  minHeight: 40,
+                  gap: 16,
+                }}
+              >
                 <div style={{ fontSize: 15, fontWeight: 600, color: "#44403c" }}>Test Time</div>
                 <div style={{ flex: 1, display: "flex", justifyContent: "flex-end" }}>
                   <select
@@ -443,18 +622,35 @@ export default function TypingTestSettings({ onClose }: { onClose?: () => void }
             </div>
           </div>
 
-          <div style={{
-            marginBottom: 12,
-            padding: "12px 24px",
-            background: "rgba(255, 255, 255, 0.6)",
-            border: "1px solid rgba(255, 255, 255, 0.9)",
-            borderRadius: 20,
-            boxShadow: "0 8px 32px rgba(184, 138, 68, 0.04), inset 0 2px 0 rgba(255,255,255,1)"
-          }}>
-            <div style={{ fontSize: 13, fontWeight: 700, color: "#a89f91", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 8 }}>
+          <div
+            style={{
+              marginBottom: 12,
+              padding: "12px 24px",
+              background: "rgba(255, 255, 255, 0.6)",
+              border: "1px solid rgba(255, 255, 255, 0.9)",
+              borderRadius: 20,
+              boxShadow: "0 8px 32px rgba(184, 138, 68, 0.04), inset 0 2px 0 rgba(255,255,255,1)",
+            }}
+          >
+            <div
+              style={{
+                fontSize: 13,
+                fontWeight: 700,
+                color: "#a89f91",
+                letterSpacing: "0.15em",
+                textTransform: "uppercase",
+                marginBottom: 8,
+              }}
+            >
               KEYBOARD LAYOUT
             </div>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 8 }}>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+                gap: 8,
+              }}
+            >
               {SCHEMES.map((s) => {
                 const active = scheme === s;
                 return (
@@ -469,14 +665,16 @@ export default function TypingTestSettings({ onClose }: { onClose?: () => void }
                       color: active ? "#1c1917" : "#78716c",
                       fontWeight: 600,
                       fontSize: 15,
-                      boxShadow: active ? "0 8px 24px rgba(184,138,68,0.1), inset 0 2px 0 rgba(255,255,255,1)" : "inset 0 2px 0 rgba(255,255,255,0.5)",
+                      boxShadow: active
+                        ? "0 8px 24px rgba(184,138,68,0.1), inset 0 2px 0 rgba(255,255,255,1)"
+                        : "inset 0 2px 0 rgba(255,255,255,0.5)",
                       cursor: "pointer",
                       transition: "all 0.2s",
                       fontFamily: "'Inter', sans-serif",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
-                      boxSizing: "border-box"
+                      boxSizing: "border-box",
                     }}
                   >
                     {s}
@@ -486,21 +684,41 @@ export default function TypingTestSettings({ onClose }: { onClose?: () => void }
             </div>
           </div>
 
-          <div style={{
-            marginBottom: 0,
-            padding: "12px 24px",
-            background: "rgba(255, 255, 255, 0.6)",
-            border: "1px solid rgba(255, 255, 255, 0.9)",
-            borderRadius: 20,
-            boxShadow: "0 8px 32px rgba(184, 138, 68, 0.04), inset 0 2px 0 rgba(255,255,255,1)"
-          }}>
-            <div style={{ fontSize: 13, fontWeight: 700, color: "#a89f91", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 8 }}>
+          <div
+            style={{
+              marginBottom: 0,
+              padding: "12px 24px",
+              background: "rgba(255, 255, 255, 0.6)",
+              border: "1px solid rgba(255, 255, 255, 0.9)",
+              borderRadius: 20,
+              boxShadow: "0 8px 32px rgba(184, 138, 68, 0.04), inset 0 2px 0 rgba(255,255,255,1)",
+            }}
+          >
+            <div
+              style={{
+                fontSize: 13,
+                fontWeight: 700,
+                color: "#a89f91",
+                letterSpacing: "0.15em",
+                textTransform: "uppercase",
+                marginBottom: 8,
+              }}
+            >
               OPTIONS
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", minHeight: 40, gap: 16 }}>
-                <div style={{ fontSize: 15, fontWeight: 600, color: "#44403c" }}>Paragraph Passages</div>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  minHeight: 40,
+                  gap: 16,
+                }}
+              >
+                <div style={{ fontSize: 15, fontWeight: 600, color: "#44403c" }}>
+                  Paragraph Passages
+                </div>
                 <div style={{ flex: 1, display: "flex", justifyContent: "flex-end" }}>
                   <select
                     className="tts-input tts-select"
@@ -508,14 +726,56 @@ export default function TypingTestSettings({ onClose }: { onClose?: () => void }
                     onChange={(e) => setPassageType(e.target.value)}
                     style={{ ...inputStyle(), cursor: "pointer", paddingRight: 40, height: 44 }}
                   >
-                    {["Random words", "Common sentences", "News excerpts", "1. ईमानदार लकड़हारा", "2. प्यासा कौआ", "3. खरगोश और कछुआ", "4. चींटी और टिड्डा", "5. शेर और चूहा", "6. सच्चा मित्र", "7. लालची किसान", "8. बुद्धिमान चरवाहा", "9. ईमानदार व्यापारी", "10. समझदार राजा", "11. मेहनती किसान", "12. दो मित्र और जंगल", "13. चतुर लोमड़ी", "14. दयालु राजकुमार", "15. साहसी लड़की", "16. पुराना कुआँ", "17. गाँव का शिक्षक", "18. छोटा दीपक", "19. मेहनत का फल", "20. समय का महत्व", "तकनीक और बदलती दुनिया", "पर्यावरण और हमारी जिम्मेदारी", "समय, अनुशासन और सफलता", "शिक्षा का बदलता स्वरूप", "भारत की विविधता और एकता", "स्वास्थ्य और स्वस्थ जीवनशैली", "विज्ञान और मानव जीवन", "जल संरक्षण और भविष्य", "पुस्तकें और ज्ञान की शक्ति", "आत्मनिर्भरता और कौशल विकास"].map((t) => (
+                    {[
+                      "Random words",
+                      "Common sentences",
+                      "News excerpts",
+                      "1. ईमानदार लकड़हारा",
+                      "2. प्यासा कौआ",
+                      "3. खरगोश और कछुआ",
+                      "4. चींटी और टिड्डा",
+                      "5. शेर और चूहा",
+                      "6. सच्चा मित्र",
+                      "7. लालची किसान",
+                      "8. बुद्धिमान चरवाहा",
+                      "9. ईमानदार व्यापारी",
+                      "10. समझदार राजा",
+                      "11. मेहनती किसान",
+                      "12. दो मित्र और जंगल",
+                      "13. चतुर लोमड़ी",
+                      "14. दयालु राजकुमार",
+                      "15. साहसी लड़की",
+                      "16. पुराना कुआँ",
+                      "17. गाँव का शिक्षक",
+                      "18. छोटा दीपक",
+                      "19. मेहनत का फल",
+                      "20. समय का महत्व",
+                      "तकनीक और बदलती दुनिया",
+                      "पर्यावरण और हमारी जिम्मेदारी",
+                      "समय, अनुशासन और सफलता",
+                      "शिक्षा का बदलता स्वरूप",
+                      "भारत की विविधता और एकता",
+                      "स्वास्थ्य और स्वस्थ जीवनशैली",
+                      "विज्ञान और मानव जीवन",
+                      "जल संरक्षण और भविष्य",
+                      "पुस्तकें और ज्ञान की शक्ति",
+                      "आत्मनिर्भरता और कौशल विकास",
+                    ].map((t) => (
                       <option key={t}>{t}</option>
                     ))}
                   </select>
                 </div>
               </div>
 
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", minHeight: 40, gap: 16 }}>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  minHeight: 40,
+                  gap: 16,
+                }}
+              >
                 <div style={{ fontSize: 15, fontWeight: 600, color: "#44403c" }}>Backspace</div>
                 <div style={{ flex: 1, display: "flex", justifyContent: "flex-end" }}>
                   <Switch
@@ -528,15 +788,38 @@ export default function TypingTestSettings({ onClose }: { onClose?: () => void }
                 </div>
               </div>
 
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", minHeight: 40, gap: 16 }}>
-                <div style={{ fontSize: 15, fontWeight: 600, color: "#44403c" }}>Highlight & Auto Scroll</div>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  minHeight: 40,
+                  gap: 16,
+                }}
+              >
+                <div style={{ fontSize: 15, fontWeight: 600, color: "#44403c" }}>
+                  Highlight & Auto Scroll
+                </div>
                 <div style={{ flex: 1, display: "flex", justifyContent: "flex-end" }}>
                   <Switch checked={highlight} onChange={setHighlight} />
                 </div>
               </div>
 
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", minHeight: 40, gap: 16 }}>
-                <div style={{ fontSize: 15, fontWeight: 600, color: "#44403c" }}>Word Limit <span style={{ color: "#c19e54", marginLeft: 4, fontWeight: 700 }}>({wordLimit || 0})</span></div>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  minHeight: 40,
+                  gap: 16,
+                }}
+              >
+                <div style={{ fontSize: 15, fontWeight: 600, color: "#44403c" }}>
+                  Word Limit{" "}
+                  <span style={{ color: "#c19e54", marginLeft: 4, fontWeight: 700 }}>
+                    ({wordLimit || 0})
+                  </span>
+                </div>
                 <div style={{ flex: 1, display: "flex", justifyContent: "flex-end" }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
                     <Switch checked={wordLimitOn} onChange={setWordLimitOn} />
@@ -546,12 +829,16 @@ export default function TypingTestSettings({ onClose }: { onClose?: () => void }
                       value={wordLimit}
                       disabled={!wordLimitOn}
                       onChange={(e) => setWordLimit(e.target.value)}
-                      style={{ ...inputStyle(!wordLimitOn), width: 80, textAlign: "center", height: 44 }}
+                      style={{
+                        ...inputStyle(!wordLimitOn),
+                        width: 80,
+                        textAlign: "center",
+                        height: 44,
+                      }}
                     />
                   </div>
                 </div>
               </div>
-
             </div>
           </div>
 
@@ -572,7 +859,8 @@ export default function TypingTestSettings({ onClose }: { onClose?: () => void }
                 fontSize: 17,
                 letterSpacing: "0.01em",
                 cursor: "pointer",
-                boxShadow: "0 12px 32px rgba(184,138,68,0.25), inset 0 2px 0 rgba(255,255,255,0.25)",
+                boxShadow:
+                  "0 12px 32px rgba(184,138,68,0.25), inset 0 2px 0 rgba(255,255,255,0.25)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -597,18 +885,23 @@ export default function TypingTestSettings({ onClose }: { onClose?: () => void }
           >
             {status}
           </div>
-
         </div>
       </div>
     </div>
   );
 }
 
-
-
-function Switch({ checked, onChange }: { checked: boolean, onChange: (v: boolean) => void }) {
+function Switch({ checked, onChange }: { checked: boolean; onChange: (v: boolean) => void }) {
   return (
-    <label style={{ position: "relative", width: 52, height: 32, flexShrink: 0, display: "inline-block" }}>
+    <label
+      style={{
+        position: "relative",
+        width: 52,
+        height: 32,
+        flexShrink: 0,
+        display: "inline-block",
+      }}
+    >
       <input
         type="checkbox"
         checked={checked}
@@ -623,7 +916,7 @@ function Switch({ checked, onChange }: { checked: boolean, onChange: (v: boolean
           background: checked ? "#c19e54" : "rgba(184, 138, 68, 0.15)",
           borderRadius: 100,
           transition: "background .2s",
-          boxShadow: "inset 0 2px 4px rgba(0,0,0,0.05)"
+          boxShadow: "inset 0 2px 4px rgba(0,0,0,0.05)",
         }}
       >
         <span
@@ -661,6 +954,6 @@ function inputStyle(disabled: boolean = false) {
     boxShadow: disabled ? "none" : "0 2px 8px rgba(184, 138, 68, 0.03)",
     transition: "all 0.2s ease",
     width: "100%",
-    maxWidth: 280
+    maxWidth: 280,
   };
 }

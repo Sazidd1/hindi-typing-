@@ -1,7 +1,7 @@
-import fs from 'fs';
-import path from 'path';
+import fs from "fs";
+import path from "path";
 
-let content = fs.readFileSync(path.join(process.cwd(), 'src/lib/story-generator.ts'), 'utf8');
+let content = fs.readFileSync(path.join(process.cwd(), "src/lib/story-generator.ts"), "utf8");
 
 const s1Additions = `
 यहाँ कुछ और विशेष बातें हैं: ३ ६ ७ ८ * . ॅ थ् ळ भ् ष् ब् ण् घ्। 
@@ -17,8 +17,15 @@ const s2Additions = `
 उसने कहा कि . यहाँ ख़त्म होता है।
 `;
 
-content = content.replace(/और इस तरह, वह महान आत्मा हमेशा के लिए अमर हो गई।/, s1Additions + 'और इस तरह, वह महान आत्मा हमेशा के लिए अमर हो गई।');
-content = content.replace(/यह कहानी हमें सिखाती है कि सच्ची मित्रता और साहस से बड़ी से बड़ी मुसीबत को भी टाला जा सकता है।/, s2Additions + 'यह कहानी हमें सिखाती है कि सच्ची मित्रता और साहस से बड़ी से बड़ी मुसीबत को भी टाला जा सकता है।');
+content = content.replace(
+  /और इस तरह, वह महान आत्मा हमेशा के लिए अमर हो गई।/,
+  s1Additions + "और इस तरह, वह महान आत्मा हमेशा के लिए अमर हो गई।",
+);
+content = content.replace(
+  /यह कहानी हमें सिखाती है कि सच्ची मित्रता और साहस से बड़ी से बड़ी मुसीबत को भी टाला जा सकता है।/,
+  s2Additions +
+    "यह कहानी हमें सिखाती है कि सच्ची मित्रता और साहस से बड़ी से बड़ी मुसीबत को भी टाला जा सकता है।",
+);
 
-fs.writeFileSync(path.join(process.cwd(), 'src/lib/story-generator.ts'), content);
-console.log('Added missing characters to stories.');
+fs.writeFileSync(path.join(process.cwd(), "src/lib/story-generator.ts"), content);
+console.log("Added missing characters to stories.");

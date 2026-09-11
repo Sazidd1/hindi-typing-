@@ -14,7 +14,7 @@ function seedRandom(seed: number) {
 function shuffle<T>(array: T[], seedStr: string): T[] {
   let seed = 0;
   for (let i = 0; i < seedStr.length; i++) seed += seedStr.charCodeAt(i);
-  
+
   const shuffled = [...array];
   for (let i = shuffled.length - 1; i > 0; i--) {
     const j = Math.floor(seedRandom(seed++) * (i + 1));
@@ -31,7 +31,7 @@ function shuffle<T>(array: T[], seedStr: string): T[] {
 export function generateDailyChallenge(userId: string, progressData: Record<string, any>): Lesson {
   const today = getTodayString();
   const cacheKey = `daily_challenge_${userId}`;
-  
+
   try {
     const cached = localStorage.getItem(cacheKey);
     if (cached) {
@@ -54,20 +54,20 @@ export function generateDailyChallenge(userId: string, progressData: Record<stri
     const l = lessons[i];
     if (!l) break;
     if (!previousLessonCompleted) break;
-    
+
     highestUnlockedIndex = i;
-    
+
     // Add keys (ignore spaces)
     if (l.keys) {
-      for (const char of l.keys.replace(/\s+/g, '')) {
+      for (const char of l.keys.replace(/\s+/g, "")) {
         unlockedKeys.add(char);
       }
     }
-    
+
     // Add words
     if (l.text) {
-      const words = l.text.split(/\s+/).filter(w => w.length > 0);
-      words.forEach(w => unlockedWords.add(w));
+      const words = l.text.split(/\s+/).filter((w) => w.length > 0);
+      words.forEach((w) => unlockedWords.add(w));
     }
 
     const state = progressData[l.slug] || {};
@@ -92,7 +92,7 @@ export function generateDailyChallenge(userId: string, progressData: Record<stri
         if (res.charMistakes) {
           for (const [char, count] of Object.entries(res.charMistakes)) {
             // Only consider mistakes for characters the user has actually unlocked
-            if (unlockedKeys.has(char) || Array.from(unlockedWords).some(w => w.includes(char))) {
+            if (unlockedKeys.has(char) || Array.from(unlockedWords).some((w) => w.includes(char))) {
               charMistakes[char] = (charMistakes[char] || 0) + (count as number);
             }
           }
@@ -106,7 +106,7 @@ export function generateDailyChallenge(userId: string, progressData: Record<stri
     .sort((a, b) => b[1] - a[1])
     .filter(([_, count]) => count > 1) // Must have more than 1 mistake to be considered a weakness
     .map(([char]) => char);
-    
+
   const topWeaknesses = sortedWeaknesses.slice(0, 3);
 
   // 3. Generate Practice Text
@@ -115,18 +115,18 @@ export function generateDailyChallenge(userId: string, progressData: Record<stri
   let challengeDesc = "Mixed Practice";
 
   if (topWeaknesses.length > 0) {
-    challengeDesc = `Focus on: ${topWeaknesses.join(', ')}`;
+    challengeDesc = `Focus on: ${topWeaknesses.join(", ")}`;
     // Find words containing the weak characters
-    const focusWords = Array.from(unlockedWords).filter(word => 
-      topWeaknesses.some(weakChar => word.includes(weakChar))
+    const focusWords = Array.from(unlockedWords).filter((word) =>
+      topWeaknesses.some((weakChar) => word.includes(weakChar)),
     );
-    
+
     if (focusWords.length >= 5) {
       // Use words that contain weak characters
       let pool = focusWords;
       // Add some random words to balance
       pool = pool.concat(Array.from(unlockedWords).slice(0, 10));
-      
+
       const shuffled = shuffle(pool, today + userId);
       // Generate a reasonable length text (around 25-35 words)
       while (practiceWords.length < 30 && shuffled.length > 0) {
@@ -146,7 +146,7 @@ export function generateDailyChallenge(userId: string, progressData: Record<stri
             word += topWeaknesses[i % topWeaknesses.length];
           } else {
             const arrKeys = Array.from(unlockedKeys);
-            word += arrKeys[Math.floor(Math.random() * arrKeys.length)] || 'र';
+            word += arrKeys[Math.floor(Math.random() * arrKeys.length)] || "र";
           }
         }
         drillWords.push(word);
@@ -162,26 +162,30 @@ export function generateDailyChallenge(userId: string, progressData: Record<stri
     }
   }
 
-  const finalLevel = highestUnlockedIndex < 11 ? "शुरुआती" : highestUnlockedIndex < 21 ? "मध्यम" : "उन्नत";
+  const finalLevel =
+    highestUnlockedIndex < 11 ? "शुरुआती" : highestUnlockedIndex < 21 ? "मध्यम" : "उन्नत";
 
   const challenge: Lesson = {
-    slug: 'daily-challenge',
+    slug: "daily-challenge",
     title: challengeTitle,
-    hindiTitle: 'दैनिक चुनौती',
+    hindiTitle: "दैनिक चुनौती",
     description: challengeDesc,
     level: finalLevel,
-    keys: topWeaknesses.length > 0 ? topWeaknesses.join(' ') : 'Unlocked Keys',
+    keys: topWeaknesses.length > 0 ? topWeaknesses.join(" ") : "Unlocked Keys",
     minutes: 3,
-    text: practiceWords.join(' ')
+    text: practiceWords.join(" "),
   };
 
   // Save for today
   try {
-    localStorage.setItem(cacheKey, JSON.stringify({
-      date: today,
-      challenge
-    }));
-  } catch(e) {}
+    localStorage.setItem(
+      cacheKey,
+      JSON.stringify({
+        date: today,
+        challenge,
+      }),
+    );
+  } catch (e) {}
 
   return challenge;
 }

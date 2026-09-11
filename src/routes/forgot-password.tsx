@@ -13,23 +13,23 @@ function ForgotPasswordPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
-  
+
   const { resetPassword } = useAuth();
 
   const handleReset = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
-    
+
     if (!email.trim()) {
       setError("Please enter your email address.");
       return;
     }
-    
+
     setIsLoading(true);
-    
+
     try {
       const result = await resetPassword(email);
-      
+
       if (result.error) {
         setError(result.error);
         setIsLoading(false);
@@ -49,12 +49,8 @@ function ForgotPasswordPage() {
         <div className="mx-auto mb-6 flex size-16 items-center justify-center rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 text-primary">
           <KeyRound className="size-8" />
         </div>
-        <h1 className="mb-2 text-2xl font-bold tracking-tight text-foreground">
-          Reset Password
-        </h1>
-        <p className="mb-8 font-hindi text-muted-foreground">
-          पासवर्ड रीसेट करें
-        </p>
+        <h1 className="mb-2 text-2xl font-bold tracking-tight text-foreground">Reset Password</h1>
+        <p className="mb-8 font-hindi text-muted-foreground">पासवर्ड रीसेट करें</p>
 
         {error && (
           <div className="mb-6 rounded-xl bg-danger/10 px-4 py-3 text-sm font-medium text-danger text-left">
@@ -88,7 +84,7 @@ function ForgotPasswordPage() {
                 className="w-full rounded-xl border border-input bg-background/50 px-4 py-3 text-lg font-medium text-foreground outline-none transition-all placeholder:text-muted-foreground/60 focus:border-primary focus:ring-2 focus:ring-primary/20"
               />
             </div>
-            
+
             <button
               type="submit"
               disabled={!email.trim() || isLoading}
@@ -97,10 +93,10 @@ function ForgotPasswordPage() {
             >
               {isLoading ? <Loader2 className="size-5 animate-spin" /> : "Send Reset Link"}
             </button>
-            
+
             <div className="mt-4 text-center">
-              <Link 
-                to="/login" 
+              <Link
+                to="/login"
                 className="inline-flex items-center justify-center text-sm font-medium text-muted-foreground hover:text-foreground transition-all"
               >
                 <ArrowLeft className="size-4 mr-1.5" />

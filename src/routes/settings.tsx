@@ -111,10 +111,12 @@ function AppearanceSection() {
             "flex items-center gap-2.5 rounded-2xl px-5 py-3 text-sm font-semibold border transition-all duration-200",
             theme === "light"
               ? "bg-primary text-primary-foreground border-primary shadow-sm"
-              : "bg-secondary/50 text-muted-foreground border-border/60 hover:bg-secondary hover:text-foreground"
+              : "bg-secondary/50 text-muted-foreground border-border/60 hover:bg-secondary hover:text-foreground",
           )}
         >
-          <span className="text-base leading-none" aria-hidden="true">☀️</span>
+          <span className="text-base leading-none" aria-hidden="true">
+            ☀️
+          </span>
           Light
         </button>
         <button
@@ -124,10 +126,12 @@ function AppearanceSection() {
             "flex items-center gap-2.5 rounded-2xl px-5 py-3 text-sm font-semibold border transition-all duration-200",
             theme === "dark"
               ? "bg-primary text-primary-foreground border-primary shadow-sm"
-              : "bg-secondary/50 text-muted-foreground border-border/60 hover:bg-secondary hover:text-foreground"
+              : "bg-secondary/50 text-muted-foreground border-border/60 hover:bg-secondary hover:text-foreground",
           )}
         >
-          <span className="text-base leading-none" aria-hidden="true">🌙</span>
+          <span className="text-base leading-none" aria-hidden="true">
+            🌙
+          </span>
           Dark
         </button>
       </div>
