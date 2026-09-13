@@ -244,7 +244,7 @@ export function EnglishTypingArena({
           let newWords = [];
           for (let i = 0; i < 40; i++) {
             let w = "";
-            for (let j = 0; j < 5; j++) {
+            for (let j = 0; j < 4; j++) {
               w += pool[Math.floor(Math.random() * pool.length)];
             }
             newWords.push(w);

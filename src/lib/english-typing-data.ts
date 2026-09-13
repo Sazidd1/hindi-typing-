@@ -143,7 +143,7 @@ export const englishLessons: Lesson[] = [
     level: "Beginner",
     keys: "f j",
     minutes: 2,
-    text: "f j f j f j f j ff jj fj jf ff jj fj jf f j f j f j f j f j f j f j f j ff jj fj jf",
+    text: "fjfj fjfj ffjj fjjf ffjj fjjf fjfj fjfj fjfj fjfj ffjj fjjf",
   },
   {
     slug: "eng-ch2",
@@ -153,7 +153,7 @@ export const englishLessons: Lesson[] = [
     level: "Beginner",
     keys: "d k",
     minutes: 2,
-    text: "d k d k d k d k dd kk dk kd dd kk dk kd d k d k d k d k d k d k d k d k dd kk dk kd",
+    text: "dkdk dkdk ddkk dkkd ddkk dkkd dkdk dkdk dkdk dkdk ddkk dkkd",
   },
   {
     slug: "eng-ch3",
@@ -163,7 +163,7 @@ export const englishLessons: Lesson[] = [
     level: "Beginner",
     keys: "s l",
     minutes: 2,
-    text: "s l s l s l s l ss ll sl ls ss ll sl ls s l s l s l s l s l s l s l s l ss ll sl ls",
+    text: "slsl slsl ssll slls ssll slls slsl slsl slsl slsl ssll slls",
   },
   {
     slug: "eng-ch4",
@@ -173,7 +173,7 @@ export const englishLessons: Lesson[] = [
     level: "Beginner",
     keys: "a ;",
     minutes: 2,
-    text: "a ; a ; a ; a ; aa ;; a; ;a aa ;; a; ;a a ; a ; a ; a ; a ; a ; a ; a ; aa ;; a; ;a",
+    text: "a;a; a;a; aa;; a;;a aa;; a;;a a;a; a;a; a;a; a;a; aa;; a;;a",
   },
   {
     slug: "eng-ch5",
@@ -183,7 +183,7 @@ export const englishLessons: Lesson[] = [
     level: "Beginner",
     keys: "g h",
     minutes: 3,
-    text: "g h g h g h g h gg hh gh hg gg hh gh hg f g h j f g h j g h g h g h gg hh gh hg g h",
+    text: "ghgh ghgh gghh ghhg gghh ghhg fghj fghj ghgh ghgg hhgh hggh",
   },
   {
     slug: "eng-ch6",
@@ -204,7 +204,7 @@ export const englishLessons: Lesson[] = [
     level: "Beginner",
     keys: "r u",
     minutes: 2,
-    text: "r u r u r u r u rr uu ru ur rr uu ru ur f r j u f r j u r u r u r u r u rr uu ru ur",
+    text: "ruru ruru rruu ruur rruu ruur frju frju ruru ruru rruu ruur",
   },
   {
     slug: "eng-ch8",
@@ -214,7 +214,7 @@ export const englishLessons: Lesson[] = [
     level: "Beginner",
     keys: "e i",
     minutes: 2,
-    text: "e i e i e i e i ee ii ei ie ee ii ei ie d e k i d e k i e i e i e i e i ee ii ei ie",
+    text: "eiei eiei eeii eiie eeii eiie deki deki eiei eiei eeii eiie",
   },
   {
     slug: "eng-ch9",
@@ -224,7 +224,7 @@ export const englishLessons: Lesson[] = [
     level: "Beginner",
     keys: "w o",
     minutes: 2,
-    text: "w o w o w o w o ww oo wo ow ww oo wo ow s w l o s w l o w o w o w o w o ww oo wo ow",
+    text: "wowo wowo wwoo woow wwoo woow swlo swlo wowo wowo wwoo woow",
   },
   {
     slug: "eng-ch10",
@@ -234,7 +234,7 @@ export const englishLessons: Lesson[] = [
     level: "Beginner",
     keys: "q p",
     minutes: 2,
-    text: "q p q p q p q p qq pp qp pq qq pp qp pq a q ; p a q ; p q p q p q p q p qq pp qp pq",
+    text: "qpqp qpqp qqpp qppq qqpp qppq aq;p aq;p qpqp qpqp qqpp qppq",
   },
   {
     slug: "eng-ch11",
@@ -244,7 +244,7 @@ export const englishLessons: Lesson[] = [
     level: "Beginner",
     keys: "t y",
     minutes: 3,
-    text: "t y t y t y t y tt yy ty yt tt yy ty yt f t j y f t j y t y t y t y tt yy ty yt t y",
+    text: "tyty tyty ttyy tyyt ttyy tyyt ftjy ftjy tyty tytt yyty ytty",
   },
   {
     slug: "eng-ch12",
@@ -265,7 +265,7 @@ export const englishLessons: Lesson[] = [
     level: "Beginner",
     keys: "v m",
     minutes: 2,
-    text: "v m v m v m v m vv mm vm mv vv mm vm mv f v j m f v j m v m v m v m v m vv mm vm mv",
+    text: "vmvm vmvm vvmm vmmv vvmm vmmv fvjm fvjm vmvm vmvm vvmm vmmv",
   },
   {
     slug: "eng-ch14",
@@ -275,7 +275,7 @@ export const englishLessons: Lesson[] = [
     level: "Beginner",
     keys: "c ,",
     minutes: 2,
-    text: "c , c , c , c , cc ,, c, ,c cc ,, c, ,c d c k , d c k , c , c , c , c , cc ,, c, ,c",
+    text: "c,c, c,c, cc,, c,,c cc,, c,,c dck, dck, c,c, c,c, cc,, c,,c",
   },
   {
     slug: "eng-ch15",
@@ -285,7 +285,7 @@ export const englishLessons: Lesson[] = [
     level: "Beginner",
     keys: "x .",
     minutes: 2,
-    text: "x . x . x . x . xx .. x. .x xx .. x. .x s x l . s x l . x . x . x . x . xx .. x. .x",
+    text: "x.x. x.x. xx.. x..x xx.. x..x sxl. sxl. x.x. x.x. xx.. x..x",
   },
   {
     slug: "eng-ch16",
@@ -295,7 +295,7 @@ export const englishLessons: Lesson[] = [
     level: "Beginner",
     keys: "z /",
     minutes: 2,
-    text: "z / z / z / z / zz // z/ /z zz // z/ /z a z ; / a z ; / z / z / z / z / zz // z/ /z",
+    text: "z/z/ z/z/ zz// z//z zz// z//z az;/ az;/ z/z/ z/z/ zz// z//z",
   },
   {
     slug: "eng-ch17",
@@ -305,7 +305,7 @@ export const englishLessons: Lesson[] = [
     level: "Beginner",
     keys: "b n",
     minutes: 3,
-    text: "b n b n b n b n bb nn bn nb bb nn bn nb f b j n f b j n b n b n b n bb nn bn nb b n",
+    text: "bnbn bnbn bbnn bnnb bbnn bnnb fbjn fbjn bnbn bnbb nnbn nbbn",
   },
   {
     slug: "eng-ch18",
