@@ -12,11 +12,11 @@ import {
 import { cn } from "@/lib/utils";
 
 const LAYOUTS = [
-  "Hindi Remington GAIL",
-  "Hindi Remington CBI",
-  "Kruti Dev",
-  "Mangal InScript",
-  "English",
+  { label: "Remington GAIL", to: "/lessons" as const },
+  { label: "Remington CBI" },
+  { label: "Kruti Dev", to: "/lessons/kruti-dev" as const },
+  { label: "Mangal InScript" },
+  { label: "English", to: "/english-lessons" as const },
 ];
 
 const navItems = [
@@ -45,20 +45,8 @@ function ThemeToggle() {
 
 export function AppShell({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
-  const [layout, setLayout] = useState(() => {
-    return typeof window !== "undefined"
-      ? localStorage.getItem("selected_layout") || "Hindi Remington GAIL"
-      : "Hindi Remington GAIL";
-  });
   const { currentUser, logout } = useAuth();
   const navigate = useNavigate();
-
-  const handleLayoutSelect = (l: string) => {
-    setLayout(l);
-    if (typeof window !== "undefined") {
-      localStorage.setItem("selected_layout", l);
-    }
-  };
 
   const handleLogout = async () => {
     await logout();
@@ -97,23 +85,30 @@ export function AppShell({ children }: { children: ReactNode }) {
                       <div className="px-3 py-2 text-[10px] font-bold text-muted-foreground dark:text-slate-400 uppercase tracking-widest">
                         Keyboard Layout
                       </div>
-                      {LAYOUTS.map((l) => (
-                        <DropdownMenuItem
-                          key={l}
-                          onClick={() => handleLayoutSelect(l)}
-                          className={cn(
-                            "rounded-xl cursor-pointer py-2.5 px-3 transition-all duration-200 my-0.5 font-medium flex items-center justify-between",
-                            layout === l
-                              ? "bg-[rgba(59,130,246,0.12)] dark:bg-blue-500/20 text-[#2563eb] dark:text-blue-400"
-                              : "text-foreground dark:text-slate-200 hover:bg-black/5 dark:hover:bg-slate-800 focus:bg-black/5 dark:focus:bg-slate-800",
-                          )}
-                        >
-                          {l}
-                          {layout === l && (
-                            <div className="size-2 rounded-full bg-[#2563eb] dark:bg-blue-400" />
-                          )}
-                        </DropdownMenuItem>
-                      ))}
+                      {LAYOUTS.map((l) => {
+                        if (l.to) {
+                          return (
+                            <DropdownMenuItem key={l.label} asChild>
+                              <Link
+                                to={l.to}
+                                className="rounded-xl cursor-pointer py-2.5 px-3 transition-all duration-200 my-0.5 font-medium flex items-center justify-between text-foreground dark:text-slate-200 hover:bg-black/5 dark:hover:bg-slate-800 focus:bg-black/5 dark:focus:bg-slate-800"
+                                style={{ textDecoration: "none" }}
+                              >
+                                {l.label}
+                              </Link>
+                            </DropdownMenuItem>
+                          );
+                        }
+                        return (
+                          <DropdownMenuItem
+                            key={l.label}
+                            disabled
+                            className="rounded-xl py-2.5 px-3 transition-all duration-200 my-0.5 font-medium flex items-center justify-between text-slate-400 dark:text-slate-500 cursor-default"
+                          >
+                            {l.label}
+                          </DropdownMenuItem>
+                        );
+                      })}
                     </DropdownMenuContent>
                   </DropdownMenu>
                 );
