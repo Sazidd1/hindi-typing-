@@ -74,7 +74,6 @@ function Index() {
   const search = Route.useSearch();
   const isTestSettingsOpen = !!search.test;
   const [activeLang, setActiveLang] = useState("Hindi");
-  const [isHindiExpanded, setIsHindiExpanded] = useState(false);
 
   useEffect(() => {
     if (!currentUser) return;
@@ -214,7 +213,6 @@ function Index() {
                   <div
                     onClick={() => {
                       setActiveLang("Hindi");
-                      setIsHindiExpanded((prev) => !prev);
                     }}
                     className={`flex-1 flex items-center justify-center h-[44px] rounded-xl text-sm font-bold cursor-pointer transition-all ${
                       activeLang === "Hindi"
@@ -237,13 +235,7 @@ function Index() {
                 </div>
 
                 {/* Secondary Hindi Sub-Layouts */}
-                <div
-                  className={`grid transition-[grid-template-rows,opacity,margin] duration-300 ease-in-out ${
-                    isHindiExpanded
-                      ? "grid-rows-[1fr] opacity-100 mt-1.5"
-                      : "grid-rows-[0fr] opacity-0 mt-0"
-                  }`}
-                >
+                <div className="mt-1.5">
                   <div className="overflow-hidden">
                     <div className="grid grid-cols-2 gap-1.5 bg-[#f1f5f9] dark:bg-transparent p-2 rounded-2xl border border-slate-200/50 dark:border-none">
                       <Link
