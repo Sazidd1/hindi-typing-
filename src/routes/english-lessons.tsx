@@ -196,7 +196,7 @@ function EnglishLessonsPage() {
   const groupOrder = ["Home Row", "Top Row", "Bottom Row", "Mixed"];
 
   return (
-    <div className="min-h-[calc(100vh-64px)] p-6 lg:p-10 bg-[#FAFAFA]">
+    <div className="min-h-[calc(100vh-64px)] p-6 lg:p-10">
       <div className="max-w-[1300px] mx-auto">
         {/* Filters */}
         <div className="flex flex-wrap gap-3 mb-12">
