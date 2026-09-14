@@ -11,35 +11,27 @@ export const Route = createFileRoute("/english-lessons")({
   component: EnglishLessonsPage,
 });
 
-const themeColors = [
-  {
-    bg: "bg-[#F472B6]",
-    gradient: "bg-gradient-to-r from-[#818CF8] via-[#C084FC] to-[#F472B6]",
-    text: "text-[#F472B6]",
-    lightBg: "bg-[#F472B6]/15",
-    btnText: "text-slate-900",
-  },
-  {
-    bg: "bg-[#60A5FA]",
-    gradient: "bg-gradient-to-r from-[#34D399] to-[#60A5FA]",
-    text: "text-[#60A5FA]",
-    lightBg: "bg-[#60A5FA]/15",
-    btnText: "text-slate-900",
-  },
-  {
-    bg: "bg-[#34D399]",
-    gradient: "bg-gradient-to-r from-[#FCD34D] to-[#34D399]",
-    text: "text-[#34D399]",
-    lightBg: "bg-[#34D399]/15",
-    btnText: "text-slate-900",
-  },
-  {
-    bg: "bg-[#FBBF24]",
-    gradient: "bg-gradient-to-r from-[#F472B6] to-[#FBBF24]",
-    text: "text-[#FBBF24]",
-    lightBg: "bg-[#FBBF24]/15",
-    btnText: "text-slate-900",
-  },
+const THEMES = [
+  { gradient: 'bg-gradient-to-r from-pink-400 via-purple-400 to-blue-400',     bg: 'bg-pink-400',    text: 'text-pink-400',    lightBg: 'bg-pink-50',    btnText: 'text-white' },
+  { gradient: 'bg-gradient-to-r from-blue-400 via-cyan-400 to-teal-400',       bg: 'bg-blue-400',    text: 'text-blue-500',    lightBg: 'bg-blue-50',    btnText: 'text-white' },
+  { gradient: 'bg-gradient-to-r from-green-400 via-teal-400 to-cyan-400',      bg: 'bg-green-500',   text: 'text-green-500',   lightBg: 'bg-green-50',   btnText: 'text-white' },
+  { gradient: 'bg-gradient-to-r from-yellow-400 via-orange-400 to-pink-400',   bg: 'bg-yellow-400',  text: 'text-yellow-500',  lightBg: 'bg-yellow-50',  btnText: 'text-white' },
+  { gradient: 'bg-gradient-to-r from-purple-400 via-pink-400 to-red-400',      bg: 'bg-purple-500',  text: 'text-purple-500',  lightBg: 'bg-purple-50',  btnText: 'text-white' },
+  { gradient: 'bg-gradient-to-r from-orange-400 via-red-400 to-pink-400',      bg: 'bg-orange-400',  text: 'text-orange-500',  lightBg: 'bg-orange-50',  btnText: 'text-white' },
+  { gradient: 'bg-gradient-to-r from-teal-400 via-green-400 to-lime-400',      bg: 'bg-teal-500',    text: 'text-teal-500',    lightBg: 'bg-teal-50',    btnText: 'text-white' },
+  { gradient: 'bg-gradient-to-r from-red-400 via-pink-400 to-purple-400',      bg: 'bg-red-400',     text: 'text-red-500',     lightBg: 'bg-red-50',     btnText: 'text-white' },
+  { gradient: 'bg-gradient-to-r from-cyan-400 via-blue-400 to-indigo-400',     bg: 'bg-cyan-500',    text: 'text-cyan-500',    lightBg: 'bg-cyan-50',    btnText: 'text-white' },
+  { gradient: 'bg-gradient-to-r from-lime-400 via-green-400 to-teal-400',      bg: 'bg-lime-500',    text: 'text-lime-600',    lightBg: 'bg-lime-50',    btnText: 'text-white' },
+  { gradient: 'bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400',   bg: 'bg-indigo-500',  text: 'text-indigo-500',  lightBg: 'bg-indigo-50',  btnText: 'text-white' },
+  { gradient: 'bg-gradient-to-r from-fuchsia-400 via-pink-400 to-rose-400',    bg: 'bg-fuchsia-500', text: 'text-fuchsia-500', lightBg: 'bg-fuchsia-50', btnText: 'text-white' },
+  { gradient: 'bg-gradient-to-r from-rose-400 via-orange-400 to-yellow-400',   bg: 'bg-rose-400',    text: 'text-rose-500',    lightBg: 'bg-rose-50',    btnText: 'text-white' },
+  { gradient: 'bg-gradient-to-r from-amber-400 via-yellow-400 to-lime-400',    bg: 'bg-amber-400',   text: 'text-amber-500',   lightBg: 'bg-amber-50',   btnText: 'text-white' },
+  { gradient: 'bg-gradient-to-r from-violet-400 via-indigo-400 to-blue-400',   bg: 'bg-violet-500',  text: 'text-violet-500',  lightBg: 'bg-violet-50',  btnText: 'text-white' },
+  { gradient: 'bg-gradient-to-r from-sky-400 via-cyan-400 to-teal-400',        bg: 'bg-sky-500',     text: 'text-sky-500',     lightBg: 'bg-sky-50',     btnText: 'text-white' },
+  { gradient: 'bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400',    bg: 'bg-emerald-500', text: 'text-emerald-500', lightBg: 'bg-emerald-50', btnText: 'text-white' },
+  { gradient: 'bg-gradient-to-r from-pink-400 via-rose-400 to-red-400',        bg: 'bg-pink-500',    text: 'text-pink-500',    lightBg: 'bg-pink-50',    btnText: 'text-white' },
+  { gradient: 'bg-gradient-to-r from-blue-400 via-indigo-400 to-violet-400',   bg: 'bg-blue-500',    text: 'text-blue-600',    lightBg: 'bg-blue-50',    btnText: 'text-white' },
+  { gradient: 'bg-gradient-to-r from-green-400 via-emerald-400 to-teal-400',   bg: 'bg-green-400',   text: 'text-green-600',   lightBg: 'bg-green-50',   btnText: 'text-white' },
 ];
 
 const filters = [
@@ -59,7 +51,7 @@ function EnglishLessonCard({ item, themeIdx }: { item: any; themeIdx: number }) 
 
   const lessonNum = parseInt(item.slug.replace(/\D/g, "")) || 1;
   const formattedNum = lessonNum.toString().padStart(2, "0");
-  const theme = themeColors[themeIdx % themeColors.length]!;
+  const theme = THEMES[themeIdx % THEMES.length]!;
 
   const levelColor =
     item.level === "Beginner"
