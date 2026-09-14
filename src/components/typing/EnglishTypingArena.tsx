@@ -115,6 +115,7 @@ export function EnglishTypingArena({
   isParagraphMode?: boolean;
   onComplete?: (result: TypingResult) => void;
 }) {
+  timeLimit = 180;
   const isWordPractice = ["ch11", "ch22", "ch23", "ch24", "ch35", "ch36", "ch37"].includes(
     lessonSlug || "",
   );
@@ -122,8 +123,24 @@ export function EnglishTypingArena({
   const [dynamicText, setDynamicText] = useState(text);
 
   useEffect(() => {
-    setDynamicText(text);
-  }, [text, lessonSlug]);
+    let initialText = text;
+    if (isInfiniteMode) {
+      const tokens = tokenizeHindi(text.replace(/\s+/g, ""));
+      const pool = Array.from(new Set(tokens));
+      if (pool.length > 0) {
+        let newWords = [];
+        for (let i = 0; i < 400; i++) {
+          let w = "";
+          for (let j = 0; j < 4; j++) {
+            w += pool[Math.floor(Math.random() * pool.length)];
+          }
+          newWords.push(w);
+        }
+        initialText = text + " " + newWords.join(" ");
+      }
+    }
+    setDynamicText(initialText);
+  }, [text, isInfiniteMode]);
 
   // Do not add trailing space so the lesson ends exactly after the last word
   const normalizedText = useMemo(() => dynamicText.trim(), [dynamicText]);
@@ -232,28 +249,7 @@ export function EnglishTypingArena({
     }
   }, [text, reset, lessonSlug, currentUser]);
 
-  useEffect(() => {
-    if (isInfiniteMode && startedAt !== null && !finished) {
-      // Generate more text when approaching the end (e.g. less than 150 chars remaining)
-      if (chars.length - typedChars.length < 150) {
-        const activeLesson = lessons.find((l) => l.slug === lessonSlug);
-        if (activeLesson) {
-          // Dynamically extract the exact pool of characters used in this lesson's original text
-          const tokens = tokenizeHindi(activeLesson.text.replace(/\s+/g, ""));
-          const pool = Array.from(new Set(tokens));
-          let newWords = [];
-          for (let i = 0; i < 40; i++) {
-            let w = "";
-            for (let j = 0; j < 4; j++) {
-              w += pool[Math.floor(Math.random() * pool.length)];
-            }
-            newWords.push(w);
-          }
-          setDynamicText((prev) => prev + " " + newWords.join(" "));
-        }
-      }
-    }
-  }, [typedChars.length, chars.length, isInfiniteMode, startedAt, finished, lessonSlug]);
+
 
   const togglePause = useCallback(() => {
     if (finished) return;
@@ -541,7 +537,7 @@ export function EnglishTypingArena({
 
   // Group into words for the tile layout
   // wordStartIndices uses tokenized character indices (not string byte positions)
-  const words = useMemo(() => text.split(" "), [text]);
+  const words = useMemo(() => dynamicText.trim().split(/\s+/), [dynamicText]);
 
   const wordTokenLengths = useMemo(() => words.map((w) => tokenizeHindi(w).length), [words]);
 
@@ -1079,7 +1075,7 @@ export function EnglishTypingArena({
                 </span>
                 <div className="flex items-center gap-1">
                   <span className="text-[22px] font-semibold tracking-tight text-foreground dark:text-[#F4F7FB]">
-                    {formatTime(elapsed)}
+                    {timeLimit ? formatTime(remaining ?? 0) : formatTime(elapsed)}
                   </span>
                 </div>
               </div>
