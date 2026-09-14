@@ -874,8 +874,8 @@ export function EnglishTypingArena({
                                 "flex items-center justify-center rounded-xl bg-card dark:bg-[#1C304A] shadow-sm border border-border/50 dark:border-[rgba(255,255,255,0.05)] transition-all duration-300 shrink-0",
                                 isSpace
                                   ? isFocusMode
-                                    ? "w-16 sm:w-20"
-                                    : "w-14 sm:w-16"
+                                    ? "w-16 sm:w-20 mr-6 sm:mr-8"
+                                    : "w-14 sm:w-16 mr-6 sm:mr-8"
                                   : isFocusMode
                                     ? "size-12 sm:size-14"
                                     : "size-11 sm:size-12",
@@ -935,7 +935,7 @@ export function EnglishTypingArena({
                     <div
                       className={cn(
                         continuousMode
-                          ? "flex flex-wrap gap-x-4 gap-y-5 sm:gap-y-7 px-2 pb-6 w-full justify-start"
+                          ? "flex flex-wrap gap-x-4 gap-y-5 sm:gap-y-7 px-2 pb-6 w-full justify-center"
                           : "grid grid-cols-2 gap-x-10 sm:gap-x-16 gap-y-5 sm:gap-y-7 w-max mx-auto px-2",
                       )}
                     >
