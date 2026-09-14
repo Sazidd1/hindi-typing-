@@ -568,9 +568,9 @@ export function EnglishTypingArena({
   // Passage container ref for scroll containment (scrolls within box, not browser page)
   const passageContainerRef = useRef<HTMLDivElement>(null);
 
-  // Auto-scroll: scroll within passage container only
+  // Auto-scroll: scroll within passage container only when in paragraph mode
   useEffect(() => {
-    if (activeWordRef.current && passageContainerRef.current) {
+    if (isParagraphMode && activeWordRef.current && passageContainerRef.current) {
       const container = passageContainerRef.current;
       const el = activeWordRef.current;
       const containerRect = container.getBoundingClientRect();
@@ -579,14 +579,14 @@ export function EnglishTypingArena({
       const targetScroll = elTop - container.clientHeight / 2 + elRect.height / 2;
       container.scrollTo({ top: Math.max(0, targetScroll), behavior: "smooth" });
     }
-  }, [currentWordIndex]);
+  }, [currentWordIndex, isParagraphMode]);
 
   // Decide continuous mode for Bubble Mode rendering
   // Basic chapter drills (ch1..ch80) keep 4-word pagination.
   // Typing Tests render all words continuously.
   const isBasicDrill = !!lessonSlug && /^ch[0-9]+$/.test(lessonSlug);
   const continuousMode = !isParagraphMode && !isBasicDrill;
-  const WORDS_PER_PAGE = continuousMode ? Math.max(1, words.length) : 4;
+  const WORDS_PER_PAGE = 4;
   const pageIndex = Math.floor(currentWordIndex / WORDS_PER_PAGE);
   const startWordIdx = pageIndex * WORDS_PER_PAGE;
   const endWordIdx = Math.min(startWordIdx + WORDS_PER_PAGE, words.length);
@@ -724,8 +724,8 @@ export function EnglishTypingArena({
                     "ch-dialogue-practice",
                     "ch-adventure-story",
                   ].includes(lessonSlug || "")
-                  ? "h-[220px] sm:h-[240px]"
-                  : "h-[170px] sm:h-[190px]",
+                  ? (isParagraphMode ? "h-[220px] sm:h-[240px]" : "min-h-[220px] sm:min-h-[240px]")
+                  : (isParagraphMode ? "h-[170px] sm:h-[190px]" : "min-h-[170px] sm:min-h-[190px]"),
                 isFocusMode ? "max-w-[1100px]" : "max-w-[1000px]",
               )}
               onClick={() => inputRef.current?.focus()}
@@ -733,10 +733,10 @@ export function EnglishTypingArena({
               <div
                 ref={passageContainerRef}
                 className={cn(
-                  "flex flex-col w-full h-full items-center overflow-y-auto overflow-x-hidden custom-scrollbar",
-                  isParagraphMode || continuousMode
-                    ? "justify-start pt-4 sm:pt-6 pb-8"
-                    : "justify-center",
+                  "flex flex-col w-full items-center",
+                  isParagraphMode
+                    ? "h-full overflow-y-auto overflow-x-hidden custom-scrollbar justify-start pt-4 sm:pt-6 pb-8 scroll-smooth"
+                    : "overflow-hidden justify-center content-center py-6 sm:py-8",
                 )}
               >
                 {(() => {
@@ -853,10 +853,9 @@ export function EnglishTypingArena({
                   const renderWord = (
                     word: string,
                     wIdxInPage: number,
-                    isLastWordInText: boolean,
                   ) => {
                     const wordChars = tokenizeHindi(word);
-                    const charsWithSpace = isLastWordInText ? wordChars : [...wordChars, " "];
+                    const charsWithSpace = [...wordChars, " "];
 
                     return (
                       <div className="flex gap-1.5 sm:gap-2 shrink-0">
@@ -935,20 +934,19 @@ export function EnglishTypingArena({
                     <div
                       className={cn(
                         continuousMode
-                          ? "flex flex-wrap gap-x-4 gap-y-5 sm:gap-y-7 px-2 pb-6 w-full justify-center"
-                          : "grid grid-cols-2 gap-x-10 sm:gap-x-16 gap-y-5 sm:gap-y-7 w-max mx-auto px-2",
+                          ? "flex flex-wrap gap-x-4 sm:gap-x-8 gap-y-5 sm:gap-y-7 px-2 w-full justify-center items-center"
+                          : "grid grid-cols-2 gap-x-10 sm:gap-x-16 gap-y-5 sm:gap-y-7 w-max mx-auto px-2 items-center",
                       )}
                     >
                       {visibleWords.map((word, wIdx) => {
                         const absoluteWIdx = startWordIdx + wIdx;
-                        const isLastWordInText = absoluteWIdx === words.length - 1;
                         return (
                           <div
                             key={absoluteWIdx}
                             className="flex justify-start shrink-0"
                             ref={absoluteWIdx === currentWordIndex ? activeWordRef : null}
                           >
-                            {renderWord(word, absoluteWIdx, isLastWordInText)}
+                            {renderWord(word, absoluteWIdx)}
                           </div>
                         );
                       })}
