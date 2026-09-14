@@ -62,7 +62,9 @@ function EnglishLessonCard({ item, themeIdx }: { item: any; themeIdx: number }) 
   const levelText =
     item.level === "Beginner" ? "Easy" : item.level === "Intermediate" ? "Medium" : "Hard";
 
-  const keysArray = item.keys.split(" ").slice(0, 4);
+  const keysList = item.keys.split(" ");
+  const isWords = keysList.some((k: string) => k.length > 2);
+  const keysArray = keysList.slice(0, 4);
 
   return (
     <button
@@ -90,14 +92,22 @@ function EnglishLessonCard({ item, themeIdx }: { item: any; themeIdx: number }) 
         </div>
 
         <div className="flex flex-wrap gap-2 mb-6 h-[52px] content-start">
-          {keysArray.map((k: string, i: number) => (
+          {isWords ? (
             <div
-              key={i}
-              className={`w-[44px] h-[44px] rounded-full flex items-center justify-center font-extrabold text-white text-[15px] shadow-sm ${theme.bg}`}
+              className={`px-4 h-[44px] rounded-full flex items-center justify-center font-extrabold text-white text-[13px] tracking-wide shadow-sm ${theme.bg}`}
             >
-              {k.toUpperCase()}
+              {item.keys.toUpperCase()}
             </div>
-          ))}
+          ) : (
+            keysArray.map((k: string, i: number) => (
+              <div
+                key={i}
+                className={`w-[44px] h-[44px] rounded-full flex items-center justify-center font-extrabold text-white text-[15px] shadow-sm ${theme.bg}`}
+              >
+                {k.toUpperCase()}
+              </div>
+            ))
+          )}
         </div>
 
         <div className="mt-auto mb-4">
