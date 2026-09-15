@@ -142,7 +142,7 @@ export const englishLessons: Lesson[] = [
     description: "Home Row",
     level: "Beginner",
     keys: "f j",
-    minutes: 2,
+    minutes: 3,
     text: "fjfj fjfj ffjj fjjf ffjj fjjf fjfj fjfj fjfj fjfj ffjj fjjf",
   },
   {
@@ -152,7 +152,7 @@ export const englishLessons: Lesson[] = [
     description: "Home Row",
     level: "Beginner",
     keys: "d k",
-    minutes: 2,
+    minutes: 3,
     text: "dkdk dkdk ddkk dkkd ddkk dkkd dkdk dkdk dkdk dkdk ddkk dkkd",
   },
   {
@@ -162,7 +162,7 @@ export const englishLessons: Lesson[] = [
     description: "Home Row",
     level: "Beginner",
     keys: "s l",
-    minutes: 2,
+    minutes: 3,
     text: "slsl slsl ssll slls ssll slls slsl slsl slsl slsl ssll slls",
   },
   {
@@ -172,7 +172,7 @@ export const englishLessons: Lesson[] = [
     description: "Home Row",
     level: "Beginner",
     keys: "a ;",
-    minutes: 2,
+    minutes: 3,
     text: "a;a; a;a; aa;; a;;a aa;; a;;a a;a; a;a; a;a; a;a; aa;; a;;a",
   },
   {

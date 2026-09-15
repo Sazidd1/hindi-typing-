@@ -96,7 +96,7 @@ function EnglishLessonCard({ item, themeIdx }: { item: any; themeIdx: number }) 
             <div
               className={`px-4 h-[44px] rounded-full flex items-center justify-center font-extrabold text-white text-[13px] tracking-wide shadow-sm ${theme.bg}`}
             >
-              {item.keys.toUpperCase()}
+              {item.keys.toLowerCase()}
             </div>
           ) : (
             keysArray.map((k: string, i: number) => (
@@ -104,7 +104,7 @@ function EnglishLessonCard({ item, themeIdx }: { item: any; themeIdx: number }) 
                 key={i}
                 className={`w-[44px] h-[44px] rounded-full flex items-center justify-center font-extrabold text-white text-[15px] shadow-sm ${theme.bg}`}
               >
-                {k.toUpperCase()}
+                {k.toLowerCase()}
               </div>
             ))
           )}

@@ -184,24 +184,28 @@ export function AppShell({ children }: { children: ReactNode }) {
                         {item.label}
                       </div>
                       <div className="flex flex-col ml-3 pl-3 border-l-2 border-border/50">
-                        {LAYOUTS.map((l) => (
-                          <button
-                            key={l}
-                            onClick={() => {
-                              handleLayoutSelect(l);
-                              setOpen(false);
-                            }}
-                            className={cn(
-                              "text-left rounded-lg px-3 py-2.5 text-sm font-medium transition-colors mb-0.5 flex items-center justify-between",
-                              layout === l
-                                ? "text-[#2563eb] bg-[rgba(59,130,246,0.1)]"
-                                : "text-muted-foreground hover:text-foreground hover:bg-secondary/60",
-                            )}
-                          >
-                            {l}
-                            {layout === l && <div className="size-1.5 rounded-full bg-[#2563eb]" />}
-                          </button>
-                        ))}
+                        {LAYOUTS.map((l) => {
+                          if (l.to) {
+                            return (
+                              <Link
+                                key={l.label}
+                                to={l.to}
+                                onClick={() => setOpen(false)}
+                                className="text-left rounded-lg px-3 py-2.5 text-sm font-medium transition-colors mb-0.5 flex items-center justify-between text-muted-foreground hover:text-foreground hover:bg-secondary/60"
+                              >
+                                {l.label}
+                              </Link>
+                            );
+                          }
+                          return (
+                            <div
+                              key={l.label}
+                              className="text-left rounded-lg px-3 py-2.5 text-sm font-medium mb-0.5 flex items-center justify-between text-slate-400 dark:text-slate-500 cursor-default opacity-50"
+                            >
+                              {l.label}
+                            </div>
+                          );
+                        })}
                       </div>
                     </div>
                   );
