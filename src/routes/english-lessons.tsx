@@ -62,9 +62,10 @@ function EnglishLessonCard({ item, themeIdx }: { item: any; themeIdx: number }) 
   const levelText =
     item.level === "Beginner" ? "Easy" : item.level === "Intermediate" ? "Medium" : "Hard";
 
-  const keysList = item.keys.split(" ");
-  const isWords = keysList.some((k: string) => k.length > 2);
-  const keysArray = keysList.slice(0, 4);
+  // Use pill if keys contain 'words' or 'L-'
+  const isWords =
+    item.keys.toLowerCase().includes("words") || item.keys.toUpperCase().includes("L-");
+  const keysArray = item.keys.split(" ").filter(Boolean);
 
   return (
     <button
