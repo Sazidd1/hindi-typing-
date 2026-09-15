@@ -39,7 +39,7 @@ function EnglishPracticePage() {
         subtitle={activeLesson.description}
         text={activeLesson.text}
         timeLimit={activeLesson.minutes * 60}
-        isParagraphMode={["eng-ch11", "eng-ch22"].includes(activeLesson.slug)}
+        isParagraphMode={["eng-ch11", "eng-ch22", "eng-ch33"].includes(activeLesson.slug)}
       />
     </div>
   );

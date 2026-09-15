@@ -121,7 +121,7 @@ export function EnglishTypingArena({
   );
   const isInfiniteMode = !isWordPractice && !!lessonSlug;
   const generateText = useCallback((sourceText: string, slug?: string) => {
-    const isExactWordsLesson = ["eng-ch11", "eng-ch22"].includes(slug || "");
+    const isExactWordsLesson = ["eng-ch11", "eng-ch22", "eng-ch33"].includes(slug || "");
     let pool: string[] = [];
     
     if (isExactWordsLesson) {

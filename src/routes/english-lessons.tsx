@@ -67,7 +67,8 @@ function EnglishLessonCard({ item, themeIdx }: { item: any; themeIdx: number }) 
     item.keys.toLowerCase().includes("words") || 
     item.keys.toUpperCase().includes("L-") ||
     item.keys === "ALL HOME ROW" ||
-    item.keys === "ALL TOP ROW";
+    item.keys === "ALL TOP ROW" ||
+    item.keys === "ALL BOTTOM ROW";
   const keysArray = item.keys.split(" ").filter(Boolean);
 
   return (
