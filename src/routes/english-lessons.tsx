@@ -66,7 +66,8 @@ function EnglishLessonCard({ item, themeIdx }: { item: any; themeIdx: number }) 
   const isWords =
     item.keys.toLowerCase().includes("words") || 
     item.keys.toUpperCase().includes("L-") ||
-    item.keys === "ALL HOME ROW";
+    item.keys === "ALL HOME ROW" ||
+    item.keys === "ALL TOP ROW";
   const keysArray = item.keys.split(" ").filter(Boolean);
 
   return (
@@ -94,7 +95,7 @@ function EnglishLessonCard({ item, themeIdx }: { item: any; themeIdx: number }) 
           </span>
         </div>
 
-        <div className="flex flex-nowrap gap-1.5 mb-6 h-[40px] items-center overflow-hidden">
+        <div className="flex flex-nowrap gap-1 sm:gap-1.5 mb-6 min-h-[40px] items-center">
           {isWords ? (
             <div
               className={`px-3 h-[38px] rounded-full flex items-center justify-center font-extrabold text-white text-[12px] tracking-wide shadow-sm whitespace-nowrap text-ellipsis overflow-hidden ${theme.bg}`}
@@ -105,7 +106,7 @@ function EnglishLessonCard({ item, themeIdx }: { item: any; themeIdx: number }) 
             keysArray.map((k: string, i: number) => (
               <div
                 key={i}
-                className={`w-[38px] h-[38px] shrink-0 rounded-full flex items-center justify-center font-extrabold text-white text-[14px] shadow-sm ${theme.bg}`}
+                className={`w-8 h-8 sm:w-[38px] sm:h-[38px] shrink-0 rounded-full flex items-center justify-center font-extrabold text-white text-[13px] sm:text-[14px] shadow-sm ${theme.bg}`}
               >
                 {k.toLowerCase()}
               </div>
