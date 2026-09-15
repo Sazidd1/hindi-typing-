@@ -79,7 +79,7 @@ function EnglishLessonCard({ item, themeIdx }: { item: any; themeIdx: number }) 
         </div>
       )}
 
-      <div className="p-5 flex flex-col h-full relative">
+      <div className="p-4 flex flex-col h-full relative">
         <div className="flex justify-between items-center mb-5">
           <span
             className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${theme.lightBg} ${theme.text}`}
@@ -96,7 +96,7 @@ function EnglishLessonCard({ item, themeIdx }: { item: any; themeIdx: number }) 
             <div
               className={`px-4 h-[44px] rounded-full flex items-center justify-center font-extrabold text-white text-[13px] tracking-wide shadow-sm ${theme.bg}`}
             >
-              {item.keys.toLowerCase()}
+              {item.keys.toUpperCase()}
             </div>
           ) : (
             keysArray.map((k: string, i: number) => (
@@ -235,7 +235,7 @@ function EnglishLessonsPage() {
                 <h2 className="flex items-center gap-2 text-[13px] font-black tracking-widest text-slate-400 uppercase mb-5">
                   {groupIcon} {groupName} ({lessonsInGroup.length} LESSONS)
                 </h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">
                   {lessonsInGroup.map((item, idx) => (
                     <EnglishLessonCard key={item.slug} item={item} themeIdx={idx} />
                   ))}
