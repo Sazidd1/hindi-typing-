@@ -91,10 +91,10 @@ function EnglishLessonCard({ item, themeIdx }: { item: any; themeIdx: number }) 
           </span>
         </div>
 
-        <div className="flex flex-wrap gap-2 mb-6 h-[52px] content-start">
+        <div className="flex flex-nowrap gap-1.5 mb-6 h-[40px] items-center overflow-hidden">
           {isWords ? (
             <div
-              className={`px-4 h-[44px] rounded-full flex items-center justify-center font-extrabold text-white text-[13px] tracking-wide shadow-sm ${theme.bg}`}
+              className={`px-3 h-[38px] rounded-full flex items-center justify-center font-extrabold text-white text-[12px] tracking-wide shadow-sm whitespace-nowrap text-ellipsis overflow-hidden ${theme.bg}`}
             >
               {item.keys.toUpperCase()}
             </div>
@@ -102,7 +102,7 @@ function EnglishLessonCard({ item, themeIdx }: { item: any; themeIdx: number }) 
             keysArray.map((k: string, i: number) => (
               <div
                 key={i}
-                className={`w-[44px] h-[44px] rounded-full flex items-center justify-center font-extrabold text-white text-[15px] shadow-sm ${theme.bg}`}
+                className={`w-[38px] h-[38px] shrink-0 rounded-full flex items-center justify-center font-extrabold text-white text-[14px] shadow-sm ${theme.bg}`}
               >
                 {k.toLowerCase()}
               </div>

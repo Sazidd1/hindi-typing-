@@ -120,26 +120,41 @@ export function EnglishTypingArena({
     lessonSlug || "",
   );
   const isInfiniteMode = !isWordPractice && !!lessonSlug;
-  const [dynamicText, setDynamicText] = useState(text);
-
-  useEffect(() => {
-    const tokens = tokenizeHindi(text.replace(/\s+/g, ""));
+  const generateText = useCallback((sourceText: string, slug?: string) => {
+    const tokens = tokenizeHindi(sourceText.replace(/\s+/g, ""));
     const pool = Array.from(new Set(tokens));
-    let generatedText = text;
     if (pool.length > 0) {
       let newWords = [];
-      // Generate 400 random 4-character groups
+      let seed = 12345;
+      if (slug) {
+        for (let i = 0; i < slug.length; i++) {
+          seed = Math.imul(31, seed) + slug.charCodeAt(i) | 0;
+        }
+      }
+      const random = () => {
+        let t = seed += 0x6D2B79F5;
+        t = Math.imul(t ^ (t >>> 15), t | 1);
+        t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+      };
+
       for (let i = 0; i < 400; i++) {
         let w = "";
         for (let j = 0; j < 4; j++) {
-          w += pool[Math.floor(Math.random() * pool.length)];
+          w += pool[Math.floor(random() * pool.length)];
         }
         newWords.push(w);
       }
-      generatedText = newWords.join(" ");
+      return newWords.join(" ");
     }
-    setDynamicText(generatedText);
-  }, [text]);
+    return sourceText;
+  }, []);
+
+  const [dynamicText, setDynamicText] = useState(() => generateText(text, lessonSlug));
+
+  useEffect(() => {
+    setDynamicText(generateText(text, lessonSlug));
+  }, [text, lessonSlug, generateText]);
 
   // Do not add trailing space so the lesson ends exactly after the last word
   const normalizedText = useMemo(() => dynamicText.trim(), [dynamicText]);
@@ -233,7 +248,7 @@ export function EnglishTypingArena({
       try {
         const saved = JSON.parse(savedStr);
         if (saved.typed && saved.typed.length > 0) {
-          if (saved.typed.length < text.length) {
+          if (saved.typed.length < dynamicText.length) {
             setTyped(saved.typed);
             if (saved.elapsed) setElapsed(saved.elapsed);
             if (saved.errors) setErrors(saved.errors);
@@ -246,7 +261,7 @@ export function EnglishTypingArena({
         }
       } catch (e) {}
     }
-  }, [text, reset, lessonSlug, currentUser]);
+  }, [dynamicText, reset, lessonSlug, currentUser]);
 
 
 
