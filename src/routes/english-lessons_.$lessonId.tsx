@@ -39,6 +39,7 @@ function EnglishPracticePage() {
         subtitle={activeLesson.description}
         text={activeLesson.text}
         timeLimit={activeLesson.minutes * 60}
+        isParagraphMode={activeLesson.slug === "eng-ch11"}
       />
     </div>
   );

@@ -121,8 +121,16 @@ export function EnglishTypingArena({
   );
   const isInfiniteMode = !isWordPractice && !!lessonSlug;
   const generateText = useCallback((sourceText: string, slug?: string) => {
-    const tokens = tokenizeHindi(sourceText.replace(/\s+/g, ""));
-    const pool = Array.from(new Set(tokens));
+    const isExactWordsLesson = slug === "eng-ch11";
+    let pool: string[] = [];
+    
+    if (isExactWordsLesson) {
+      pool = sourceText.trim().split(/\s+/);
+    } else {
+      const tokens = tokenizeHindi(sourceText.replace(/\s+/g, ""));
+      pool = Array.from(new Set(tokens));
+    }
+
     if (pool.length > 0) {
       let newWords = [];
       let seed = 12345;
@@ -139,11 +147,17 @@ export function EnglishTypingArena({
       };
 
       for (let i = 0; i < 400; i++) {
-        let w = "";
-        for (let j = 0; j < 4; j++) {
-          w += pool[Math.floor(random() * pool.length)];
+        if (isExactWordsLesson) {
+          // For Lesson 11, just pick a whole word from the dictionary
+          newWords.push(pool[Math.floor(random() * pool.length)]);
+        } else {
+          // For all other lessons, generate random 4-character chunk
+          let w = "";
+          for (let j = 0; j < 4; j++) {
+            w += pool[Math.floor(random() * pool.length)];
+          }
+          newWords.push(w);
         }
-        newWords.push(w);
       }
       return newWords.join(" ");
     }
