@@ -123,24 +123,23 @@ export function EnglishTypingArena({
   const [dynamicText, setDynamicText] = useState(text);
 
   useEffect(() => {
-    let initialText = text;
-    if (isInfiniteMode) {
-      const tokens = tokenizeHindi(text.replace(/\s+/g, ""));
-      const pool = Array.from(new Set(tokens));
-      if (pool.length > 0) {
-        let newWords = [];
-        for (let i = 0; i < 400; i++) {
-          let w = "";
-          for (let j = 0; j < 4; j++) {
-            w += pool[Math.floor(Math.random() * pool.length)];
-          }
-          newWords.push(w);
+    const tokens = tokenizeHindi(text.replace(/\s+/g, ""));
+    const pool = Array.from(new Set(tokens));
+    let generatedText = text;
+    if (pool.length > 0) {
+      let newWords = [];
+      // Generate 400 random 4-character groups
+      for (let i = 0; i < 400; i++) {
+        let w = "";
+        for (let j = 0; j < 4; j++) {
+          w += pool[Math.floor(Math.random() * pool.length)];
         }
-        initialText = text + " " + newWords.join(" ");
+        newWords.push(w);
       }
+      generatedText = newWords.join(" ");
     }
-    setDynamicText(initialText);
-  }, [text, isInfiniteMode]);
+    setDynamicText(generatedText);
+  }, [text]);
 
   // Do not add trailing space so the lesson ends exactly after the last word
   const normalizedText = useMemo(() => dynamicText.trim(), [dynamicText]);
