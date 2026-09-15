@@ -339,6 +339,16 @@ export const englishLessons: Lesson[] = [
   {
     slug: "eng-ch21",
     title: "Lesson 21",
+    englishTitle: "Top Row: q w e r t y u i o p",
+    description: "Top Row",
+    level: "Intermediate",
+    keys: "TOP ROW WORDS",
+    minutes: 3,
+    text: "qwertyuiop qwertyuiop qwertyuiop",
+  },
+  {
+    slug: "eng-ch22",
+    title: "Lesson 22",
     englishTitle: "Top Row: All Keys",
     description: "Top Row",
     level: "Intermediate",
@@ -348,8 +358,8 @@ export const englishLessons: Lesson[] = [
   },
   // Bottom Row
   {
-    slug: "eng-ch22",
-    title: "Lesson 22",
+    slug: "eng-ch23",
+    title: "Lesson 23",
     englishTitle: "Bottom Row: v m",
     description: "Bottom Row",
     level: "Beginner",
@@ -358,8 +368,8 @@ export const englishLessons: Lesson[] = [
     text: "vmvm vmvm vvmm vmmv vvmm vmmv fvjm fvjm vmvm vmvm vvmm vmmv",
   },
   {
-    slug: "eng-ch23",
-    title: "Lesson 23",
+    slug: "eng-ch24",
+    title: "Lesson 24",
     englishTitle: "Bottom Row: c ,",
     description: "Bottom Row",
     level: "Beginner",
@@ -368,8 +378,8 @@ export const englishLessons: Lesson[] = [
     text: "c,c, c,c, cc,, c,,c cc,, c,,c dck, dck, c,c, c,c, cc,, c,,c",
   },
   {
-    slug: "eng-ch24",
-    title: "Lesson 24",
+    slug: "eng-ch25",
+    title: "Lesson 25",
     englishTitle: "Bottom Row: x .",
     description: "Bottom Row",
     level: "Beginner",
@@ -378,8 +388,8 @@ export const englishLessons: Lesson[] = [
     text: "x.x. x.x. xx.. x..x xx.. x..x sxl. sxl. x.x. x.x. xx.. x..x",
   },
   {
-    slug: "eng-ch25",
-    title: "Lesson 25",
+    slug: "eng-ch26",
+    title: "Lesson 26",
     englishTitle: "Bottom Row: z /",
     description: "Bottom Row",
     level: "Beginner",
@@ -388,8 +398,8 @@ export const englishLessons: Lesson[] = [
     text: "z/z/ z/z/ zz// z//z zz// z//z az;/ az;/ z/z/ z/z/ zz// z//z",
   },
   {
-    slug: "eng-ch26",
-    title: "Lesson 26",
+    slug: "eng-ch27",
+    title: "Lesson 27",
     englishTitle: "Bottom Row: b n",
     description: "Bottom Row",
     level: "Beginner",
@@ -398,8 +408,8 @@ export const englishLessons: Lesson[] = [
     text: "bnbn bnbn bbnn bnnb bbnn bnnb fbjn fbjn bnbn bnbb nnbn nbbn",
   },
   {
-    slug: "eng-ch27",
-    title: "Lesson 27",
+    slug: "eng-ch28",
+    title: "Lesson 28",
     englishTitle: "Bottom Row Words",
     description: "Bottom Row",
     level: "Intermediate",
@@ -409,8 +419,8 @@ export const englishLessons: Lesson[] = [
   },
   // Mixed
   {
-    slug: "eng-ch28",
-    title: "Lesson 28",
+    slug: "eng-ch29",
+    title: "Lesson 29",
     englishTitle: "Mixed QWERTY Words",
     description: "Mixed",
     level: "Advanced",
@@ -419,8 +429,8 @@ export const englishLessons: Lesson[] = [
     text: "keyboard typing practice learn quick fast slow steady rhythm focus mind fingers touch screen monitor computer mouse table chair house school education progress",
   },
   {
-    slug: "eng-ch29",
-    title: "Lesson 29",
+    slug: "eng-ch30",
+    title: "Lesson 30",
     englishTitle: "English Sentences",
     description: "Mixed",
     level: "Advanced",
