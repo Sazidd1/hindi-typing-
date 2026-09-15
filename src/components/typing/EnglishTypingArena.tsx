@@ -121,11 +121,23 @@ export function EnglishTypingArena({
   );
   const isInfiniteMode = !isWordPractice && !!lessonSlug;
   const generateText = useCallback((sourceText: string, slug?: string) => {
-    const isExactWordsLesson = ["eng-ch11", "eng-ch22", "eng-ch33"].includes(slug || "");
+    const isExactWordsLesson = ["eng-ch11", "eng-ch22", "eng-ch23", "eng-ch24", "eng-ch25", "eng-ch36", "eng-ch37", "eng-ch38", "eng-ch39", "eng-ch41", "eng-ch43", "eng-ch45", "eng-ch46", "eng-ch47", "eng-ch48", "eng-ch52", "eng-ch53", "eng-ch54", "eng-ch55", "eng-ch56", "eng-ch57", "eng-ch58", "eng-ch59", "eng-ch60"].includes(slug || "");
     let pool: string[] = [];
     
     if (isExactWordsLesson) {
       pool = sourceText.trim().split(/\s+/);
+      if (["eng-ch23", "eng-ch24", "eng-ch25", "eng-ch37", "eng-ch38", "eng-ch39", "eng-ch41", "eng-ch43", "eng-ch45"].includes(slug || "")) {
+        pool = pool.map(word => word.replace(/[^a-zA-Z]/g, '')).filter(Boolean);
+      } else if (["eng-ch46", "eng-ch47"].includes(slug || "")) {
+        pool = pool.map(word => word.replace(/[^a-zA-Z.]/g, '')).filter(Boolean);
+      } else if (["eng-ch48", "eng-ch57", "eng-ch58", "eng-ch59", "eng-ch60"].includes(slug || "")) {
+        pool = pool.map(word => word.replace(/[^a-zA-Z.,?]/g, '')).filter(Boolean);
+      }
+      
+      // STATIC TEXT OVERRIDE: Disable shuffling and return the exact string for story mode lessons
+      if (["eng-ch46", "eng-ch47", "eng-ch48", "eng-ch52", "eng-ch53", "eng-ch54", "eng-ch55", "eng-ch56", "eng-ch57", "eng-ch58", "eng-ch59", "eng-ch60"].includes(slug || "")) {
+        return pool.join(" ");
+      }
     } else {
       const tokens = tokenizeHindi(sourceText.replace(/\s+/g, ""));
       pool = Array.from(new Set(tokens));

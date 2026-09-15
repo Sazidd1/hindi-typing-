@@ -39,7 +39,10 @@ const filters = [
   { label: "Home Row", id: "Home Row", icon: "🏠" },
   { label: "Top Row", id: "Top Row", icon: "⬆️" },
   { label: "Bottom Row", id: "Bottom Row", icon: "⬇️" },
-  { label: "Mixed", id: "Mixed", icon: "🔀" },
+  { label: "Shift Key", id: "Shift Key", icon: "⌨️" },
+  { label: "Paragraphs", id: "Paragraphs", icon: "📝" },
+  { label: "Number Row", id: "Number Row", icon: "🔢" },
+  { label: "Full Keyboard Master", id: "Full Keyboard Master", icon: "🔀" },
   { label: "Completed", id: "Completed", icon: "✅" },
   { label: "In Progress", id: "In Progress", icon: "🔥" },
 ];
@@ -66,6 +69,14 @@ function EnglishLessonCard({ item, themeIdx }: { item: any; themeIdx: number }) 
   const isWords =
     item.keys.toLowerCase().includes("words") || 
     item.keys.toUpperCase().includes("L-") ||
+    item.keys.toUpperCase().includes("MIXED") ||
+    item.keys.toUpperCase().includes("DRILL") ||
+    item.keys.toUpperCase().includes("SHIFT") ||
+    item.keys.toUpperCase().includes("CAPITAL") ||
+    item.keys.toUpperCase().includes("PARAGRAPH") ||
+    item.keys.toUpperCase().includes("STORY") ||
+    item.keys.toUpperCase().includes("NUMBER") ||
+    item.keys.toUpperCase().includes("ADVANCED") ||
     item.keys === "ALL HOME ROW" ||
     item.keys === "ALL TOP ROW" ||
     item.keys === "ALL BOTTOM ROW";
@@ -200,7 +211,7 @@ function EnglishLessonsPage() {
     return groups;
   }, [displayedLessons]);
 
-  const groupOrder = ["Home Row", "Top Row", "Bottom Row", "Mixed"];
+  const groupOrder = ["Home Row", "Top Row", "Bottom Row", "Shift Key", "Paragraphs", "Number Row", "Full Keyboard Master"];
 
   return (
     <div className="min-h-[calc(100vh-64px)] p-6 lg:p-10">

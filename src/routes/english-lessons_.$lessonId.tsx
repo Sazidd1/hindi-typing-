@@ -39,7 +39,7 @@ function EnglishPracticePage() {
         subtitle={activeLesson.description}
         text={activeLesson.text}
         timeLimit={activeLesson.minutes * 60}
-        isParagraphMode={["eng-ch11", "eng-ch22", "eng-ch33"].includes(activeLesson.slug)}
+        isParagraphMode={["eng-ch11", "eng-ch22", "eng-ch23", "eng-ch24", "eng-ch25", "eng-ch36", "eng-ch37", "eng-ch38", "eng-ch39", "eng-ch41", "eng-ch43", "eng-ch45", "eng-ch46", "eng-ch47", "eng-ch48", "eng-ch52", "eng-ch53", "eng-ch54", "eng-ch55", "eng-ch56", "eng-ch57", "eng-ch58", "eng-ch59", "eng-ch60"].includes(activeLesson.slug)}
       />
     </div>
   );
