@@ -40,7 +40,6 @@ const filters = [
   { label: "Top Row", id: "Top Row", icon: "⬆️" },
   { label: "Bottom Row", id: "Bottom Row", icon: "⬇️" },
   { label: "Shift Key", id: "Shift Key", icon: "⌨️" },
-  { label: "Paragraphs", id: "Paragraphs", icon: "📝" },
   { label: "Number Row", id: "Number Row", icon: "🔢" },
   { label: "Full Keyboard Master", id: "Full Keyboard Master", icon: "🔀" },
   { label: "Completed", id: "Completed", icon: "✅" },
@@ -211,13 +210,13 @@ function EnglishLessonsPage() {
     return groups;
   }, [displayedLessons]);
 
-  const groupOrder = ["Home Row", "Top Row", "Bottom Row", "Shift Key", "Paragraphs", "Number Row", "Full Keyboard Master"];
+  const groupOrder = ["Home Row", "Top Row", "Bottom Row", "Shift Key", "Number Row", "Full Keyboard Master"];
 
   return (
-    <div className="min-h-[calc(100vh-64px)] p-6 lg:p-10">
+    <div className="min-h-[calc(100vh-64px)] px-6 lg:px-10 pb-6 lg:pb-10 pt-0">
       <div className="max-w-[1300px] mx-auto">
         {/* Filters */}
-        <div className="flex flex-wrap gap-3 mb-12">
+        <div className="py-4 mb-6 flex flex-wrap gap-3">
           {filters.map((filter) => {
             const isActive = activeCategory === filter.id;
             const label = filter.id === "All" ? `All (${extendedCurriculum.length})` : filter.label;
@@ -225,7 +224,7 @@ function EnglishLessonsPage() {
               <button
                 key={filter.id}
                 onClick={() => setActiveCategory(filter.id)}
-                className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-[14px] font-bold transition-all duration-200 border ${
+                className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-[14px] font-bold transition-all duration-200 border whitespace-nowrap ${
                   isActive
                     ? "bg-gradient-to-r from-[#A855F7] to-[#C084FC] text-white border-transparent shadow-md"
                     : "bg-white text-slate-700 border-slate-200 hover:border-slate-300 hover:shadow-sm"
