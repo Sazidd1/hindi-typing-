@@ -63,13 +63,36 @@ function Toggle({
 function OptionRow({
   label,
   options,
-  initial,
+  storageKey,
+  defaultVal,
 }: {
   label: string;
   options: string[];
-  initial: string;
+  storageKey: string;
+  defaultVal: string;
 }) {
-  const [value, setValue] = useState(initial);
+  const [value, setValue] = useState(() => {
+    return localStorage.getItem(storageKey) || defaultVal;
+  });
+
+  const handleSelect = (val: string) => {
+    setValue(val);
+    localStorage.setItem(storageKey, val);
+    window.dispatchEvent(new Event(`${storageKey}_changed`));
+
+    // Handle language toggling if this is the keyboard layout row
+    if (storageKey === "settings_keyboard_layout") {
+      if (val === "English") {
+        localStorage.setItem("settings_language_mode", "English");
+      } else if (val === "Krutidev") {
+        localStorage.setItem("settings_language_mode", "Krutidev (Hindi)");
+      } else {
+        localStorage.setItem("settings_language_mode", "Hindi");
+      }
+      window.dispatchEvent(new Event("language_mode_changed"));
+    }
+  };
+
   return (
     <div className="py-4">
       <p className="font-medium text-foreground">{label}</p>
@@ -77,12 +100,12 @@ function OptionRow({
         {options.map((o) => (
           <button
             key={o}
-            onClick={() => setValue(o)}
+            onClick={() => handleSelect(o)}
             className={cn(
               "rounded-full px-4 py-2 text-sm font-medium transition-all duration-200",
               o === value
-                ? "bg-primary text-primary-foreground"
-                : "bg-secondary/60 text-muted-foreground hover:text-foreground hover:bg-secondary",
+                ? "bg-primary text-primary-foreground shadow-sm"
+                : "bg-secondary/60 text-muted-foreground hover:text-foreground hover:bg-secondary border border-transparent",
             )}
           >
             {o}
@@ -157,18 +180,21 @@ function SettingsPage() {
           <div className="divide-y divide-border/60">
             <OptionRow
               label="Keyboard layout"
-              options={["Remington GAIL", "Remington CBI", "Inscript"]}
-              initial="Remington GAIL"
+              options={["English", "Krutidev", "Remington GAIL", "Remington CBI", "Inscript"]}
+              storageKey="settings_keyboard_layout"
+              defaultVal="Remington GAIL"
             />
             <OptionRow
               label="Text size"
               options={["Comfort", "Large", "Extra large"]}
-              initial="Large"
+              storageKey="settings_text_size"
+              defaultVal="Large"
             />
             <OptionRow
               label="Default test duration"
-              options={["30 sec", "60 sec", "120 sec"]}
-              initial="60 sec"
+              options={["30 sec", "60 sec", "120 sec", "180 sec", "300 sec"]}
+              storageKey="settings_test_duration"
+              defaultVal="60 sec"
             />
           </div>
         </GlassCard>
