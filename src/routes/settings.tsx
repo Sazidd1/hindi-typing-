@@ -184,12 +184,7 @@ function SettingsPage() {
               storageKey="settings_keyboard_layout"
               defaultVal="Remington GAIL"
             />
-            <OptionRow
-              label="Text size"
-              options={["Comfort", "Large", "Extra large"]}
-              storageKey="settings_text_size"
-              defaultVal="Large"
-            />
+
             <OptionRow
               label="Default test duration"
               options={["30 sec", "60 sec", "120 sec", "180 sec", "300 sec"]}
