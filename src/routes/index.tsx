@@ -39,7 +39,7 @@ export const Route = createFileRoute("/")({
 const features = [
   {
     icon: Keyboard,
-    title: "Remington Keyboard",
+    title: "Multi-Layout Support",
     text: "एनिमेटेड वर्चुअल कीबोर्ड और उंगली मार्गदर्शन के साथ सही तकनीक सीखें।",
     bg: "linear-gradient(135deg, #2563eb, #3b82f6)",
     to: "/practice" as const,
@@ -317,7 +317,7 @@ function Index() {
             Why Abhyas
           </span>
           <h2 className="en text-3xl font-extrabold text-foreground leading-tight">
-            A learning experience built for Hindi typists
+            A learning experience built for multi-layout
           </h2>
           <p className="mt-3 text-sm text-[#64748b] max-w-2xl font-hindi leading-relaxed">
             हर सुविधा आपकी गति और आत्मविश्वास बढ़ाने के लिए डिज़ाइन की गई है।
