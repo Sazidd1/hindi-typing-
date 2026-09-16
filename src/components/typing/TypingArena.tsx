@@ -178,6 +178,22 @@ export function TypingArena({
     return () => window.removeEventListener("keyboardPresetUpdated", updatePreset);
   }, []);
 
+  const [effectiveTimeLimit, setEffectiveTimeLimit] = useState<number | null>(() => {
+    const saved = localStorage.getItem("settings_test_duration");
+    return saved ? parseInt(saved) : (timeLimit || 60);
+  });
+
+  useEffect(() => {
+    const updateTime = () => {
+      const saved = localStorage.getItem("settings_test_duration");
+      setEffectiveTimeLimit(saved ? parseInt(saved) : (timeLimit || 60));
+    };
+    window.addEventListener("settings_test_duration_changed", updateTime);
+    // Also update when the component first mounts or when `timeLimit` prop changes
+    updateTime();
+    return () => window.removeEventListener("settings_test_duration_changed", updateTime);
+  }, [timeLimit]);
+
   // isWordPractice is now defined at the top of the component
 
   const typedChars = useMemo(() => tokenizeHindi(typed), [typed]);
@@ -186,10 +202,10 @@ export function TypingArena({
 
   const { wpm, accuracy, correctCharacters, totalAttempted } = validation;
   const progress =
-    isInfiniteMode && timeLimit
-      ? Math.min(100, Math.round((elapsed / timeLimit) * 100))
+    isInfiniteMode && effectiveTimeLimit
+      ? Math.min(100, Math.round((elapsed / effectiveTimeLimit) * 100))
       : Math.min(100, Math.round((typedChars.length / chars.length) * 100));
-  const remaining = timeLimit ? Math.max(0, timeLimit - elapsed) : null;
+  const remaining = effectiveTimeLimit ? Math.max(0, effectiveTimeLimit - elapsed) : null;
 
   const reset = useCallback(() => {
     setTyped("");
@@ -358,7 +374,7 @@ export function TypingArena({
 
   useEffect(() => {
     if (finished || completedRef.current) return;
-    const timeUp = timeLimit != null && elapsed >= timeLimit && startedAt !== null;
+    const timeUp = effectiveTimeLimit != null && elapsed >= effectiveTimeLimit && startedAt !== null;
     const done = isInfiniteMode ? false : typedChars.length >= chars.length && chars.length > 0;
 
     if (timeUp || done || forceFinish) {
@@ -421,7 +437,7 @@ export function TypingArena({
     }
   }, [
     elapsed,
-    timeLimit,
+    effectiveTimeLimit,
     typedChars.length,
     chars.length,
     finished,

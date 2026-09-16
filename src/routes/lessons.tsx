@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { GlassCard, SectionTitle } from "@/components/kit/GlassCard";
 import { LessonCard } from "@/components/typing/LessonCard";
+import { useTestDurationDisplay } from "@/lib/useTestDuration";
 import { lessons } from "@/lib/typing-data";
 import { generateDailyChallenge } from "@/lib/daily-challenge";
 
@@ -52,6 +53,7 @@ export const categories = ["All", "Home Row", "Top Row", "Bottom Row", "Mixed", 
 
 function LessonsPage() {
   const { currentUser } = useAuth();
+  const displayDuration = useTestDurationDisplay();
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState("All");
   const [progressData, setProgressData] = useState<Record<string, any>>({});
@@ -180,7 +182,7 @@ function LessonsPage() {
                     <span className="text-[10px] font-bold text-muted-foreground">+50 XP</span>
                   </div>
                   <span className="flex items-center gap-1 bg-white/40 px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider text-slate-500 leading-none">
-                    ⏱ {dailyChallenge.minutes}m
+                    ⏱ {displayDuration}
                   </span>
                 </div>
                 <h3 className="text-lg sm:text-xl font-bold text-foreground mb-1 leading-tight">
@@ -215,7 +217,7 @@ function LessonsPage() {
                       <Star className="size-3" /> Recommended
                     </span>
                     <span className="flex items-center gap-1 bg-white/40 px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider text-slate-500 leading-none">
-                      ⏱ {recommendedLesson.minutes}m
+                      ⏱ {displayDuration}
                     </span>
                   </div>
                   <div className="flex items-start gap-3">

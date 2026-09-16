@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { CheckCircle, Lock, ArrowRight } from "lucide-react";
 import { useAuth } from "@/lib/auth";
+import { useTestDurationDisplay } from "@/lib/useTestDuration";
 
 export function LessonCard({
   item,
@@ -19,6 +20,7 @@ export function LessonCard({
   const headerTextColor = "text-white";
 
   const { currentUser } = useAuth();
+  const displayDuration = useTestDurationDisplay();
 
   const getLessonTitle = () => {
     if (item.slug) {
@@ -81,7 +83,7 @@ export function LessonCard({
 
         <div className="mt-1.5 flex flex-wrap text-[10px] font-bold uppercase tracking-wider text-slate-500">
           <span className="flex items-center gap-1 bg-slate-100 px-2 py-1 rounded-md leading-none text-slate-500">
-            ⏱ {item.minutes}m
+            ⏱ {displayDuration}
           </span>
         </div>
 

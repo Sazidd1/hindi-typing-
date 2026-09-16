@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useAuth } from "@/lib/auth";
+import { useTestDurationDisplay } from "@/lib/useTestDuration";
 import { ArrowRight, CheckCircle } from "lucide-react";
 import { englishLessons } from "@/lib/english-typing-data";
 
@@ -47,6 +48,7 @@ const filters = [
 ];
 
 function EnglishLessonCard({ item, themeIdx }: { item: any; themeIdx: number }) {
+  const displayDuration = useTestDurationDisplay();
   const isCompleted = item.progress === 100;
   const progress = item.progress || 0;
   const navigate = useNavigate();
@@ -128,7 +130,7 @@ function EnglishLessonCard({ item, themeIdx }: { item: any; themeIdx: number }) 
             {item.englishTitle || item.title}
           </h3>
           <p className="text-[13px] font-medium text-slate-500">
-            {item.description} • {item.minutes} min
+            {item.description} • {displayDuration}
           </p>
         </div>
 

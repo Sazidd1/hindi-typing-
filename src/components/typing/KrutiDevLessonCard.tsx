@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { CheckCircle, Clock, Home, ArrowRight, Bookmark } from "lucide-react";
+import { useTestDurationDisplay } from "@/lib/useTestDuration";
 
 const themeColors = [
   {
@@ -44,6 +45,7 @@ export function KrutiDevLessonCard({
   const isCompleted = item.progress === 100;
   const progress = item.progress || 0;
   const isLocked = item.isLocked;
+  const displayDuration = useTestDurationDisplay();
 
   const lessonNum = parseInt(item.slug.replace(/\D/g, "")) || 1;
   const formattedNum = lessonNum.toString().padStart(2, "0");
@@ -90,7 +92,7 @@ export function KrutiDevLessonCard({
             </div>
             <div className="flex items-center gap-1">
               <Clock className="size-3.5" />
-              <span>{item.minutes} min</span>
+              <span>{displayDuration}</span>
             </div>
           </div>
         </div>

@@ -139,8 +139,17 @@ function PracticePage() {
     setDynamicText(newText);
   }, [active.slug, active.text, limit]);
 
+  const [testDuration, setTestDuration] = useState(() => localStorage.getItem("settings_test_duration") || "60 sec");
+  useEffect(() => {
+    const handleDuration = () => setTestDuration(localStorage.getItem("settings_test_duration") || "60 sec");
+    window.addEventListener("settings_test_duration_changed", handleDuration);
+    return () => window.removeEventListener("settings_test_duration_changed", handleDuration);
+  }, []);
+
   const isStoryMode = active.slug.startsWith("story-") || mode === "randomWords";
-  const finalTimeLimit = (time ? time : active.minutes) * 60;
+  const defaultSeconds = parseInt(testDuration) || 60;
+  // Strictly respect user's selected default duration unless overridden by a specific URL 'time' param
+  const finalTimeLimit = time ? time * 60 : defaultSeconds;
 
   return (
     <div className="w-full">

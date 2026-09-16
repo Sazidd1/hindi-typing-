@@ -227,6 +227,21 @@ export function EnglishTypingArena({
     return () => window.removeEventListener("keyboardPresetUpdated", updatePreset);
   }, []);
 
+  const [effectiveTimeLimit, setEffectiveTimeLimit] = useState<number | null>(() => {
+    const saved = localStorage.getItem("settings_test_duration");
+    return saved ? parseInt(saved) : (timeLimit || 60);
+  });
+
+  useEffect(() => {
+    const updateTime = () => {
+      const saved = localStorage.getItem("settings_test_duration");
+      setEffectiveTimeLimit(saved ? parseInt(saved) : (timeLimit || 60));
+    };
+    window.addEventListener("settings_test_duration_changed", updateTime);
+    updateTime();
+    return () => window.removeEventListener("settings_test_duration_changed", updateTime);
+  }, [timeLimit]);
+
   // isWordPractice is now defined at the top of the component
 
   const typedChars = useMemo(() => tokenizeHindi(typed), [typed]);
@@ -235,10 +250,10 @@ export function EnglishTypingArena({
 
   const { wpm, accuracy, correctCharacters, totalAttempted } = validation;
   const progress =
-    isInfiniteMode && timeLimit
-      ? Math.min(100, Math.round((elapsed / timeLimit) * 100))
+    isInfiniteMode && effectiveTimeLimit
+      ? Math.min(100, Math.round((elapsed / effectiveTimeLimit) * 100))
       : Math.min(100, Math.round((typedChars.length / chars.length) * 100));
-  const remaining = timeLimit ? Math.max(0, timeLimit - elapsed) : null;
+  const remaining = effectiveTimeLimit ? Math.max(0, effectiveTimeLimit - elapsed) : null;
 
   const reset = useCallback(() => {
     setTyped("");
@@ -386,7 +401,7 @@ export function EnglishTypingArena({
 
   useEffect(() => {
     if (finished || completedRef.current) return;
-    const timeUp = timeLimit != null && elapsed >= timeLimit && startedAt !== null;
+    const timeUp = effectiveTimeLimit != null && elapsed >= effectiveTimeLimit && startedAt !== null;
     const done = isInfiniteMode ? false : typedChars.length >= chars.length && chars.length > 0;
 
     if (timeUp || done || forceFinish) {
@@ -449,7 +464,7 @@ export function EnglishTypingArena({
     }
   }, [
     elapsed,
-    timeLimit,
+    effectiveTimeLimit,
     typedChars.length,
     chars.length,
     finished,
@@ -1115,7 +1130,7 @@ export function EnglishTypingArena({
                 </span>
                 <div className="flex items-center gap-1">
                   <span className="text-[22px] font-semibold tracking-tight text-foreground dark:text-[#F4F7FB]">
-                    {timeLimit ? formatTime(remaining ?? 0) : formatTime(elapsed)}
+                    {effectiveTimeLimit ? formatTime(remaining ?? 0) : formatTime(elapsed)}
                   </span>
                 </div>
               </div>
