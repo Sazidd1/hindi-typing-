@@ -64,7 +64,7 @@ function EnglishLessonCard({ item, themeIdx }: { item: any; themeIdx: number }) 
   const levelText =
     item.level === "Beginner" ? "Easy" : item.level === "Intermediate" ? "Medium" : "Hard";
 
-  // Use pill if keys contain 'words' or 'L-' or is 'ALL HOME ROW'
+  // Use pill if keys contain 'words', 'L-', or 'ROW'
   const isWords =
     item.keys.toLowerCase().includes("words") || 
     item.keys.toUpperCase().includes("L-") ||
@@ -76,9 +76,7 @@ function EnglishLessonCard({ item, themeIdx }: { item: any; themeIdx: number }) 
     item.keys.toUpperCase().includes("STORY") ||
     item.keys.toUpperCase().includes("NUMBER") ||
     item.keys.toUpperCase().includes("ADVANCED") ||
-    item.keys === "ALL HOME ROW" ||
-    item.keys === "ALL TOP ROW" ||
-    item.keys === "ALL BOTTOM ROW";
+    item.keys.toUpperCase().includes("ROW");
   const keysArray = item.keys.split(" ").filter(Boolean);
 
   return (
