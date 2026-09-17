@@ -172,7 +172,9 @@ function LeaderboardPage() {
           {leaderboardMode === "XP" ? "XP Leaderboard" : `${period} Leaderboard`}
         </h1>
         <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
-          {isEnglish ? "The fastest and most accurate typists this week." : "इस सप्ताह के सबसे तेज़ और सटीक टाइपिस्ट।"}
+          {isEnglish
+            ? "The fastest and most accurate typists this week."
+            : "इस सप्ताह के सबसे तेज़ और सटीक टाइपिस्ट।"}
         </p>
       </div>
 

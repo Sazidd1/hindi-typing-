@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, Navigate } from "@tanstack/react-router";
 import { useAuth } from "@/lib/auth";
 import {
   ArrowRight,
@@ -20,6 +20,7 @@ import { useTestDurationDisplay } from "@/lib/useTestDuration";
 import { lessons } from "@/lib/typing-data";
 import { generateDailyChallenge } from "@/lib/daily-challenge";
 import { useLanguage } from "@/lib/useLanguage";
+import { useKeyboardLayout } from "@/lib/useKeyboardLayout";
 
 export const Route = createFileRoute("/lessons")({
   head: () => ({
@@ -53,6 +54,7 @@ const extendedCurriculumBase = [
 export const categories = ["All", "Home Row", "Top Row", "Bottom Row", "Mixed", "Tests"];
 
 function LessonsPage() {
+  const { layout } = useKeyboardLayout();
   const { isEnglish } = useLanguage();
   const { currentUser } = useAuth();
   const displayDuration = useTestDurationDisplay();
@@ -144,13 +146,30 @@ function LessonsPage() {
     return testOrMixed || extendedCurriculum[0];
   }, [extendedCurriculum]);
 
+  if (layout === "English") {
+    return <Navigate to="/english-lessons" replace />;
+  }
+  if (layout === "Krutidev" || layout === "Kruti Dev") {
+    return <Navigate to="/lessons/kruti-dev" replace />;
+  }
+  if (layout === "Remington CBI") {
+    return <Navigate to="/lessons/remington-cbi" replace />;
+  }
+  if (layout === "Inscript" || layout === "Mangal InScript") {
+    return <Navigate to="/lessons/inscript" replace />;
+  }
+
   return (
     <div className="space-y-12 pb-10">
       <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between animate-rise-in">
         <SectionTitle
           eyebrow="Curriculum"
           title="Learning Center"
-          subtitle={isEnglish ? "Every lesson prepares you for the next level — practice in order." : "हर पाठ आपको अगले स्तर के लिए तैयार करता है — क्रम से अभ्यास करें।"}
+          subtitle={
+            isEnglish
+              ? "Every lesson prepares you for the next level — practice in order."
+              : "हर पाठ आपको अगले स्तर के लिए तैयार करता है — क्रम से अभ्यास करें।"
+          }
         />
 
         <div className="relative w-full md:w-72">

@@ -846,7 +846,7 @@ export function generateExtendedPracticeSession(slug: string) {
   if (!template) throw new Error(`Template not found for ${slug}`);
   let text = fillTemplate(template).replace(/\s+/g, " ").trim();
 
-  let words = text.split(" ").filter((w) => w.length > 0);
+  const words = text.split(" ").filter((w) => w.length > 0);
 
   // Pad word count to ensure > 700 words.
   // Instead of completely random words, construct generic context-appropriate sentences
@@ -899,7 +899,7 @@ export function generateExtendedPracticeSession(slug: string) {
     "पार्क में",
   ];
 
-  let usedFillerWords = new Set<string>();
+  const usedFillerWords = new Set<string>();
 
   if (words.length < 800) {
     text += "\n\nअन्य विवरण:\n";

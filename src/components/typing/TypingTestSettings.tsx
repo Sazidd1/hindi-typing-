@@ -476,7 +476,9 @@ export default function TypingTestSettings({ onClose }: { onClose?: () => void }
               fontWeight: 400,
             }}
           >
-            {isEnglish ? "Choose your layout & configure the session" : "अपना लेआउट चुनें और सत्र कॉन्फ़िगर करें"}
+            {isEnglish
+              ? "Choose your layout & configure the session"
+              : "अपना लेआउट चुनें और सत्र कॉन्फ़िगर करें"}
           </p>
         </div>
 
@@ -514,7 +516,9 @@ export default function TypingTestSettings({ onClose }: { onClose?: () => void }
                 gap: 16,
               }}
             >
-              <div style={{ fontSize: 15, fontWeight: 600, color: "#44403c" }}>{isEnglish ? "Name" : "नाम"}</div>
+              <div style={{ fontSize: 15, fontWeight: 600, color: "#44403c" }}>
+                {isEnglish ? "Name" : "नाम"}
+              </div>
               <div style={{ flex: 1, display: "flex", justifyContent: "flex-end" }}>
                 <input
                   type="text"
@@ -608,7 +612,9 @@ export default function TypingTestSettings({ onClose }: { onClose?: () => void }
                   gap: 16,
                 }}
               >
-                <div style={{ fontSize: 15, fontWeight: 600, color: "#44403c" }}>{isEnglish ? "Test Time" : "टेस्ट समय"}</div>
+                <div style={{ fontSize: 15, fontWeight: 600, color: "#44403c" }}>
+                  {isEnglish ? "Test Time" : "टेस्ट समय"}
+                </div>
                 <div style={{ flex: 1, display: "flex", justifyContent: "flex-end" }}>
                   <select
                     className="tts-input tts-select"
@@ -779,7 +785,9 @@ export default function TypingTestSettings({ onClose }: { onClose?: () => void }
                   gap: 16,
                 }}
               >
-                <div style={{ fontSize: 15, fontWeight: 600, color: "#44403c" }}>{isEnglish ? "Backspace" : "बैकस्पेस"}</div>
+                <div style={{ fontSize: 15, fontWeight: 600, color: "#44403c" }}>
+                  {isEnglish ? "Backspace" : "बैकस्पेस"}
+                </div>
                 <div style={{ flex: 1, display: "flex", justifyContent: "flex-end" }}>
                   <Switch
                     checked={backspace}

@@ -168,7 +168,11 @@ export function ChapterMasteryModal({
               )}
             </div>
             <div>
-              <p className="text-sm font-bold text-slate-800">{isEnglish ? `Target: ${DEFAULT_TARGET_WPM} WPM` : `लक्ष्य: ${DEFAULT_TARGET_WPM} WPM`}</p>
+              <p className="text-sm font-bold text-slate-800">
+                {isEnglish
+                  ? `Target: ${DEFAULT_TARGET_WPM} WPM`
+                  : `लक्ष्य: ${DEFAULT_TARGET_WPM} WPM`}
+              </p>
               <p
                 className={cn(
                   "text-[13px] font-semibold",
@@ -176,10 +180,16 @@ export function ChapterMasteryModal({
                 )}
               >
                 {targetCompleted
-                  ? (isEnglish ? "Target Completed!" : "लक्ष्य पूरा हुआ!")
+                  ? isEnglish
+                    ? "Target Completed!"
+                    : "लक्ष्य पूरा हुआ!"
                   : !isValid
-                    ? (isEnglish ? "Session Invalid. Too short or too many mistakes." : "सत्र अमान्य। बहुत छोटा या बहुत सारी गलतियाँ हैं।")
-                    : (isEnglish ? "Keep practicing to hit the target" : "लक्ष्य तक पहुंचने के लिए अभ्यास करते रहें")}
+                    ? isEnglish
+                      ? "Session Invalid. Too short or too many mistakes."
+                      : "सत्र अमान्य। बहुत छोटा या बहुत सारी गलतियाँ हैं।"
+                    : isEnglish
+                      ? "Keep practicing to hit the target"
+                      : "लक्ष्य तक पहुंचने के लिए अभ्यास करते रहें"}
               </p>
             </div>
           </div>

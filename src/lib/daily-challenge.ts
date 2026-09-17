@@ -7,7 +7,7 @@ function getTodayString() {
 
 // Simple seeded random to keep challenges consistent if we need to regenerate
 function seedRandom(seed: number) {
-  let x = Math.sin(seed++) * 10000;
+  const x = Math.sin(seed++) * 10000;
   return x - Math.floor(x);
 }
 
@@ -111,7 +111,7 @@ export function generateDailyChallenge(userId: string, progressData: Record<stri
 
   // 3. Generate Practice Text
   let practiceWords: string[] = [];
-  let challengeTitle = "Daily Challenge";
+  const challengeTitle = "Daily Challenge";
   let challengeDesc = "Mixed Practice";
 
   if (topWeaknesses.length > 0) {

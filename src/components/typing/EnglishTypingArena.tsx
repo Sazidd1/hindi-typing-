@@ -121,21 +121,75 @@ export function EnglishTypingArena({
   );
   const isInfiniteMode = !isWordPractice && !!lessonSlug;
   const generateText = useCallback((sourceText: string, slug?: string) => {
-    const isExactWordsLesson = ["eng-ch11", "eng-ch22", "eng-ch23", "eng-ch24", "eng-ch25", "eng-ch36", "eng-ch37", "eng-ch38", "eng-ch39", "eng-ch41", "eng-ch43", "eng-ch45", "eng-ch46", "eng-ch47", "eng-ch48", "eng-ch54", "eng-ch55", "eng-ch56", "eng-ch57", "eng-ch58", "eng-ch59", "eng-ch60", "eng-ch61", "eng-ch62"].includes(slug || "");
+    const isExactWordsLesson = [
+      "eng-ch11",
+      "eng-ch22",
+      "eng-ch23",
+      "eng-ch24",
+      "eng-ch25",
+      "eng-ch36",
+      "eng-ch37",
+      "eng-ch38",
+      "eng-ch39",
+      "eng-ch41",
+      "eng-ch43",
+      "eng-ch45",
+      "eng-ch46",
+      "eng-ch47",
+      "eng-ch48",
+      "eng-ch54",
+      "eng-ch55",
+      "eng-ch56",
+      "eng-ch57",
+      "eng-ch58",
+      "eng-ch59",
+      "eng-ch60",
+      "eng-ch61",
+      "eng-ch62",
+    ].includes(slug || "");
     let pool: string[] = [];
-    
+
     if (isExactWordsLesson) {
       pool = sourceText.trim().split(/\s+/);
-      if (["eng-ch23", "eng-ch24", "eng-ch25", "eng-ch37", "eng-ch38", "eng-ch39", "eng-ch41", "eng-ch43", "eng-ch45"].includes(slug || "")) {
-        pool = pool.map(word => word.replace(/[^a-zA-Z]/g, '')).filter(Boolean);
+      if (
+        [
+          "eng-ch23",
+          "eng-ch24",
+          "eng-ch25",
+          "eng-ch37",
+          "eng-ch38",
+          "eng-ch39",
+          "eng-ch41",
+          "eng-ch43",
+          "eng-ch45",
+        ].includes(slug || "")
+      ) {
+        pool = pool.map((word) => word.replace(/[^a-zA-Z]/g, "")).filter(Boolean);
       } else if (["eng-ch46", "eng-ch47"].includes(slug || "")) {
-        pool = pool.map(word => word.replace(/[^a-zA-Z.]/g, '')).filter(Boolean);
-      } else if (["eng-ch48", "eng-ch59", "eng-ch60", "eng-ch61", "eng-ch62"].includes(slug || "")) {
-        pool = pool.map(word => word.replace(/[^a-zA-Z.,?]/g, '')).filter(Boolean);
+        pool = pool.map((word) => word.replace(/[^a-zA-Z.]/g, "")).filter(Boolean);
+      } else if (
+        ["eng-ch48", "eng-ch59", "eng-ch60", "eng-ch61", "eng-ch62"].includes(slug || "")
+      ) {
+        pool = pool.map((word) => word.replace(/[^a-zA-Z.,?]/g, "")).filter(Boolean);
       }
-      
+
       // STATIC TEXT OVERRIDE: Disable shuffling and return the exact string for story mode lessons
-      if (["eng-ch46", "eng-ch47", "eng-ch48", "eng-ch54", "eng-ch55", "eng-ch56", "eng-ch57", "eng-ch58", "eng-ch59", "eng-ch60", "eng-ch61", "eng-ch62"].includes(slug || "")) {
+      if (
+        [
+          "eng-ch46",
+          "eng-ch47",
+          "eng-ch48",
+          "eng-ch54",
+          "eng-ch55",
+          "eng-ch56",
+          "eng-ch57",
+          "eng-ch58",
+          "eng-ch59",
+          "eng-ch60",
+          "eng-ch61",
+          "eng-ch62",
+        ].includes(slug || "")
+      ) {
         return pool.join(" ");
       }
     } else {
@@ -144,15 +198,15 @@ export function EnglishTypingArena({
     }
 
     if (pool.length > 0) {
-      let newWords = [];
+      const newWords = [];
       let seed = 12345;
       if (slug) {
         for (let i = 0; i < slug.length; i++) {
-          seed = Math.imul(31, seed) + slug.charCodeAt(i) | 0;
+          seed = (Math.imul(31, seed) + slug.charCodeAt(i)) | 0;
         }
       }
       const random = () => {
-        let t = seed += 0x6D2B79F5;
+        let t = (seed += 0x6d2b79f5);
         t = Math.imul(t ^ (t >>> 15), t | 1);
         t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
         return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
@@ -229,13 +283,13 @@ export function EnglishTypingArena({
 
   const [effectiveTimeLimit, setEffectiveTimeLimit] = useState<number | null>(() => {
     const saved = localStorage.getItem("settings_test_duration");
-    return saved ? parseInt(saved) : (timeLimit || 60);
+    return saved ? parseInt(saved) : timeLimit || 60;
   });
 
   useEffect(() => {
     const updateTime = () => {
       const saved = localStorage.getItem("settings_test_duration");
-      setEffectiveTimeLimit(saved ? parseInt(saved) : (timeLimit || 60));
+      setEffectiveTimeLimit(saved ? parseInt(saved) : timeLimit || 60);
     };
     window.addEventListener("settings_test_duration_changed", updateTime);
     updateTime();
@@ -303,8 +357,6 @@ export function EnglishTypingArena({
       } catch (e) {}
     }
   }, [dynamicText, reset, lessonSlug, currentUser]);
-
-
 
   const togglePause = useCallback(() => {
     if (finished) return;
@@ -401,7 +453,8 @@ export function EnglishTypingArena({
 
   useEffect(() => {
     if (finished || completedRef.current) return;
-    const timeUp = effectiveTimeLimit != null && elapsed >= effectiveTimeLimit && startedAt !== null;
+    const timeUp =
+      effectiveTimeLimit != null && elapsed >= effectiveTimeLimit && startedAt !== null;
     const done = isInfiniteMode ? false : typedChars.length >= chars.length && chars.length > 0;
 
     if (timeUp || done || forceFinish) {
@@ -435,7 +488,7 @@ export function EnglishTypingArena({
             charMistakes: charMistakesRef.current,
             elapsedSeconds: elapsed,
           };
-          let updatedResults = [newResult, ...existing];
+          const updatedResults = [newResult, ...existing];
 
           // Lesson Completion Bonus Logic
           if (lessonSlug) {
@@ -775,8 +828,12 @@ export function EnglishTypingArena({
                     "ch-dialogue-practice",
                     "ch-adventure-story",
                   ].includes(lessonSlug || "")
-                  ? (isParagraphMode ? "h-[220px] sm:h-[240px]" : "min-h-[220px] sm:min-h-[240px]")
-                  : (isParagraphMode ? "h-[170px] sm:h-[190px]" : "min-h-[170px] sm:min-h-[190px]"),
+                  ? isParagraphMode
+                    ? "h-[220px] sm:h-[240px]"
+                    : "min-h-[220px] sm:min-h-[240px]"
+                  : isParagraphMode
+                    ? "h-[170px] sm:h-[190px]"
+                    : "min-h-[170px] sm:min-h-[190px]",
                 isFocusMode ? "max-w-[1100px]" : "max-w-[1000px]",
               )}
               onClick={() => inputRef.current?.focus()}
@@ -901,10 +958,7 @@ export function EnglishTypingArena({
 
                   let globalIndex = pageStartCharIndex;
 
-                  const renderWord = (
-                    word: string,
-                    wIdxInPage: number,
-                  ) => {
+                  const renderWord = (word: string, wIdxInPage: number) => {
                     const wordChars = tokenizeHindi(word);
                     const charsWithSpace = [...wordChars, " "];
 

@@ -251,8 +251,12 @@ function LoginPage() {
           </div>
           <h1>
             {isSignup
-              ? isEnglish ? "Create account" : "खाता बनाएं"
-              : isEnglish ? "Login" : "लॉगिन"}
+              ? isEnglish
+                ? "Create account"
+                : "खाता बनाएं"
+              : isEnglish
+                ? "Login"
+                : "लॉगिन"}
           </h1>
 
           <form onSubmit={handleSubmit}>
@@ -289,9 +293,11 @@ function LoginPage() {
                 className={`err-msg ${emailError || forgotActive ? "show" : ""}`}
                 style={forgotActive ? { color: "var(--success)" } : {}}
               >
-                {forgotActive 
-                  ? forgotMsg 
-                  : isEnglish ? "Please enter a valid email address" : "कृपया एक वैध ईमेल पता दर्ज करें"}
+                {forgotActive
+                  ? forgotMsg
+                  : isEnglish
+                    ? "Please enter a valid email address"
+                    : "कृपया एक वैध ईमेल पता दर्ज करें"}
               </div>
             </div>
 
@@ -336,7 +342,9 @@ function LoginPage() {
                 </button>
               </div>
               <div className={`err-msg ${passError ? "show" : ""}`}>
-                {isEnglish ? "Password must be at least 6 characters" : "पासवर्ड कम से कम 6 अक्षरों का होना चाहिए"}
+                {isEnglish
+                  ? "Password must be at least 6 characters"
+                  : "पासवर्ड कम से कम 6 अक्षरों का होना चाहिए"}
               </div>
             </div>
 
@@ -353,9 +361,7 @@ function LoginPage() {
             >
               <span className="spinner"></span>
               <span className="btn-text">
-                {isSignup
-                  ? isEnglish ? "Sign up" : "साइन अप"
-                  : isEnglish ? "Login" : "लॉगिन"}
+                {isSignup ? (isEnglish ? "Sign up" : "साइन अप") : isEnglish ? "Login" : "लॉगिन"}
               </span>
             </button>
           </form>
@@ -394,13 +400,21 @@ function LoginPage() {
           </div>
           <h2>
             {isSignup
-              ? isEnglish ? "Account created!" : "खाता बन गया!"
-              : isEnglish ? "Welcome back!" : "वापसी पर स्वागत है!"}
+              ? isEnglish
+                ? "Account created!"
+                : "खाता बन गया!"
+              : isEnglish
+                ? "Welcome back!"
+                : "वापसी पर स्वागत है!"}
           </h2>
           <p>
-            {isEnglish 
-              ? (isSignup ? "Your account has been created successfully" : "You have successfully logged in") 
-              : (isSignup ? "आपका खाता सफलतापूर्वक बन गया है" : "आपने सफलतापूर्वक लॉगिन कर लिया है")}
+            {isEnglish
+              ? isSignup
+                ? "Your account has been created successfully"
+                : "You have successfully logged in"
+              : isSignup
+                ? "आपका खाता सफलतापूर्वक बन गया है"
+                : "आपने सफलतापूर्वक लॉगिन कर लिया है"}
           </p>
 
           <button className="ghost-btn" onClick={handleLogoutTryAgain}>

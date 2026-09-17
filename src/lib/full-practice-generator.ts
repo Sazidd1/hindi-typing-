@@ -2090,7 +2090,7 @@ function buildCaches() {
   });
 }
 
-let globalLessonSessions: Record<string, string[]> = {};
+const globalLessonSessions: Record<string, string[]> = {};
 
 export function generateFullPracticeSession(lessonSlug?: string) {
   buildCaches();

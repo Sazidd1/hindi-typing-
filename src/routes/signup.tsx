@@ -69,7 +69,9 @@ function SignupPage() {
         <h1 className="mb-2 text-2xl font-bold tracking-tight text-foreground">
           {isEnglish ? "Create an Account" : "खाता बनाएं"}
         </h1>
-        <p className="mb-8 font-hindi text-muted-foreground">{isEnglish ? "Create a new account" : "नया खाता बनाएँ"}</p>
+        <p className="mb-8 font-hindi text-muted-foreground">
+          {isEnglish ? "Create a new account" : "नया खाता बनाएँ"}
+        </p>
 
         {error && (
           <div className="mb-6 rounded-xl bg-danger/10 px-4 py-3 text-sm font-medium text-danger text-left">
@@ -79,7 +81,9 @@ function SignupPage() {
 
         <form onSubmit={handleSignup} className="flex flex-col gap-4 text-left">
           <div className="space-y-1.5">
-            <label className="text-sm font-medium text-foreground ml-1">{isEnglish ? "Display Name" : "पूरा नाम"}</label>
+            <label className="text-sm font-medium text-foreground ml-1">
+              {isEnglish ? "Display Name" : "पूरा नाम"}
+            </label>
             <input
               type="text"
               placeholder={isEnglish ? "e.g. Rahul" : "उदाहरण: राहुल"}
@@ -91,7 +95,9 @@ function SignupPage() {
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-sm font-medium text-foreground ml-1">{isEnglish ? "Email" : "ईमेल"}</label>
+            <label className="text-sm font-medium text-foreground ml-1">
+              {isEnglish ? "Email" : "ईमेल"}
+            </label>
             <input
               type="email"
               placeholder="name@example.com"
@@ -102,7 +108,9 @@ function SignupPage() {
           </div>
 
           <div className="space-y-1.5 relative">
-            <label className="text-sm font-medium text-foreground ml-1">{isEnglish ? "Password" : "पासवर्ड"}</label>
+            <label className="text-sm font-medium text-foreground ml-1">
+              {isEnglish ? "Password" : "पासवर्ड"}
+            </label>
             <div className="relative">
               <input
                 type={showPassword ? "text" : "password"}
@@ -122,7 +130,9 @@ function SignupPage() {
           </div>
 
           <div className="space-y-1.5 relative">
-            <label className="text-sm font-medium text-foreground ml-1">{isEnglish ? "Confirm Password" : "पासवर्ड की पुष्टि करें"}</label>
+            <label className="text-sm font-medium text-foreground ml-1">
+              {isEnglish ? "Confirm Password" : "पासवर्ड की पुष्टि करें"}
+            </label>
             <div className="relative">
               <input
                 type={showPassword ? "text" : "password"}
@@ -140,7 +150,13 @@ function SignupPage() {
             className="w-full mt-4 flex justify-center items-center rounded-xl px-4 py-3 font-semibold text-primary-foreground shadow-sm transition-all hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
             style={{ background: "var(--gradient-primary)" }}
           >
-            {isLoading ? <Loader2 className="size-5 animate-spin" /> : isEnglish ? "Create Account" : "खाता बनाएं"}
+            {isLoading ? (
+              <Loader2 className="size-5 animate-spin" />
+            ) : isEnglish ? (
+              "Create Account"
+            ) : (
+              "खाता बनाएं"
+            )}
           </button>
 
           <p className="mt-4 text-center text-sm text-muted-foreground">

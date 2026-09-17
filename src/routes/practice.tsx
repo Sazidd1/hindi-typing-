@@ -87,7 +87,7 @@ function PracticePage() {
 
     if (mode === "randomWords") {
       const wordCount = limit && limit > 0 ? limit : 600;
-      let words: string[] = [];
+      const words: string[] = [];
       while (words.length < wordCount) {
         const pass = [...HINDI_RANDOM_WORDS].sort(() => Math.random() - 0.5);
         words.push(...pass);
@@ -111,7 +111,7 @@ function PracticePage() {
       const storyId = active.slug === "ch-story-practice-1" ? 1 : 2;
       const session = generateStoryPracticeSession(storyId);
 
-      let title = `Story Practice ${storyId}`;
+      const title = `Story Practice ${storyId}`;
       console.log(
         `[${title}]\nword count: ${session.totalWords}\ncharacter count: ${session.totalCharacters}\ncovered mappings: ${session.coveredTargets.length}\nremaining mappings: ${session.remainingTargets.length}\ncoverage percentage: ${session.coveragePercentage}%`,
       );
@@ -141,9 +141,12 @@ function PracticePage() {
     setDynamicText(newText);
   }, [active.slug, active.text, limit]);
 
-  const [testDuration, setTestDuration] = useState(() => localStorage.getItem("settings_test_duration") || "60 sec");
+  const [testDuration, setTestDuration] = useState(
+    () => localStorage.getItem("settings_test_duration") || "60 sec",
+  );
   useEffect(() => {
-    const handleDuration = () => setTestDuration(localStorage.getItem("settings_test_duration") || "60 sec");
+    const handleDuration = () =>
+      setTestDuration(localStorage.getItem("settings_test_duration") || "60 sec");
     window.addEventListener("settings_test_duration_changed", handleDuration);
     return () => window.removeEventListener("settings_test_duration_changed", handleDuration);
   }, []);

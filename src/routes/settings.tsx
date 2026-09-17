@@ -206,26 +206,34 @@ function SettingsPage() {
           <div className="divide-y divide-border/60">
             <Toggle
               label={isEnglish ? "Show virtual keyboard" : "Show virtual keyboard"}
-              hint={isEnglish ? "Show the virtual keyboard during practice" : "अभ्यास के दौरान वर्चुअल कीबोर्ड दिखाएँ"}
+              hint={
+                isEnglish
+                  ? "Show the virtual keyboard during practice"
+                  : "अभ्यास के दौरान वर्चुअल कीबोर्ड दिखाएँ"
+              }
               defaultOn
             />
-            <Toggle 
-              label={isEnglish ? "Finger guidance" : "Finger guidance"} 
-              hint={isEnglish ? "Show color hints for correct fingers" : "सही उंगली का रंग संकेत दिखाएँ"} 
-              defaultOn 
+            <Toggle
+              label={isEnglish ? "Finger guidance" : "Finger guidance"}
+              hint={
+                isEnglish ? "Show color hints for correct fingers" : "सही उंगली का रंग संकेत दिखाएँ"
+              }
+              defaultOn
             />
-            <Toggle 
-              label={isEnglish ? "Key press sound" : "Key press sound"} 
-              hint={isEnglish ? "Soft sound on every key stroke" : "हर कीस्ट्रोक पर हल्की ध्वनि"} 
+            <Toggle
+              label={isEnglish ? "Key press sound" : "Key press sound"}
+              hint={isEnglish ? "Soft sound on every key stroke" : "हर कीस्ट्रोक पर हल्की ध्वनि"}
             />
-            <Toggle 
-              label={isEnglish ? "Stop on error" : "Stop on error"} 
-              hint={isEnglish ? "Stop progression when an error occurs" : "गलती होने पर आगे बढ़ना रोकें"} 
+            <Toggle
+              label={isEnglish ? "Stop on error" : "Stop on error"}
+              hint={
+                isEnglish ? "Stop progression when an error occurs" : "गलती होने पर आगे बढ़ना रोकें"
+              }
             />
-            <Toggle 
-              label={isEnglish ? "Daily practice reminder" : "Daily practice reminder"} 
-              hint={isEnglish ? "Remind me to practice daily" : "रोज़ अभ्यास की याद दिलाएँ"} 
-              defaultOn 
+            <Toggle
+              label={isEnglish ? "Daily practice reminder" : "Daily practice reminder"}
+              hint={isEnglish ? "Remind me to practice daily" : "रोज़ अभ्यास की याद दिलाएँ"}
+              defaultOn
             />
           </div>
         </GlassCard>

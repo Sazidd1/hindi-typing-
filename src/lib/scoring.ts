@@ -50,7 +50,7 @@ export function validateSession(
   // Prevent divide-by-zero
   if (minutes <= 0) minutes = 0.001;
 
-  let wpm = Math.max(0, Math.round(correctCount / 5 / minutes));
+  const wpm = Math.max(0, Math.round(correctCount / 5 / minutes));
 
   // 3. Accuracy Calculation
   // Total attempted is based strictly on typed characters plus any blocked errors
@@ -63,7 +63,7 @@ export function validateSession(
       )
     : typedChars.length + recordedErrors;
 
-  let accuracy =
+  const accuracy =
     totalAttempted > 0 ? Math.max(0, Math.round((correctCount / totalAttempted) * 100)) : 0;
 
   // 4. Session Validation Rules

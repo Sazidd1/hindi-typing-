@@ -9,7 +9,12 @@ import TypingTestSettings from "@/components/typing/TypingTestSettings";
 import { lessons } from "@/lib/typing-data";
 import { categories } from "@/routes/lessons";
 import { useAuth } from "@/lib/auth";
-import { BookOpen, X, ChevronRight } from "lucide-react";
+import { BookOpen, X, ChevronRight, Hammer, Lock } from "lucide-react";
+import { useKeyboardLayout } from "@/lib/useKeyboardLayout";
+import { englishLessons } from "@/lib/english-typing-data";
+import { krutiDevLessons } from "@/lib/kruti-dev-typing-data";
+import { EnglishLessonCard } from "@/routes/english-lessons";
+import { KrutiDevLessonCard } from "@/components/typing/KrutiDevLessonCard";
 
 import { z } from "zod";
 
@@ -41,8 +46,8 @@ const getFeatures = (isEnglish: boolean) => [
   {
     icon: Keyboard,
     title: "Multi-Layout Support",
-    text: isEnglish 
-      ? "Learn correct technique with an animated virtual keyboard and finger guidance." 
+    text: isEnglish
+      ? "Learn correct technique with an animated virtual keyboard and finger guidance."
       : "एनिमेटेड वर्चुअल कीबोर्ड और उंगली मार्गदर्शन के साथ सही तकनीक सीखें।",
     bg: "linear-gradient(135deg, #2563eb, #3b82f6)",
     to: "/practice" as const,
@@ -50,7 +55,7 @@ const getFeatures = (isEnglish: boolean) => [
   {
     icon: Gauge,
     title: "Live WPM",
-    text: isEnglish 
+    text: isEnglish
       ? "View speed, accuracy, and errors in real-time on every keystroke."
       : "हर कीस्ट्रोक पर गति, शुद्धता और त्रुटियाँ रीयल-टाइम में देखें।",
     bg: "linear-gradient(135deg, #16a34a, #22c55e)",
@@ -59,7 +64,7 @@ const getFeatures = (isEnglish: boolean) => [
   {
     icon: BarChart3,
     title: "Progress Analytics",
-    text: isEnglish 
+    text: isEnglish
       ? "Weekly charts, streaks, and practice time in one dashboard."
       : "साप्ताहिक चार्ट, स्ट्रीक और अभ्यास समय एक ही डैशबोर्ड पर।",
     bg: "linear-gradient(135deg, #ea580c, #f97316)",
@@ -68,7 +73,7 @@ const getFeatures = (isEnglish: boolean) => [
   {
     icon: Award,
     title: "Achievements",
-    text: isEnglish 
+    text: isEnglish
       ? "Badges and leaderboards motivate you to practice every day."
       : "बैज और लीडरबोर्ड आपको हर दिन अभ्यास के लिए प्रेरित करते हैं।",
     bg: "linear-gradient(135deg, #ca8a04, #eab308)",
@@ -79,6 +84,7 @@ const getFeatures = (isEnglish: boolean) => [
 function Index() {
   const { isEnglish } = useLanguage();
   const { currentUser } = useAuth();
+  const { layout } = useKeyboardLayout();
   const [progressData, setProgressData] = useState<Record<string, any>>({});
   const [isTutorModalOpen, setIsTutorModalOpen] = useState(false);
   const search = Route.useSearch();
@@ -90,7 +96,11 @@ function Index() {
 
     const loadData = () => {
       const data: Record<string, any> = {};
-      for (const l of lessons) {
+      let activeLessons = lessons;
+      if (layout === "English") activeLessons = englishLessons;
+      else if (layout === "Krutidev") activeLessons = krutiDevLessons;
+
+      for (const l of activeLessons) {
         const saved = localStorage.getItem(`lesson_state_${currentUser}_${l.slug}`);
         if (saved) {
           try {
@@ -104,10 +114,14 @@ function Index() {
     loadData();
     window.addEventListener("lessonProgressUpdated", loadData);
     return () => window.removeEventListener("lessonProgressUpdated", loadData);
-  }, [currentUser]);
+  }, [currentUser, layout]);
 
   const displayLessons = useMemo(() => {
-    return lessons.slice(0, 6).map((baseItem) => {
+    let activeLessons = lessons;
+    if (layout === "English") activeLessons = englishLessons;
+    else if (layout === "Krutidev") activeLessons = krutiDevLessons;
+
+    return activeLessons.slice(0, 6).map((baseItem) => {
       const saved = progressData[baseItem.slug] || { progress: 0, completed: false };
 
       const item = {
@@ -122,7 +136,7 @@ function Index() {
 
       return item;
     });
-  }, [progressData]);
+  }, [progressData, layout]);
 
   if (isTestSettingsOpen) {
     return <TypingTestSettings onClose={() => window.history.back()} />;
@@ -133,15 +147,17 @@ function Index() {
       <section className="flex flex-wrap items-center justify-between gap-10 lg:gap-12">
         <div className="flex-[1_1_min(100%,500px)] lg:max-w-[55%] flex flex-col gap-6 lg:gap-8 relative z-10 pt-4 lg:pt-0">
           <span className="en inline-flex items-center gap-2 rounded-full bg-secondary/80 border border-border/40 px-4 py-1.5 text-[clamp(0.7rem,2vw,0.75rem)] font-semibold tracking-wide text-primary uppercase w-fit">
-            <Sparkles className="size-3.5" /> Premium Hindi typing trainer
+            <Sparkles className="size-3.5" /> Premium multi-layout typing trainer
           </span>
           <h1 className="mt-5 py-1 pl-1 text-[clamp(1.875rem,4.5vw,3.25rem)] leading-[1.25] font-extrabold tracking-tight text-foreground">
             {isEnglish ? "Learn typing," : "हिंदी टाइपिंग सीखें,"}
-            <span className="text-gradient block mt-1">{isEnglish ? "with speed and accuracy" : "तेज़ी और शुद्धता के साथ"}</span>
+            <span className="text-gradient block mt-1">
+              {isEnglish ? "with speed and accuracy" : "तेज़ी और शुद्धता के साथ"}
+            </span>
           </h1>
           <p className="mt-5 max-w-xl font-hindi text-[clamp(1rem,2vw,1.125rem)] leading-relaxed text-muted-foreground">
-            {isEnglish 
-              ? "Structured lessons, exam-level practice, and real-time analytics — all in a beautiful, intuitive interface." 
+            {isEnglish
+              ? "Structured lessons, exam-level practice, and real-time analytics — all in a beautiful, intuitive interface."
               : "संरचित पाठ, परीक्षा-स्तरीय अभ्यास और रीयल-टाइम विश्लेषण — सब कुछ एक सुंदर, सहज इंटरफ़ेस में।"}
           </p>
           <div className="mt-8 flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4">
@@ -153,7 +169,7 @@ function Index() {
             </Link>
             <Link
               to="/lessons"
-              className="inline-flex justify-center items-center rounded-full border border-border bg-card/80 px-6 py-3.5 sm:py-3 text-[clamp(0.875rem,2vw,0.875rem)] sm:text-[1rem] font-semibold text-foreground transition-colors hover:bg-card dark:bg-[rgba(255,255,255,0.04)] dark:backdrop-blur-[16px] dark:backdrop-saturate-[120%] dark:border-[rgba(255,255,255,0.1)] dark:shadow-[0_4px_12px_rgba(0,0,0,0.1)] dark:hover:bg-[rgba(255,255,255,0.06)]"
+              className="group inline-flex justify-center items-center rounded-full border border-border bg-card/80 px-8 py-3.5 sm:py-3.5 text-[clamp(0.875rem,2vw,0.875rem)] sm:text-[1rem] font-extrabold uppercase tracking-widest text-foreground transition-all duration-300 hover:bg-card hover:-translate-y-1 hover:shadow-[0_8px_20px_rgba(0,0,0,0.06)] dark:bg-[rgba(255,255,255,0.04)] dark:backdrop-blur-[16px] dark:backdrop-saturate-[120%] dark:border-[rgba(255,255,255,0.15)] dark:shadow-[0_4px_12px_rgba(0,0,0,0.1)] dark:hover:bg-[rgba(255,255,255,0.08)] dark:hover:shadow-[0_12px_24px_rgba(0,0,0,0.15)] active:translate-y-0.5 active:scale-95 antialiased"
             >
               {isEnglish ? "View Lessons" : "पाठ देखें"}
             </Link>
@@ -331,7 +347,9 @@ function Index() {
             A learning experience built for multi-layout
           </h2>
           <p className="mt-3 text-sm text-[#64748b] max-w-2xl font-hindi leading-relaxed">
-            {isEnglish ? "Every feature is designed to increase your speed and confidence." : "हर सुविधा आपकी गति और आत्मविश्वास बढ़ाने के लिए डिज़ाइन की गई है।"}
+            {isEnglish
+              ? "Every feature is designed to increase your speed and confidence."
+              : "हर सुविधा आपकी गति और आत्मविश्वास बढ़ाने के लिए डिज़ाइन की गई है।"}
           </p>
         </div>
         <div className="grid gap-[20px] grid-cols-1 md:grid-cols-2 xl:grid-cols-4">
@@ -361,30 +379,111 @@ function Index() {
 
       <section>
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-          <SectionTitle
-            eyebrow="Curriculum"
-            title="Six structured lesson tracks"
-            subtitle={isEnglish ? "Progress systematically from home row to exam practice." : "होम रो से लेकर परीक्षा अभ्यास तक — क्रमबद्ध रूप से आगे बढ़ें।"}
-          />
-          <Link
-            to="/lessons"
-            className="group mb-1 inline-flex items-center gap-1.5 text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground shrink-0"
-          >
-            More <span className="transition-transform group-hover:translate-x-0.5">→</span>
-          </Link>
+          {layout === "English" && (
+            <SectionTitle
+              eyebrow="Curriculum"
+              title="English Typing Lessons"
+              subtitle={
+                isEnglish
+                  ? "Every lesson prepares you for the next level — practice in order."
+                  : "हर पाठ आपको अगले स्तर के लिए तैयार करता है — क्रम से अभ्यास करें।"
+              }
+            />
+          )}
+          {layout === "Krutidev" && (
+            <SectionTitle
+              eyebrow="पाठ्यक्रम"
+              title="Kruti Dev पाठ"
+              subtitle="होम रो से लेकर परीक्षा अभ्यास तक — क्रमबद्ध रूप से आगे बढ़ें।"
+            />
+          )}
+          {layout === "Remington GAIL" && (
+            <SectionTitle
+              eyebrow="Curriculum"
+              title="Six structured lesson tracks"
+              subtitle={
+                isEnglish
+                  ? "Progress systematically from home row to exam practice."
+                  : "होम रो से लेकर परीक्षा अभ्यास तक — क्रमबद्ध रूप से आगे बढ़ें।"
+              }
+            />
+          )}
+          {layout === "Remington CBI" && (
+            <SectionTitle eyebrow="पाठ्यक्रम" title="Remington CBI पाठ" subtitle="जल्द आ रहा है।" />
+          )}
+          {(layout === "Inscript" || layout === "Mangal InScript") && (
+            <SectionTitle
+              eyebrow="पाठ्यक्रम"
+              title="Mangal InScript पाठ"
+              subtitle="जल्द आ रहा है।"
+            />
+          )}
+
+          {(layout === "English" || layout === "Krutidev" || layout === "Remington GAIL") && (
+            <Link
+              to={
+                layout === "English"
+                  ? "/english-lessons"
+                  : layout === "Krutidev"
+                    ? "/lessons/kruti-dev"
+                    : "/lessons"
+              }
+              className="group mb-1 inline-flex items-center gap-1.5 text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground shrink-0"
+            >
+              More <span className="transition-transform group-hover:translate-x-0.5">→</span>
+            </Link>
+          )}
         </div>
-        <div className="mt-8 grid gap-4 sm:gap-5 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-6">
-          {displayLessons.map((l) => (
-            <LessonCard key={l.slug} item={l} />
-          ))}
-        </div>
+
+        {layout === "Remington CBI" && (
+          <div className="flex flex-col items-center justify-center py-16 text-center animate-rise-in border border-slate-200 dark:border-white/10 rounded-3xl mt-8 bg-white/40 dark:bg-black/20">
+            <div className="flex size-20 items-center justify-center rounded-full bg-secondary text-muted-foreground mb-5">
+              <Hammer className="size-10 text-slate-400" />
+            </div>
+            <h3 className="text-xl font-bold text-foreground">
+              Remington CBI लेआउट के लिए पाठ जल्द ही उपलब्ध होंगे।
+            </h3>
+            <p className="mt-2 text-sm text-muted-foreground font-hindi">
+              हम आपके अभ्यास के लिए नई सामग्री तैयार कर रहे हैं।
+            </p>
+          </div>
+        )}
+
+        {(layout === "Inscript" || layout === "Mangal InScript") && (
+          <div className="flex flex-col items-center justify-center py-16 text-center animate-rise-in border border-slate-200 dark:border-white/10 rounded-3xl mt-8 bg-white/40 dark:bg-black/20">
+            <div className="flex size-20 items-center justify-center rounded-full bg-secondary text-muted-foreground mb-5">
+              <Hammer className="size-10 text-slate-400" />
+            </div>
+            <h3 className="text-xl font-bold text-foreground">
+              Mangal InScript लेआउट के लिए पाठ जल्द ही उपलब्ध होंगे।
+            </h3>
+            <p className="mt-2 text-sm text-muted-foreground font-hindi">
+              हम आपके अभ्यास के लिए नई सामग्री तैयार कर रहे हैं।
+            </p>
+          </div>
+        )}
+
+        {(layout === "English" || layout === "Krutidev" || layout === "Remington GAIL") && (
+          <div className="mt-8 grid gap-4 sm:gap-5 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-6">
+            {displayLessons.map((l, idx) => {
+              if (layout === "English")
+                return <EnglishLessonCard key={l.slug} item={l} themeIdx={idx} />;
+              if (layout === "Krutidev") return <KrutiDevLessonCard key={l.slug} item={l as any} />;
+              return <LessonCard key={l.slug} item={l} />;
+            })}
+          </div>
+        )}
       </section>
 
       <section>
         <SectionTitle
           eyebrow="Virtual keyboard"
           title="Hindi Remington layout with finger guidance"
-          subtitle={isEnglish ? "Correct finger and shift hints for every character." : "हर अक्षर के लिए सही उंगली और शिफ्ट संकेत।"}
+          subtitle={
+            isEnglish
+              ? "Correct finger and shift hints for every character."
+              : "हर अक्षर के लिए सही उंगली और शिफ्ट संकेत।"
+          }
         />
         <div className="mt-8">
           <HindiKeyboard nextChar="क" />

@@ -56,7 +56,8 @@ export function AppShell({ children }: { children: ReactNode }) {
   if (layout === "English") lessonsRoute = "/english-lessons";
   else if (layout === "Krutidev" || layout === "Kruti Dev") lessonsRoute = "/lessons/kruti-dev";
   else if (layout === "Remington CBI") lessonsRoute = "/lessons/remington-cbi";
-  else if (layout === "Inscript" || layout === "Mangal InScript") lessonsRoute = "/lessons/inscript";
+  else if (layout === "Inscript" || layout === "Mangal InScript")
+    lessonsRoute = "/lessons/inscript";
 
   const handleLogout = async () => {
     await logout();
@@ -71,7 +72,7 @@ export function AppShell({ children }: { children: ReactNode }) {
 
     localStorage.setItem("settings_keyboard_layout", normalized);
     window.dispatchEvent(new Event("settings_keyboard_layout_changed"));
-    
+
     // Also update language mode
     if (normalized === "English") {
       localStorage.setItem("settings_language_mode", "English");
@@ -136,14 +137,18 @@ export function AppShell({ children }: { children: ReactNode }) {
 
               const itemTo = item.label === "Lessons" ? lessonsRoute : item.to;
               const isLessonsTab = item.label === "Lessons";
-              const forceActive = isLessonsTab && (currentPath.startsWith("/lessons") || currentPath.startsWith("/english-lessons"));
+              const forceActive =
+                isLessonsTab &&
+                (currentPath.startsWith("/lessons") || currentPath.startsWith("/english-lessons"));
 
               return (
                 <Link
                   key={item.label}
                   to={itemTo!}
                   activeOptions={{ exact: itemTo === "/" }}
-                  activeProps={forceActive ? {} : { className: "bg-primary text-primary-foreground" }}
+                  activeProps={
+                    forceActive ? {} : { className: "bg-primary text-primary-foreground" }
+                  }
                   inactiveProps={
                     forceActive
                       ? {}
@@ -237,15 +242,27 @@ export function AppShell({ children }: { children: ReactNode }) {
                 }
                 const itemTo = item.label === "Lessons" ? lessonsRoute : item.to;
                 const isLessonsTab = item.label === "Lessons";
-                const forceActive = isLessonsTab && (currentPath.startsWith("/lessons") || currentPath.startsWith("/english-lessons"));
+                const forceActive =
+                  isLessonsTab &&
+                  (currentPath.startsWith("/lessons") ||
+                    currentPath.startsWith("/english-lessons"));
 
                 return (
                   <Link
                     key={item.label}
                     to={itemTo!}
                     onClick={() => setOpen(false)}
-                    activeProps={forceActive ? {} : { className: "text-foreground bg-secondary/60" }}
-                    inactiveProps={forceActive ? {} : { className: "text-muted-foreground hover:text-foreground hover:bg-secondary/60" }}
+                    activeProps={
+                      forceActive ? {} : { className: "text-foreground bg-secondary/60" }
+                    }
+                    inactiveProps={
+                      forceActive
+                        ? {}
+                        : {
+                            className:
+                              "text-muted-foreground hover:text-foreground hover:bg-secondary/60",
+                          }
+                    }
                     className={`rounded-lg px-3 py-2.5 text-sm font-medium transition-colors mb-1 ${
                       forceActive ? "text-foreground bg-secondary/60" : ""
                     }`}

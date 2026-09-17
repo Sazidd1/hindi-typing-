@@ -12,17 +12,15 @@ export const Route = createFileRoute("/lessons_/inscript")({
 function ComingSoonPage() {
   return (
     <div className="space-y-12 pb-10">
-      <SectionTitle
-        eyebrow="पाठ्यक्रम"
-        title="Mangal InScript पाठ"
-        subtitle="जल्द आ रहा है।"
-      />
+      <SectionTitle eyebrow="पाठ्यक्रम" title="Mangal InScript पाठ" subtitle="जल्द आ रहा है।" />
 
       <div className="flex flex-col items-center justify-center py-24 text-center animate-rise-in">
         <div className="flex size-24 items-center justify-center rounded-full bg-secondary text-muted-foreground">
           <Hammer className="size-12" />
         </div>
-        <h3 className="mt-6 text-2xl font-bold text-foreground">Mangal InScript लेआउट के लिए पाठ जल्द ही उपलब्ध होंगे।</h3>
+        <h3 className="mt-6 text-2xl font-bold text-foreground">
+          Mangal InScript लेआउट के लिए पाठ जल्द ही उपलब्ध होंगे।
+        </h3>
         <p className="mt-2 text-muted-foreground font-hindi">
           हम आपके अभ्यास के लिए नई सामग्री तैयार कर रहे हैं।
         </p>

@@ -238,7 +238,7 @@ function DashboardPage() {
     const data = [];
     const startD = new Date();
     startD.setDate(startD.getDate() - 6);
-    const dayNames = isEnglish 
+    const dayNames = isEnglish
       ? ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
       : ["रवि", "सोम", "मंगल", "बुध", "गुरु", "शुक्र", "शनि"];
 
@@ -355,7 +355,15 @@ function DashboardPage() {
         badgeColor: "text-teal-500 bg-teal-500/15 border-teal-500/25",
       },
     ],
-    [beginnerCompleted, beginnerTotal, interCompleted, interTotal, advCompleted, advTotal, isEnglish],
+    [
+      beginnerCompleted,
+      beginnerTotal,
+      interCompleted,
+      interTotal,
+      advCompleted,
+      advTotal,
+      isEnglish,
+    ],
   );
 
   // 9. Badges (4 Primary Badges)
@@ -398,7 +406,11 @@ function DashboardPage() {
       <SectionTitle
         eyebrow="Overview"
         title="Your typing dashboard"
-        subtitle={isEnglish ? "Your progress at a glance — streaks, speed, accuracy, and achievements." : "आपकी प्रगति एक नज़र में — स्ट्रीक, गति, शुद्धता और उपलब्धियाँ।"}
+        subtitle={
+          isEnglish
+            ? "Your progress at a glance — streaks, speed, accuracy, and achievements."
+            : "आपकी प्रगति एक नज़र में — स्ट्रीक, गति, शुद्धता और उपलब्धियाँ।"
+        }
       />
 
       {/* 3. 4 stat cards */}

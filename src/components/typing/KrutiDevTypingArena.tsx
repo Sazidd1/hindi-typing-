@@ -142,13 +142,13 @@ export function KrutiDevTypingArena({
 
   const [effectiveTimeLimit, setEffectiveTimeLimit] = useState<number | null>(() => {
     const saved = localStorage.getItem("settings_test_duration");
-    return saved ? parseInt(saved) : (timeLimit || 60);
+    return saved ? parseInt(saved) : timeLimit || 60;
   });
 
   useEffect(() => {
     const updateTime = () => {
       const saved = localStorage.getItem("settings_test_duration");
-      setEffectiveTimeLimit(saved ? parseInt(saved) : (timeLimit || 60));
+      setEffectiveTimeLimit(saved ? parseInt(saved) : timeLimit || 60);
     };
     window.addEventListener("settings_test_duration_changed", updateTime);
     updateTime();
@@ -226,7 +226,7 @@ export function KrutiDevTypingArena({
           // Dynamically extract the exact pool of characters used in this lesson's original text
           const tokens = tokenizeKrutiDev(activeLesson.text.replace(/\s+/g, ""));
           const pool = Array.from(new Set(tokens));
-          let newWords = [];
+          const newWords = [];
           for (let i = 0; i < 40; i++) {
             let w = "";
             for (let j = 0; j < 5; j++) {
@@ -335,7 +335,8 @@ export function KrutiDevTypingArena({
 
   useEffect(() => {
     if (finished || completedRef.current) return;
-    const timeUp = effectiveTimeLimit != null && elapsed >= effectiveTimeLimit && startedAt !== null;
+    const timeUp =
+      effectiveTimeLimit != null && elapsed >= effectiveTimeLimit && startedAt !== null;
     const done = isInfiniteMode ? false : typedChars.length >= chars.length && chars.length > 0;
 
     if (timeUp || done || forceFinish) {
@@ -369,7 +370,7 @@ export function KrutiDevTypingArena({
             charMistakes: charMistakesRef.current,
             elapsedSeconds: elapsed,
           };
-          let updatedResults = [newResult, ...existing];
+          const updatedResults = [newResult, ...existing];
 
           // Lesson Completion Bonus Logic
           if (lessonSlug) {
