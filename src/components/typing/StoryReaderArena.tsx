@@ -2,6 +2,8 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Trophy, Play, CheckCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/lib/auth";
+import { useSettingsStore } from "@/lib/settings";
+import { formatLessonTitle } from "@/utils/formatLessonTitle";
 import { ChapterMasteryModal } from "@/components/typing/ChapterMasteryModal";
 import { HINDI_MAP } from "@/lib/typing-data";
 
@@ -236,11 +238,8 @@ export function StoryReaderArena({
       <div className="mx-auto w-[98%] max-w-[1400px] flex flex-col animate-in fade-in slide-in-from-bottom-4 duration-700 px-2 sm:px-4 py-8 font-sans text-slate-800">
         {/* Title Centered for the entire page */}
         {(title || subtitle) && (
-          <h2 className="text-[#1c1917] text-center font-bold text-2xl sm:text-3xl leading-tight px-2 mt-0 mb-6 relative z-10">
-            {title}{" "}
-            {subtitle && (
-              <span className="font-hindi text-[#8c734b] font-medium">( {subtitle} )</span>
-            )}
+          <h2 className="text-[#1c1917] text-center font-bold text-2xl sm:text-3xl leading-tight px-2 mt-0 mb-6 relative z-10 font-hindi">
+            {formatLessonTitle(title, subtitle)}
           </h2>
         )}
 

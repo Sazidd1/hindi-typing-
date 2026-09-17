@@ -11,6 +11,8 @@ import {
   List,
   CheckCircle,
 } from "lucide-react";
+import { calculateProgress } from "@/lib/utils/typing-progress";
+import { formatLessonTitle } from "@/utils/formatLessonTitle";
 import { cn } from "@/lib/utils";
 import { EnglishKeyboard as HindiKeyboard } from "@/components/typing/EnglishKeyboard";
 import { useAuth } from "@/lib/auth";
@@ -806,10 +808,7 @@ export function EnglishTypingArena({
         <div className="flex flex-col flex-1 w-full gap-0">
           {!isFocusMode && (title || subtitle) && (
             <h2 className="text-slate-900 dark:text-[#F4F7FB] text-center font-bold text-2xl sm:text-3xl leading-tight px-2 mt-0 mb-0 relative z-10">
-              {title}{" "}
-              {subtitle && (
-                <span className=" text-gray-500 dark:text-[#8FA2BC]">( {subtitle} )</span>
-              )}
+              {formatLessonTitle(title, subtitle)}
             </h2>
           )}
           {/* Wrapper for Passage and Keyboard to keep their internal spacing intact */}

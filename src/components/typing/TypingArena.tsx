@@ -11,6 +11,7 @@ import {
   List,
   CheckCircle,
 } from "lucide-react";
+import { formatLessonTitle } from "@/utils/formatLessonTitle";
 import { cn } from "@/lib/utils";
 import { HindiKeyboard } from "@/components/typing/HindiKeyboard";
 import { useAuth } from "@/lib/auth";
@@ -265,7 +266,7 @@ export function TypingArena({
           // Dynamically extract the exact pool of characters used in this lesson's original text
           const tokens = tokenizeHindi(activeLesson.text.replace(/\s+/g, ""));
           const pool = Array.from(new Set(tokens));
-          const newWords = [];
+          const newWords: string[] = [];
           for (let i = 0; i < 40; i++) {
             let w = "";
             for (let j = 0; j < 5; j++) {
@@ -730,11 +731,8 @@ export function TypingArena({
         {/* Left Side: Typing Area & Keyboard */}
         <div className="flex flex-col flex-1 w-full gap-0">
           {!isFocusMode && (title || subtitle) && (
-            <h2 className="text-slate-900 dark:text-[#F4F7FB] text-center font-bold text-2xl sm:text-3xl leading-tight px-2 mt-0 mb-0 relative z-10">
-              {title}{" "}
-              {subtitle && (
-                <span className="font-hindi text-gray-500 dark:text-[#8FA2BC]">( {subtitle} )</span>
-              )}
+            <h2 className="text-slate-900 dark:text-[#F4F7FB] text-center font-bold text-2xl sm:text-3xl leading-tight px-2 mt-0 mb-0 relative z-10 font-hindi">
+              {formatLessonTitle(title, subtitle)}
             </h2>
           )}
           {/* Wrapper for Passage and Keyboard to keep their internal spacing intact */}
