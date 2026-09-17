@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&display=swap');
 @import "tailwindcss" source(none);
 @source "../src";
 @import "tw-animate-css";
@@ -177,9 +178,9 @@
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
-/* ─────────────────────────────────────────
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
    LIGHT MODE (default)
-   ───────────────────────────────────────── */
+   â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 :root {
   --radius: 1rem;
   --background: oklch(0.985 0.012 250);
@@ -231,11 +232,11 @@
   --sidebar-ring: oklch(0.704 0.04 256.788);
 }
 
-/* ─────────────────────────────────────────
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
    DARK MODE
-   ───────────────────────────────────────── */
+   â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .dark {
-  /* Backgrounds — Premium Black */
+  /* Backgrounds â€” Premium Black */
   --background: #050505;
   --foreground: #f5f5f5;
 
@@ -245,7 +246,7 @@
   --popover: #151515;
   --popover-foreground: #f5f5f5;
 
-  /* Brand primary — keep indigo readable on dark */
+  /* Brand primary â€” keep indigo readable on dark */
   --primary: oklch(0.65 0.18 258);
   --primary-foreground: #ffffff;
   --accent-blue: oklch(0.72 0.15 232);
@@ -301,9 +302,9 @@
   --sidebar-ring: oklch(0.65 0.18 258);
 }
 
-/* ─────────────────────────────────────────
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
    BASE LAYER
-   ───────────────────────────────────────── */
+   â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 @layer base {
   * {
     border-color: var(--color-border);
@@ -323,9 +324,9 @@
   font-family: "Poppins", sans-serif;
 }
 
-/* ─────────────────────────────────────────
-   COMPONENT OVERRIDES — DARK MODE
-   ───────────────────────────────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+   COMPONENT OVERRIDES â€” DARK MODE
+   â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
 /* Header & Footer */
 .dark header {
@@ -346,7 +347,7 @@
   background: rgba(5, 5, 5, 0.95) !important;
 }
 
-/* Theme transition — smooth but no layout shift */
+/* Theme transition â€” smooth but no layout shift */
 html {
   transition: none;
 }
@@ -357,14 +358,14 @@ html {
   transition-duration: 0.25s;
   transition-timing-function: ease;
 }
-/* But NOT for transforms, opacity on animations — let them be fast */
+/* But NOT for transforms, opacity on animations â€” let them be fast */
 .animate-rise-in,
 .animate-float-soft,
 .animate-key-pop {
   transition: none;
 }
 
-/* Typing arena tile — light base, dark via CSS variable */
+/* Typing arena tile â€” light base, dark via CSS variable */
 .typing-tile {
   background-color: var(--card);
   border-color: var(--border);
@@ -375,9 +376,9 @@ html {
   border-color: #252525;
 }
 
-/* ─────────────────────────────────────────
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
    EXISTING SHARED STYLES (UNCHANGED)
-   ───────────────────────────────────────── */
+   â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .btn-primary {
   background: linear-gradient(135deg, #2563eb, #1d4ed8);
   color: #fff;
@@ -422,4 +423,182 @@ html {
       0 0 0 8px rgba(37, 99, 235, 0.1),
       0 8px 18px rgba(37, 99, 235, 0.4);
   }
+}
+/* Watercolor Modal Styles */
+
+.wc-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(240, 244, 248, 0.6);
+  backdrop-filter: blur(4px);
+}
+
+.wc-stage {
+  position: relative;
+  width: 90%;
+  max-width: 440px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wc-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(40px);
+  z-index: 0;
+  opacity: 0.8;
+  animation: float 6s ease-in-out infinite alternate;
+}
+
+.wc-blob-pink {
+  width: 280px;
+  height: 280px;
+  background-color: #ffc2d4;
+  top: -80px;
+  left: -80px;
+}
+
+.wc-blob-yellow {
+  width: 250px;
+  height: 250px;
+  background-color: #fff3b0;
+  bottom: -50px;
+  right: -60px;
+  animation-delay: 2s;
+}
+
+.wc-blob-blue {
+  width: 260px;
+  height: 260px;
+  background-color: #d4e4ff;
+  bottom: -80px;
+  left: 20px;
+  animation-delay: 4s;
+}
+
+.wc-card {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 28px;
+  padding: 40px 32px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.wc-title {
+  font-family: 'Caveat', cursive;
+  font-size: 38px;
+  font-weight: 700;
+  color: #4a4040;
+  line-height: 1.1;
+  margin-bottom: 4px;
+}
+
+.wc-subtitle {
+  font-size: 14px;
+  font-weight: 500;
+  color: #949494;
+}
+
+.wc-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin: 12px 0;
+}
+
+.wc-stat-num {
+  font-size: 26px;
+  font-weight: 800;
+  color: #4a4040;
+  line-height: 1.2;
+}
+
+.wc-stat-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #a3a3a3;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 4px;
+}
+
+.wc-comment {
+  font-family: 'Caveat', cursive;
+  font-size: 24px;
+  font-weight: 700;
+  color: #db7a8d;
+  margin-top: 4px;
+  margin-bottom: 8px;
+}
+
+.wc-btn-primary {
+  width: 100%;
+  padding: 16px;
+  border-radius: 16px;
+  background-color: #e592a8;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 12px rgba(229, 146, 168, 0.2);
+}
+
+.wc-btn-primary:hover {
+  background-color: #d98298;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(229, 146, 168, 0.3);
+}
+
+.wc-btn-secondary {
+  width: 100%;
+  padding: 16px;
+  border-radius: 16px;
+  background-color: #fdf4f5;
+  color: #e592a8;
+  font-size: 16px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.wc-btn-secondary:hover {
+  background-color: #faebeb;
+}
+
+.wc-link {
+  font-size: 14px;
+  font-weight: 600;
+  color: #b0b0b0;
+  text-decoration: none;
+  transition: color 0.2s;
+  cursor: pointer;
+  background: none;
+  border: none;
+  display: block;
+  margin-top: 4px;
+}
+
+.wc-link:hover {
+  color: #888888;
+}
+
+@keyframes float {
+  0% { transform: translateY(0) scale(1); }
+  100% { transform: translateY(-20px) scale(1.05); }
 }
