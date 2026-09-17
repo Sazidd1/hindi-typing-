@@ -96,7 +96,7 @@ function Index() {
 
     const loadData = () => {
       const data: Record<string, any> = {};
-      let activeLessons = lessons;
+      let activeLessons: any[] = lessons;
       if (layout === "English") activeLessons = englishLessons;
       else if (layout === "Krutidev") activeLessons = krutiDevLessons;
 
@@ -117,7 +117,7 @@ function Index() {
   }, [currentUser, layout]);
 
   const displayLessons = useMemo(() => {
-    let activeLessons = lessons;
+    let activeLessons: any[] = lessons;
     if (layout === "English") activeLessons = englishLessons;
     else if (layout === "Krutidev") activeLessons = krutiDevLessons;
 
@@ -169,7 +169,7 @@ function Index() {
             </Link>
             <Link
               to="/lessons"
-              className="group inline-flex justify-center items-center rounded-full border border-border bg-card/80 px-8 py-3.5 sm:py-3.5 text-[clamp(0.875rem,2vw,0.875rem)] sm:text-[1rem] font-extrabold uppercase tracking-widest text-foreground transition-all duration-300 hover:bg-card hover:-translate-y-1 hover:shadow-[0_8px_20px_rgba(0,0,0,0.06)] dark:bg-[rgba(255,255,255,0.04)] dark:backdrop-blur-[16px] dark:backdrop-saturate-[120%] dark:border-[rgba(255,255,255,0.15)] dark:shadow-[0_4px_12px_rgba(0,0,0,0.1)] dark:hover:bg-[rgba(255,255,255,0.08)] dark:hover:shadow-[0_12px_24px_rgba(0,0,0,0.15)] active:translate-y-0.5 active:scale-95 antialiased"
+              className="inline-flex justify-center items-center rounded-full border border-border bg-card/80 px-6 py-3.5 sm:py-3 text-[clamp(0.875rem,2vw,0.875rem)] sm:text-[1rem] font-semibold text-foreground transition-colors hover:bg-card dark:bg-[rgba(255,255,255,0.04)] dark:backdrop-blur-[16px] dark:backdrop-saturate-[120%] dark:border-[rgba(255,255,255,0.1)] dark:shadow-[0_4px_12px_rgba(0,0,0,0.1)] dark:hover:bg-[rgba(255,255,255,0.06)]"
             >
               {isEnglish ? "View Lessons" : "पाठ देखें"}
             </Link>
