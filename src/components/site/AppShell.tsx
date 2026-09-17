@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate, useLocation } from "@tanstack/react-router";
 import { Keyboard, Menu, X, ChevronDown } from "lucide-react";
 import { useState, type ReactNode } from "react";
 import { useAuth } from "@/lib/auth";
@@ -47,6 +47,8 @@ export function AppShell({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
   const { currentUser, logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const currentPath = location.pathname;
 
   const handleLogout = async () => {
     await logout();
@@ -114,17 +116,29 @@ export function AppShell({ children }: { children: ReactNode }) {
                 );
               }
 
+              const isLessonsTab = item.to === "/lessons";
+              const isEnglishLessonsRoute = currentPath.startsWith("/english-lessons");
+              const forceActive = isLessonsTab && isEnglishLessonsRoute;
+
               return (
                 <Link
                   key={item.to}
                   to={item.to!}
                   activeOptions={{ exact: item.to === "/" }}
-                  activeProps={{ className: "bg-primary text-primary-foreground" }}
-                  inactiveProps={{
-                    className:
-                      "text-muted-foreground dark:text-[#8EA0B8] hover:bg-white/80 dark:hover:bg-white/10 dark:hover:text-[#FFFFFF]",
-                  }}
-                  className="rounded-full px-3.5 py-2 text-sm font-medium transition-all duration-200"
+                  activeProps={forceActive ? {} : { className: "bg-primary text-primary-foreground" }}
+                  inactiveProps={
+                    forceActive
+                      ? {}
+                      : {
+                          className:
+                            "text-muted-foreground dark:text-[#8EA0B8] hover:bg-white/80 dark:hover:bg-white/10 dark:hover:text-[#FFFFFF]",
+                        }
+                  }
+                  className={
+                    forceActive
+                      ? "rounded-full px-3.5 py-2 text-sm font-medium transition-all duration-200 bg-primary text-primary-foreground"
+                      : "rounded-full px-3.5 py-2 text-sm font-medium transition-all duration-200"
+                  }
                 >
                   {item.label}
                 </Link>
@@ -210,12 +224,20 @@ export function AppShell({ children }: { children: ReactNode }) {
                     </div>
                   );
                 }
+                const isLessonsTab = item.to === "/lessons";
+                const isEnglishLessonsRoute = currentPath.startsWith("/english-lessons");
+                const forceActive = isLessonsTab && isEnglishLessonsRoute;
+
                 return (
                   <Link
                     key={item.to}
                     to={item.to!}
                     onClick={() => setOpen(false)}
-                    className="rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-secondary/60 transition-colors mb-1"
+                    activeProps={forceActive ? {} : { className: "text-foreground bg-secondary/60" }}
+                    inactiveProps={forceActive ? {} : { className: "text-muted-foreground hover:text-foreground hover:bg-secondary/60" }}
+                    className={`rounded-lg px-3 py-2.5 text-sm font-medium transition-colors mb-1 ${
+                      forceActive ? "text-foreground bg-secondary/60" : ""
+                    }`}
                   >
                     {item.label}
                   </Link>
