@@ -4,6 +4,7 @@ import { GlassCard, SectionTitle } from "@/components/kit/GlassCard";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/lib/auth";
 import { useState, useEffect } from "react";
+import { useLanguage } from "@/lib/useLanguage";
 import { calculateXP, XP_PER_LEVEL, MAX_DISPLAY_LEVEL } from "@/lib/scoring";
 
 export const Route = createFileRoute("/leaderboard")({
@@ -53,6 +54,7 @@ const podiumStyles = [
 type Period = "Daily" | "Weekly" | "Monthly" | "Overall";
 
 function LeaderboardPage() {
+  const { isEnglish } = useLanguage();
   const { currentUser } = useAuth();
   const [leaderboardMode, setLeaderboardMode] = useState<"Typing Speed" | "XP">("Typing Speed");
   const [period, setPeriod] = useState<Period>("Weekly");
@@ -170,7 +172,7 @@ function LeaderboardPage() {
           {leaderboardMode === "XP" ? "XP Leaderboard" : `${period} Leaderboard`}
         </h1>
         <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
-          इस सप्ताह के सबसे तेज़ और सटीक टाइपिस्ट।
+          {isEnglish ? "The fastest and most accurate typists this week." : "इस सप्ताह के सबसे तेज़ और सटीक टाइपिस्ट।"}
         </p>
       </div>
 

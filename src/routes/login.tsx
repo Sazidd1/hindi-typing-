@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState, useMemo } from "react";
 import { useAuth } from "@/lib/auth";
+import { useLanguage } from "@/lib/useLanguage";
 
 export const Route = createFileRoute("/login")({
   component: LoginPage,
@@ -43,6 +44,7 @@ function IsoGrid({ side }: { side: "left" | "right" }) {
 }
 
 function LoginPage() {
+  const { isEnglish } = useLanguage();
   const [mode, setMode] = useState<"login" | "signup">("login");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -247,16 +249,20 @@ function LoginPage() {
               <span className="brand-abhyas">Abhyas</span>
             </div>
           </div>
-          <h1>{isSignup ? "Create account" : "Login"}</h1>
+          <h1>
+            {isSignup
+              ? isEnglish ? "Create account" : "खाता बनाएं"
+              : isEnglish ? "Login" : "लॉगिन"}
+          </h1>
 
           <form onSubmit={handleSubmit}>
             {isSignup && (
               <div className="field">
-                <label>Full name</label>
+                <label>{isEnglish ? "Full name" : "पूरा नाम"}</label>
                 <div className="input-shell">
                   <input
                     type="text"
-                    placeholder="Your full name"
+                    placeholder={isEnglish ? "Your full name" : "आपका पूरा नाम"}
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     required
@@ -266,7 +272,7 @@ function LoginPage() {
             )}
 
             <div className="field">
-              <label>Email</label>
+              <label>{isEnglish ? "Email" : "ईमेल"}</label>
               <div className={`input-shell ${emailError ? "error" : ""}`}>
                 <input
                   type="email"
@@ -283,12 +289,14 @@ function LoginPage() {
                 className={`err-msg ${emailError || forgotActive ? "show" : ""}`}
                 style={forgotActive ? { color: "var(--success)" } : {}}
               >
-                {forgotActive ? forgotMsg : "Please enter a valid email address"}
+                {forgotActive 
+                  ? forgotMsg 
+                  : isEnglish ? "Please enter a valid email address" : "कृपया एक वैध ईमेल पता दर्ज करें"}
               </div>
             </div>
 
             <div className="field">
-              <label>Password</label>
+              <label>{isEnglish ? "Password" : "पासवर्ड"}</label>
               <div className={`input-shell ${passError ? "error" : ""}`}>
                 <input
                   type={showPassword ? "text" : "password"}
@@ -328,13 +336,13 @@ function LoginPage() {
                 </button>
               </div>
               <div className={`err-msg ${passError ? "show" : ""}`}>
-                Password must be at least 6 characters
+                {isEnglish ? "Password must be at least 6 characters" : "पासवर्ड कम से कम 6 अक्षरों का होना चाहिए"}
               </div>
             </div>
 
             <div className="row-between" style={{ visibility: isSignup ? "hidden" : "visible" }}>
               <a className="link" onClick={handleForgot}>
-                Forgot password?
+                {isEnglish ? "Forgot password?" : "पासवर्ड भूल गए?"}
               </a>
             </div>
 
@@ -344,23 +352,27 @@ function LoginPage() {
               disabled={isLoading}
             >
               <span className="spinner"></span>
-              <span className="btn-text">{isSignup ? "Sign up" : "Login"}</span>
+              <span className="btn-text">
+                {isSignup
+                  ? isEnglish ? "Sign up" : "साइन अप"
+                  : isEnglish ? "Login" : "लॉगिन"}
+              </span>
             </button>
           </form>
 
           <div className="footer-line">
             {isSignup ? (
               <>
-                Already have an account?{" "}
+                {isEnglish ? "Already have an account? " : "क्या आपके पास पहले से खाता है? "}
                 <a className="link" onClick={handleToggleMode}>
-                  Login
+                  {isEnglish ? "Login" : "लॉगिन"}
                 </a>
               </>
             ) : (
               <>
-                Don't have an account?{" "}
+                {isEnglish ? "Don't have an account? " : "क्या आपके पास खाता नहीं है? "}
                 <a className="link" onClick={handleToggleMode}>
-                  Sign up
+                  {isEnglish ? "Sign up" : "साइन अप"}
                 </a>
               </>
             )}
@@ -380,13 +392,19 @@ function LoginPage() {
               <path d="M20 6 9 17l-5-5" />
             </svg>
           </div>
-          <h2>{isSignup ? "Account created!" : "Welcome back!"}</h2>
+          <h2>
+            {isSignup
+              ? isEnglish ? "Account created!" : "खाता बन गया!"
+              : isEnglish ? "Welcome back!" : "वापसी पर स्वागत है!"}
+          </h2>
           <p>
-            {isSignup ? "आपका खाता सफलतापूर्वक बन गया है" : "आपने सफलतापूर्वक लॉगिन कर लिया है"}
+            {isEnglish 
+              ? (isSignup ? "Your account has been created successfully" : "You have successfully logged in") 
+              : (isSignup ? "आपका खाता सफलतापूर्वक बन गया है" : "आपने सफलतापूर्वक लॉगिन कर लिया है")}
           </p>
 
           <button className="ghost-btn" onClick={handleLogoutTryAgain}>
-            Log out and try again
+            {isEnglish ? "Log out and try again" : "लॉग आउट करें और पुनः प्रयास करें"}
           </button>
         </div>
       </div>

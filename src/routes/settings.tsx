@@ -3,6 +3,7 @@ import { useState } from "react";
 import { GlassCard, SectionTitle } from "@/components/kit/GlassCard";
 import { cn } from "@/lib/utils";
 import { useTheme } from "@/lib/theme";
+import { useLanguage } from "@/lib/useLanguage";
 
 export const Route = createFileRoute("/settings")({
   head: () => ({
@@ -163,12 +164,18 @@ function AppearanceSection() {
 }
 
 function SettingsPage() {
+  const { isEnglish } = useLanguage();
+
   return (
     <div className="space-y-10">
       <SectionTitle
-        eyebrow="Preferences"
-        title="Settings"
-        subtitle="अपने अभ्यास अनुभव को अपने अनुसार ढालें।"
+        eyebrow={isEnglish ? "Preferences" : "Preferences"}
+        title={isEnglish ? "Settings" : "Settings"}
+        subtitle={
+          isEnglish
+            ? "Tailor your practice experience to your needs."
+            : "अपने अभ्यास अनुभव को अपने अनुसार ढालें।"
+        }
       />
 
       {/* Appearance — global theme control */}
@@ -198,14 +205,28 @@ function SettingsPage() {
           <h3 className="text-lg font-semibold text-foreground">Guidance & feedback</h3>
           <div className="divide-y divide-border/60">
             <Toggle
-              label="Show virtual keyboard"
-              hint="अभ्यास के दौरान वर्चुअल कीबोर्ड दिखाएँ"
+              label={isEnglish ? "Show virtual keyboard" : "Show virtual keyboard"}
+              hint={isEnglish ? "Show the virtual keyboard during practice" : "अभ्यास के दौरान वर्चुअल कीबोर्ड दिखाएँ"}
               defaultOn
             />
-            <Toggle label="Finger guidance" hint="सही उंगली का रंग संकेत दिखाएँ" defaultOn />
-            <Toggle label="Key press sound" hint="हर कीस्ट्रोक पर हल्की ध्वनि" />
-            <Toggle label="Stop on error" hint="गलती होने पर आगे बढ़ना रोकें" />
-            <Toggle label="Daily practice reminder" hint="रोज़ अभ्यास की याद दिलाएँ" defaultOn />
+            <Toggle 
+              label={isEnglish ? "Finger guidance" : "Finger guidance"} 
+              hint={isEnglish ? "Show color hints for correct fingers" : "सही उंगली का रंग संकेत दिखाएँ"} 
+              defaultOn 
+            />
+            <Toggle 
+              label={isEnglish ? "Key press sound" : "Key press sound"} 
+              hint={isEnglish ? "Soft sound on every key stroke" : "हर कीस्ट्रोक पर हल्की ध्वनि"} 
+            />
+            <Toggle 
+              label={isEnglish ? "Stop on error" : "Stop on error"} 
+              hint={isEnglish ? "Stop progression when an error occurs" : "गलती होने पर आगे बढ़ना रोकें"} 
+            />
+            <Toggle 
+              label={isEnglish ? "Daily practice reminder" : "Daily practice reminder"} 
+              hint={isEnglish ? "Remind me to practice daily" : "रोज़ अभ्यास की याद दिलाएँ"} 
+              defaultOn 
+            />
           </div>
         </GlassCard>
       </div>

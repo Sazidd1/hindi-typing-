@@ -19,6 +19,7 @@ import { LessonCard } from "@/components/typing/LessonCard";
 import { useTestDurationDisplay } from "@/lib/useTestDuration";
 import { lessons } from "@/lib/typing-data";
 import { generateDailyChallenge } from "@/lib/daily-challenge";
+import { useLanguage } from "@/lib/useLanguage";
 
 export const Route = createFileRoute("/lessons")({
   head: () => ({
@@ -52,6 +53,7 @@ const extendedCurriculumBase = [
 export const categories = ["All", "Home Row", "Top Row", "Bottom Row", "Mixed", "Tests"];
 
 function LessonsPage() {
+  const { isEnglish } = useLanguage();
   const { currentUser } = useAuth();
   const displayDuration = useTestDurationDisplay();
   const [searchQuery, setSearchQuery] = useState("");
@@ -148,7 +150,7 @@ function LessonsPage() {
         <SectionTitle
           eyebrow="Curriculum"
           title="Learning Center"
-          subtitle="हर पाठ आपको अगले स्तर के लिए तैयार करता है — क्रम से अभ्यास करें।"
+          subtitle={isEnglish ? "Every lesson prepares you for the next level — practice in order." : "हर पाठ आपको अगले स्तर के लिए तैयार करता है — क्रम से अभ्यास करें।"}
         />
 
         <div className="relative w-full md:w-72">

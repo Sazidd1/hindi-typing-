@@ -22,6 +22,8 @@ import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as TranslatorRouteImport } from './routes/translator'
 import { Route as EnglishLessonsLessonIdRouteImport } from './routes/english-lessons_.$lessonId'
+import { Route as LessonsInscriptRouteImport } from './routes/lessons_.inscript'
+import { Route as LessonsRemingtonCbiRouteImport } from './routes/lessons_.remington-cbi'
 import { Route as LessonsKrutiDevIndexRouteImport } from './routes/lessons_.kruti-dev.index'
 import { Route as LessonsKrutiDevLessonIdRouteImport } from './routes/lessons_.kruti-dev_.$lessonId'
 
@@ -90,6 +92,16 @@ const EnglishLessonsLessonIdRoute = EnglishLessonsLessonIdRouteImport.update({
   path: '/english-lessons/$lessonId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LessonsInscriptRoute = LessonsInscriptRouteImport.update({
+  id: '/lessons_/inscript',
+  path: '/lessons/inscript',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LessonsRemingtonCbiRoute = LessonsRemingtonCbiRouteImport.update({
+  id: '/lessons_/remington-cbi',
+  path: '/lessons/remington-cbi',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LessonsKrutiDevIndexRoute = LessonsKrutiDevIndexRouteImport.update({
   id: '/lessons_/kruti-dev/',
   path: '/lessons/kruti-dev/',
@@ -115,6 +127,8 @@ export interface FileRoutesByFullPath {
   '/signup': typeof SignupRoute
   '/translator': typeof TranslatorRoute
   '/english-lessons/$lessonId': typeof EnglishLessonsLessonIdRoute
+  '/lessons/inscript': typeof LessonsInscriptRoute
+  '/lessons/remington-cbi': typeof LessonsRemingtonCbiRoute
   '/lessons/kruti-dev/$lessonId': typeof LessonsKrutiDevLessonIdRoute
   '/lessons/kruti-dev/': typeof LessonsKrutiDevIndexRoute
 }
@@ -132,6 +146,8 @@ export interface FileRoutesByTo {
   '/signup': typeof SignupRoute
   '/translator': typeof TranslatorRoute
   '/english-lessons/$lessonId': typeof EnglishLessonsLessonIdRoute
+  '/lessons/inscript': typeof LessonsInscriptRoute
+  '/lessons/remington-cbi': typeof LessonsRemingtonCbiRoute
   '/lessons/kruti-dev/$lessonId': typeof LessonsKrutiDevLessonIdRoute
   '/lessons/kruti-dev': typeof LessonsKrutiDevIndexRoute
 }
@@ -150,6 +166,8 @@ export interface FileRoutesById {
   '/signup': typeof SignupRoute
   '/translator': typeof TranslatorRoute
   '/english-lessons_/$lessonId': typeof EnglishLessonsLessonIdRoute
+  '/lessons_/inscript': typeof LessonsInscriptRoute
+  '/lessons_/remington-cbi': typeof LessonsRemingtonCbiRoute
   '/lessons_/kruti-dev_/$lessonId': typeof LessonsKrutiDevLessonIdRoute
   '/lessons_/kruti-dev/': typeof LessonsKrutiDevIndexRoute
 }
@@ -169,6 +187,8 @@ export interface FileRouteTypes {
     | '/signup'
     | '/translator'
     | '/english-lessons/$lessonId'
+    | '/lessons/inscript'
+    | '/lessons/remington-cbi'
     | '/lessons/kruti-dev/$lessonId'
     | '/lessons/kruti-dev/'
   fileRoutesByTo: FileRoutesByTo
@@ -186,6 +206,8 @@ export interface FileRouteTypes {
     | '/signup'
     | '/translator'
     | '/english-lessons/$lessonId'
+    | '/lessons/inscript'
+    | '/lessons/remington-cbi'
     | '/lessons/kruti-dev/$lessonId'
     | '/lessons/kruti-dev'
   id:
@@ -203,6 +225,8 @@ export interface FileRouteTypes {
     | '/signup'
     | '/translator'
     | '/english-lessons_/$lessonId'
+    | '/lessons_/inscript'
+    | '/lessons_/remington-cbi'
     | '/lessons_/kruti-dev_/$lessonId'
     | '/lessons_/kruti-dev/'
   fileRoutesById: FileRoutesById
@@ -221,6 +245,8 @@ export interface RootRouteChildren {
   SignupRoute: typeof SignupRoute
   TranslatorRoute: typeof TranslatorRoute
   EnglishLessonsLessonIdRoute: typeof EnglishLessonsLessonIdRoute
+  LessonsInscriptRoute: typeof LessonsInscriptRoute
+  LessonsRemingtonCbiRoute: typeof LessonsRemingtonCbiRoute
   LessonsKrutiDevLessonIdRoute: typeof LessonsKrutiDevLessonIdRoute
   LessonsKrutiDevIndexRoute: typeof LessonsKrutiDevIndexRoute
 }
@@ -318,6 +344,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EnglishLessonsLessonIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/lessons_/inscript': {
+      id: '/lessons_/inscript'
+      path: '/lessons/inscript'
+      fullPath: '/lessons/inscript'
+      preLoaderRoute: typeof LessonsInscriptRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lessons_/remington-cbi': {
+      id: '/lessons_/remington-cbi'
+      path: '/lessons/remington-cbi'
+      fullPath: '/lessons/remington-cbi'
+      preLoaderRoute: typeof LessonsRemingtonCbiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/lessons_/kruti-dev/': {
       id: '/lessons_/kruti-dev/'
       path: '/lessons/kruti-dev'
@@ -349,6 +389,8 @@ const rootRouteChildren: RootRouteChildren = {
   SignupRoute: SignupRoute,
   TranslatorRoute: TranslatorRoute,
   EnglishLessonsLessonIdRoute: EnglishLessonsLessonIdRoute,
+  LessonsInscriptRoute: LessonsInscriptRoute,
+  LessonsRemingtonCbiRoute: LessonsRemingtonCbiRoute,
   LessonsKrutiDevLessonIdRoute: LessonsKrutiDevLessonIdRoute,
   LessonsKrutiDevIndexRoute: LessonsKrutiDevIndexRoute,
 }

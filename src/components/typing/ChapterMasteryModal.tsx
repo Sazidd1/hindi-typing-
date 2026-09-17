@@ -6,6 +6,7 @@ import { calculateGrade, calculateXP, DEFAULT_TARGET_WPM, Grade } from "@/lib/sc
 import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
 import { CircularProgress } from "@/components/ui/CircularProgress";
 import { cn } from "@/lib/utils";
+import { useLanguage } from "@/lib/useLanguage";
 
 interface ChapterMasteryModalProps {
   wpm: number;
@@ -28,6 +29,7 @@ export function ChapterMasteryModal({
   nextLessonSlug,
   onPracticeAgain,
 }: ChapterMasteryModalProps) {
+  const { isEnglish } = useLanguage();
   const safeWpm = Number.isFinite(wpm) ? wpm : 0;
   const safeAccuracy = Number.isFinite(accuracy) ? accuracy : 0;
   const safeErrors = Number.isFinite(errors) ? errors : 0;
@@ -74,7 +76,7 @@ export function ChapterMasteryModal({
           </div>
           <div className="flex items-center gap-3">
             <h2 className="text-2xl font-extrabold text-slate-800 tracking-tight">
-              Lesson Mastery
+              {isEnglish ? "Lesson Mastery" : "पाठ की महारत"}
             </h2>
             {grade && (
               <span
@@ -86,12 +88,12 @@ export function ChapterMasteryModal({
                   grade === "C" && "bg-slate-400 text-white",
                 )}
               >
-                Grade {grade}
+                {isEnglish ? `Grade ${grade}` : `ग्रेड ${grade}`}
               </span>
             )}
             {!isValid && (
               <span className="px-3 py-1 text-sm font-bold rounded-full leading-none shadow-sm bg-rose-500 text-white">
-                Invalid
+                {isEnglish ? "Invalid" : "अमान्य"}
               </span>
             )}
           </div>
@@ -102,7 +104,7 @@ export function ChapterMasteryModal({
           <div className="flex flex-col items-center justify-center p-4 rounded-[20px] bg-slate-50 border border-slate-100">
             <Zap className="size-5 text-blue-500 mb-2" />
             <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1">
-              Speed
+              {isEnglish ? "Speed" : "गति"}
             </span>
             <div className="flex items-baseline gap-1">
               <span className="text-2xl font-extrabold text-slate-800">
@@ -115,7 +117,7 @@ export function ChapterMasteryModal({
           <div className="flex flex-col items-center justify-center p-4 rounded-[20px] bg-slate-50 border border-slate-100">
             <Target className="size-5 text-emerald-500 mb-2" />
             <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-2">
-              Accuracy
+              {isEnglish ? "Accuracy" : "सटीकता"}
             </span>
             <div className="relative flex items-center justify-center size-[46px]">
               <CircularProgress
@@ -133,7 +135,7 @@ export function ChapterMasteryModal({
           <div className="flex flex-col items-center justify-center p-4 rounded-[20px] bg-slate-50 border border-slate-100">
             <TriangleAlert className="size-5 text-rose-500 mb-2" />
             <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1">
-              Errors
+              {isEnglish ? "Errors" : "गलतियां"}
             </span>
             <div className="flex items-baseline gap-1">
               <span className="text-2xl font-extrabold text-slate-800">
@@ -166,7 +168,7 @@ export function ChapterMasteryModal({
               )}
             </div>
             <div>
-              <p className="text-sm font-bold text-slate-800">Target: {DEFAULT_TARGET_WPM} WPM</p>
+              <p className="text-sm font-bold text-slate-800">{isEnglish ? `Target: ${DEFAULT_TARGET_WPM} WPM` : `लक्ष्य: ${DEFAULT_TARGET_WPM} WPM`}</p>
               <p
                 className={cn(
                   "text-[13px] font-semibold",
@@ -174,10 +176,10 @@ export function ChapterMasteryModal({
                 )}
               >
                 {targetCompleted
-                  ? "Target Completed!"
+                  ? (isEnglish ? "Target Completed!" : "लक्ष्य पूरा हुआ!")
                   : !isValid
-                    ? "Session Invalid. Too short or too many mistakes."
-                    : "Keep practicing to hit the target"}
+                    ? (isEnglish ? "Session Invalid. Too short or too many mistakes." : "सत्र अमान्य। बहुत छोटा या बहुत सारी गलतियाँ हैं।")
+                    : (isEnglish ? "Keep practicing to hit the target" : "लक्ष्य तक पहुंचने के लिए अभ्यास करते रहें")}
               </p>
             </div>
           </div>
@@ -186,7 +188,7 @@ export function ChapterMasteryModal({
         {/* Reward Section */}
         <div className="flex items-center justify-center gap-2 p-3 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-[20px] border border-indigo-100 relative z-10 animate-in slide-in-from-bottom-2 duration-500 delay-300 fill-mode-both">
           <span className="text-sm font-extrabold text-indigo-900">
-            +<AnimatedCounter value={xp} /> XP Earned
+            +<AnimatedCounter value={xp} /> {isEnglish ? "XP Earned" : "XP प्राप्त किया"}
           </span>
         </div>
 
@@ -198,7 +200,7 @@ export function ChapterMasteryModal({
               search={{ lesson: nextLessonSlug } as any}
               className="w-full inline-flex justify-center items-center gap-2 rounded-2xl px-6 py-4 text-[15px] font-bold text-white transition-all hover:scale-[1.02] shadow-md shadow-blue-500/25 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500"
             >
-              Next Lesson
+              {isEnglish ? "Next Lesson" : "अगला पाठ"}
             </Link>
           )}
 
@@ -207,14 +209,14 @@ export function ChapterMasteryModal({
             className="w-full inline-flex justify-center items-center gap-2 rounded-2xl px-6 py-4 text-[15px] font-bold text-slate-700 bg-white border-2 border-slate-200 hover:border-slate-300 hover:bg-slate-50 transition-colors"
           >
             <RotateCcw className="size-4" />
-            Practice Again
+            {isEnglish ? "Practice Again" : "फिर से अभ्यास करें"}
           </button>
 
           <Link
             to={"/lessons" as any}
             className="w-full inline-flex justify-center items-center rounded-2xl px-6 py-3 text-[14px] font-bold text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition-colors mt-1"
           >
-            Back to Lesson List
+            {isEnglish ? "Back to Lesson List" : "पाठ सूची पर वापस जाएं"}
           </Link>
         </div>
       </div>

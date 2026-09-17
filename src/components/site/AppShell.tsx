@@ -3,6 +3,7 @@ import { Keyboard, Menu, X, ChevronDown } from "lucide-react";
 import { useState, type ReactNode } from "react";
 import { useAuth } from "@/lib/auth";
 import { useTheme } from "@/lib/theme";
+import { useKeyboardLayout } from "@/lib/useKeyboardLayout";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,9 +14,9 @@ import { cn } from "@/lib/utils";
 
 const LAYOUTS = [
   { label: "Remington GAIL", to: "/lessons" as const },
-  { label: "Remington CBI" },
+  { label: "Remington CBI", to: "/lessons/remington-cbi" as const },
   { label: "Kruti Dev", to: "/lessons/kruti-dev" as const },
-  { label: "Mangal InScript" },
+  { label: "Mangal InScript", to: "/lessons/inscript" as const },
   { label: "English", to: "/english-lessons" as const },
 ];
 
@@ -49,10 +50,37 @@ export function AppShell({ children }: { children: ReactNode }) {
   const navigate = useNavigate();
   const location = useLocation();
   const currentPath = location.pathname;
+  const { layout } = useKeyboardLayout();
+
+  let lessonsRoute = "/lessons";
+  if (layout === "English") lessonsRoute = "/english-lessons";
+  else if (layout === "Krutidev" || layout === "Kruti Dev") lessonsRoute = "/lessons/kruti-dev";
+  else if (layout === "Remington CBI") lessonsRoute = "/lessons/remington-cbi";
+  else if (layout === "Inscript" || layout === "Mangal InScript") lessonsRoute = "/lessons/inscript";
 
   const handleLogout = async () => {
     await logout();
     navigate({ to: "/login" });
+  };
+
+  const handleLayoutSelect = (label: string) => {
+    // Normalize layout names for settings
+    let normalized = label;
+    if (label === "Kruti Dev") normalized = "Krutidev";
+    else if (label === "Mangal InScript") normalized = "Inscript";
+
+    localStorage.setItem("settings_keyboard_layout", normalized);
+    window.dispatchEvent(new Event("settings_keyboard_layout_changed"));
+    
+    // Also update language mode
+    if (normalized === "English") {
+      localStorage.setItem("settings_language_mode", "English");
+    } else if (normalized === "Krutidev") {
+      localStorage.setItem("settings_language_mode", "Krutidev (Hindi)");
+    } else {
+      localStorage.setItem("settings_language_mode", "Hindi");
+    }
+    window.dispatchEvent(new Event("language_mode_changed"));
   };
 
   return (
@@ -88,26 +116,16 @@ export function AppShell({ children }: { children: ReactNode }) {
                         Keyboard Layout
                       </div>
                       {LAYOUTS.map((l) => {
-                        if (l.to) {
-                          return (
-                            <DropdownMenuItem key={l.label} asChild>
-                              <Link
-                                to={l.to}
-                                className="rounded-xl cursor-pointer py-2.5 px-3 transition-all duration-200 my-0.5 font-medium flex items-center justify-between text-foreground dark:text-slate-200 hover:bg-black/5 dark:hover:bg-slate-800 focus:bg-black/5 dark:focus:bg-slate-800"
-                                style={{ textDecoration: "none" }}
-                              >
-                                {l.label}
-                              </Link>
-                            </DropdownMenuItem>
-                          );
-                        }
                         return (
-                          <DropdownMenuItem
-                            key={l.label}
-                            disabled
-                            className="rounded-xl py-2.5 px-3 transition-all duration-200 my-0.5 font-medium flex items-center justify-between text-slate-400 dark:text-slate-500 cursor-default"
-                          >
-                            {l.label}
+                          <DropdownMenuItem key={l.label} asChild>
+                            <Link
+                              to={l.to!}
+                              onClick={() => handleLayoutSelect(l.label)}
+                              className="rounded-xl cursor-pointer py-2.5 px-3 transition-all duration-200 my-0.5 font-medium flex items-center justify-between text-foreground dark:text-slate-200 hover:bg-black/5 dark:hover:bg-slate-800 focus:bg-black/5 dark:focus:bg-slate-800"
+                              style={{ textDecoration: "none" }}
+                            >
+                              {l.label}
+                            </Link>
                           </DropdownMenuItem>
                         );
                       })}
@@ -116,15 +134,15 @@ export function AppShell({ children }: { children: ReactNode }) {
                 );
               }
 
-              const isLessonsTab = item.to === "/lessons";
-              const isEnglishLessonsRoute = currentPath.startsWith("/english-lessons");
-              const forceActive = isLessonsTab && isEnglishLessonsRoute;
+              const itemTo = item.label === "Lessons" ? lessonsRoute : item.to;
+              const isLessonsTab = item.label === "Lessons";
+              const forceActive = isLessonsTab && (currentPath.startsWith("/lessons") || currentPath.startsWith("/english-lessons"));
 
               return (
                 <Link
-                  key={item.to}
-                  to={item.to!}
-                  activeOptions={{ exact: item.to === "/" }}
+                  key={item.label}
+                  to={itemTo!}
+                  activeOptions={{ exact: itemTo === "/" }}
                   activeProps={forceActive ? {} : { className: "bg-primary text-primary-foreground" }}
                   inactiveProps={
                     forceActive
@@ -199,39 +217,32 @@ export function AppShell({ children }: { children: ReactNode }) {
                       </div>
                       <div className="flex flex-col ml-3 pl-3 border-l-2 border-border/50">
                         {LAYOUTS.map((l) => {
-                          if (l.to) {
-                            return (
-                              <Link
-                                key={l.label}
-                                to={l.to}
-                                onClick={() => setOpen(false)}
-                                className="text-left rounded-lg px-3 py-2.5 text-sm font-medium transition-colors mb-0.5 flex items-center justify-between text-muted-foreground hover:text-foreground hover:bg-secondary/60"
-                              >
-                                {l.label}
-                              </Link>
-                            );
-                          }
                           return (
-                            <div
+                            <Link
                               key={l.label}
-                              className="text-left rounded-lg px-3 py-2.5 text-sm font-medium mb-0.5 flex items-center justify-between text-slate-400 dark:text-slate-500 cursor-default opacity-50"
+                              to={l.to!}
+                              onClick={() => {
+                                handleLayoutSelect(l.label);
+                                setOpen(false);
+                              }}
+                              className="text-left rounded-lg px-3 py-2.5 text-sm font-medium transition-colors mb-0.5 flex items-center justify-between text-muted-foreground hover:text-foreground hover:bg-secondary/60"
                             >
                               {l.label}
-                            </div>
+                            </Link>
                           );
                         })}
                       </div>
                     </div>
                   );
                 }
-                const isLessonsTab = item.to === "/lessons";
-                const isEnglishLessonsRoute = currentPath.startsWith("/english-lessons");
-                const forceActive = isLessonsTab && isEnglishLessonsRoute;
+                const itemTo = item.label === "Lessons" ? lessonsRoute : item.to;
+                const isLessonsTab = item.label === "Lessons";
+                const forceActive = isLessonsTab && (currentPath.startsWith("/lessons") || currentPath.startsWith("/english-lessons"));
 
                 return (
                   <Link
-                    key={item.to}
-                    to={item.to!}
+                    key={item.label}
+                    to={itemTo!}
                     onClick={() => setOpen(false)}
                     activeProps={forceActive ? {} : { className: "text-foreground bg-secondary/60" }}
                     inactiveProps={forceActive ? {} : { className: "text-muted-foreground hover:text-foreground hover:bg-secondary/60" }}

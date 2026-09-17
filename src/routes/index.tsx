@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { useLanguage } from "@/lib/useLanguage";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Award, BarChart3, Gauge, Keyboard, Sparkles, Target } from "lucide-react";
 import { GlassCard, SectionTitle } from "@/components/kit/GlassCard";
@@ -36,38 +37,47 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const features = [
+const getFeatures = (isEnglish: boolean) => [
   {
     icon: Keyboard,
     title: "Multi-Layout Support",
-    text: "एनिमेटेड वर्चुअल कीबोर्ड और उंगली मार्गदर्शन के साथ सही तकनीक सीखें।",
+    text: isEnglish 
+      ? "Learn correct technique with an animated virtual keyboard and finger guidance." 
+      : "एनिमेटेड वर्चुअल कीबोर्ड और उंगली मार्गदर्शन के साथ सही तकनीक सीखें।",
     bg: "linear-gradient(135deg, #2563eb, #3b82f6)",
     to: "/practice" as const,
   },
   {
     icon: Gauge,
     title: "Live WPM",
-    text: "हर कीस्ट्रोक पर गति, शुद्धता और त्रुटियाँ रीयल-टाइम में देखें।",
+    text: isEnglish 
+      ? "View speed, accuracy, and errors in real-time on every keystroke."
+      : "हर कीस्ट्रोक पर गति, शुद्धता और त्रुटियाँ रीयल-टाइम में देखें।",
     bg: "linear-gradient(135deg, #16a34a, #22c55e)",
     to: "/practice" as const,
   },
   {
     icon: BarChart3,
     title: "Progress Analytics",
-    text: "साप्ताहिक चार्ट, स्ट्रीक और अभ्यास समय एक ही डैशबोर्ड पर।",
+    text: isEnglish 
+      ? "Weekly charts, streaks, and practice time in one dashboard."
+      : "साप्ताहिक चार्ट, स्ट्रीक और अभ्यास समय एक ही डैशबोर्ड पर।",
     bg: "linear-gradient(135deg, #ea580c, #f97316)",
     to: "/dashboard" as const,
   },
   {
     icon: Award,
     title: "Achievements",
-    text: "बैज और लीडरबोर्ड आपको हर दिन अभ्यास के लिए प्रेरित करते हैं।",
+    text: isEnglish 
+      ? "Badges and leaderboards motivate you to practice every day."
+      : "बैज और लीडरबोर्ड आपको हर दिन अभ्यास के लिए प्रेरित करते हैं।",
     bg: "linear-gradient(135deg, #ca8a04, #eab308)",
     to: "/profile" as const,
   },
 ];
 
 function Index() {
+  const { isEnglish } = useLanguage();
   const { currentUser } = useAuth();
   const [progressData, setProgressData] = useState<Record<string, any>>({});
   const [isTutorModalOpen, setIsTutorModalOpen] = useState(false);
@@ -126,25 +136,26 @@ function Index() {
             <Sparkles className="size-3.5" /> Premium Hindi typing trainer
           </span>
           <h1 className="mt-5 py-1 pl-1 text-[clamp(1.875rem,4.5vw,3.25rem)] leading-[1.25] font-extrabold tracking-tight text-foreground">
-            हिंदी टाइपिंग सीखें,
-            <span className="text-gradient block mt-1">तेज़ी और शुद्धता के साथ</span>
+            {isEnglish ? "Learn typing," : "हिंदी टाइपिंग सीखें,"}
+            <span className="text-gradient block mt-1">{isEnglish ? "with speed and accuracy" : "तेज़ी और शुद्धता के साथ"}</span>
           </h1>
           <p className="mt-5 max-w-xl font-hindi text-[clamp(1rem,2vw,1.125rem)] leading-relaxed text-muted-foreground">
-            संरचित पाठ, परीक्षा-स्तरीय अभ्यास और रीयल-टाइम विश्लेषण — सब कुछ एक सुंदर, सहज इंटरफ़ेस
-            में।
+            {isEnglish 
+              ? "Structured lessons, exam-level practice, and real-time analytics — all in a beautiful, intuitive interface." 
+              : "संरचित पाठ, परीक्षा-स्तरीय अभ्यास और रीयल-टाइम विश्लेषण — सब कुछ एक सुंदर, सहज इंटरफ़ेस में।"}
           </p>
           <div className="mt-8 flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4">
             <Link
               to="/practice"
               className="btn-primary inline-flex justify-center items-center w-full sm:w-auto"
             >
-              अभ्यास शुरू करें
+              {isEnglish ? "Start Practice" : "अभ्यास शुरू करें"}
             </Link>
             <Link
               to="/lessons"
               className="inline-flex justify-center items-center rounded-full border border-border bg-card/80 px-6 py-3.5 sm:py-3 text-[clamp(0.875rem,2vw,0.875rem)] sm:text-[1rem] font-semibold text-foreground transition-colors hover:bg-card dark:bg-[rgba(255,255,255,0.04)] dark:backdrop-blur-[16px] dark:backdrop-saturate-[120%] dark:border-[rgba(255,255,255,0.1)] dark:shadow-[0_4px_12px_rgba(0,0,0,0.1)] dark:hover:bg-[rgba(255,255,255,0.06)]"
             >
-              पाठ देखें
+              {isEnglish ? "View Lessons" : "पाठ देखें"}
             </Link>
           </div>
           <div className="mt-10 grid max-w-lg grid-cols-3 gap-3 sm:gap-4">
@@ -320,11 +331,11 @@ function Index() {
             A learning experience built for multi-layout
           </h2>
           <p className="mt-3 text-sm text-[#64748b] max-w-2xl font-hindi leading-relaxed">
-            हर सुविधा आपकी गति और आत्मविश्वास बढ़ाने के लिए डिज़ाइन की गई है।
+            {isEnglish ? "Every feature is designed to increase your speed and confidence." : "हर सुविधा आपकी गति और आत्मविश्वास बढ़ाने के लिए डिज़ाइन की गई है।"}
           </p>
         </div>
         <div className="grid gap-[20px] grid-cols-1 md:grid-cols-2 xl:grid-cols-4">
-          {features.map((f, i) => (
+          {getFeatures(isEnglish).map((f, i) => (
             <Link
               to={f.to}
               key={f.title}
@@ -353,7 +364,7 @@ function Index() {
           <SectionTitle
             eyebrow="Curriculum"
             title="Six structured lesson tracks"
-            subtitle="होम रो से लेकर परीक्षा अभ्यास तक — क्रमबद्ध रूप से आगे बढ़ें।"
+            subtitle={isEnglish ? "Progress systematically from home row to exam practice." : "होम रो से लेकर परीक्षा अभ्यास तक — क्रमबद्ध रूप से आगे बढ़ें।"}
           />
           <Link
             to="/lessons"
@@ -373,7 +384,7 @@ function Index() {
         <SectionTitle
           eyebrow="Virtual keyboard"
           title="Hindi Remington layout with finger guidance"
-          subtitle="हर अक्षर के लिए सही उंगली और शिफ्ट संकेत।"
+          subtitle={isEnglish ? "Correct finger and shift hints for every character." : "हर अक्षर के लिए सही उंगली और शिफ्ट संकेत।"}
         />
         <div className="mt-8">
           <HindiKeyboard nextChar="क" />

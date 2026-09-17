@@ -10,6 +10,7 @@ import { generateFullPracticeSession } from "@/lib/full-practice-generator";
 import { generateStoryPracticeSession } from "@/lib/story-generator";
 import { generateExtendedPracticeSession } from "@/lib/extended-generator";
 import { HINDI_RANDOM_WORDS } from "@/lib/random-words";
+import { useLanguage } from "@/lib/useLanguage";
 
 const searchSchema = z.object({
   lesson: z.string().optional(),
@@ -40,6 +41,7 @@ export const Route = createFileRoute("/practice")({
 });
 
 function PracticePage() {
+  const { isEnglish } = useLanguage();
   const { lesson, story, limit, time, mode } = Route.useSearch();
 
   const activeLesson = lesson ? lessons.find((l) => l.slug === lesson) : null;
@@ -69,7 +71,7 @@ function PracticePage() {
       ? {
           slug: "random-words",
           title: "Random Words",
-          hindiTitle: "रैंडम शब्द",
+          hindiTitle: isEnglish ? "Random Words Practice" : "रैंडम शब्द",
           description: "Random Words Practice",
           level: "Mixed",
           keys: "Mixed",

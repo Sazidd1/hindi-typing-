@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useRef, useEffect } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
+import { useLanguage } from "@/lib/useLanguage";
 
 const LEGENDS = [
   "A",
@@ -113,6 +114,7 @@ const STORY_SLUG_MAP: Record<string, string> = {
 };
 
 export default function TypingTestSettings({ onClose }: { onClose?: () => void }) {
+  const { isEnglish } = useLanguage();
   const [name, setName] = useState("");
   const [testTime, setTestTime] = useState("1 Minute");
   const [paraMode, setParaMode] = useState("Default");
@@ -419,7 +421,7 @@ export default function TypingTestSettings({ onClose }: { onClose?: () => void }
             }}
           >
             <ArrowLeft size={18} />
-            Back
+            {isEnglish ? "Back" : "वापस"}
           </button>
         ) : (
           <div />
@@ -450,7 +452,7 @@ export default function TypingTestSettings({ onClose }: { onClose?: () => void }
               marginBottom: 4,
             }}
           >
-            THE ART OF PRECISION
+            {isEnglish ? "THE ART OF PRECISION" : "सटीकता की कला"}
           </p>
           <h1
             style={{
@@ -463,7 +465,7 @@ export default function TypingTestSettings({ onClose }: { onClose?: () => void }
               lineHeight: 1,
             }}
           >
-            Typing Test
+            {isEnglish ? "Typing Test" : "टाइपिंग टेस्ट"}
           </h1>
           <p
             style={{
@@ -474,7 +476,7 @@ export default function TypingTestSettings({ onClose }: { onClose?: () => void }
               fontWeight: 400,
             }}
           >
-            Choose your layout & configure the session
+            {isEnglish ? "Choose your layout & configure the session" : "अपना लेआउट चुनें और सत्र कॉन्फ़िगर करें"}
           </p>
         </div>
 
@@ -512,12 +514,12 @@ export default function TypingTestSettings({ onClose }: { onClose?: () => void }
                 gap: 16,
               }}
             >
-              <div style={{ fontSize: 15, fontWeight: 600, color: "#44403c" }}>Name</div>
+              <div style={{ fontSize: 15, fontWeight: 600, color: "#44403c" }}>{isEnglish ? "Name" : "नाम"}</div>
               <div style={{ flex: 1, display: "flex", justifyContent: "flex-end" }}>
                 <input
                   type="text"
                   className="tts-input"
-                  placeholder="Enter your name"
+                  placeholder={isEnglish ? "Enter your name" : "अपना नाम दर्ज करें"}
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   style={{ ...inputStyle(), height: 44 }}
@@ -555,7 +557,7 @@ export default function TypingTestSettings({ onClose }: { onClose?: () => void }
                     textTransform: "uppercase",
                   }}
                 >
-                  TEST MODE
+                  {isEnglish ? "TEST MODE" : "टेस्ट मोड"}
                 </div>
                 <div style={{ flex: 1, display: "flex", justifyContent: "flex-end" }}>
                   <div
@@ -589,8 +591,9 @@ export default function TypingTestSettings({ onClose }: { onClose?: () => void }
                           transition: "all 0.2s cubic-bezier(0.16, 1, 0.3, 1)",
                           fontFamily: "'Inter', sans-serif",
                         }}
+                        title={v}
                       >
-                        {v}
+                        {isEnglish ? v : v === "Default" ? "डिफ़ॉल्ट" : "कस्टम"}
                       </button>
                     ))}
                   </div>
@@ -605,7 +608,7 @@ export default function TypingTestSettings({ onClose }: { onClose?: () => void }
                   gap: 16,
                 }}
               >
-                <div style={{ fontSize: 15, fontWeight: 600, color: "#44403c" }}>Test Time</div>
+                <div style={{ fontSize: 15, fontWeight: 600, color: "#44403c" }}>{isEnglish ? "Test Time" : "टेस्ट समय"}</div>
                 <div style={{ flex: 1, display: "flex", justifyContent: "flex-end" }}>
                   <select
                     className="tts-input tts-select"
@@ -642,7 +645,7 @@ export default function TypingTestSettings({ onClose }: { onClose?: () => void }
                 marginBottom: 8,
               }}
             >
-              KEYBOARD LAYOUT
+              {isEnglish ? "KEYBOARD LAYOUT" : "कीबोर्ड लेआउट"}
             </div>
             <div
               style={{
@@ -704,7 +707,7 @@ export default function TypingTestSettings({ onClose }: { onClose?: () => void }
                 marginBottom: 8,
               }}
             >
-              OPTIONS
+              {isEnglish ? "OPTIONS" : "विकल्प"}
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
               <div
@@ -717,7 +720,7 @@ export default function TypingTestSettings({ onClose }: { onClose?: () => void }
                 }}
               >
                 <div style={{ fontSize: 15, fontWeight: 600, color: "#44403c" }}>
-                  Paragraph Passages
+                  {isEnglish ? "Paragraph Passages" : "पैराग्राफ अभ्यास"}
                 </div>
                 <div style={{ flex: 1, display: "flex", justifyContent: "flex-end" }}>
                   <select
@@ -776,7 +779,7 @@ export default function TypingTestSettings({ onClose }: { onClose?: () => void }
                   gap: 16,
                 }}
               >
-                <div style={{ fontSize: 15, fontWeight: 600, color: "#44403c" }}>Backspace</div>
+                <div style={{ fontSize: 15, fontWeight: 600, color: "#44403c" }}>{isEnglish ? "Backspace" : "बैकस्पेस"}</div>
                 <div style={{ flex: 1, display: "flex", justifyContent: "flex-end" }}>
                   <Switch
                     checked={backspace}
@@ -798,7 +801,7 @@ export default function TypingTestSettings({ onClose }: { onClose?: () => void }
                 }}
               >
                 <div style={{ fontSize: 15, fontWeight: 600, color: "#44403c" }}>
-                  Highlight & Auto Scroll
+                  {isEnglish ? "Highlight & Auto Scroll" : "हाइलाइट और ऑटो स्क्रॉल"}
                 </div>
                 <div style={{ flex: 1, display: "flex", justifyContent: "flex-end" }}>
                   <Switch checked={highlight} onChange={setHighlight} />
@@ -815,7 +818,7 @@ export default function TypingTestSettings({ onClose }: { onClose?: () => void }
                 }}
               >
                 <div style={{ fontSize: 15, fontWeight: 600, color: "#44403c" }}>
-                  Word Limit{" "}
+                  {isEnglish ? "Word Limit" : "शब्द सीमा"}{" "}
                   <span style={{ color: "#c19e54", marginLeft: 4, fontWeight: 700 }}>
                     ({wordLimit || 0})
                   </span>
@@ -866,7 +869,7 @@ export default function TypingTestSettings({ onClose }: { onClose?: () => void }
                 justifyContent: "center",
               }}
             >
-              Start Practice Mode
+              {isEnglish ? "Start Practice Mode" : "अभ्यास मोड प्रारंभ करें"}
             </button>
           </div>
 

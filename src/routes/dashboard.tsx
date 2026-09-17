@@ -30,6 +30,7 @@ import { StatCard } from "@/components/kit/StatCard";
 import { cn } from "@/lib/utils";
 import { useEffect, useState, useMemo } from "react";
 import { useAuth } from "@/lib/auth";
+import { useLanguage } from "@/lib/useLanguage";
 import { lessons } from "@/lib/typing-data";
 
 export const Route = createFileRoute("/dashboard")({
@@ -64,6 +65,7 @@ type ResultRecord = {
 };
 
 function DashboardPage() {
+  const { isEnglish } = useLanguage();
   const { currentUser, isLoaded } = useAuth();
   const [history, setHistory] = useState<ResultRecord[]>([]);
 
@@ -236,7 +238,9 @@ function DashboardPage() {
     const data = [];
     const startD = new Date();
     startD.setDate(startD.getDate() - 6);
-    const dayNames = ["रवि", "सोम", "मंगल", "बुध", "गुरु", "शुक्र", "शनि"];
+    const dayNames = isEnglish 
+      ? ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+      : ["रवि", "सोम", "मंगल", "बुध", "गुरु", "शुक्र", "शनि"];
 
     for (let i = 0; i < 7; i++) {
       const d = new Date(startD);
@@ -275,7 +279,7 @@ function DashboardPage() {
       }
     }
     return data;
-  }, [validHistory]);
+  }, [validHistory, isEnglish]);
 
   const activeDaysCount = useMemo(() => {
     return weeklyData.filter((d) => d.hasData).length;
@@ -328,7 +332,7 @@ function DashboardPage() {
     () => [
       {
         name: "Beginner Track",
-        subName: "शुरुआती पाठ",
+        subName: isEnglish ? "Beginner Lessons" : "शुरुआती पाठ",
         completed: beginnerCompleted,
         total: beginnerTotal,
         color: "bg-orange-500",
@@ -336,7 +340,7 @@ function DashboardPage() {
       },
       {
         name: "Intermediate Track",
-        subName: "मध्यम पाठ",
+        subName: isEnglish ? "Intermediate Lessons" : "मध्यम पाठ",
         completed: interCompleted,
         total: interTotal,
         color: "bg-accent-blue",
@@ -344,14 +348,14 @@ function DashboardPage() {
       },
       {
         name: "Advanced Track",
-        subName: "उन्नत पाठ",
+        subName: isEnglish ? "Advanced Lessons" : "उन्नत पाठ",
         completed: advCompleted,
         total: advTotal,
         color: "bg-teal-500",
         badgeColor: "text-teal-500 bg-teal-500/15 border-teal-500/25",
       },
     ],
-    [beginnerCompleted, beginnerTotal, interCompleted, interTotal, advCompleted, advTotal],
+    [beginnerCompleted, beginnerTotal, interCompleted, interTotal, advCompleted, advTotal, isEnglish],
   );
 
   // 9. Badges (4 Primary Badges)
@@ -359,34 +363,34 @@ function DashboardPage() {
     () => [
       {
         icon: Flame,
-        title: "7 दिन स्ट्रीक",
-        desc: "लगातार सात दिन अभ्यास",
+        title: isEnglish ? "7 Day Streak" : "7 दिन स्ट्रीक",
+        desc: isEnglish ? "Practiced for 7 consecutive days" : "लगातार सात दिन अभ्यास",
         earned: streak >= 7,
         iconClass: "text-orange-500 bg-orange-500/10 border border-orange-500/20",
       },
       {
         icon: Zap,
-        title: "50 WPM क्लब",
-        desc: "50 शब्द प्रति मिनट पार",
+        title: isEnglish ? "50 WPM Club" : "50 WPM क्लब",
+        desc: isEnglish ? "Surpassed 50 words per minute" : "50 शब्द प्रति मिनट पार",
         earned: bestWpm >= 50,
         iconClass: "text-purple-500 bg-purple-500/10 border border-purple-500/20",
       },
       {
         icon: Target,
-        title: "शुद्धता मास्टर",
-        desc: "98% शुद्धता प्राप्त",
+        title: isEnglish ? "Accuracy Master" : "शुद्धता मास्टर",
+        desc: isEnglish ? "Achieved 98% accuracy" : "98% शुद्धता प्राप्त",
         earned: bestAcc >= 98,
         iconClass: "text-success bg-success/10 border border-success/20",
       },
       {
         icon: Trophy,
-        title: "परीक्षा तैयार",
-        desc: "परीक्षा पाठ पूर्ण करें",
+        title: isEnglish ? "Exam Ready" : "परीक्षा तैयार",
+        desc: isEnglish ? "Completed exam lessons" : "परीक्षा पाठ पूर्ण करें",
         earned: completedSlugs.has("ch25") || completedSlugs.has("ch28"),
         iconClass: "text-accent-blue bg-accent-blue/10 border border-accent-blue/20",
       },
     ],
-    [streak, bestWpm, bestAcc, completedSlugs],
+    [streak, bestWpm, bestAcc, completedSlugs, isEnglish],
   );
 
   return (
@@ -394,7 +398,7 @@ function DashboardPage() {
       <SectionTitle
         eyebrow="Overview"
         title="Your typing dashboard"
-        subtitle="आपकी प्रगति एक नज़र में — स्ट्रीक, गति, शुद्धता और उपलब्धियाँ।"
+        subtitle={isEnglish ? "Your progress at a glance — streaks, speed, accuracy, and achievements." : "आपकी प्रगति एक नज़र में — स्ट्रीक, गति, शुद्धता और उपलब्धियाँ।"}
       />
 
       {/* 3. 4 stat cards */}
@@ -541,7 +545,7 @@ function DashboardPage() {
                 </span>
               </div>
               <p className="font-hindi text-xs font-medium text-muted-foreground mt-0.5">
-                आज का लक्ष्य: 30 मिनट अभ्यास
+                {isEnglish ? "Today's goal: 30 minutes practice" : "आज का लक्ष्य: 30 मिनट अभ्यास"}
               </p>
 
               <div className="mt-5 space-y-4">

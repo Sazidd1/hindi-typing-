@@ -23,6 +23,7 @@ import { useAuth } from "@/lib/auth";
 import { calculateXP, XP_PER_LEVEL, MAX_DISPLAY_LEVEL } from "@/lib/scoring";
 import { cn } from "@/lib/utils";
 import { HindiKeyboard, type KeyboardPreset } from "@/components/typing/HindiKeyboard";
+import { useLanguage } from "@/lib/useLanguage";
 
 export const Route = createFileRoute("/profile")({
   head: () => ({
@@ -44,6 +45,7 @@ type ResultRecord = {
 };
 
 function ProfilePage() {
+  const { isEnglish } = useLanguage();
   const { currentUser, isLoaded, updateProfileName, logout } = useAuth();
   const navigate = useNavigate();
   const [history, setHistory] = useState<ResultRecord[]>([]);
@@ -212,8 +214,8 @@ function ProfilePage() {
     () => [
       {
         icon: Flame,
-        title: "7 दिन स्ट्रीक",
-        desc: "लगातार सात दिन अभ्यास",
+        title: isEnglish ? "7 Day Streak" : "7 दिन स्ट्रीक",
+        desc: isEnglish ? "Practiced for 7 consecutive days" : "लगातार सात दिन अभ्यास",
         earned: streak >= 7,
         currentVal: Math.min(7, streak),
         maxVal: 7,
@@ -221,8 +223,8 @@ function ProfilePage() {
       },
       {
         icon: Zap,
-        title: "50 WPM क्लब",
-        desc: "50 शब्द प्रति मिनट पार",
+        title: isEnglish ? "50 WPM Club" : "50 WPM क्लब",
+        desc: isEnglish ? "Surpassed 50 words per minute" : "50 शब्द प्रति मिनट पार",
         earned: bestWpm >= 50,
         currentVal: Math.min(50, bestWpm),
         maxVal: 50,
@@ -230,8 +232,8 @@ function ProfilePage() {
       },
       {
         icon: Target,
-        title: "शुद्धता मास्टर",
-        desc: "98% शुद्धता प्राप्त",
+        title: isEnglish ? "Accuracy Master" : "शुद्धता मास्टर",
+        desc: isEnglish ? "Achieved 98% accuracy" : "98% शुद्धता प्राप्त",
         earned: bestAcc >= 98,
         currentVal: Math.min(98, bestAcc),
         maxVal: 98,
@@ -239,15 +241,15 @@ function ProfilePage() {
       },
       {
         icon: Trophy,
-        title: "परीक्षा तैयार",
-        desc: "परीक्षा पाठ पूर्ण करें",
+        title: isEnglish ? "Exam Ready" : "परीक्षा तैयार",
+        desc: isEnglish ? "Completed exam lessons" : "परीक्षा पाठ पूर्ण करें",
         earned: examCompleted === 1,
         currentVal: examCompleted,
         maxVal: 1,
         unit: "exam",
       },
     ],
-    [streak, bestWpm, bestAcc, examCompleted],
+    [streak, bestWpm, bestAcc, examCompleted, isEnglish],
   );
 
   const unlockedCount = useMemo(() => badges.filter((b) => b.earned).length, [badges]);
