@@ -259,6 +259,7 @@ export function EnglishTypingArena({
   const mouseTimeoutRef = useRef<number | null>(null);
   const cursorTimeoutRef = useRef<number | null>(null);
   const charMistakesRef = useRef<Record<string, number>>({});
+  const mistakenIndicesRef = useRef<Set<number>>(new Set());
   const { currentUser } = useAuth();
 
   const [keyboardPreset, setKeyboardPreset] = useState<string>("Color Zones");
@@ -356,6 +357,7 @@ export function EnglishTypingArena({
     setForceFinish(false);
     completedRef.current = false;
     charMistakesRef.current = {};
+    mistakenIndicesRef.current.clear();
     inputRef.current?.focus();
   }, []);
 
@@ -590,8 +592,6 @@ export function EnglishTypingArena({
       newRawVisual = value;
     }
 
-    setRawVisualTyped(newRawVisual);
-
     let mappedValue = newRawVisual;
     // Fix: Convert Kruti Dev visual order of chhoti ee ki matra to Unicode logical order
     // Only apply this for generated lessons (Unicode) to avoid breaking basic drill visual sequences.
@@ -632,15 +632,21 @@ export function EnglishTypingArena({
       }
     }
 
+    const isLessonPage = !!lessonSlug && lessonSlug !== "random-words" && !lessonSlug.startsWith("story-");
+
     if (newErrors > 0) {
       setErrors((e) => e + newErrors);
-      playWrongKeySound();
+      mistakenIndicesRef.current.add(typedChars.length);
+      if (isLessonPage) {
+        playWrongKeySound();
+      }
     }
 
-    if (hasError && (stopOnErrorEnabled || (!isParagraphMode && isBasicDrill))) {
+    if (hasError && (stopOnErrorEnabled || (!isParagraphMode && isBasicDrill) || isLessonPage)) {
       return;
     }
 
+    setRawVisualTyped(newRawVisual);
     setTyped(next.join(""));
   }
 
@@ -939,7 +945,7 @@ export function EnglishTypingArena({
                               {displayOrder.map((displayIdx) => {
                                 const mappedChar = mappedChars[displayIdx];
                                 if (!mappedChar) return null;
-                                const { ch, cIdx, isCurrent, state } = mappedChar;
+                                const { ch, cIdx, isCurrent, hasMistake, state } = mappedChar;
                                 const wState = getWordState(wIdx);
                                 return (
                                   <span
@@ -947,9 +953,11 @@ export function EnglishTypingArena({
                                     className={cn(
                                       "transition-colors duration-200",
                                       ch === " " && "inline-block w-[0.5em]",
-                                      // Current cursor → yellow
-                                      isCurrent &&
+                                      // Current cursor → yellow (or red if wrong)
+                                      isCurrent && !hasMistake &&
                                         "text-[#F59E0B] dark:text-[#F7C843] underline decoration-2 underline-offset-4",
+                                      isCurrent && hasMistake &&
+                                        "text-[#EF4444] dark:text-[#F04452] underline decoration-2 underline-offset-4 decoration-[#EF4444] dark:decoration-[#F04452]",
                                       // Current word (not cursor) → char-level: green if correct, red if wrong, grey if pending
                                       !isCurrent &&
                                         wState === "current" &&
@@ -963,10 +971,15 @@ export function EnglishTypingArena({
                                         wState === "current" &&
                                         state === "pending" &&
                                         "text-[#94A3B8] dark:text-[#9AAAC0]",
-                                      // Completed correct word → green
+                                      // Completed correct word → green (unless specific char is wrong)
                                       !isCurrent &&
                                         wState === "correct" &&
+                                        state === "correct" &&
                                         "text-[#16A34A] dark:text-[#12B76A]",
+                                      !isCurrent &&
+                                        wState === "correct" &&
+                                        state === "wrong" &&
+                                        "text-[#EF4444] dark:text-[#F04452]",
                                       // Completed wrong word → red
                                       !isCurrent &&
                                         wState === "wrong" &&
@@ -1001,8 +1014,9 @@ export function EnglishTypingArena({
                           const isCurrent = i === typedChars.length;
                           const isSpace = ch === " ";
                           const isTyped = i < typedChars.length;
-                          const isCorrect = isTyped && typedChars[i] === ch;
-                          const isWrong = isTyped && typedChars[i] !== ch;
+                          const hasMistake = mistakenIndicesRef.current.has(i);
+                          const isWrong = (isTyped && typedChars[i] !== ch) || hasMistake;
+                          const isCorrect = isTyped && typedChars[i] === ch && !hasMistake;
                           return (
                             <div
                               key={cIdx}
@@ -1018,13 +1032,16 @@ export function EnglishTypingArena({
                                 // PENDING → grey
                                 !isTyped && !isCurrent && "border border-border/60",
                                 // CURRENT → yellow outline
-                                isCurrent &&
+                                isCurrent && !hasMistake &&
                                   "outline outline-[2.5px] outline-offset-[2.5px] outline-[#F59E0B] dark:outline-[#F7C843] border-transparent z-10 shadow-[0_4px_14px_rgba(245,158,11,0.2)] dark:shadow-[0_4px_14px_rgba(247,200,67,0.25)] scale-105",
+                                // CURRENT BUT MISTAKE → red outline and background
+                                isCurrent && hasMistake &&
+                                  "outline outline-[2.5px] outline-offset-[2.5px] outline-[#EF4444] dark:outline-[#F04452] border-transparent z-10 shadow-[0_4px_14px_rgba(239,68,68,0.2)] dark:shadow-[0_4px_14px_rgba(240,68,82,0.25)] scale-105 bg-[#EF4444]/10 dark:bg-[#F04452]/10",
                                 // CORRECT → GREEN
                                 isCorrect &&
                                   "border border-[#16A34A]/30 dark:border-[#12B76A]/30 bg-[#16A34A]/8 dark:bg-[#12B76A]/8",
                                 // WRONG → RED
-                                isWrong &&
+                                isWrong && !isCurrent &&
                                   "border-2 border-[#EF4444] dark:border-[#F04452] bg-[#EF4444]/10 dark:bg-[#F04452]/10",
                               )}
                             >
@@ -1035,8 +1052,10 @@ export function EnglishTypingArena({
                                     isFocusMode
                                       ? "text-[10px] sm:text-[11px]"
                                       : "text-[9px] sm:text-[10px]",
-                                    isCurrent
+                                    isCurrent && !hasMistake
                                       ? "text-[#F59E0B] dark:text-[#F7C843]"
+                                    : isCurrent && hasMistake
+                                      ? "text-[#EF4444] dark:text-[#F04452]"
                                       : isCorrect
                                         ? "text-[#16A34A]/70 dark:text-[#12B76A]/70"
                                         : isWrong
@@ -1051,9 +1070,10 @@ export function EnglishTypingArena({
                                   className={cn(
                                     " font-bold transition-all duration-300",
                                     isFocusMode ? "text-2xl sm:text-[28px]" : "text-xl sm:text-2xl",
-                                    isCurrent && "text-[#F59E0B] dark:text-[#F7C843]",
+                                    isCurrent && !hasMistake && "text-[#F59E0B] dark:text-[#F7C843]",
+                                    isCurrent && hasMistake && "text-[#EF4444] dark:text-[#F04452]",
                                     isCorrect && "text-[#16A34A] dark:text-[#12B76A]",
-                                    isWrong && "text-[#EF4444] dark:text-[#F04452]",
+                                    isWrong && !isCurrent && "text-[#EF4444] dark:text-[#F04452]",
                                     !isTyped && !isCurrent && "text-[#94A3B8] dark:text-[#9AAAC0]",
                                   )}
                                 >

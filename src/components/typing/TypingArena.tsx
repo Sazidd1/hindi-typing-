@@ -14,6 +14,7 @@ import {
 import { formatLessonTitle } from "@/utils/formatLessonTitle";
 import { cn } from "@/lib/utils";
 import { HindiKeyboard } from "@/components/typing/HindiKeyboard";
+import { playKeyPressSound, playWrongKeySound } from "@/lib/audio";
 import { useAuth } from "@/lib/auth";
 import { calculateGrade, calculateXP, DEFAULT_TARGET_WPM, validateSession } from "@/lib/scoring";
 import { HINDI_MAP, lessons, keyboardRows } from "@/lib/typing-data";
@@ -154,6 +155,7 @@ export function TypingArena({
   const mouseTimeoutRef = useRef<number | null>(null);
   const cursorTimeoutRef = useRef<number | null>(null);
   const charMistakesRef = useRef<Record<string, number>>({});
+  const mistakenIndicesRef = useRef<Set<number>>(new Set());
   const { currentUser } = useAuth();
 
   const [keyboardPreset, setKeyboardPreset] = useState<string>("Color Zones");
@@ -219,6 +221,7 @@ export function TypingArena({
     setForceFinish(false);
     completedRef.current = false;
     charMistakesRef.current = {};
+    mistakenIndicesRef.current.clear();
     inputRef.current?.focus();
   }, []);
 
@@ -480,8 +483,6 @@ export function TypingArena({
         .join("");
     }
 
-    setRawVisualTyped(newRawVisual);
-
     let mappedValue = newRawVisual;
     // Fix: Convert Kruti Dev visual order of chhoti ee ki matra to Unicode logical order
     // Only apply this for generated lessons (Unicode) to avoid breaking basic drill visual sequences.
@@ -522,16 +523,23 @@ export function TypingArena({
       }
     }
 
+    const isLessonPage = !!lessonSlug && lessonSlug !== "random-words" && !lessonSlug.startsWith("story-");
+
     if (newErrors > 0) {
       setErrors((e) => e + newErrors);
+      mistakenIndicesRef.current.add(typedChars.length);
+      if (isLessonPage) {
+        playWrongKeySound();
+      }
     }
 
     // In basic drill Bubble Mode (paginated), block on ANY wrong character.
     // In continuous mode or paragraph mode, allow progress with errors (word will turn RED).
-    if (hasError && !isParagraphMode && isBasicDrill) {
+    if (hasError && (!isParagraphMode && isBasicDrill || isLessonPage)) {
       return;
     }
 
+    setRawVisualTyped(newRawVisual);
     setTyped(next.join(""));
   }
 
@@ -800,13 +808,14 @@ export function TypingArena({
                             const i = globalIndex++;
                             const typedCh = typedChars[i];
                             const isCurrent = i === typedChars.length;
+                            const hasMistake = mistakenIndicesRef.current.has(i);
                             const state =
                               typedCh === undefined
                                 ? "pending"
-                                : typedCh === ch
-                                  ? "correct"
-                                  : "wrong";
-                            return { ch, cIdx: idxInWord, isCurrent, state };
+                                : (typedCh !== ch || hasMistake)
+                                  ? "wrong"
+                                  : "correct";
+                            return { ch, cIdx: idxInWord, isCurrent, hasMistake, state };
                           });
 
                           // Build display order for this word (reordering 'ि' after its consonant)
@@ -826,7 +835,7 @@ export function TypingArena({
                               {displayOrder.map((displayIdx) => {
                                 const mappedChar = mappedChars[displayIdx];
                                 if (!mappedChar) return null;
-                                const { ch, cIdx, isCurrent, state } = mappedChar;
+                                const { ch, cIdx, isCurrent, hasMistake, state } = mappedChar;
                                 const wState = getWordState(wIdx);
                                 return (
                                   <span
@@ -834,9 +843,11 @@ export function TypingArena({
                                     className={cn(
                                       "transition-colors duration-200",
                                       ch === " " && "inline-block w-[0.5em]",
-                                      // Current cursor → yellow
-                                      isCurrent &&
+                                      // Current cursor → yellow (or red if wrong)
+                                      isCurrent && !hasMistake &&
                                         "text-[#F59E0B] dark:text-[#F7C843] underline decoration-2 underline-offset-4",
+                                      isCurrent && hasMistake &&
+                                        "text-[#EF4444] dark:text-[#F04452] underline decoration-2 underline-offset-4 decoration-[#EF4444] dark:decoration-[#F04452]",
                                       // Current word (not cursor) → char-level: green if correct, red if wrong, grey if pending
                                       !isCurrent &&
                                         wState === "current" &&
@@ -850,10 +861,15 @@ export function TypingArena({
                                         wState === "current" &&
                                         state === "pending" &&
                                         "text-[#94A3B8] dark:text-[#9AAAC0]",
-                                      // Completed correct word → green
+                                      // Completed correct word → green (unless specific char is wrong)
                                       !isCurrent &&
                                         wState === "correct" &&
+                                        state === "correct" &&
                                         "text-[#16A34A] dark:text-[#12B76A]",
+                                      !isCurrent &&
+                                        wState === "correct" &&
+                                        state === "wrong" &&
+                                        "text-[#EF4444] dark:text-[#F04452]",
                                       // Completed wrong word → red
                                       !isCurrent &&
                                         wState === "wrong" &&
@@ -892,8 +908,9 @@ export function TypingArena({
                           const isCurrent = i === typedChars.length;
                           const isSpace = ch === " ";
                           const isTyped = i < typedChars.length;
-                          const isCorrect = isTyped && typedChars[i] === ch;
-                          const isWrong = isTyped && typedChars[i] !== ch;
+                          const hasMistake = mistakenIndicesRef.current.has(i);
+                          const isWrong = (isTyped && typedChars[i] !== ch) || hasMistake;
+                          const isCorrect = isTyped && typedChars[i] === ch && !hasMistake;
                           return (
                             <div
                               key={cIdx}
@@ -909,13 +926,16 @@ export function TypingArena({
                                 // PENDING → grey
                                 !isTyped && !isCurrent && "border border-border/60",
                                 // CURRENT → yellow outline
-                                isCurrent &&
+                                isCurrent && !hasMistake &&
                                   "outline outline-[2.5px] outline-offset-[2.5px] outline-[#F59E0B] dark:outline-[#F7C843] border-transparent z-10 shadow-[0_4px_14px_rgba(245,158,11,0.2)] dark:shadow-[0_4px_14px_rgba(247,200,67,0.25)] scale-105",
+                                // CURRENT BUT MISTAKE → red outline and background
+                                isCurrent && hasMistake &&
+                                  "outline outline-[2.5px] outline-offset-[2.5px] outline-[#EF4444] dark:outline-[#F04452] border-transparent z-10 shadow-[0_4px_14px_rgba(239,68,68,0.2)] dark:shadow-[0_4px_14px_rgba(240,68,82,0.25)] scale-105 bg-[#EF4444]/10 dark:bg-[#F04452]/10",
                                 // CORRECT → GREEN
                                 isCorrect &&
                                   "border border-[#16A34A]/30 dark:border-[#12B76A]/30 bg-[#16A34A]/8 dark:bg-[#12B76A]/8",
                                 // WRONG → RED
-                                isWrong &&
+                                isWrong && !isCurrent &&
                                   "border-2 border-[#EF4444] dark:border-[#F04452] bg-[#EF4444]/10 dark:bg-[#F04452]/10",
                               )}
                             >
@@ -989,8 +1009,11 @@ export function TypingArena({
                 ref={inputRef}
                 value={typed}
                 onChange={(e) => handleChange(e.target.value)}
-                onKeyDown={() => {
+                onKeyDown={(e) => {
                   if (isPaused) setIsPaused(false);
+                  if (window.location.pathname.startsWith("/lessons") && !e.repeat) {
+                    playKeyPressSound();
+                  }
                 }}
                 spellCheck={false}
                 autoComplete="off"
