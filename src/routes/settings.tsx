@@ -243,6 +243,7 @@ function SettingsPage() {
             <Toggle
               label={isEnglish ? "Key press sound" : "Key press sound"}
               hint={isEnglish ? "Soft sound on every key stroke" : "हर कीस्ट्रोक पर हल्की ध्वनि"}
+              storageKey="settings_key_press_sound"
             />
             <Toggle
               label={isEnglish ? "Stop on error" : "Stop on error"}

@@ -15,6 +15,7 @@ import { cn } from "@/lib/utils";
 import { calculateProgress } from "@/lib/utils/typing-progress";
 import { formatLessonTitle } from "@/utils/formatLessonTitle";
 import { KrutiDevKeyboard } from "@/components/typing/KrutiDevKeyboard";
+import { playKeyPressSound, playWrongKeySound } from "@/lib/audio";
 import { useAuth } from "@/lib/auth";
 import { calculateGrade, calculateXP, DEFAULT_TARGET_WPM, validateSession } from "@/lib/scoring";
 import {
@@ -519,6 +520,7 @@ export function KrutiDevTypingArena({
 
     if (newErrors > 0) {
       setErrors((e) => e + newErrors);
+      playWrongKeySound();
     }
 
     if (hasError && (stopOnErrorEnabled || (!isParagraphMode && isBasicDrill))) {
@@ -994,8 +996,9 @@ export function KrutiDevTypingArena({
                 ref={inputRef}
                 value={typed}
                 onChange={(e) => handleChange(e.target.value)}
-                onKeyDown={() => {
+                onKeyDown={(e) => {
                   if (isPaused) setIsPaused(false);
+                  if (!e.repeat) playKeyPressSound();
                 }}
                 spellCheck={false}
                 autoComplete="off"
