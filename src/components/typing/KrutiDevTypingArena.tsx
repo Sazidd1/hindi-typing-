@@ -121,6 +121,18 @@ export function KrutiDevTypingArena({
 
   const [keyboardPreset, setKeyboardPreset] = useState<string>("Color Zones");
   const [backspaceEnabled, setBackspaceEnabled] = useState<boolean>(true);
+  const [showKeyboardState, setShowKeyboardState] = useState<boolean>(() => {
+    const val = localStorage.getItem("settings_show_virtual_keyboard");
+    return val !== null ? val === "true" : showKeyboard;
+  });
+  const [fingerGuidanceState, setFingerGuidanceState] = useState<boolean>(() => {
+    const val = localStorage.getItem("settings_finger_guidance");
+    return val !== null ? val === "true" : true;
+  });
+  const [stopOnErrorEnabled, setStopOnErrorEnabled] = useState<boolean>(() => {
+    const val = localStorage.getItem("settings_stop_on_error");
+    return val !== null ? val === "true" : false;
+  });
 
   useEffect(() => {
     const savedBackspace = localStorage.getItem("settings_backspace");
@@ -139,7 +151,28 @@ export function KrutiDevTypingArena({
     };
     updatePreset();
     window.addEventListener("keyboardPresetUpdated", updatePreset);
-    return () => window.removeEventListener("keyboardPresetUpdated", updatePreset);
+    
+    const handleSettingsChange = (e: Event) => {
+      const type = e.type;
+      if (type === "settings_show_virtual_keyboard_changed") {
+        setShowKeyboardState(localStorage.getItem("settings_show_virtual_keyboard") === "true");
+      } else if (type === "settings_finger_guidance_changed") {
+        setFingerGuidanceState(localStorage.getItem("settings_finger_guidance") === "true");
+      } else if (type === "settings_stop_on_error_changed") {
+        setStopOnErrorEnabled(localStorage.getItem("settings_stop_on_error") === "true");
+      }
+    };
+
+    window.addEventListener("settings_show_virtual_keyboard_changed", handleSettingsChange);
+    window.addEventListener("settings_finger_guidance_changed", handleSettingsChange);
+    window.addEventListener("settings_stop_on_error_changed", handleSettingsChange);
+
+    return () => {
+      window.removeEventListener("keyboardPresetUpdated", updatePreset);
+      window.removeEventListener("settings_show_virtual_keyboard_changed", handleSettingsChange);
+      window.removeEventListener("settings_finger_guidance_changed", handleSettingsChange);
+      window.removeEventListener("settings_stop_on_error_changed", handleSettingsChange);
+    };
   }, []);
 
   const [effectiveTimeLimit, setEffectiveTimeLimit] = useState<number | null>(() => {
@@ -488,9 +521,7 @@ export function KrutiDevTypingArena({
       setErrors((e) => e + newErrors);
     }
 
-    // In basic drill Bubble Mode (paginated), block on ANY wrong character.
-    // In continuous mode or paragraph mode, allow progress with errors (word will turn RED).
-    if (hasError && !isParagraphMode && isBasicDrill) {
+    if (hasError && (stopOnErrorEnabled || (!isParagraphMode && isBasicDrill))) {
       return;
     }
 
@@ -1025,7 +1056,7 @@ export function KrutiDevTypingArena({
                   : "h-auto max-w-[850px] opacity-100 -mt-2 sm:-mt-4",
               )}
             >
-              {showKeyboard && <KrutiDevKeyboard nextChar={nextChar} preset={keyboardPreset} />}
+              {showKeyboardState && <KrutiDevKeyboard nextChar={nextChar} preset={keyboardPreset} showFingerGuidance={fingerGuidanceState} />}
             </div>
           </div>{" "}
           {/* Close Arena Wrapper */}

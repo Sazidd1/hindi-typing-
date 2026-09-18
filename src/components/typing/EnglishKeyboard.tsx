@@ -58,9 +58,14 @@ function getSoftPastelActiveBorderHex(finger: Finger | undefined): string {
 interface EnglishKeyboardProps {
   nextChar?: string | undefined;
   preset?: KeyboardPreset | string;
+  showFingerGuidance?: boolean;
 }
 
-export function EnglishKeyboard({ nextChar, preset = "Color Zones" }: EnglishKeyboardProps) {
+export function EnglishKeyboard({
+  nextChar,
+  preset = "Color Zones",
+  showFingerGuidance = true,
+}: EnglishKeyboardProps) {
   const target = nextChar ? lookupChar(nextChar) : undefined;
   const activeKey = nextChar === " " ? "Space" : target?.key.en;
   const needsShift = target?.shift ?? false;
@@ -198,30 +203,32 @@ export function EnglishKeyboard({ nextChar, preset = "Color Zones" }: EnglishKey
               );
 
               // Inline Style overrides based on preset
-              if (isClassicGlass && !isActive) {
-                customStyles.borderBottomColor = fColor;
-                customStyles.borderBottomWidth = "3px";
-                customStyles.borderBottomStyle = "solid";
-                customStyles.backgroundColor = getFingerBgRgba(key.finger);
-              }
-              if (isColorZones && !isActive) {
-                customStyles.backgroundColor = getFingerBgRgba(key.finger, 0.25);
-                customStyles.borderBottomColor = getFingerBgRgba(key.finger, 0.6);
-              }
-              if (isSoftPastel) {
-                customStyles.backgroundColor = getSoftPastelFingerBgHex(key.finger);
-                if (isActive) {
-                  const activeBorder = getSoftPastelActiveBorderHex(key.finger);
-                  customStyles.borderColor = activeBorder;
-                  customStyles.borderWidth = "2px";
-                  customStyles.borderStyle = "solid";
-                  customStyles.boxShadow = `0 3px 0px ${activeBorder}`;
-                  customStyles.transform = "translateY(-1px)";
-                } else {
-                  customStyles.border = "1px solid rgba(0,0,0,0.03)";
-                  customStyles.boxShadow =
-                    "0 2px 0px rgba(0,0,0,0.05), inset 0 1px 0 rgba(255,255,255,0.4)";
-                  customStyles.transform = "none";
+              if (showFingerGuidance) {
+                if (isClassicGlass && !isActive) {
+                  customStyles.borderBottomColor = fColor;
+                  customStyles.borderBottomWidth = "3px";
+                  customStyles.borderBottomStyle = "solid";
+                  customStyles.backgroundColor = getFingerBgRgba(key.finger);
+                }
+                if (isColorZones && !isActive) {
+                  customStyles.backgroundColor = getFingerBgRgba(key.finger, 0.25);
+                  customStyles.borderBottomColor = getFingerBgRgba(key.finger, 0.6);
+                }
+                if (isSoftPastel) {
+                  customStyles.backgroundColor = getSoftPastelFingerBgHex(key.finger);
+                  if (isActive) {
+                    const activeBorder = getSoftPastelActiveBorderHex(key.finger);
+                    customStyles.borderColor = activeBorder;
+                    customStyles.borderWidth = "2px";
+                    customStyles.borderStyle = "solid";
+                    customStyles.boxShadow = `0 3px 0px ${activeBorder}`;
+                    customStyles.transform = "translateY(-1px)";
+                  } else {
+                    customStyles.border = "1px solid rgba(0,0,0,0.03)";
+                    customStyles.boxShadow =
+                      "0 2px 0px rgba(0,0,0,0.05), inset 0 1px 0 rgba(255,255,255,0.4)";
+                    customStyles.transform = "none";
+                  }
                 }
               }
 

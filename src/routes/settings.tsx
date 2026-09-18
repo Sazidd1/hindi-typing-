@@ -27,13 +27,31 @@ export const Route = createFileRoute("/settings")({
 function Toggle({
   label,
   hint,
+  storageKey,
   defaultOn = false,
 }: {
   label: string;
   hint: string;
+  storageKey?: string;
   defaultOn?: boolean;
 }) {
-  const [on, setOn] = useState(defaultOn);
+  const [on, setOn] = useState(() => {
+    if (!storageKey) return defaultOn;
+    const stored = localStorage.getItem(storageKey);
+    return stored !== null ? stored === "true" : defaultOn;
+  });
+
+  const handleToggle = () => {
+    setOn((v) => {
+      const newVal = !v;
+      if (storageKey) {
+        localStorage.setItem(storageKey, String(newVal));
+        window.dispatchEvent(new Event(`${storageKey}_changed`));
+      }
+      return newVal;
+    });
+  };
+
   return (
     <div className="flex items-center justify-between gap-4 py-4">
       <div>
@@ -44,7 +62,7 @@ function Toggle({
         role="switch"
         aria-checked={on}
         aria-label={label}
-        onClick={() => setOn((v) => !v)}
+        onClick={handleToggle}
         className={cn(
           "relative h-7 w-12 shrink-0 rounded-full transition-colors duration-300",
           on ? "bg-primary" : "bg-muted",
@@ -211,6 +229,7 @@ function SettingsPage() {
                   ? "Show the virtual keyboard during practice"
                   : "अभ्यास के दौरान वर्चुअल कीबोर्ड दिखाएँ"
               }
+              storageKey="settings_show_virtual_keyboard"
               defaultOn
             />
             <Toggle
@@ -218,6 +237,7 @@ function SettingsPage() {
               hint={
                 isEnglish ? "Show color hints for correct fingers" : "सही उंगली का रंग संकेत दिखाएँ"
               }
+              storageKey="settings_finger_guidance"
               defaultOn
             />
             <Toggle
@@ -229,10 +249,12 @@ function SettingsPage() {
               hint={
                 isEnglish ? "Stop progression when an error occurs" : "गलती होने पर आगे बढ़ना रोकें"
               }
+              storageKey="settings_stop_on_error"
             />
             <Toggle
               label={isEnglish ? "Daily practice reminder" : "Daily practice reminder"}
               hint={isEnglish ? "Remind me to practice daily" : "रोज़ अभ्यास की याद दिलाएँ"}
+              storageKey="settings_daily_reminder"
               defaultOn
             />
           </div>
