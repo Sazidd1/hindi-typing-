@@ -346,6 +346,30 @@ export function EnglishTypingArena({
       : Math.min(100, Math.round((typedChars.length / chars.length) * 100));
   const remaining = effectiveTimeLimit ? Math.max(0, effectiveTimeLimit - elapsed) : null;
 
+  // Auto-recover focus on typing keys for lesson pages
+  useEffect(() => {
+    const isLessonPage = !!lessonSlug && lessonSlug !== "random-words" && !lessonSlug.startsWith("story-");
+    if (!isLessonPage) return;
+
+    const handleGlobalKeyDown = (e: KeyboardEvent) => {
+      const activeEl = document.activeElement;
+      if (activeEl?.tagName === "INPUT" || activeEl?.tagName === "TEXTAREA") {
+        if (activeEl !== inputRef.current) return;
+      }
+
+      if (e.key.length === 1 || e.key === "Backspace" || e.key === " ") {
+        if (e.ctrlKey || e.altKey || e.metaKey) return;
+        
+        if (document.activeElement !== inputRef.current) {
+          inputRef.current?.focus();
+        }
+      }
+    };
+
+    document.addEventListener("keydown", handleGlobalKeyDown);
+    return () => document.removeEventListener("keydown", handleGlobalKeyDown);
+  }, [lessonSlug]);
+
   const reset = useCallback(() => {
     setTyped("");
     setRawVisualTyped("");
