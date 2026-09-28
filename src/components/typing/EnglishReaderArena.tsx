@@ -2,7 +2,6 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Trophy, Play, CheckCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/lib/auth";
-import { useSettingsStore } from "@/lib/settings";
 import { formatLessonTitle } from "@/utils/formatLessonTitle";
 import { ChapterMasteryModal } from "@/components/typing/ChapterMasteryModal";
 

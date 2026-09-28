@@ -12,7 +12,6 @@ import {
   CheckCircle,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { calculateProgress } from "@/lib/utils/typing-progress";
 import { formatLessonTitle } from "@/utils/formatLessonTitle";
 import { KrutiDevKeyboard } from "@/components/typing/KrutiDevKeyboard";
 import { playKeyPressSound, playWrongKeySound } from "@/lib/audio";

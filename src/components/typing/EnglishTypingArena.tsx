@@ -11,7 +11,6 @@ import {
   List,
   CheckCircle,
 } from "lucide-react";
-import { calculateProgress } from "@/lib/utils/typing-progress";
 import { formatLessonTitle } from "@/utils/formatLessonTitle";
 import { cn } from "@/lib/utils";
 import { EnglishKeyboard as HindiKeyboard } from "@/components/typing/EnglishKeyboard";
@@ -943,13 +942,14 @@ export function EnglishTypingArena({
                             const i = globalIndex++;
                             const typedCh = typedChars[i];
                             const isCurrent = i === typedChars.length;
+                            const hasMistake = mistakenIndicesRef.current.has(i);
                             const state =
                               typedCh === undefined
                                 ? "pending"
-                                : typedCh === ch
-                                  ? "correct"
-                                  : "wrong";
-                            return { ch, cIdx: idxInWord, isCurrent, state };
+                                : (typedCh !== ch || hasMistake)
+                                  ? "wrong"
+                                  : "correct";
+                            return { ch, cIdx: idxInWord, isCurrent, hasMistake, state };
                           });
 
                           // Build display order for this word (reordering 'ि' after its consonant)

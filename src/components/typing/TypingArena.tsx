@@ -753,25 +753,31 @@ export function TypingArena({
       `}</style>
 
       <div
+        className="fixed inset-0 z-[-1]"
+        style={{
+          background: "radial-gradient(ellipse at top, #fffdf8 0%, #f6ecd6 100%)",
+        }}
+      />
+      <div
         className={cn(
           "mx-auto w-[98%] max-w-[1350px] flex flex-col lg:flex-row gap-6 lg:gap-8 animate-in fade-in slide-in-from-bottom-4 duration-700 px-2 sm:px-4 transition-all duration-300",
           isFocusMode
             ? "items-center justify-center min-h-[85vh]"
-            : cn("items-start min-h-0", isWordPractice ? "-mt-6 sm:-mt-8" : "-mt-4 sm:-mt-6"),
+            : cn("items-start min-h-0", isWordPractice ? "-mt-10 sm:-mt-12" : "-mt-8 sm:-mt-10"),
         )}
       >
         {/* Left Side: Typing Area & Keyboard */}
         <div className="flex flex-col flex-1 w-full gap-0">
           {!isFocusMode && (title || subtitle) && (
-            <h2 className="text-slate-900 dark:text-[#F4F7FB] text-center font-bold text-2xl sm:text-3xl leading-tight px-2 mt-0 mb-0 relative z-10 font-hindi">
+            <h2 className="text-[#1c1917] text-center font-bold text-2xl sm:text-3xl leading-tight px-2 mt-0 mb-0 relative z-10 font-hindi">
               {formatLessonTitle(title, subtitle)}
             </h2>
           )}
           {/* Wrapper for Passage and Keyboard to keep their internal spacing intact */}
-          <div className="flex flex-col w-full gap-6 sm:gap-8 mt-4">
+          <div className="flex flex-col w-full gap-6 sm:gap-8 mt-0">
             <div
               className={cn(
-                "relative mx-auto w-full cursor-text rounded-[24px] py-2 px-6 sm:py-3 sm:px-8 flex items-center justify-center bg-card/80 dark:bg-[linear-gradient(145deg,#101F34,#0D1A2D)] border border-border/60 dark:border-[rgba(255,255,255,0.09)] shadow-[0_16px_40px_rgba(0,0,0,0.18)] backdrop-blur-xl transition-all duration-300 group overflow-hidden shrink-0",
+                "relative mx-auto w-full cursor-text rounded-2xl py-2 px-6 sm:py-3 sm:px-8 flex items-center justify-center bg-white border border-[rgba(193,158,84,0.15)] shadow-[0_12px_32px_rgba(184,138,68,0.06),0_4px_12px_rgba(184,138,68,0.04)] backdrop-blur-xl transition-all duration-300 group overflow-hidden shrink-0",
                 isFocusMode &&
                   [
                     "ch-full-practice",
@@ -869,39 +875,39 @@ export function TypingArena({
                                       ch === " " && "inline-block w-[0.5em]",
                                       // Current cursor → yellow (or red if wrong)
                                       isCurrent && !hasMistake &&
-                                        "text-[#F59E0B] dark:text-[#F7C843] underline decoration-2 underline-offset-4",
+                                        "text-[#c19e54] underline decoration-2 underline-offset-4",
                                       isCurrent && hasMistake &&
-                                        "text-[#EF4444] dark:text-[#F04452] underline decoration-2 underline-offset-4 decoration-[#EF4444] dark:decoration-[#F04452]",
+                                        "text-[#EF4444] underline decoration-2 underline-offset-4 decoration-[#EF4444]",
                                       // Current word (not cursor) → char-level: green if correct, red if wrong, grey if pending
                                       !isCurrent &&
                                         wState === "current" &&
                                         state === "correct" &&
-                                        "text-[#16A34A] dark:text-[#12B76A]",
+                                        "text-green-600",
                                       !isCurrent &&
                                         wState === "current" &&
                                         state === "wrong" &&
-                                        "text-[#EF4444] dark:text-[#F04452]",
+                                        "text-[#EF4444]",
                                       !isCurrent &&
                                         wState === "current" &&
                                         state === "pending" &&
-                                        "text-[#94A3B8] dark:text-[#9AAAC0]",
+                                        "text-slate-500",
                                       // Completed correct word → green (unless specific char is wrong)
                                       !isCurrent &&
                                         wState === "correct" &&
                                         state === "correct" &&
-                                        "text-[#16A34A] dark:text-[#12B76A]",
+                                        "text-green-600",
                                       !isCurrent &&
                                         wState === "correct" &&
                                         state === "wrong" &&
-                                        "text-[#EF4444] dark:text-[#F04452]",
+                                        "text-[#EF4444]",
                                       // Completed wrong word → red
                                       !isCurrent &&
                                         wState === "wrong" &&
-                                        "text-[#EF4444] dark:text-[#F04452]",
+                                        "text-[#EF4444]",
                                       // Pending word → grey
                                       !isCurrent &&
                                         wState === "pending" &&
-                                        "text-[#94A3B8] dark:text-[#9AAAC0]",
+                                        "text-slate-500",
                                     )}
                                   >
                                     {ch}
@@ -939,7 +945,7 @@ export function TypingArena({
                             <div
                               key={cIdx}
                               className={cn(
-                                "flex items-center justify-center rounded-xl bg-card dark:bg-[#1C304A] shadow-sm border border-border/50 dark:border-[rgba(255,255,255,0.05)] transition-all duration-300 shrink-0",
+                                "flex items-center justify-center rounded-xl bg-white shadow-sm border border-[rgba(193,158,84,0.1)] transition-all duration-300 shrink-0",
                                 isSpace
                                   ? isFocusMode
                                     ? "w-16 sm:w-20"
@@ -948,19 +954,19 @@ export function TypingArena({
                                     ? "size-12 sm:size-14"
                                     : "size-11 sm:size-12",
                                 // PENDING → grey
-                                !isTyped && !isCurrent && "border border-border/60",
+                                !isTyped && !isCurrent && "border border-[rgba(193,158,84,0.15)]",
                                 // CURRENT → yellow outline
                                 isCurrent && !hasMistake &&
-                                  "outline outline-[2.5px] outline-offset-[2.5px] outline-[#F59E0B] dark:outline-[#F7C843] border-transparent z-10 shadow-[0_4px_14px_rgba(245,158,11,0.2)] dark:shadow-[0_4px_14px_rgba(247,200,67,0.25)] scale-105",
+                                  "outline outline-[2.5px] outline-offset-[2.5px] outline-[#c19e54] border-transparent z-10 shadow-[0_4px_14px_rgba(193,158,84,0.25)] scale-105",
                                 // CURRENT BUT MISTAKE → red outline and background
                                 isCurrent && hasMistake &&
-                                  "outline outline-[2.5px] outline-offset-[2.5px] outline-[#EF4444] dark:outline-[#F04452] border-transparent z-10 shadow-[0_4px_14px_rgba(239,68,68,0.2)] dark:shadow-[0_4px_14px_rgba(240,68,82,0.25)] scale-105 bg-[#EF4444]/10 dark:bg-[#F04452]/10",
+                                  "outline outline-[2.5px] outline-offset-[2.5px] outline-[#EF4444] border-transparent z-10 shadow-[0_4px_14px_rgba(239,68,68,0.2)] scale-105 bg-[#EF4444]/10",
                                 // CORRECT → GREEN
                                 isCorrect &&
-                                  "border border-[#16A34A]/30 dark:border-[#12B76A]/30 bg-[#16A34A]/8 dark:bg-[#12B76A]/8",
+                                  "border border-green-600/30 bg-green-600/10",
                                 // WRONG → RED
                                 isWrong && !isCurrent &&
-                                  "border-2 border-[#EF4444] dark:border-[#F04452] bg-[#EF4444]/10 dark:bg-[#F04452]/10",
+                                  "border-2 border-[#EF4444] bg-[#EF4444]/10",
                               )}
                             >
                               {isSpace ? (
@@ -970,13 +976,15 @@ export function TypingArena({
                                     isFocusMode
                                       ? "text-[10px] sm:text-[11px]"
                                       : "text-[9px] sm:text-[10px]",
-                                    isCurrent
-                                      ? "text-[#F59E0B] dark:text-[#F7C843]"
+                                    isCurrent && !hasMistake
+                                      ? "text-[#c19e54]"
+                                    : isCurrent && hasMistake
+                                      ? "text-[#EF4444]"
                                       : isCorrect
-                                        ? "text-[#16A34A]/70 dark:text-[#12B76A]/70"
+                                        ? "text-green-600"
                                         : isWrong
-                                          ? "text-[#EF4444] dark:text-[#F04452]"
-                                          : "text-[#94A3B8] dark:text-[#9AAAC0]",
+                                          ? "text-[#EF4444]"
+                                          : "text-slate-500",
                                   )}
                                 >
                                   Space
@@ -986,10 +994,11 @@ export function TypingArena({
                                   className={cn(
                                     "font-hindi font-bold transition-all duration-300",
                                     isFocusMode ? "text-2xl sm:text-[28px]" : "text-xl sm:text-2xl",
-                                    isCurrent && "text-[#F59E0B] dark:text-[#F7C843]",
-                                    isCorrect && "text-[#16A34A] dark:text-[#12B76A]",
-                                    isWrong && "text-[#EF4444] dark:text-[#F04452]",
-                                    !isTyped && !isCurrent && "text-[#94A3B8] dark:text-[#9AAAC0]",
+                                    isCurrent && !hasMistake && "text-[#c19e54]",
+                                    isCurrent && hasMistake && "text-[#EF4444]",
+                                    isCorrect && "text-green-600",
+                                    isWrong && !isCurrent && "text-[#EF4444]",
+                                    !isTyped && !isCurrent && "text-slate-500",
                                   )}
                                 >
                                   {ch}
@@ -1113,59 +1122,59 @@ export function TypingArena({
               : "w-full lg:w-[30%] lg:max-w-[320px] lg:min-w-[280px] space-y-4 sm:space-y-6 mt-6 lg:mt-0 opacity-100",
           )}
         >
-          <div className="bg-card/60 dark:bg-[linear-gradient(145deg,#101F34,#0D1A2D)] rounded-[24px] p-5 sm:p-6 shadow-[0_16px_40px_rgba(0,0,0,0.18)] border border-border/40 dark:border-[rgba(255,255,255,0.09)] flex flex-col gap-5">
-            <h3 className="text-xl font-semibold tracking-tight text-foreground dark:text-[#F4F7FB]">
+          <div className="bg-white/90 backdrop-blur-md rounded-[24px] p-5 sm:p-6 shadow-[0_16px_40px_rgba(184,138,68,0.08)] border border-[rgba(193,158,84,0.15)] flex flex-col gap-5">
+            <h3 className="text-xl font-semibold tracking-tight text-[#1c1917]">
               Live Session
             </h3>
 
             {/* 2x2 Grid */}
             <div className="grid grid-cols-2 gap-3">
               {/* Speed */}
-              <div className="bg-background/80 dark:bg-[#071426] rounded-[20px] p-4 shadow-sm border border-border/40 dark:border-[rgba(255,255,255,0.05)] flex flex-col gap-1">
-                <span className="text-[10px] font-bold text-muted-foreground dark:text-[#8FA2BC] uppercase tracking-wider">
+              <div className="bg-white rounded-[20px] p-4 shadow-sm border border-[rgba(193,158,84,0.1)] flex flex-col gap-1">
+                <span className="text-[10px] font-bold text-[#8c734b] uppercase tracking-wider">
                   Speed
                 </span>
                 <div className="flex items-center gap-1">
-                  <span className="text-[28px] font-semibold tracking-tight text-primary dark:text-[#4B8BFF]">
+                  <span className="text-[28px] font-semibold tracking-tight text-[#c19e54]">
                     {wpm}
                   </span>
-                  <span className="text-[13px] font-semibold text-muted-foreground dark:text-[#8FA2BC]">
+                  <span className="text-[13px] font-semibold text-[#8c734b]">
                     WPM
                   </span>
                 </div>
               </div>
               {/* Accuracy */}
-              <div className="bg-background/80 dark:bg-[#071426] rounded-[20px] p-4 shadow-sm border border-border/40 dark:border-[rgba(255,255,255,0.05)] flex flex-col gap-1">
-                <span className="text-[10px] font-bold text-muted-foreground dark:text-[#8FA2BC] uppercase tracking-wider">
+              <div className="bg-white rounded-[20px] p-4 shadow-sm border border-[rgba(193,158,84,0.1)] flex flex-col gap-1">
+                <span className="text-[10px] font-bold text-[#8c734b] uppercase tracking-wider">
                   Accuracy
                 </span>
                 <div className="flex items-center gap-1">
-                  <span className="text-[28px] font-semibold tracking-tight text-success dark:text-[#12B76A]">
+                  <span className="text-[28px] font-semibold tracking-tight text-green-600">
                     {accuracy}
                   </span>
-                  <span className="text-[13px] font-semibold text-muted-foreground dark:text-[#8FA2BC]">
+                  <span className="text-[13px] font-semibold text-[#8c734b]">
                     %
                   </span>
                 </div>
               </div>
               {/* Time */}
-              <div className="bg-background/80 dark:bg-[#071426] rounded-[20px] p-4 shadow-sm border border-border/40 dark:border-[rgba(255,255,255,0.05)] flex flex-col gap-1">
-                <span className="text-[10px] font-bold text-muted-foreground dark:text-[#8FA2BC] uppercase tracking-wider">
+              <div className="bg-white rounded-[20px] p-4 shadow-sm border border-[rgba(193,158,84,0.1)] flex flex-col gap-1">
+                <span className="text-[10px] font-bold text-[#8c734b] uppercase tracking-wider">
                   Time
                 </span>
                 <div className="flex items-center gap-1">
-                  <span className="text-[22px] font-semibold tracking-tight text-foreground dark:text-[#F4F7FB]">
+                  <span className="text-[22px] font-semibold tracking-tight text-[#1c1917]">
                     {formatTime(elapsed)}
                   </span>
                 </div>
               </div>
               {/* Streak */}
-              <div className="bg-background/80 dark:bg-[#071426] rounded-[20px] p-4 shadow-sm border border-border/40 dark:border-[rgba(255,255,255,0.05)] flex flex-col gap-1">
-                <span className="text-[10px] font-bold text-muted-foreground dark:text-[#8FA2BC] uppercase tracking-wider">
+              <div className="bg-white rounded-[20px] p-4 shadow-sm border border-[rgba(193,158,84,0.1)] flex flex-col gap-1">
+                <span className="text-[10px] font-bold text-[#8c734b] uppercase tracking-wider">
                   Streak
                 </span>
                 <div className="flex items-center gap-1">
-                  <span className="text-[22px] font-semibold tracking-tight text-orange-500 dark:text-[#F7C843]">
+                  <span className="text-[22px] font-semibold tracking-tight text-orange-500">
                     {currentStreak}
                   </span>
                   <span className="text-[20px]">🔥</span>
