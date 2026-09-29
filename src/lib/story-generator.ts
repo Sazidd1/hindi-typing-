@@ -1,4 +1,4 @@
-import { keyboardRows } from './typing-data';
+import { keyboardRows } from "./typing-data";
 
 const story1Template = `
 एक बार की बात है, {PLACE} में {HERO} नाम का एक {PROFESSION} रहता था। उसका जीवन बहुत ही सामान्य था, लेकिन एक दिन कुछ ऐसा हुआ जिसने उसकी पूरी दुनिया बदल दी।
@@ -94,149 +94,28 @@ const story2Template = `
 `;
 
 const vars = {
-  "PLACE": [
-    "रामपुर",
-    "शिमला",
-    "काशी",
-    "मथुरा",
-    "उदयपुर",
-    "भोपाल",
-    "पटना"
-  ],
-  "HERO": [
-    "रवि",
-    "आदित्य",
-    "विक्रम",
-    "रोहित",
-    "संजय",
-    "कमल",
-    "अनिल"
-  ],
-  "PROFESSION": [
-    "शिक्षक",
-    "किसान",
-    "व्यापारी",
-    "चित्रकार",
-    "लेखक",
-    "इंजीनियर"
-  ],
-  "DATE": [
-    "१५/०८/२०२३",
-    "२६/०१/२०२४",
-    "०२/१०/२०२५",
-    "०५/०९/२०२३",
-    "१४/११/२०२४"
-  ],
-  "TIME": [
-    "१०:३०",
-    "११:४५",
-    "०९:१५",
-    "०८:२०",
-    "१२:००"
-  ],
-  "WEATHER": [
-    "काले बादल",
-    "घने बादल",
-    "तूफानी बादल",
-    "बरसाती बादल"
-  ],
-  "OBJECT": [
-    "एक किताब",
-    "अखबार",
-    "एक पत्रिका",
-    "उपन्यास",
-    "डायरी"
-  ],
-  "FRIEND": [
-    "सुरेश",
-    "रमेश",
-    "महेश",
-    "अमित",
-    "सुमित",
-    "पंकज"
-  ],
-  "DANGER": [
-    "गहरी खाई",
-    "नदी के भंवर",
-    "जंगली जानवर के जाल",
-    "आग की लपटों"
-  ],
-  "SARPANCH": [
-    "दीनदयाल",
-    "रामलाल",
-    "हरिप्रसाद",
-    "शिवनाथ",
-    "गोपाल"
-  ],
-  "UNIVERSITY": [
-    "दिल्ली विश्वविद्यालय",
-    "बनारस हिंदू विश्वविद्यालय",
-    "इलाहाबाद विश्वविद्यालय"
-  ],
-  "START_MONTH": [
-    "जनवरी",
-    "फरवरी",
-    "मार्च",
-    "अप्रैल"
-  ],
-  "END_MONTH": [
-    "दिसंबर",
-    "नवंबर",
-    "अक्टूबर",
-    "सितंबर"
-  ],
-  "SCHOLAR": [
-    "वर्मा",
-    "शर्मा",
-    "गुप्ता",
-    "मिश्रा",
-    "सिंह"
-  ],
-  "HERO_ANIMAL": [
-    "एक शेर",
-    "एक हाथी",
-    "एक भालू",
-    "एक चीता"
-  ],
-  "NAME": [
-    "शेरू",
-    "गज्जू",
-    "भोलू",
-    "चीकू"
-  ],
-  "QUALITY": [
-    "बहादुर",
-    "समझदार",
-    "चतुर",
-    "ताकतवर"
-  ],
-  "DATE_2": [
-    "१२/०५/२०२२",
-    "१५/०७/२०२३",
-    "०१/०१/२०२४"
-  ],
-  "TIME_2": [
-    "०४:१५",
-    "०५:३०",
-    "०६:४५"
-  ],
-  "VILLAIN_ANIMAL": [
-    "एक खूंखार भेड़िया",
-    "एक दुष्ट मगरमच्छ",
-    "एक चालाक लोमड़ी"
-  ],
-  "FRIEND_ANIMAL": [
-    "खरगोश",
-    "हिरण",
-    "बंदर",
-    "तोता"
-  ],
-  "KING": [
-    "शेरखान",
-    "वनराज",
-    "महाकाल",
-    "बाहुबली"
-  ]
+  PLACE: ["रामपुर", "शिमला", "काशी", "मथुरा", "उदयपुर", "भोपाल", "पटना"],
+  HERO: ["रवि", "आदित्य", "विक्रम", "रोहित", "संजय", "कमल", "अनिल"],
+  PROFESSION: ["शिक्षक", "किसान", "व्यापारी", "चित्रकार", "लेखक", "इंजीनियर"],
+  DATE: ["१५/०८/२०२३", "२६/०१/२०२४", "०२/१०/२०२५", "०५/०९/२०२३", "१४/११/२०२४"],
+  TIME: ["१०:३०", "११:४५", "०९:१५", "०८:२०", "१२:००"],
+  WEATHER: ["काले बादल", "घने बादल", "तूफानी बादल", "बरसाती बादल"],
+  OBJECT: ["एक किताब", "अखबार", "एक पत्रिका", "उपन्यास", "डायरी"],
+  FRIEND: ["सुरेश", "रमेश", "महेश", "अमित", "सुमित", "पंकज"],
+  DANGER: ["गहरी खाई", "नदी के भंवर", "जंगली जानवर के जाल", "आग की लपटों"],
+  SARPANCH: ["दीनदयाल", "रामलाल", "हरिप्रसाद", "शिवनाथ", "गोपाल"],
+  UNIVERSITY: ["दिल्ली विश्वविद्यालय", "बनारस हिंदू विश्वविद्यालय", "इलाहाबाद विश्वविद्यालय"],
+  START_MONTH: ["जनवरी", "फरवरी", "मार्च", "अप्रैल"],
+  END_MONTH: ["दिसंबर", "नवंबर", "अक्टूबर", "सितंबर"],
+  SCHOLAR: ["वर्मा", "शर्मा", "गुप्ता", "मिश्रा", "सिंह"],
+  HERO_ANIMAL: ["एक शेर", "एक हाथी", "एक भालू", "एक चीता"],
+  NAME: ["शेरू", "गज्जू", "भोलू", "चीकू"],
+  QUALITY: ["बहादुर", "समझदार", "चतुर", "ताकतवर"],
+  DATE_2: ["१२/०५/२०२२", "१५/०७/२०२३", "०१/०१/२०२४"],
+  TIME_2: ["०४:१५", "०५:३०", "०६:४५"],
+  VILLAIN_ANIMAL: ["एक खूंखार भेड़िया", "एक दुष्ट मगरमच्छ", "एक चालाक लोमड़ी"],
+  FRIEND_ANIMAL: ["खरगोश", "हिरण", "बंदर", "तोता"],
+  KING: ["शेरखान", "वनराज", "महाकाल", "बाहुबली"],
 };
 
 function fillTemplate(template: string) {
@@ -257,8 +136,8 @@ let allTargetsCache: Set<string> | null = null;
 function getTargets() {
   if (allTargetsCache) return allTargetsCache;
   const targets = new Set<string>();
-  keyboardRows.forEach(row => {
-    row.forEach(k => {
+  keyboardRows.forEach((row) => {
+    row.forEach((k) => {
       if (k.hi) targets.add(k.hi);
       if (k.shift) targets.add(k.shift);
     });
@@ -269,14 +148,14 @@ function getTargets() {
 
 export function generateStoryPracticeSession(storyId: 1 | 2) {
   const template = storyId === 1 ? story1Template : story2Template;
-  const text = fillTemplate(template).replace(/\s+/g, ' ').trim();
-  
-  const words = text.split(' ').filter(w => w.length > 0);
-  
+  const text = fillTemplate(template).replace(/\s+/g, " ").trim();
+
+  const words = text.split(" ").filter((w) => w.length > 0);
+
   const allTargets = getTargets();
   const remainingTargets = new Set(allTargets);
   const coveredTargets = new Set<string>();
-  
+
   for (const char of text) {
     if (remainingTargets.has(char)) {
       remainingTargets.delete(char);
@@ -293,7 +172,7 @@ export function generateStoryPracticeSession(storyId: 1 | 2) {
   }
 
   const coveragePercentage = ((allTargets.size - remainingTargets.size) / allTargets.size) * 100;
-  
+
   return {
     text,
     totalUniqueWords: new Set(words).size, // Approximate unique words
@@ -301,6 +180,6 @@ export function generateStoryPracticeSession(storyId: 1 | 2) {
     totalCharacters: text.length,
     coveredTargets: Array.from(coveredTargets),
     remainingTargets: Array.from(remainingTargets),
-    coveragePercentage: parseFloat(coveragePercentage.toFixed(2))
+    coveragePercentage: parseFloat(coveragePercentage.toFixed(2)),
   };
 }

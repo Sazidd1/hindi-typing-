@@ -26,18 +26,32 @@ export function StatCard({
   }[tone];
 
   return (
-    <div className={cn("glass flex h-full items-center gap-4 rounded-3xl p-5 sm:p-6 shadow-sm transition-all duration-300 hover:shadow-md border border-white/60", className)}>
-      <span className={cn("flex size-12 shrink-0 items-center justify-center rounded-2xl shadow-xs", toneClass)}>
+    <div
+      className={cn(
+        "glass flex h-full items-center gap-4 rounded-3xl p-5 sm:p-6 shadow-sm transition-all duration-300 hover:shadow-md border border-white/60",
+        className,
+      )}
+    >
+      <span
+        className={cn(
+          "flex size-12 shrink-0 items-center justify-center rounded-2xl shadow-xs",
+          toneClass,
+        )}
+      >
         <Icon className="size-5" />
       </span>
       <div className="min-w-0 flex-1">
-        <p className="text-[11px] font-bold tracking-wider text-muted-foreground uppercase truncate mb-0.5">{label}</p>
+        <p className="text-[11px] font-bold tracking-wider text-muted-foreground uppercase truncate mb-0.5">
+          {label}
+        </p>
         <div className="flex items-baseline gap-1.5 flex-wrap">
           <span className="text-2xl sm:text-3xl leading-tight font-bold tracking-tight text-foreground tabular-nums">
             {value}
           </span>
           {suffix ? (
-            <span className="text-xs sm:text-sm font-semibold text-muted-foreground/80">{suffix}</span>
+            <span className="text-xs sm:text-sm font-semibold text-muted-foreground/80">
+              {suffix}
+            </span>
           ) : null}
         </div>
       </div>

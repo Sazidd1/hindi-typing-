@@ -3,6 +3,7 @@ import { useState } from "react";
 import { GlassCard, SectionTitle } from "@/components/kit/GlassCard";
 import { cn } from "@/lib/utils";
 import { useTheme } from "@/lib/theme";
+import { useLanguage } from "@/lib/useLanguage";
 
 export const Route = createFileRoute("/settings")({
   head: () => ({
@@ -26,13 +27,31 @@ export const Route = createFileRoute("/settings")({
 function Toggle({
   label,
   hint,
+  storageKey,
   defaultOn = false,
 }: {
   label: string;
   hint: string;
+  storageKey?: string;
   defaultOn?: boolean;
 }) {
-  const [on, setOn] = useState(defaultOn);
+  const [on, setOn] = useState(() => {
+    if (!storageKey) return defaultOn;
+    const stored = localStorage.getItem(storageKey);
+    return stored !== null ? stored === "true" : defaultOn;
+  });
+
+  const handleToggle = () => {
+    setOn((v) => {
+      const newVal = !v;
+      if (storageKey) {
+        localStorage.setItem(storageKey, String(newVal));
+        window.dispatchEvent(new Event(`${storageKey}_changed`));
+      }
+      return newVal;
+    });
+  };
+
   return (
     <div className="flex items-center justify-between gap-4 py-4">
       <div>
@@ -43,7 +62,7 @@ function Toggle({
         role="switch"
         aria-checked={on}
         aria-label={label}
-        onClick={() => setOn((v) => !v)}
+        onClick={handleToggle}
         className={cn(
           "relative h-7 w-12 shrink-0 rounded-full transition-colors duration-300",
           on ? "bg-primary" : "bg-muted",
@@ -63,13 +82,36 @@ function Toggle({
 function OptionRow({
   label,
   options,
-  initial,
+  storageKey,
+  defaultVal,
 }: {
   label: string;
   options: string[];
-  initial: string;
+  storageKey: string;
+  defaultVal: string;
 }) {
-  const [value, setValue] = useState(initial);
+  const [value, setValue] = useState(() => {
+    return localStorage.getItem(storageKey) || defaultVal;
+  });
+
+  const handleSelect = (val: string) => {
+    setValue(val);
+    localStorage.setItem(storageKey, val);
+    window.dispatchEvent(new Event(`${storageKey}_changed`));
+
+    // Handle language toggling if this is the keyboard layout row
+    if (storageKey === "settings_keyboard_layout") {
+      if (val === "English") {
+        localStorage.setItem("settings_language_mode", "English");
+      } else if (val === "Krutidev") {
+        localStorage.setItem("settings_language_mode", "Krutidev (Hindi)");
+      } else {
+        localStorage.setItem("settings_language_mode", "Hindi");
+      }
+      window.dispatchEvent(new Event("language_mode_changed"));
+    }
+  };
+
   return (
     <div className="py-4">
       <p className="font-medium text-foreground">{label}</p>
@@ -77,12 +119,12 @@ function OptionRow({
         {options.map((o) => (
           <button
             key={o}
-            onClick={() => setValue(o)}
+            onClick={() => handleSelect(o)}
             className={cn(
               "rounded-full px-4 py-2 text-sm font-medium transition-all duration-200",
               o === value
-                ? "bg-primary text-primary-foreground"
-                : "bg-secondary/60 text-muted-foreground hover:text-foreground hover:bg-secondary",
+                ? "bg-primary text-primary-foreground shadow-sm"
+                : "bg-secondary/60 text-muted-foreground hover:text-foreground hover:bg-secondary border border-transparent",
             )}
           >
             {o}
@@ -111,10 +153,12 @@ function AppearanceSection() {
             "flex items-center gap-2.5 rounded-2xl px-5 py-3 text-sm font-semibold border transition-all duration-200",
             theme === "light"
               ? "bg-primary text-primary-foreground border-primary shadow-sm"
-              : "bg-secondary/50 text-muted-foreground border-border/60 hover:bg-secondary hover:text-foreground"
+              : "bg-secondary/50 text-muted-foreground border-border/60 hover:bg-secondary hover:text-foreground",
           )}
         >
-          <span className="text-base leading-none" aria-hidden="true">☀️</span>
+          <span className="text-base leading-none" aria-hidden="true">
+            ☀️
+          </span>
           Light
         </button>
         <button
@@ -124,10 +168,12 @@ function AppearanceSection() {
             "flex items-center gap-2.5 rounded-2xl px-5 py-3 text-sm font-semibold border transition-all duration-200",
             theme === "dark"
               ? "bg-primary text-primary-foreground border-primary shadow-sm"
-              : "bg-secondary/50 text-muted-foreground border-border/60 hover:bg-secondary hover:text-foreground"
+              : "bg-secondary/50 text-muted-foreground border-border/60 hover:bg-secondary hover:text-foreground",
           )}
         >
-          <span className="text-base leading-none" aria-hidden="true">🌙</span>
+          <span className="text-base leading-none" aria-hidden="true">
+            🌙
+          </span>
           Dark
         </button>
       </div>
@@ -136,12 +182,18 @@ function AppearanceSection() {
 }
 
 function SettingsPage() {
+  const { isEnglish } = useLanguage();
+
   return (
     <div className="space-y-10">
       <SectionTitle
-        eyebrow="Preferences"
-        title="Settings"
-        subtitle="अपने अभ्यास अनुभव को अपने अनुसार ढालें।"
+        eyebrow={isEnglish ? "Preferences" : "Preferences"}
+        title={isEnglish ? "Settings" : "Settings"}
+        subtitle={
+          isEnglish
+            ? "Tailor your practice experience to your needs."
+            : "अपने अभ्यास अनुभव को अपने अनुसार ढालें।"
+        }
       />
 
       {/* Appearance — global theme control */}
@@ -153,18 +205,16 @@ function SettingsPage() {
           <div className="divide-y divide-border/60">
             <OptionRow
               label="Keyboard layout"
-              options={["Remington GAIL", "Remington CBI", "Inscript"]}
-              initial="Remington GAIL"
+              options={["English", "Krutidev", "Remington GAIL", "Remington CBI", "Inscript"]}
+              storageKey="settings_keyboard_layout"
+              defaultVal="Remington GAIL"
             />
-            <OptionRow
-              label="Text size"
-              options={["Comfort", "Large", "Extra large"]}
-              initial="Large"
-            />
+
             <OptionRow
               label="Default test duration"
-              options={["30 sec", "60 sec", "120 sec"]}
-              initial="60 sec"
+              options={["30 sec", "60 sec", "120 sec", "180 sec", "300 sec"]}
+              storageKey="settings_test_duration"
+              defaultVal="60 sec"
             />
           </div>
         </GlassCard>
@@ -173,14 +223,41 @@ function SettingsPage() {
           <h3 className="text-lg font-semibold text-foreground">Guidance & feedback</h3>
           <div className="divide-y divide-border/60">
             <Toggle
-              label="Show virtual keyboard"
-              hint="अभ्यास के दौरान वर्चुअल कीबोर्ड दिखाएँ"
+              label={isEnglish ? "Show virtual keyboard" : "Show virtual keyboard"}
+              hint={
+                isEnglish
+                  ? "Show the virtual keyboard during practice"
+                  : "अभ्यास के दौरान वर्चुअल कीबोर्ड दिखाएँ"
+              }
+              storageKey="settings_show_virtual_keyboard"
               defaultOn
             />
-            <Toggle label="Finger guidance" hint="सही उंगली का रंग संकेत दिखाएँ" defaultOn />
-            <Toggle label="Key press sound" hint="हर कीस्ट्रोक पर हल्की ध्वनि" />
-            <Toggle label="Stop on error" hint="गलती होने पर आगे बढ़ना रोकें" />
-            <Toggle label="Daily practice reminder" hint="रोज़ अभ्यास की याद दिलाएँ" defaultOn />
+            <Toggle
+              label={isEnglish ? "Finger guidance" : "Finger guidance"}
+              hint={
+                isEnglish ? "Show color hints for correct fingers" : "सही उंगली का रंग संकेत दिखाएँ"
+              }
+              storageKey="settings_finger_guidance"
+              defaultOn
+            />
+            <Toggle
+              label={isEnglish ? "Key press sound" : "Key press sound"}
+              hint={isEnglish ? "Soft sound on every key stroke" : "हर कीस्ट्रोक पर हल्की ध्वनि"}
+              storageKey="settings_key_press_sound"
+            />
+            <Toggle
+              label={isEnglish ? "Stop on error" : "Stop on error"}
+              hint={
+                isEnglish ? "Stop progression when an error occurs" : "गलती होने पर आगे बढ़ना रोकें"
+              }
+              storageKey="settings_stop_on_error"
+            />
+            <Toggle
+              label={isEnglish ? "Daily practice reminder" : "Daily practice reminder"}
+              hint={isEnglish ? "Remind me to practice daily" : "रोज़ अभ्यास की याद दिलाएँ"}
+              storageKey="settings_daily_reminder"
+              defaultOn
+            />
           </div>
         </GlassCard>
       </div>

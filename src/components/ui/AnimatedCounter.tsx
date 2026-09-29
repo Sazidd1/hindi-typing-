@@ -11,7 +11,7 @@ export function AnimatedCounter({ value, duration = 1000 }: { value: number; dur
     const animate = (timestamp: number) => {
       if (!startTime) startTime = timestamp;
       const progress = Math.min((timestamp - startTime) / duration, 1);
-      
+
       // Easing out function for smooth deceleration
       const easeOutQuart = 1 - Math.pow(1 - progress, 4);
       setCount(Math.floor(easeOutQuart * safeValue));

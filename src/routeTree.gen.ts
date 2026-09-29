@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as EnglishLessonsRouteImport } from './routes/english-lessons'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as LeaderboardRouteImport } from './routes/leaderboard'
 import { Route as LessonsRouteImport } from './routes/lessons'
@@ -20,6 +21,11 @@ import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as TranslatorRouteImport } from './routes/translator'
+import { Route as EnglishLessonsLessonIdRouteImport } from './routes/english-lessons_.$lessonId'
+import { Route as LessonsInscriptRouteImport } from './routes/lessons_.inscript'
+import { Route as LessonsRemingtonCbiRouteImport } from './routes/lessons_.remington-cbi'
+import { Route as LessonsKrutiDevIndexRouteImport } from './routes/lessons_.kruti-dev.index'
+import { Route as LessonsKrutiDevLessonIdRouteImport } from './routes/lessons_.kruti-dev_.$lessonId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -29,6 +35,11 @@ const IndexRoute = IndexRouteImport.update({
 const DashboardRoute = DashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EnglishLessonsRoute = EnglishLessonsRouteImport.update({
+  id: '/english-lessons',
+  path: '/english-lessons',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
@@ -76,10 +87,36 @@ const TranslatorRoute = TranslatorRouteImport.update({
   path: '/translator',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EnglishLessonsLessonIdRoute = EnglishLessonsLessonIdRouteImport.update({
+  id: '/english-lessons_/$lessonId',
+  path: '/english-lessons/$lessonId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LessonsInscriptRoute = LessonsInscriptRouteImport.update({
+  id: '/lessons_/inscript',
+  path: '/lessons/inscript',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LessonsRemingtonCbiRoute = LessonsRemingtonCbiRouteImport.update({
+  id: '/lessons_/remington-cbi',
+  path: '/lessons/remington-cbi',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LessonsKrutiDevIndexRoute = LessonsKrutiDevIndexRouteImport.update({
+  id: '/lessons_/kruti-dev/',
+  path: '/lessons/kruti-dev/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LessonsKrutiDevLessonIdRoute = LessonsKrutiDevLessonIdRouteImport.update({
+  id: '/lessons_/kruti-dev_/$lessonId',
+  path: '/lessons/kruti-dev/$lessonId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRoute
+  '/english-lessons': typeof EnglishLessonsRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/leaderboard': typeof LeaderboardRoute
   '/lessons': typeof LessonsRoute
@@ -89,10 +126,16 @@ export interface FileRoutesByFullPath {
   '/settings': typeof SettingsRoute
   '/signup': typeof SignupRoute
   '/translator': typeof TranslatorRoute
+  '/english-lessons/$lessonId': typeof EnglishLessonsLessonIdRoute
+  '/lessons/inscript': typeof LessonsInscriptRoute
+  '/lessons/remington-cbi': typeof LessonsRemingtonCbiRoute
+  '/lessons/kruti-dev/$lessonId': typeof LessonsKrutiDevLessonIdRoute
+  '/lessons/kruti-dev/': typeof LessonsKrutiDevIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRoute
+  '/english-lessons': typeof EnglishLessonsRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/leaderboard': typeof LeaderboardRoute
   '/lessons': typeof LessonsRoute
@@ -102,11 +145,17 @@ export interface FileRoutesByTo {
   '/settings': typeof SettingsRoute
   '/signup': typeof SignupRoute
   '/translator': typeof TranslatorRoute
+  '/english-lessons/$lessonId': typeof EnglishLessonsLessonIdRoute
+  '/lessons/inscript': typeof LessonsInscriptRoute
+  '/lessons/remington-cbi': typeof LessonsRemingtonCbiRoute
+  '/lessons/kruti-dev/$lessonId': typeof LessonsKrutiDevLessonIdRoute
+  '/lessons/kruti-dev': typeof LessonsKrutiDevIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRoute
+  '/english-lessons': typeof EnglishLessonsRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/leaderboard': typeof LeaderboardRoute
   '/lessons': typeof LessonsRoute
@@ -116,12 +165,18 @@ export interface FileRoutesById {
   '/settings': typeof SettingsRoute
   '/signup': typeof SignupRoute
   '/translator': typeof TranslatorRoute
+  '/english-lessons_/$lessonId': typeof EnglishLessonsLessonIdRoute
+  '/lessons_/inscript': typeof LessonsInscriptRoute
+  '/lessons_/remington-cbi': typeof LessonsRemingtonCbiRoute
+  '/lessons_/kruti-dev_/$lessonId': typeof LessonsKrutiDevLessonIdRoute
+  '/lessons_/kruti-dev/': typeof LessonsKrutiDevIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/dashboard'
+    | '/english-lessons'
     | '/forgot-password'
     | '/leaderboard'
     | '/lessons'
@@ -131,10 +186,16 @@ export interface FileRouteTypes {
     | '/settings'
     | '/signup'
     | '/translator'
+    | '/english-lessons/$lessonId'
+    | '/lessons/inscript'
+    | '/lessons/remington-cbi'
+    | '/lessons/kruti-dev/$lessonId'
+    | '/lessons/kruti-dev/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/dashboard'
+    | '/english-lessons'
     | '/forgot-password'
     | '/leaderboard'
     | '/lessons'
@@ -144,10 +205,16 @@ export interface FileRouteTypes {
     | '/settings'
     | '/signup'
     | '/translator'
+    | '/english-lessons/$lessonId'
+    | '/lessons/inscript'
+    | '/lessons/remington-cbi'
+    | '/lessons/kruti-dev/$lessonId'
+    | '/lessons/kruti-dev'
   id:
     | '__root__'
     | '/'
     | '/dashboard'
+    | '/english-lessons'
     | '/forgot-password'
     | '/leaderboard'
     | '/lessons'
@@ -157,11 +224,17 @@ export interface FileRouteTypes {
     | '/settings'
     | '/signup'
     | '/translator'
+    | '/english-lessons_/$lessonId'
+    | '/lessons_/inscript'
+    | '/lessons_/remington-cbi'
+    | '/lessons_/kruti-dev_/$lessonId'
+    | '/lessons_/kruti-dev/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   DashboardRoute: typeof DashboardRoute
+  EnglishLessonsRoute: typeof EnglishLessonsRoute
   ForgotPasswordRoute: typeof ForgotPasswordRoute
   LeaderboardRoute: typeof LeaderboardRoute
   LessonsRoute: typeof LessonsRoute
@@ -171,6 +244,11 @@ export interface RootRouteChildren {
   SettingsRoute: typeof SettingsRoute
   SignupRoute: typeof SignupRoute
   TranslatorRoute: typeof TranslatorRoute
+  EnglishLessonsLessonIdRoute: typeof EnglishLessonsLessonIdRoute
+  LessonsInscriptRoute: typeof LessonsInscriptRoute
+  LessonsRemingtonCbiRoute: typeof LessonsRemingtonCbiRoute
+  LessonsKrutiDevLessonIdRoute: typeof LessonsKrutiDevLessonIdRoute
+  LessonsKrutiDevIndexRoute: typeof LessonsKrutiDevIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -187,6 +265,13 @@ declare module '@tanstack/react-router' {
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof DashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/english-lessons': {
+      id: '/english-lessons'
+      path: '/english-lessons'
+      fullPath: '/english-lessons'
+      preLoaderRoute: typeof EnglishLessonsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/forgot-password': {
@@ -252,12 +337,48 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TranslatorRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/english-lessons_/$lessonId': {
+      id: '/english-lessons_/$lessonId'
+      path: '/english-lessons/$lessonId'
+      fullPath: '/english-lessons/$lessonId'
+      preLoaderRoute: typeof EnglishLessonsLessonIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lessons_/inscript': {
+      id: '/lessons_/inscript'
+      path: '/lessons/inscript'
+      fullPath: '/lessons/inscript'
+      preLoaderRoute: typeof LessonsInscriptRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lessons_/remington-cbi': {
+      id: '/lessons_/remington-cbi'
+      path: '/lessons/remington-cbi'
+      fullPath: '/lessons/remington-cbi'
+      preLoaderRoute: typeof LessonsRemingtonCbiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lessons_/kruti-dev/': {
+      id: '/lessons_/kruti-dev/'
+      path: '/lessons/kruti-dev'
+      fullPath: '/lessons/kruti-dev/'
+      preLoaderRoute: typeof LessonsKrutiDevIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lessons_/kruti-dev_/$lessonId': {
+      id: '/lessons_/kruti-dev_/$lessonId'
+      path: '/lessons/kruti-dev/$lessonId'
+      fullPath: '/lessons/kruti-dev/$lessonId'
+      preLoaderRoute: typeof LessonsKrutiDevLessonIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DashboardRoute: DashboardRoute,
+  EnglishLessonsRoute: EnglishLessonsRoute,
   ForgotPasswordRoute: ForgotPasswordRoute,
   LeaderboardRoute: LeaderboardRoute,
   LessonsRoute: LessonsRoute,
@@ -267,6 +388,11 @@ const rootRouteChildren: RootRouteChildren = {
   SettingsRoute: SettingsRoute,
   SignupRoute: SignupRoute,
   TranslatorRoute: TranslatorRoute,
+  EnglishLessonsLessonIdRoute: EnglishLessonsLessonIdRoute,
+  LessonsInscriptRoute: LessonsInscriptRoute,
+  LessonsRemingtonCbiRoute: LessonsRemingtonCbiRoute,
+  LessonsKrutiDevLessonIdRoute: LessonsKrutiDevLessonIdRoute,
+  LessonsKrutiDevIndexRoute: LessonsKrutiDevIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

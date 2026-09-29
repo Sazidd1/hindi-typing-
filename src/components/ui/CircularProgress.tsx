@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 
-export function CircularProgress({ 
-  value, 
-  size = 64, 
-  strokeWidth = 6, 
-  className 
-}: { 
-  value: number; 
-  size?: number; 
+export function CircularProgress({
+  value,
+  size = 64,
+  strokeWidth = 6,
+  className,
+}: {
+  value: number;
+  size?: number;
   strokeWidth?: number;
   className?: string;
 }) {
@@ -25,7 +25,10 @@ export function CircularProgress({
   }, [safeValue]);
 
   return (
-    <div className={cn("relative inline-flex items-center justify-center", className)} style={{ width: size, height: size }}>
+    <div
+      className={cn("relative inline-flex items-center justify-center", className)}
+      style={{ width: size, height: size }}
+    >
       <svg className="-rotate-90 transform" width={size} height={size}>
         {/* Background circle */}
         <circle

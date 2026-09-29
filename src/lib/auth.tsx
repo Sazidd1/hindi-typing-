@@ -24,7 +24,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     let mounted = true;
-    
+
     const initSession = async () => {
       const sessionUser = await mockBackend.getSessionUser();
       if (mounted) {
@@ -32,7 +32,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setIsLoaded(true);
       }
     };
-    
+
     initSession();
 
     return () => {
@@ -72,7 +72,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   // Keep this for profile rename functionality
   const updateProfileName = (newName: string) => {
     // In a real app we'd update the DB. For this local mock, we just update local state slightly
-    // to preserve the profile.tsx rename logic visually, though ideally they shouldn't rename 
+    // to preserve the profile.tsx rename logic visually, though ideally they shouldn't rename
     // the ID that XP is tied to. We'll leave it as a visual update for now.
     if (userObject) {
       setUserObject({ ...userObject, id: newName, name: newName });
@@ -90,7 +90,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         signup,
         logout,
         resetPassword,
-        updateProfileName
+        updateProfileName,
       }}
     >
       {children}

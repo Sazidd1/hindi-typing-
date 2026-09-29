@@ -1,24 +1,82 @@
 import React, { useState, useMemo, useRef, useEffect } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
+import { useLanguage } from "@/lib/useLanguage";
 
 const LEGENDS = [
-  "A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z",
-  "अ","आ","इ","ई","उ","ऊ","ऋ","ए","ऐ","ओ","औ",
-  "क","ख","ग","घ","च","छ","ज","झ","ट","ठ","ड","ढ","ण",
-  "त","थ","द","ध","न","प","फ","ब","भ","म","य","र","ल","व","श","ष","स","ह",
-  "⏎","⇧","␣","⌫"
+  "A",
+  "B",
+  "C",
+  "D",
+  "E",
+  "F",
+  "G",
+  "H",
+  "I",
+  "J",
+  "K",
+  "L",
+  "M",
+  "N",
+  "O",
+  "P",
+  "Q",
+  "R",
+  "S",
+  "T",
+  "U",
+  "V",
+  "W",
+  "X",
+  "Y",
+  "Z",
+  "अ",
+  "आ",
+  "इ",
+  "ई",
+  "उ",
+  "ऊ",
+  "ऋ",
+  "ए",
+  "ऐ",
+  "ओ",
+  "औ",
+  "क",
+  "ख",
+  "ग",
+  "घ",
+  "च",
+  "छ",
+  "ज",
+  "झ",
+  "ट",
+  "ठ",
+  "ड",
+  "ढ",
+  "ण",
+  "त",
+  "थ",
+  "द",
+  "ध",
+  "न",
+  "प",
+  "फ",
+  "ब",
+  "भ",
+  "म",
+  "य",
+  "र",
+  "ल",
+  "व",
+  "श",
+  "ष",
+  "स",
+  "ह",
+  "⏎",
+  "⇧",
+  "␣",
+  "⌫",
 ];
-
-const KEY_COLORS = {
-  c1: "linear-gradient(160deg,#2b52ff,#1b3ad1)",
-  c2: "linear-gradient(160deg,#ff8a3d,#e06e22)",
-  c3: "linear-gradient(160deg,#12b3a6,#0d8a80)",
-  c4: "linear-gradient(160deg,#b8863f,#93692c)",
-  c5: "linear-gradient(160deg,#e0457b,#b8305f)",
-  c6: "linear-gradient(160deg,#8b5cf6,#6d3fd4)",
-};
-const COLOR_KEYS = Object.keys(KEY_COLORS) as (keyof typeof KEY_COLORS)[];
 
 const SCHEMES = ["Remington GAIL", "Remington CBI", "Kruti Dev", "Mangal InScript", "English"];
 
@@ -27,10 +85,36 @@ const STORY_SLUG_MAP: Record<string, string> = {
   "2. प्यासा कौआ": "story-thirsty-crow",
   "3. खरगोश और कछुआ": "story-tortoise-hare",
   "4. चींटी और टिड्डा": "story-ant-grasshopper",
-  "5. शेर और चूहा": "story-lion-mouse"
+  "5. शेर और चूहा": "story-lion-mouse",
+  "6. सच्चा मित्र": "story-true-friend",
+  "7. लालची किसान": "story-greedy-farmer",
+  "8. बुद्धिमान चरवाहा": "story-smart-shepherd",
+  "9. ईमानदार व्यापारी": "story-honest-merchant",
+  "10. समझदार राजा": "story-wise-king",
+  "11. मेहनती किसान": "story-hardworking-farmer",
+  "12. दो मित्र और जंगल": "story-two-friends-jungle",
+  "13. चतुर लोमड़ी": "story-clever-fox",
+  "14. दयालु राजकुमार": "story-kind-prince",
+  "15. साहसी लड़की": "story-brave-girl",
+  "16. पुराना कुआँ": "story-old-well",
+  "17. गाँव का शिक्षक": "story-village-teacher",
+  "18. छोटा दीपक": "story-small-lamp",
+  "19. मेहनत का फल": "story-fruit-of-hardwork",
+  "20. समय का महत्व": "story-value-of-time",
+  "तकनीक और बदलती दुनिया": "expert-technology-changing-world",
+  "पर्यावरण और हमारी जिम्मेदारी": "expert-environment-responsibility",
+  "समय, अनुशासन और सफलता": "expert-time-discipline-success",
+  "शिक्षा का बदलता स्वरूप": "expert-changing-education",
+  "भारत की विविधता और एकता": "expert-india-diversity-unity",
+  "स्वास्थ्य और स्वस्थ जीवनशैली": "expert-health-healthy-lifestyle",
+  "विज्ञान और मानव जीवन": "expert-science-human-life",
+  "जल संरक्षण और भविष्य": "expert-water-conservation-future",
+  "पुस्तकें और ज्ञान की शक्ति": "expert-books-power-of-knowledge",
+  "आत्मनिर्भरता और कौशल विकास": "expert-self-reliance-skill-development",
 };
 
 export default function TypingTestSettings({ onClose }: { onClose?: () => void }) {
+  const { isEnglish } = useLanguage();
   const [name, setName] = useState("");
   const [testTime, setTestTime] = useState("1 Minute");
   const [paraMode, setParaMode] = useState("Default");
@@ -65,62 +149,62 @@ export default function TypingTestSettings({ onClose }: { onClose?: () => void }
   }, []);
 
   const floatingKeys = useMemo(() => {
-    let count = 46;
-    if (dims.w && dims.w < 1024) count = 24;
-    if (dims.w && dims.w < 768) count = 12;
-    if (dims.w && dims.w < 480) count = 6;
-    
+    let count = 24;
+    if (dims.w && dims.w < 1024) count = 14;
+    if (dims.w && dims.w < 768) count = 8;
+    if (dims.w && dims.w < 480) count = 4;
+
     const items = [];
-    const formMaxWidth = 460;
+    const formMaxWidth = 880;
     const margin = 80;
     const protectedW = formMaxWidth + margin * 2;
-    const protectedH = 850;
-    
+    const protectedH = 1050;
+
     const minX = dims.w / 2 - protectedW / 2;
     const maxX = dims.w / 2 + protectedW / 2;
     const minY = dims.h / 2 - protectedH / 2;
     const maxY = dims.h / 2 + protectedH / 2;
 
     for (let i = 0; i < count; i++) {
-      const size = 34 + Math.random() * 30;
+      const size = 48 + Math.random() * 40;
       const isLeft = i % 2 === 0;
-      
+
       let top = 0;
       let left = 0;
       let valid = false;
       let attempts = 0;
-      
+
       while (!valid && attempts < 150) {
         top = Math.random() * dims.h;
         left = Math.random() * dims.w;
-        
+
         let wrongSide = false;
         if (minX > size && maxX < dims.w - size) {
-           if (isLeft && left > minX) wrongSide = true;
-           if (!isLeft && left < maxX) wrongSide = true;
+          if (isLeft && left > minX) wrongSide = true;
+          if (!isLeft && left < maxX) wrongSide = true;
         }
-        
-        const isInsideX = (left + size > minX) && (left < maxX);
-        const isInsideY = (top + size > minY) && (top < maxY);
+
+        const isInsideX = left + size > minX && left < maxX;
+        const isInsideY = top + size > minY && top < maxY;
         const overlapForm = isInsideX && isInsideY;
-        
+
         let tooClose = false;
         for (const item of items) {
           const dx = item.left - left;
           const dy = item.top - top;
-          if (Math.sqrt(dx * dx + dy * dy) < 70) {
+          if (Math.sqrt(dx * dx + dy * dy) < 120) {
             tooClose = true;
             break;
           }
         }
-        
+
         if (wrongSide || overlapForm || tooClose) {
           attempts++;
         } else {
           valid = true;
         }
       }
-      
+
       if (!valid) {
         if (isLeft) {
           left = Math.random() * Math.max(0, minX - size);
@@ -129,24 +213,19 @@ export default function TypingTestSettings({ onClose }: { onClose?: () => void }
         }
       }
 
-
       const rot = (Math.random() * 60 - 30).toFixed(1);
-      const colorKey = COLOR_KEYS[Math.floor(Math.random() * COLOR_KEYS.length)]!;
-      const r = Math.random();
-      const opacity = r > 0.93 ? 0.26 : r > 0.8 ? 0.5 : 0.9;
+      const opacity = 0.4 + Math.random() * 0.35;
       items.push({
         id: i,
         size,
         top,
         left,
         rot,
-        colorKey,
         opacity,
         char: LEGENDS[Math.floor(Math.random() * LEGENDS.length)],
       });
     }
     return items;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dims.w, dims.h]);
 
   function flashStatus(msg: string) {
@@ -155,18 +234,51 @@ export default function TypingTestSettings({ onClose }: { onClose?: () => void }
     statusTimer.current = setTimeout(() => setStatus(""), 2200);
   }
 
+  function buildSearchParams() {
+    const search: {
+      limit?: number;
+      time?: number;
+      lesson?: string;
+      story?: string;
+      mode?: string;
+    } = {};
+    if (wordLimitOn && wordLimit) {
+      search.limit = Number(wordLimit);
+    }
+    const timeMatch = testTime.match(/(\d+)/);
+    if (timeMatch) {
+      search.time = Number(timeMatch[1]);
+    }
+    return search;
+  }
+
   function handlePractice() {
+    const search = buildSearchParams();
+    if (passageType === "Random words") {
+      search.mode = "randomWords";
+      navigate({ to: "/practice", search });
+      return;
+    }
     const slug = STORY_SLUG_MAP[passageType];
     if (slug) {
-      navigate({ to: "/practice", search: { lesson: slug } });
+      search.story = slug;
+      navigate({ to: "/practice", search });
     } else {
       flashStatus(`Practice mode started — ${scheme}`);
     }
   }
+
   function handleExam() {
+    const search = buildSearchParams();
+    if (passageType === "Random words") {
+      search.mode = "randomWords";
+      navigate({ to: "/practice", search });
+      return;
+    }
     const slug = STORY_SLUG_MAP[passageType];
     if (slug) {
-      navigate({ to: "/practice", search: { lesson: slug } });
+      search.story = slug;
+      navigate({ to: "/practice", search });
     } else {
       flashStatus(`Exam mode started — ${scheme}`);
     }
@@ -182,125 +294,63 @@ export default function TypingTestSettings({ onClose }: { onClose?: () => void }
         right: 0,
         minHeight: "100vh",
         zIndex: 100,
-        background: "radial-gradient(circle at center, #ffffff 20%, #f1f7fe 70%, #e6f0fa 100%)",
+        background: "radial-gradient(ellipse at top, #fffdf8 0%, #f6ecd6 100%)",
         display: "flex",
-        padding: "40px 24px",
+        flexDirection: "column",
         fontFamily: "'Inter', sans-serif",
-        color: "#161a2b",
+        color: "#1c1917",
         boxSizing: "border-box",
+        overflowX: "hidden",
+        overflowY: "auto",
       }}
     >
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap');
-        .tts-scroll {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Inter:wght@400;500;600;700&display=swap');
+        
+        * { box-sizing: border-box; }
+        .tts-input::placeholder { color: #a8a29e; font-weight: 400; }
+        .tts-input:focus { border-color: rgba(193, 158, 84, 0.5) !important; box-shadow: 0 0 0 3px rgba(193, 158, 84, 0.15) !important; }
+        .tts-select {
+          appearance: none;
+          background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="8"><path d="M1 1l5 6 5-6" stroke="%23c19e54" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+          background-repeat: no-repeat;
+          background-position: right 16px center;
         }
-        @media (min-height: 600px) {
-          .tts-scroll {
-            margin-top: -50px;
-          }
+        
+        .tts-btn-hover:hover {
+           transform: translateY(-1px);
+           box-shadow: 0 6px 20px rgba(0,0,0,0.06) !important;
         }
-        .tts-scroll::-webkit-scrollbar {
-          display: none;
+        .tts-btn-hover:active {
+           transform: translateY(1px);
+           box-shadow: 0 2px 10px rgba(0,0,0,0.04) !important;
         }
-        .tts-select{
-          appearance:none;
-          background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="6"><path d="M0 0l5 6 5-6z" fill="%237a7f95"/></svg>');
-          background-repeat:no-repeat;
-          background-position:right 13px center;
+        
+        .tts-primary-btn {
+           transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .tts-input::placeholder{ color:#b7bacb; font-weight:400; }
-        .tts-input:focus{ border-color:#7a94ff !important; box-shadow:0 0 0 3px rgba(122,148,255,0.15), 0 2px 6px rgba(22, 26, 43, 0.04) !important; }
-        .tts-seg-btn{ transition:.15s ease; }
-        .tts-chip{ transition: all .12s ease; }
-        .tts-chip:not(.tts-chip-active):hover{ background: #ffffff !important; border-color: rgba(22, 26, 43, 0.15) !important; }
-        .tts-chip:active { transform: translateY(3px) !important; box-shadow: 0 0 0 transparent !important; }
-        .tts-primary { transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); }
-        .tts-primary:hover { background: #0d0f1c !important; transform: translateY(-1px); box-shadow: 0 6px 16px rgba(22, 26, 43, 0.2), 0 2px 4px rgba(22, 26, 43, 0.1) !important; }
-        .tts-primary:active { transform: translateY(1px); box-shadow: 0 2px 4px rgba(22, 26, 43, 0.15) !important; }
-        .tts-outline { transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); }
-        .tts-outline:hover { background: #fafafa !important; border-color: rgba(22, 26, 43, 0.2) !important; color: #161a2b !important; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(22, 26, 43, 0.06) !important; }
-        .tts-outline:active { transform: translateY(1px); box-shadow: 0 1px 2px rgba(22, 26, 43, 0.03) !important; }
-        .tts-back-btn { transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); }
-        .tts-back-btn:hover {
-          background: #ffffff !important;
-          border-color: rgba(22, 26, 43, 0.15) !important;
-          transform: translateY(-1px);
-          box-shadow: 0 4px 12px rgba(22, 26, 43, 0.08) !important;
+        .tts-primary-btn:hover {
+           filter: brightness(1.05);
+           transform: translateY(-2px);
+           box-shadow: 0 12px 32px rgba(184,138,68,0.3) !important;
         }
-        .tts-back-btn:active {
-          transform: translateY(1px);
-          box-shadow: 0 1px 2px rgba(22, 26, 43, 0.04) !important;
-        }
-        .tts-row {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          padding: 8px 0;
-          border-bottom: 1px solid rgba(22, 26, 43, 0.06);
-          gap: 14px;
-          flex-wrap: wrap;
-        }
-        .tts-label {
-          font-size: 13px;
-          font-weight: 600;
-          color: #2a2f45;
-          letter-spacing: .01em;
-        }
-        .tts-input-main {
-          width: 190px;
-          text-align: right;
-        }
-        .tts-word-limit {
-          width: 70px;
-        }
-        @media (max-width: 480px) {
-          .tts-input-main {
-            width: 100% !important;
-            text-align: left !important;
-          }
-          .tts-row {
-            padding: 10px 0 !important;
-          }
+        .tts-primary-btn:active {
+           transform: translateY(1px);
+           box-shadow: 0 4px 16px rgba(184,138,68,0.2) !important;
         }
       `}</style>
 
-      {onClose && (
-        <button
-          onClick={onClose}
+      {/* Floating keys */}
+      {mounted && (
+        <div
           style={{
             position: "absolute",
-            top: 24,
-            left: 24,
-            zIndex: 60,
-            display: "flex",
-            alignItems: "center",
-            gap: 6,
-            padding: "8px 16px 8px 14px",
-            background: "rgba(255,255,255,0.7)",
-            backdropFilter: "blur(8px)",
-            WebkitBackdropFilter: "blur(8px)",
-            border: "1px solid rgba(22, 26, 43, 0.08)",
-            borderRadius: 100,
-            color: "#161a2b",
-            fontFamily: "'Inter', sans-serif",
-            fontWeight: 600,
-            fontSize: 13.5,
-            letterSpacing: ".01em",
-            cursor: "pointer",
-            boxShadow: "0 2px 10px rgba(22, 26, 43, 0.03)",
+            inset: 0,
+            zIndex: 1,
+            pointerEvents: "none",
+            overflow: "hidden",
           }}
-          className="tts-back-btn"
         >
-          <ArrowLeft size={16} />
-          Back
-        </button>
-      )}
-
-      {/* scattered background keys */}
-      {mounted && (
-        <div style={{ position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none", overflow: "hidden" }}>
           {floatingKeys.map((k) => (
             <div
               key={k.id}
@@ -310,18 +360,20 @@ export default function TypingTestSettings({ onClose }: { onClose?: () => void }
                 left: k.left,
                 width: k.size,
                 height: k.size,
-                fontSize: k.size * 0.4,
+                fontSize: k.size * 0.45,
                 transform: `rotate(${k.rot}deg)`,
-                borderRadius: 9,
+                borderRadius: k.size * 0.2,
                 opacity: k.opacity,
-                boxShadow: "0 5px 0 rgba(0,0,0,.16)",
+                boxShadow:
+                  "0 12px 32px rgba(184,138,68,0.06), 0 4px 12px rgba(184,138,68,0.04), inset 0 2px 0 rgba(255,255,255,1), inset 0 -2px 0 rgba(0,0,0,0.02)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                fontFamily: "'JetBrains Mono', monospace",
-                fontWeight: 700,
-                color: "rgba(255,255,255,.92)",
-                background: KEY_COLORS[k.colorKey],
+                fontFamily: "'Playfair Display', serif",
+                fontWeight: 600,
+                color: "#c19e54",
+                background: "linear-gradient(145deg, #ffffff 0%, #fcfaf5 100%)",
+                border: "1px solid rgba(255, 255, 255, 0.9)",
               }}
             >
               {k.char}
@@ -330,270 +382,537 @@ export default function TypingTestSettings({ onClose }: { onClose?: () => void }
         </div>
       )}
 
-
-      {/* card */}
+      {/* Top Header Buttons */}
       <div
-        className="tts-scroll"
+        style={{
+          position: "absolute",
+          top: 32,
+          left: 0,
+          right: 0,
+          padding: "0 32px",
+          display: "flex",
+          justifyContent: "space-between",
+          zIndex: 50,
+          pointerEvents: "none",
+        }}
+      >
+        {onClose ? (
+          <button
+            onClick={onClose}
+            className="tts-btn-hover"
+            style={{
+              pointerEvents: "auto",
+              display: "flex",
+              alignItems: "center",
+              gap: 8,
+              padding: "10px 24px 10px 20px",
+              background: "rgba(255,255,255,0.85)",
+              backdropFilter: "blur(12px)",
+              WebkitBackdropFilter: "blur(12px)",
+              border: "1px solid rgba(255, 255, 255, 1)",
+              borderRadius: 100,
+              color: "#1c1917",
+              fontFamily: "'Inter', sans-serif",
+              fontWeight: 600,
+              fontSize: 14,
+              cursor: "pointer",
+              boxShadow: "0 4px 16px rgba(184,138,68,0.05)",
+              transition: "all 0.2s",
+            }}
+          >
+            <ArrowLeft size={18} />
+            {isEnglish ? "Back" : "वापस"}
+          </button>
+        ) : (
+          <div />
+        )}
+      </div>
+
+      {/* Main Content Area */}
+      <div
         style={{
           position: "relative",
           zIndex: 10,
-          width: "100%",
-          maxWidth: 460,
-          background: "transparent",
-          padding: "20px 24px 16px",
-          margin: "auto",
-          transform: "translateY(-35px)",
-          boxSizing: "border-box",
+          padding: "16px 24px 32px",
+          flex: 1,
+          display: "flex",
+          flexDirection: "column",
         }}
       >
-        <h1
-          style={{
-            fontFamily: "'Fraunces', serif",
-            fontWeight: 700,
-            fontSize: 28,
-            textAlign: "center",
-            margin: "0 0 2px",
-            letterSpacing: "-.02em",
-            lineHeight: 1.1,
-            color: "#161a2b",
-          }}
-        >
-          Typing Test
-        </h1>
-        <p
-          style={{
-            textAlign: "center",
-            color: "#828899",
-            fontSize: 13,
-            margin: "0 0 16px",
-            letterSpacing: ".02em",
-          }}
-        >
-          Choose your layout &amp; configure the session
-        </p>
-
-        <Row label="Name">
-          <input
-            type="text"
-            className="tts-input tts-input-main"
-            placeholder="Enter your name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            style={{ ...inputStyle(), textAlign: "left" }}
-          />
-        </Row>
-
-        <Row label="Test Time">
-          <select
-            className="tts-input tts-select tts-input-main"
-            value={testTime}
-            onChange={(e) => setTestTime(e.target.value)}
-            style={{ ...inputStyle(), textAlign: "left", cursor: "pointer", paddingRight: 30 }}
+        {/* Page Title */}
+        <div style={{ textAlign: "center", marginBottom: 8 }}>
+          <p
+            style={{
+              color: "#c19e54",
+              fontWeight: 700,
+              fontSize: 13,
+              letterSpacing: "0.15em",
+              textTransform: "uppercase",
+              margin: 0,
+              marginBottom: 4,
+            }}
           >
-            {["1 Minute", "3 Minutes", "5 Minutes", "10 Minutes"].map((t) => (
-              <option key={t}>{t}</option>
-            ))}
-          </select>
-        </Row>
-
-        <Row label="Paragraph Selection">
-          <div className="tts-input-main" style={{ display: "flex", background: "rgba(22, 26, 43, 0.05)", borderRadius: 9, padding: 3, height: 34, boxSizing: "border-box" }}>
-            {["Default", "Custom"].map((v) => (
-              <button
-                key={v}
-                className="tts-seg-btn"
-                onClick={() => setParaMode(v)}
-                style={{
-                  flex: 1,
-                  border: "none",
-                  background: paraMode === v ? "#161a2b" : "transparent",
-                  color: paraMode === v ? "#f2e6cd" : "#5a5e73",
-                  padding: 0,
-                  borderRadius: 7,
-                  fontSize: 12.5,
-                  fontWeight: 600,
-                  cursor: "pointer",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  height: "100%",
-                }}
-              >
-                {v}
-              </button>
-            ))}
-          </div>
-        </Row>
-
-
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: 5,
-            padding: "10px 0 10px",
-            borderBottom: "1px solid rgba(22, 26, 43, 0.06)",
-          }}
-        >
-          {SCHEMES.map((s) => {
-            const active = scheme === s;
-            const isWide = s === "English";
-            return (
-              <button
-                key={s}
-                className={`tts-chip ${active ? 'tts-chip-active' : ''}`}
-                onClick={() => setScheme(s)}
-                style={{
-                  gridColumn: isWide ? "1 / -1" : "auto",
-                  border: `1.5px solid ${active ? "#b8863f" : "rgba(22, 26, 43, 0.08)"}`,
-                  background: active ? "#161a2b" : "#fafafa",
-                  borderRadius: 10,
-                  padding: 0,
-                  height: 36,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontFamily: "'JetBrains Mono', monospace",
-                  fontSize: 12,
-                  fontWeight: 700,
-                  letterSpacing: ".01em",
-                  color: active ? "#f2e6cd" : "#5a5e73",
-                  cursor: "pointer",
-                  boxShadow: active ? "inset 0 3px 6px rgba(0,0,0,0.5)" : "0 3px 0 rgba(22, 26, 43, 0.06)",
-                  transform: active ? "translateY(3px)" : "none",
-                  boxSizing: "border-box",
-                }}
-              >
-                {s}
-              </button>
-            );
-          })}
+            {isEnglish ? "THE ART OF PRECISION" : "सटीकता की कला"}
+          </p>
+          <h1
+            style={{
+              fontFamily: "'Playfair Display', serif",
+              fontSize: "clamp(2.5rem, 5vw, 3.5rem)",
+              color: "#1c1917",
+              margin: 0,
+              fontWeight: 500,
+              letterSpacing: "-0.02em",
+              lineHeight: 1,
+            }}
+          >
+            {isEnglish ? "Typing Test" : "टाइपिंग टेस्ट"}
+          </h1>
+          <p
+            style={{
+              color: "#78716c",
+              fontSize: "clamp(1rem, 2vw, 1.125rem)",
+              margin: 0,
+              marginTop: 4,
+              fontWeight: 400,
+            }}
+          >
+            {isEnglish
+              ? "Choose your layout & configure the session"
+              : "अपना लेआउट चुनें और सत्र कॉन्फ़िगर करें"}
+          </p>
         </div>
 
-        <Row label="Paragraph Passages">
-          <select
-            className="tts-input tts-select tts-input-main"
-            value={passageType}
-            onChange={(e) => setPassageType(e.target.value)}
-            style={{ ...inputStyle(), textAlign: "left", cursor: "pointer", paddingRight: 30 }}
-          >
-            {["Random words", "Common sentences", "News excerpts", "1. ईमानदार लकड़हारा", "2. प्यासा कौआ", "3. खरगोश और कछुआ", "4. चींटी और टिड्डा", "5. शेर और चूहा"].map((t) => (
-              <option key={t}>{t}</option>
-            ))}
-          </select>
-        </Row>
-
-        <Row label="Backspace:">
-          <Switch 
-            checked={backspace} 
-            onChange={(val) => {
-              setBackspace(val);
-              localStorage.setItem("settings_backspace", String(val));
-            }} 
-          />
-        </Row>
-
-        <Row label="Highlight & Auto Scroll:">
-          <Switch checked={highlight} onChange={setHighlight} />
-        </Row>
-
-        <Row label={<>Word Limit (<span style={{ fontFamily: "'JetBrains Mono', monospace", color: "#93692c", fontWeight: 700 }}>{wordLimit || 0}</span>):</>}>
-          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <Switch checked={wordLimitOn} onChange={setWordLimitOn} />
-            <input
-              type="number"
-              className="tts-input tts-word-limit"
-              value={wordLimit}
-              disabled={!wordLimitOn}
-              onChange={(e) => setWordLimit(e.target.value)}
-              style={{ ...inputStyle(!wordLimitOn), textAlign: "center", fontFamily: "'JetBrains Mono', monospace" }}
-            />
-          </div>
-        </Row>
-
-        <button
-          className="tts-primary"
-          onClick={handlePractice}
-          style={{
-            width: "100%",
-            height: 46,
-            border: "none",
-            borderRadius: 11,
-            marginTop: 8,
-            background: "#161a2b",
-            color: "#f2e6cd",
-            fontFamily: "'Fraunces', serif",
-            fontWeight: 600,
-            fontSize: 16,
-            letterSpacing: ".01em",
-            cursor: "pointer",
-            boxShadow: "0 4px 12px rgba(22, 26, 43, 0.15), 0 2px 4px rgba(22, 26, 43, 0.1)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          Start Practice Mode
-        </button>
-
-        <button
-          className="tts-outline"
-          onClick={handleExam}
-          style={{
-            width: "100%",
-            height: 46,
-            border: "1px solid rgba(22, 26, 43, 0.12)",
-            borderRadius: 11,
-            marginTop: 8,
-            background: "#ffffff",
-            color: "#5a5e73",
-            fontFamily: "'Fraunces', serif",
-            fontWeight: 600,
-            fontSize: 15,
-            cursor: "pointer",
-            boxShadow: "0 2px 6px rgba(22, 26, 43, 0.04)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          Start Exam Mode
-        </button>
-
+        {/* Settings Panel */}
         <div
           style={{
-            textAlign: "center",
-            fontSize: 12,
-            color: "#3f7d5c",
-            marginTop: status ? 10 : 0,
-            height: status ? 14 : 0,
-            opacity: status ? 1 : 0,
-            transition: ".2s ease",
-            fontWeight: 600,
-            letterSpacing: ".02em",
+            width: "100%",
+            maxWidth: 860,
+            margin: "0 auto",
+            background:
+              "linear-gradient(180deg, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.6) 100%)",
+            backdropFilter: "blur(24px)",
+            WebkitBackdropFilter: "blur(24px)",
+            borderRadius: 32,
+            padding: "16px clamp(32px, 5vw, 48px) 24px",
+            boxShadow: "0 24px 64px rgba(184,138,68,0.06), inset 0 0 0 1px rgba(255,255,255,0.9)",
           }}
         >
-          {status}
+          {/* Sections */}
+          <div
+            style={{
+              marginBottom: 12,
+              padding: "12px 24px",
+              background: "rgba(255, 255, 255, 0.6)",
+              border: "1px solid rgba(255, 255, 255, 0.9)",
+              borderRadius: 20,
+              boxShadow: "0 8px 32px rgba(184, 138, 68, 0.04), inset 0 2px 0 rgba(255,255,255,1)",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                gap: 16,
+              }}
+            >
+              <div style={{ fontSize: 15, fontWeight: 600, color: "#44403c" }}>
+                {isEnglish ? "Name" : "नाम"}
+              </div>
+              <div style={{ flex: 1, display: "flex", justifyContent: "flex-end" }}>
+                <input
+                  type="text"
+                  className="tts-input"
+                  placeholder={isEnglish ? "Enter your name" : "अपना नाम दर्ज करें"}
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  style={{ ...inputStyle(), height: 44 }}
+                />
+              </div>
+            </div>
+          </div>
+
+          <div
+            style={{
+              marginBottom: 12,
+              padding: "12px 24px",
+              background: "rgba(255, 255, 255, 0.6)",
+              border: "1px solid rgba(255, 255, 255, 0.9)",
+              borderRadius: 20,
+              boxShadow: "0 8px 32px rgba(184, 138, 68, 0.04), inset 0 2px 0 rgba(255,255,255,1)",
+            }}
+          >
+            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  minHeight: 40,
+                  gap: 16,
+                }}
+              >
+                <div
+                  style={{
+                    fontSize: 13,
+                    fontWeight: 700,
+                    color: "#a89f91",
+                    letterSpacing: "0.15em",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  {isEnglish ? "TEST MODE" : "टेस्ट मोड"}
+                </div>
+                <div style={{ flex: 1, display: "flex", justifyContent: "flex-end" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      background: "rgba(240, 235, 225, 0.6)",
+                      borderRadius: 100,
+                      padding: 4,
+                      width: 220,
+                      boxShadow: "inset 0 2px 4px rgba(0,0,0,0.02)",
+                    }}
+                  >
+                    {["Default", "Custom"].map((v) => (
+                      <button
+                        key={v}
+                        onClick={() => setParaMode(v)}
+                        style={{
+                          flex: 1,
+                          height: 32,
+                          borderRadius: 100,
+                          border: "none",
+                          background: paraMode === v ? "#ffffff" : "transparent",
+                          color: paraMode === v ? "#1c1917" : "#78716c",
+                          fontWeight: 600,
+                          fontSize: 13,
+                          boxShadow:
+                            paraMode === v
+                              ? "0 2px 8px rgba(184,138,68,0.1), 0 1px 2px rgba(184,138,68,0.06)"
+                              : "none",
+                          cursor: "pointer",
+                          transition: "all 0.2s cubic-bezier(0.16, 1, 0.3, 1)",
+                          fontFamily: "'Inter', sans-serif",
+                        }}
+                        title={v}
+                      >
+                        {isEnglish ? v : v === "Default" ? "डिफ़ॉल्ट" : "कस्टम"}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  minHeight: 40,
+                  gap: 16,
+                }}
+              >
+                <div style={{ fontSize: 15, fontWeight: 600, color: "#44403c" }}>
+                  {isEnglish ? "Test Time" : "टेस्ट समय"}
+                </div>
+                <div style={{ flex: 1, display: "flex", justifyContent: "flex-end" }}>
+                  <select
+                    className="tts-input tts-select"
+                    value={testTime}
+                    onChange={(e) => setTestTime(e.target.value)}
+                    style={{ ...inputStyle(), cursor: "pointer", paddingRight: 40, height: 44 }}
+                  >
+                    {["1 Minute", "3 Minutes", "5 Minutes", "10 Minutes"].map((t) => (
+                      <option key={t}>{t}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            style={{
+              marginBottom: 12,
+              padding: "12px 24px",
+              background: "rgba(255, 255, 255, 0.6)",
+              border: "1px solid rgba(255, 255, 255, 0.9)",
+              borderRadius: 20,
+              boxShadow: "0 8px 32px rgba(184, 138, 68, 0.04), inset 0 2px 0 rgba(255,255,255,1)",
+            }}
+          >
+            <div
+              style={{
+                fontSize: 13,
+                fontWeight: 700,
+                color: "#a89f91",
+                letterSpacing: "0.15em",
+                textTransform: "uppercase",
+                marginBottom: 8,
+              }}
+            >
+              {isEnglish ? "KEYBOARD LAYOUT" : "कीबोर्ड लेआउट"}
+            </div>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+                gap: 8,
+              }}
+            >
+              {SCHEMES.map((s) => {
+                const active = scheme === s;
+                return (
+                  <button
+                    key={s}
+                    onClick={() => setScheme(s)}
+                    style={{
+                      height: 48,
+                      borderRadius: 16,
+                      background: active ? "#ffffff" : "rgba(255,255,255,0.4)",
+                      border: active ? "1.5px solid #c19e54" : "1px solid rgba(184,138,68,0.15)",
+                      color: active ? "#1c1917" : "#78716c",
+                      fontWeight: 600,
+                      fontSize: 15,
+                      boxShadow: active
+                        ? "0 8px 24px rgba(184,138,68,0.1), inset 0 2px 0 rgba(255,255,255,1)"
+                        : "inset 0 2px 0 rgba(255,255,255,0.5)",
+                      cursor: "pointer",
+                      transition: "all 0.2s",
+                      fontFamily: "'Inter', sans-serif",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      boxSizing: "border-box",
+                    }}
+                  >
+                    {s}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          <div
+            style={{
+              marginBottom: 0,
+              padding: "12px 24px",
+              background: "rgba(255, 255, 255, 0.6)",
+              border: "1px solid rgba(255, 255, 255, 0.9)",
+              borderRadius: 20,
+              boxShadow: "0 8px 32px rgba(184, 138, 68, 0.04), inset 0 2px 0 rgba(255,255,255,1)",
+            }}
+          >
+            <div
+              style={{
+                fontSize: 13,
+                fontWeight: 700,
+                color: "#a89f91",
+                letterSpacing: "0.15em",
+                textTransform: "uppercase",
+                marginBottom: 8,
+              }}
+            >
+              {isEnglish ? "OPTIONS" : "विकल्प"}
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  minHeight: 40,
+                  gap: 16,
+                }}
+              >
+                <div style={{ fontSize: 15, fontWeight: 600, color: "#44403c" }}>
+                  {isEnglish ? "Paragraph Passages" : "पैराग्राफ अभ्यास"}
+                </div>
+                <div style={{ flex: 1, display: "flex", justifyContent: "flex-end" }}>
+                  <select
+                    className="tts-input tts-select"
+                    value={passageType}
+                    onChange={(e) => setPassageType(e.target.value)}
+                    style={{ ...inputStyle(), cursor: "pointer", paddingRight: 40, height: 44 }}
+                  >
+                    {[
+                      "Random words",
+                      "Common sentences",
+                      "News excerpts",
+                      "1. ईमानदार लकड़हारा",
+                      "2. प्यासा कौआ",
+                      "3. खरगोश और कछुआ",
+                      "4. चींटी और टिड्डा",
+                      "5. शेर और चूहा",
+                      "6. सच्चा मित्र",
+                      "7. लालची किसान",
+                      "8. बुद्धिमान चरवाहा",
+                      "9. ईमानदार व्यापारी",
+                      "10. समझदार राजा",
+                      "11. मेहनती किसान",
+                      "12. दो मित्र और जंगल",
+                      "13. चतुर लोमड़ी",
+                      "14. दयालु राजकुमार",
+                      "15. साहसी लड़की",
+                      "16. पुराना कुआँ",
+                      "17. गाँव का शिक्षक",
+                      "18. छोटा दीपक",
+                      "19. मेहनत का फल",
+                      "20. समय का महत्व",
+                      "तकनीक और बदलती दुनिया",
+                      "पर्यावरण और हमारी जिम्मेदारी",
+                      "समय, अनुशासन और सफलता",
+                      "शिक्षा का बदलता स्वरूप",
+                      "भारत की विविधता और एकता",
+                      "स्वास्थ्य और स्वस्थ जीवनशैली",
+                      "विज्ञान और मानव जीवन",
+                      "जल संरक्षण और भविष्य",
+                      "पुस्तकें और ज्ञान की शक्ति",
+                      "आत्मनिर्भरता और कौशल विकास",
+                    ].map((t) => (
+                      <option key={t}>{t}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  minHeight: 40,
+                  gap: 16,
+                }}
+              >
+                <div style={{ fontSize: 15, fontWeight: 600, color: "#44403c" }}>
+                  {isEnglish ? "Backspace" : "बैकस्पेस"}
+                </div>
+                <div style={{ flex: 1, display: "flex", justifyContent: "flex-end" }}>
+                  <Switch
+                    checked={backspace}
+                    onChange={(val) => {
+                      setBackspace(val);
+                      localStorage.setItem("settings_backspace", String(val));
+                    }}
+                  />
+                </div>
+              </div>
+
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  minHeight: 40,
+                  gap: 16,
+                }}
+              >
+                <div style={{ fontSize: 15, fontWeight: 600, color: "#44403c" }}>
+                  {isEnglish ? "Highlight & Auto Scroll" : "हाइलाइट और ऑटो स्क्रॉल"}
+                </div>
+                <div style={{ flex: 1, display: "flex", justifyContent: "flex-end" }}>
+                  <Switch checked={highlight} onChange={setHighlight} />
+                </div>
+              </div>
+
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  minHeight: 40,
+                  gap: 16,
+                }}
+              >
+                <div style={{ fontSize: 15, fontWeight: 600, color: "#44403c" }}>
+                  {isEnglish ? "Word Limit" : "शब्द सीमा"}{" "}
+                  <span style={{ color: "#c19e54", marginLeft: 4, fontWeight: 700 }}>
+                    ({wordLimit || 0})
+                  </span>
+                </div>
+                <div style={{ flex: 1, display: "flex", justifyContent: "flex-end" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+                    <Switch checked={wordLimitOn} onChange={setWordLimitOn} />
+                    <input
+                      type="number"
+                      className="tts-input"
+                      value={wordLimit}
+                      disabled={!wordLimitOn}
+                      onChange={(e) => setWordLimit(e.target.value)}
+                      style={{
+                        ...inputStyle(!wordLimitOn),
+                        width: 80,
+                        textAlign: "center",
+                        height: 44,
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Action Buttons */}
+          <div style={{ display: "flex", flexDirection: "column", gap: 12, marginTop: 16 }}>
+            <button
+              className="tts-primary-btn"
+              onClick={handlePractice}
+              style={{
+                width: "100%",
+                height: 56,
+                border: "none",
+                borderRadius: 100,
+                background: "linear-gradient(135deg, #d8b762 0%, #bb8f35 100%)",
+                color: "#ffffff",
+                fontFamily: "'Inter', sans-serif",
+                fontWeight: 600,
+                fontSize: 17,
+                letterSpacing: "0.01em",
+                cursor: "pointer",
+                boxShadow:
+                  "0 12px 32px rgba(184,138,68,0.25), inset 0 2px 0 rgba(255,255,255,0.25)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              {isEnglish ? "Start Practice Mode" : "अभ्यास मोड प्रारंभ करें"}
+            </button>
+          </div>
+
+          <div
+            style={{
+              textAlign: "center",
+              fontSize: 13,
+              color: "#3f7d5c",
+              marginTop: status ? 12 : 0,
+              height: status ? 20 : 0,
+              opacity: status ? 1 : 0,
+              transition: ".2s ease",
+              fontWeight: 600,
+              letterSpacing: ".02em",
+            }}
+          >
+            {status}
+          </div>
         </div>
       </div>
     </div>
   );
 }
 
-function Row({ label, children }: { label: React.ReactNode, children: React.ReactNode }) {
+function Switch({ checked, onChange }: { checked: boolean; onChange: (v: boolean) => void }) {
   return (
-    <div className="tts-row">
-      <label className="tts-label">
-        {label}
-      </label>
-      {children}
-    </div>
-  );
-}
-
-function Switch({ checked, onChange }: { checked: boolean, onChange: (v: boolean) => void }) {
-  return (
-    <label style={{ position: "relative", width: 44, height: 25, flexShrink: 0, display: "inline-block" }}>
+    <label
+      style={{
+        position: "relative",
+        width: 52,
+        height: 32,
+        flexShrink: 0,
+        display: "inline-block",
+      }}
+    >
       <input
         type="checkbox"
         checked={checked}
@@ -605,23 +924,24 @@ function Switch({ checked, onChange }: { checked: boolean, onChange: (v: boolean
           position: "absolute",
           cursor: "pointer",
           inset: 0,
-          background: checked ? "#b8863f" : "rgba(22, 26, 43, 0.12)",
-          borderRadius: 20,
-          transition: ".2s",
+          background: checked ? "#c19e54" : "rgba(184, 138, 68, 0.15)",
+          borderRadius: 100,
+          transition: "background .2s",
+          boxShadow: "inset 0 2px 4px rgba(0,0,0,0.05)",
         }}
       >
         <span
           style={{
             content: "''",
             position: "absolute",
-            height: 19,
-            width: 19,
-            left: checked ? 22 : 3,
-            top: 3,
+            height: 24,
+            width: 24,
+            left: checked ? 24 : 4,
+            top: 4,
             background: "#fff",
             borderRadius: "50%",
-            transition: ".2s",
-            boxShadow: "0 1px 3px rgba(0,0,0,.3)",
+            transition: "left .2s cubic-bezier(0.16, 1, 0.3, 1)",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
             display: "block",
           }}
         />
@@ -632,17 +952,19 @@ function Switch({ checked, onChange }: { checked: boolean, onChange: (v: boolean
 
 function inputStyle(disabled: boolean = false) {
   return {
-    border: `1px solid ${disabled ? "rgba(22, 26, 43, 0.05)" : "rgba(22, 26, 43, 0.12)"}`,
-    borderRadius: 9,
-    padding: "0 10px",
-    height: 34,
-    background: disabled ? "rgba(255,255,255,0.4)" : "#ffffff",
-    fontSize: 13,
+    border: `1px solid ${disabled ? "rgba(184, 138, 68, 0.1)" : "rgba(184, 138, 68, 0.2)"}`,
+    borderRadius: 16,
+    padding: "0 20px",
+    height: 48,
+    background: disabled ? "rgba(255,255,255,0.4)" : "rgba(255,255,255,0.8)",
+    fontSize: 15,
     fontFamily: "'Inter', sans-serif",
-    color: disabled ? "#a1a6b8" : "#161a2b",
+    color: disabled ? "#a8a29e" : "#1c1917",
     outline: "none",
     boxSizing: "border-box" as const,
-    boxShadow: disabled ? "none" : "0 2px 6px rgba(22, 26, 43, 0.03)",
+    boxShadow: disabled ? "none" : "0 2px 8px rgba(184, 138, 68, 0.03)",
     transition: "all 0.2s ease",
+    width: "100%",
+    maxWidth: 280,
   };
 }

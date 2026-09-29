@@ -3,48 +3,50 @@ import { Keyboard, Eye, EyeOff, Loader2, Sparkles } from "lucide-react";
 import { useState } from "react";
 import { GlassCard } from "@/components/kit/GlassCard";
 import { useAuth } from "@/lib/auth";
+import { useLanguage } from "@/lib/useLanguage";
 
 export const Route = createFileRoute("/signup")({
   component: SignupPage,
 });
 
 function SignupPage() {
+  const { isEnglish } = useLanguage();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  
+
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  
+
   const { signup } = useAuth();
   const navigate = useNavigate();
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
-    
+
     if (!name.trim() || !email.trim() || !password.trim()) {
       setError("Please fill out all fields.");
       return;
     }
-    
+
     if (password.length < 6) {
       setError("Password must be at least 6 characters long.");
       return;
     }
-    
+
     if (password !== confirmPassword) {
       setError("Passwords do not match.");
       return;
     }
-    
+
     setIsLoading(true);
-    
+
     try {
       const result = await signup(name, email, password);
-      
+
       if (result.error) {
         setError(result.error);
         setIsLoading(false);
@@ -65,10 +67,10 @@ function SignupPage() {
           <Sparkles className="size-8" />
         </div>
         <h1 className="mb-2 text-2xl font-bold tracking-tight text-foreground">
-          Create an Account
+          {isEnglish ? "Create an Account" : "खाता बनाएं"}
         </h1>
         <p className="mb-8 font-hindi text-muted-foreground">
-          नया खाता बनाएँ
+          {isEnglish ? "Create a new account" : "नया खाता बनाएँ"}
         </p>
 
         {error && (
@@ -79,19 +81,23 @@ function SignupPage() {
 
         <form onSubmit={handleSignup} className="flex flex-col gap-4 text-left">
           <div className="space-y-1.5">
-            <label className="text-sm font-medium text-foreground ml-1">Display Name</label>
+            <label className="text-sm font-medium text-foreground ml-1">
+              {isEnglish ? "Display Name" : "पूरा नाम"}
+            </label>
             <input
               type="text"
-              placeholder="e.g. Rahul"
+              placeholder={isEnglish ? "e.g. Rahul" : "उदाहरण: राहुल"}
               autoFocus
               value={name}
               onChange={(e) => setName(e.target.value)}
               className="w-full rounded-xl border border-input bg-background/50 px-4 py-3 text-lg font-medium text-foreground outline-none transition-all placeholder:text-muted-foreground/60 focus:border-primary focus:ring-2 focus:ring-primary/20"
             />
           </div>
-          
+
           <div className="space-y-1.5">
-            <label className="text-sm font-medium text-foreground ml-1">Email</label>
+            <label className="text-sm font-medium text-foreground ml-1">
+              {isEnglish ? "Email" : "ईमेल"}
+            </label>
             <input
               type="email"
               placeholder="name@example.com"
@@ -100,13 +106,15 @@ function SignupPage() {
               className="w-full rounded-xl border border-input bg-background/50 px-4 py-3 text-lg font-medium text-foreground outline-none transition-all placeholder:text-muted-foreground/60 focus:border-primary focus:ring-2 focus:ring-primary/20"
             />
           </div>
-          
+
           <div className="space-y-1.5 relative">
-            <label className="text-sm font-medium text-foreground ml-1">Password</label>
+            <label className="text-sm font-medium text-foreground ml-1">
+              {isEnglish ? "Password" : "पासवर्ड"}
+            </label>
             <div className="relative">
               <input
                 type={showPassword ? "text" : "password"}
-                placeholder="Create a password"
+                placeholder={isEnglish ? "Create a password" : "पासवर्ड बनाएं"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full rounded-xl border border-input bg-background/50 px-4 py-3 pr-12 text-lg font-medium text-foreground outline-none transition-all placeholder:text-muted-foreground/60 focus:border-primary focus:ring-2 focus:ring-primary/20"
@@ -120,13 +128,15 @@ function SignupPage() {
               </button>
             </div>
           </div>
-          
+
           <div className="space-y-1.5 relative">
-            <label className="text-sm font-medium text-foreground ml-1">Confirm Password</label>
+            <label className="text-sm font-medium text-foreground ml-1">
+              {isEnglish ? "Confirm Password" : "पासवर्ड की पुष्टि करें"}
+            </label>
             <div className="relative">
               <input
                 type={showPassword ? "text" : "password"}
-                placeholder="Confirm your password"
+                placeholder={isEnglish ? "Confirm your password" : "पासवर्ड की पुष्टि करें"}
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 className="w-full rounded-xl border border-input bg-background/50 px-4 py-3 text-lg font-medium text-foreground outline-none transition-all placeholder:text-muted-foreground/60 focus:border-primary focus:ring-2 focus:ring-primary/20"
@@ -140,13 +150,19 @@ function SignupPage() {
             className="w-full mt-4 flex justify-center items-center rounded-xl px-4 py-3 font-semibold text-primary-foreground shadow-sm transition-all hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
             style={{ background: "var(--gradient-primary)" }}
           >
-            {isLoading ? <Loader2 className="size-5 animate-spin" /> : "Create Account"}
+            {isLoading ? (
+              <Loader2 className="size-5 animate-spin" />
+            ) : isEnglish ? (
+              "Create Account"
+            ) : (
+              "खाता बनाएं"
+            )}
           </button>
-          
+
           <p className="mt-4 text-center text-sm text-muted-foreground">
-            Already have an account?{" "}
+            {isEnglish ? "Already have an account? " : "क्या आपके पास पहले से खाता है? "}
             <Link to="/login" className="font-semibold text-primary hover:underline">
-              Log in
+              {isEnglish ? "Log in" : "लॉगिन"}
             </Link>
           </p>
         </form>

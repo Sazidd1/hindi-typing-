@@ -23,12 +23,11 @@ import { useAuth } from "@/lib/auth";
 import { calculateXP, XP_PER_LEVEL, MAX_DISPLAY_LEVEL } from "@/lib/scoring";
 import { cn } from "@/lib/utils";
 import { HindiKeyboard, type KeyboardPreset } from "@/components/typing/HindiKeyboard";
+import { useLanguage } from "@/lib/useLanguage";
 
 export const Route = createFileRoute("/profile")({
   head: () => ({
-    meta: [
-      { title: "Typist Profile — Hindi Typing Abhyas Studio" },
-    ],
+    meta: [{ title: "Typist Profile — Hindi Typing Abhyas Studio" }],
   }),
   component: ProfilePage,
 });
@@ -46,6 +45,7 @@ type ResultRecord = {
 };
 
 function ProfilePage() {
+  const { isEnglish } = useLanguage();
   const { currentUser, isLoaded, updateProfileName, logout } = useAuth();
   const navigate = useNavigate();
   const [history, setHistory] = useState<ResultRecord[]>([]);
@@ -54,10 +54,19 @@ function ProfilePage() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [newUserName, setNewUserName] = useState("");
   const [isCopied, setIsCopied] = useState(false);
-  
+
   const [isKeyboardModalOpen, setIsKeyboardModalOpen] = useState(false);
-  const presetOptions: KeyboardPreset[] = ["Classic Glass", "Classic", "Dark Pro", "Minimal", "High Contrast", "Focus", "Color Zones", "Soft Pastel"];
-  
+  const presetOptions: KeyboardPreset[] = [
+    "Classic Glass",
+    "Classic",
+    "Dark Pro",
+    "Minimal",
+    "High Contrast",
+    "Focus",
+    "Color Zones",
+    "Soft Pastel",
+  ];
+
   // Track temporary selection before Apply
   const [temporaryPreset, setTemporaryPreset] = useState<KeyboardPreset>("Color Zones");
 
@@ -83,7 +92,7 @@ function ProfilePage() {
       navigate({ to: "/login" });
       return;
     }
-    
+
     if (currentUser) {
       setNewUserName(currentUser);
       const stored = localStorage.getItem("results_" + currentUser);
@@ -130,13 +139,19 @@ function ProfilePage() {
   // 2. Best Accuracy
   const bestAcc = useMemo(() => {
     return validHistory.length > 0
-      ? Math.max(...validHistory.map((h) => parseInt(String(h?.accuracy || h?.acc || "0").replace("%", "")) || 0))
+      ? Math.max(
+          ...validHistory.map(
+            (h) => parseInt(String(h?.accuracy || h?.acc || "0").replace("%", "")) || 0,
+          ),
+        )
       : 0;
   }, [validHistory]);
 
   // 3. Streak Calculation
   const uniqueDates = useMemo(() => {
-    return Array.from(new Set(validHistory.map((h) => h && h.date).filter((d): d is string => Boolean(d))));
+    return Array.from(
+      new Set(validHistory.map((h) => h && h.date).filter((d): d is string => Boolean(d))),
+    );
   }, [validHistory]);
 
   const streak = useMemo(() => {
@@ -158,7 +173,8 @@ function ProfilePage() {
   // 4. Practice Time (Actual Elapsed Seconds sum from valid sessions)
   const totalSeconds = useMemo(() => {
     return validHistory.reduce((sum, h) => {
-      const sec = typeof h?.elapsedSeconds === "number" && !isNaN(h.elapsedSeconds) ? h.elapsedSeconds : 0;
+      const sec =
+        typeof h?.elapsedSeconds === "number" && !isNaN(h.elapsedSeconds) ? h.elapsedSeconds : 0;
       return sum + sec;
     }, 0);
   }, [validHistory]);
@@ -194,44 +210,47 @@ function ProfilePage() {
   const examCompleted = completedSlugs.has("ch25") || completedSlugs.has("ch28") ? 1 : 0;
 
   // 4 Badges with real progress & unlock logic
-  const badges = useMemo(() => [
-    {
-      icon: Flame,
-      title: "7 दिन स्ट्रीक",
-      desc: "लगातार सात दिन अभ्यास",
-      earned: streak >= 7,
-      currentVal: Math.min(7, streak),
-      maxVal: 7,
-      unit: "days",
-    },
-    {
-      icon: Zap,
-      title: "50 WPM क्लब",
-      desc: "50 शब्द प्रति मिनट पार",
-      earned: bestWpm >= 50,
-      currentVal: Math.min(50, bestWpm),
-      maxVal: 50,
-      unit: "WPM",
-    },
-    {
-      icon: Target,
-      title: "शुद्धता मास्टर",
-      desc: "98% शुद्धता प्राप्त",
-      earned: bestAcc >= 98,
-      currentVal: Math.min(98, bestAcc),
-      maxVal: 98,
-      unit: "%",
-    },
-    {
-      icon: Trophy,
-      title: "परीक्षा तैयार",
-      desc: "परीक्षा पाठ पूर्ण करें",
-      earned: examCompleted === 1,
-      currentVal: examCompleted,
-      maxVal: 1,
-      unit: "exam",
-    },
-  ], [streak, bestWpm, bestAcc, examCompleted]);
+  const badges = useMemo(
+    () => [
+      {
+        icon: Flame,
+        title: isEnglish ? "7 Day Streak" : "7 दिन स्ट्रीक",
+        desc: isEnglish ? "Practiced for 7 consecutive days" : "लगातार सात दिन अभ्यास",
+        earned: streak >= 7,
+        currentVal: Math.min(7, streak),
+        maxVal: 7,
+        unit: "days",
+      },
+      {
+        icon: Zap,
+        title: isEnglish ? "50 WPM Club" : "50 WPM क्लब",
+        desc: isEnglish ? "Surpassed 50 words per minute" : "50 शब्द प्रति मिनट पार",
+        earned: bestWpm >= 50,
+        currentVal: Math.min(50, bestWpm),
+        maxVal: 50,
+        unit: "WPM",
+      },
+      {
+        icon: Target,
+        title: isEnglish ? "Accuracy Master" : "शुद्धता मास्टर",
+        desc: isEnglish ? "Achieved 98% accuracy" : "98% शुद्धता प्राप्त",
+        earned: bestAcc >= 98,
+        currentVal: Math.min(98, bestAcc),
+        maxVal: 98,
+        unit: "%",
+      },
+      {
+        icon: Trophy,
+        title: isEnglish ? "Exam Ready" : "परीक्षा तैयार",
+        desc: isEnglish ? "Completed exam lessons" : "परीक्षा पाठ पूर्ण करें",
+        earned: examCompleted === 1,
+        currentVal: examCompleted,
+        maxVal: 1,
+        unit: "exam",
+      },
+    ],
+    [streak, bestWpm, bestAcc, examCompleted, isEnglish],
+  );
 
   const unlockedCount = useMemo(() => badges.filter((b) => b.earned).length, [badges]);
 
@@ -301,7 +320,7 @@ function ProfilePage() {
 
   const handleShareProgress = async () => {
     const shareText = `⌨️ ${currentUser}'s Hindi Typing Progress:\n⚡ Best WPM: ${bestWpm} WPM\n🎯 Best Accuracy: ${bestAcc}%\n🔥 Streak: ${streak} days\n⚡ XP: ${totalXp.toLocaleString()} XP\nCheck out Hindi Typing Abhyas Studio!`;
-    
+
     if (navigator.share) {
       try {
         await navigator.share({
@@ -370,25 +389,29 @@ function ProfilePage() {
                       Level {Math.min(MAX_DISPLAY_LEVEL, Math.floor(totalXp / XP_PER_LEVEL) + 1)}
                     </span>
                     <span className="text-muted-foreground tracking-wider uppercase">
-                      {Math.min(MAX_DISPLAY_LEVEL, Math.floor(totalXp / XP_PER_LEVEL) + 1) >= MAX_DISPLAY_LEVEL ? (
-                        `${totalXp.toLocaleString()} XP`
-                      ) : (
-                        `${totalXp.toLocaleString()} / ${(Math.floor(totalXp / XP_PER_LEVEL) * XP_PER_LEVEL + XP_PER_LEVEL).toLocaleString()} XP`
-                      )}
+                      {Math.min(MAX_DISPLAY_LEVEL, Math.floor(totalXp / XP_PER_LEVEL) + 1) >=
+                      MAX_DISPLAY_LEVEL
+                        ? `${totalXp.toLocaleString()} XP`
+                        : `${totalXp.toLocaleString()} / ${(Math.floor(totalXp / XP_PER_LEVEL) * XP_PER_LEVEL + XP_PER_LEVEL).toLocaleString()} XP`}
                     </span>
                   </div>
                   <div className="h-[9px] w-full bg-black/5 dark:bg-white/5 rounded-full overflow-hidden border border-black/5 dark:border-white/5">
-                    <div 
+                    <div
                       className="h-full bg-gradient-to-r from-primary to-indigo-500 rounded-full transition-all duration-1000 ease-out"
-                      style={{ width: Math.min(MAX_DISPLAY_LEVEL, Math.floor(totalXp / XP_PER_LEVEL) + 1) >= MAX_DISPLAY_LEVEL ? '100%' : `${((totalXp % XP_PER_LEVEL) / XP_PER_LEVEL) * 100}%` }}
+                      style={{
+                        width:
+                          Math.min(MAX_DISPLAY_LEVEL, Math.floor(totalXp / XP_PER_LEVEL) + 1) >=
+                          MAX_DISPLAY_LEVEL
+                            ? "100%"
+                            : `${((totalXp % XP_PER_LEVEL) / XP_PER_LEVEL) * 100}%`,
+                      }}
                     />
                   </div>
                   <div className="text-[10px] font-bold text-center text-muted-foreground mt-0.5">
-                    {Math.min(MAX_DISPLAY_LEVEL, Math.floor(totalXp / XP_PER_LEVEL) + 1) >= MAX_DISPLAY_LEVEL ? (
-                      "Maximum Level"
-                    ) : (
-                      `${(Math.floor(totalXp / XP_PER_LEVEL) * XP_PER_LEVEL + XP_PER_LEVEL) - totalXp} XP to next milestone`
-                    )}
+                    {Math.min(MAX_DISPLAY_LEVEL, Math.floor(totalXp / XP_PER_LEVEL) + 1) >=
+                    MAX_DISPLAY_LEVEL
+                      ? "Maximum Level"
+                      : `${Math.floor(totalXp / XP_PER_LEVEL) * XP_PER_LEVEL + XP_PER_LEVEL - totalXp} XP to next milestone`}
                   </div>
                 </div>
 
@@ -432,7 +455,9 @@ function ProfilePage() {
           >
             <Bell className="size-3.5 text-amber-500" />
             <span>Notifications</span>
-            <span className="text-[10px] font-semibold bg-muted/80 border border-border/40 px-1.5 py-0 rounded-md ml-0.5">Off</span>
+            <span className="text-[10px] font-semibold bg-muted/80 border border-border/40 px-1.5 py-0 rounded-md ml-0.5">
+              Off
+            </span>
           </div>
 
           {/* Share Progress */}
@@ -490,7 +515,12 @@ function ProfilePage() {
 
         <div className="grid gap-4 sm:grid-cols-2">
           {badges.map((b) => {
-            const pct = b.maxVal > 0 ? Math.min(100, Math.round((b.currentVal / b.maxVal) * 100)) : b.earned ? 100 : 0;
+            const pct =
+              b.maxVal > 0
+                ? Math.min(100, Math.round((b.currentVal / b.maxVal) * 100))
+                : b.earned
+                  ? 100
+                  : 0;
 
             return (
               <div
@@ -499,7 +529,7 @@ function ProfilePage() {
                   "flex flex-col justify-between p-4 rounded-2xl border transition-all duration-300 gap-3.5",
                   b.earned
                     ? "bg-primary/5 border-primary/20 shadow-xs hover:border-primary/40"
-                    : "bg-secondary/20 border-border/40 opacity-75 hover:opacity-90"
+                    : "bg-secondary/20 border-border/40 opacity-75 hover:opacity-90",
                 )}
               >
                 <div className="flex items-start gap-3.5">
@@ -508,7 +538,7 @@ function ProfilePage() {
                       "flex size-11 shrink-0 items-center justify-center rounded-2xl shadow-xs",
                       b.earned
                         ? "text-primary-foreground"
-                        : "bg-muted/80 text-muted-foreground/60 border border-border/40"
+                        : "bg-muted/80 text-muted-foreground/60 border border-border/40",
                     )}
                     style={b.earned ? { background: "var(--gradient-primary)" } : undefined}
                   >
@@ -516,19 +546,23 @@ function ProfilePage() {
                   </span>
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center justify-between gap-1 mb-0.5">
-                      <p className="font-hindi font-semibold text-sm text-foreground truncate">{b.title}</p>
+                      <p className="font-hindi font-semibold text-sm text-foreground truncate">
+                        {b.title}
+                      </p>
                       <span
                         className={cn(
                           "text-[10px] font-bold px-2 py-0.5 rounded-full border shrink-0",
                           b.earned
                             ? "text-success bg-success/15 border-success/25"
-                            : "text-muted-foreground/70 bg-secondary border-border/40"
+                            : "text-muted-foreground/70 bg-secondary border-border/40",
                         )}
                       >
                         {b.earned ? "Unlocked" : "Locked"}
                       </span>
                     </div>
-                    <p className="font-hindi text-xs text-muted-foreground leading-tight">{b.desc}</p>
+                    <p className="font-hindi text-xs text-muted-foreground leading-tight">
+                      {b.desc}
+                    </p>
                   </div>
                 </div>
 
@@ -544,7 +578,7 @@ function ProfilePage() {
                     <div
                       className={cn(
                         "h-full rounded-full transition-all duration-700 ease-out shadow-xs",
-                        b.earned ? "bg-success" : "bg-primary/70"
+                        b.earned ? "bg-success" : "bg-primary/70",
                       )}
                       style={{ width: `${pct}%` }}
                     />
@@ -555,8 +589,6 @@ function ProfilePage() {
           })}
         </div>
       </GlassCard>
-
-
 
       {/* Edit Profile Modal */}
       {isEditModalOpen && (
@@ -607,25 +639,24 @@ function ProfilePage() {
       {isKeyboardModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 animate-in fade-in duration-200">
           <div className="w-full max-w-5xl rounded-3xl bg-background border border-border p-6 sm:p-8 shadow-2xl flex flex-col gap-6 max-h-[95vh] overflow-y-auto custom-scrollbar">
-            
             <div className="flex items-start justify-between shrink-0">
-               <div>
-                 <h3 className="text-xl font-bold text-foreground">Keyboard Preset</h3>
-                 <p className="text-sm text-muted-foreground mt-1">
-                   Choose your preferred keyboard style. The preview below updates instantly.
-                 </p>
-               </div>
-               <button
-                 onClick={() => setIsKeyboardModalOpen(false)}
-                 className="rounded-full p-2 bg-secondary/50 text-muted-foreground hover:bg-secondary hover:text-foreground transition-colors cursor-pointer"
-               >
-                 <X className="size-5" />
-               </button>
+              <div>
+                <h3 className="text-xl font-bold text-foreground">Keyboard Preset</h3>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Choose your preferred keyboard style. The preview below updates instantly.
+                </p>
+              </div>
+              <button
+                onClick={() => setIsKeyboardModalOpen(false)}
+                className="rounded-full p-2 bg-secondary/50 text-muted-foreground hover:bg-secondary hover:text-foreground transition-colors cursor-pointer"
+              >
+                <X className="size-5" />
+              </button>
             </div>
 
             {/* Live Keyboard Preview */}
             <div className="w-full bg-secondary/20 rounded-2xl p-4 sm:p-8 border border-border/50 flex flex-col items-center justify-center min-h-[350px] shrink-0">
-               <HindiKeyboard nextChar="क" preset={temporaryPreset} />
+              <HindiKeyboard nextChar="क" preset={temporaryPreset} />
             </div>
 
             {/* Preset Selection Options */}
@@ -639,7 +670,7 @@ function ProfilePage() {
                     "rounded-2xl px-5 py-3 text-sm font-semibold border transition-all duration-200 cursor-pointer",
                     temporaryPreset === o
                       ? "bg-primary text-primary-foreground border-primary shadow-md scale-105"
-                      : "bg-secondary/50 text-muted-foreground border-border/60 hover:bg-secondary hover:text-foreground"
+                      : "bg-secondary/50 text-muted-foreground border-border/60 hover:bg-secondary hover:text-foreground",
                   )}
                 >
                   {o}
@@ -670,7 +701,6 @@ function ProfilePage() {
       <GlassCard hover={false} className="p-6">
         <h3 className="text-base font-semibold text-foreground mb-4">Account Information</h3>
         <div className="space-y-0 divide-y divide-border/50">
-
           {/* Account Status */}
           <div className="flex items-center justify-between py-3">
             <span className="text-sm text-muted-foreground">Account status</span>
@@ -689,7 +719,9 @@ function ProfilePage() {
           {/* Sessions count */}
           <div className="flex items-center justify-between py-3">
             <span className="text-sm text-muted-foreground">Total sessions</span>
-            <span className="text-sm font-semibold text-foreground tabular-nums">{validHistory.length}</span>
+            <span className="text-sm font-semibold text-foreground tabular-nums">
+              {validHistory.length}
+            </span>
           </div>
 
           {/* Logout */}
@@ -708,7 +740,6 @@ function ProfilePage() {
               Sign out
             </button>
           </div>
-
         </div>
       </GlassCard>
 

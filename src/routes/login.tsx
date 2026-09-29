@@ -1,27 +1,29 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState, useMemo } from "react";
 import { useAuth } from "@/lib/auth";
+import { useLanguage } from "@/lib/useLanguage";
 
 export const Route = createFileRoute("/login")({
   component: LoginPage,
 });
 
-const legends = ["A","H","S","K","अ","क","म","स","⏎","⇧","␣","B","T","न","र"];
-const colorClasses = ["c1","c2","c3","c4"];
+const legends = ["A", "H", "S", "K", "अ", "क", "म", "स", "⏎", "⇧", "␣", "B", "T", "न", "र"];
+const colorClasses = ["c1", "c2", "c3", "c4"];
 
-function IsoGrid({ side }: { side: 'left' | 'right' }) {
+function IsoGrid({ side }: { side: "left" | "right" }) {
   const keys = useMemo(() => {
     const arr = [];
-    const rows = 4, cols = 7;
-    for(let r=0; r<rows; r++){
-      for(let c=0; c<cols; c++){
-        let cls = 'iso-key ' + colorClasses[(r+c) % colorClasses.length];
-        if(r >= 2) cls += ' dim';
-        if(r >= 3) cls += ' faint';
+    const rows = 4,
+      cols = 7;
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        let cls = "iso-key " + colorClasses[(r + c) % colorClasses.length];
+        if (r >= 2) cls += " dim";
+        if (r >= 3) cls += " faint";
         arr.push({
           id: `${side}-${r}-${c}`,
           cls,
-          char: legends[Math.floor(Math.random()*legends.length)]
+          char: legends[Math.floor(Math.random() * legends.length)],
         });
       }
     }
@@ -31,8 +33,10 @@ function IsoGrid({ side }: { side: 'left' | 'right' }) {
   return (
     <div className={`iso-floor ${side}`}>
       <div className="iso-grid">
-        {keys.map(k => (
-          <div key={k.id} className={k.cls}>{k.char}</div>
+        {keys.map((k) => (
+          <div key={k.id} className={k.cls}>
+            {k.char}
+          </div>
         ))}
       </div>
     </div>
@@ -40,13 +44,14 @@ function IsoGrid({ side }: { side: 'left' | 'right' }) {
 }
 
 function LoginPage() {
+  const { isEnglish } = useLanguage();
   const [mode, setMode] = useState<"login" | "signup">("login");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  
+
   const [showPassword, setShowPassword] = useState(false);
-  
+
   // Validation states
   const [emailError, setEmailError] = useState(false);
   const [passError, setPassError] = useState(false);
@@ -55,7 +60,7 @@ function LoginPage() {
 
   const [isLoading, setIsLoading] = useState(false);
   const [successView, setSuccessView] = useState(false);
-  
+
   const { login, signup, resetPassword, logout } = useAuth();
   const navigate = useNavigate();
 
@@ -73,7 +78,7 @@ function LoginPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     let valid = true;
-    
+
     if (!isValidEmail(email.trim())) {
       setEmailError(true);
       valid = false;
@@ -133,7 +138,7 @@ function LoginPage() {
       return;
     }
     setEmailError(false);
-    
+
     const result = await resetPassword(email);
     setForgotMsg(result.error ? result.error : "Reset link sent to your email (demo)");
     setForgotActive(true);
@@ -236,7 +241,7 @@ function LoginPage() {
       <div className="vignette" />
 
       <div className="card">
-        <div className={`form-view ${successView ? 'hide' : ''}`}>
+        <div className={`form-view ${successView ? "hide" : ""}`}>
           <div className="brand-logo">
             <div className="iso-key-logo">अ</div>
             <div>
@@ -244,79 +249,176 @@ function LoginPage() {
               <span className="brand-abhyas">Abhyas</span>
             </div>
           </div>
-          <h1>{isSignup ? 'Create account' : 'Login'}</h1>
+          <h1>
+            {isSignup
+              ? isEnglish
+                ? "Create account"
+                : "खाता बनाएं"
+              : isEnglish
+                ? "Login"
+                : "लॉगिन"}
+          </h1>
 
           <form onSubmit={handleSubmit}>
             {isSignup && (
               <div className="field">
-                <label>Full name</label>
+                <label>{isEnglish ? "Full name" : "पूरा नाम"}</label>
                 <div className="input-shell">
-                  <input type="text" placeholder="Your full name" value={name} onChange={e => setName(e.target.value)} required />
+                  <input
+                    type="text"
+                    placeholder={isEnglish ? "Your full name" : "आपका पूरा नाम"}
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                  />
                 </div>
               </div>
             )}
 
             <div className="field">
-              <label>Email</label>
-              <div className={`input-shell ${emailError ? 'error' : ''}`}>
-                <input type="email" placeholder="you@example.com" value={email} onChange={e => {setEmail(e.target.value); setEmailError(false); setForgotActive(false);}} />
+              <label>{isEnglish ? "Email" : "ईमेल"}</label>
+              <div className={`input-shell ${emailError ? "error" : ""}`}>
+                <input
+                  type="email"
+                  placeholder="you@example.com"
+                  value={email}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    setEmailError(false);
+                    setForgotActive(false);
+                  }}
+                />
               </div>
-              <div className={`err-msg ${(emailError || forgotActive) ? 'show' : ''}`} style={forgotActive ? {color: 'var(--success)'} : {}}>
-                {forgotActive ? forgotMsg : "Please enter a valid email address"}
+              <div
+                className={`err-msg ${emailError || forgotActive ? "show" : ""}`}
+                style={forgotActive ? { color: "var(--success)" } : {}}
+              >
+                {forgotActive
+                  ? forgotMsg
+                  : isEnglish
+                    ? "Please enter a valid email address"
+                    : "कृपया एक वैध ईमेल पता दर्ज करें"}
               </div>
             </div>
 
             <div className="field">
-              <label>Password</label>
-              <div className={`input-shell ${passError ? 'error' : ''}`}>
-                <input type={showPassword ? 'text' : 'password'} placeholder="••••••••" value={password} onChange={e => {setPassword(e.target.value); setPassError(false);}} />
-                <button className="eye-btn" type="button" aria-label="Show password" onClick={() => setShowPassword(!showPassword)}>
-                  <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" strokeWidth={1.8}>
+              <label>{isEnglish ? "Password" : "पासवर्ड"}</label>
+              <div className={`input-shell ${passError ? "error" : ""}`}>
+                <input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="••••••••"
+                  value={password}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                    setPassError(false);
+                  }}
+                />
+                <button
+                  className="eye-btn"
+                  type="button"
+                  aria-label="Show password"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    width="19"
+                    height="19"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={1.8}
+                  >
                     {showPassword ? (
                       <>
-                        <path d="M17.94 17.94A10.94 10.94 0 0 1 12 19c-7 0-11-7-11-7a20.6 20.6 0 0 1 5.06-5.94M9.9 4.24A10.94 10.94 0 0 1 12 5c7 0 11 7 11 7a20.6 20.6 0 0 1-2.16 3.19M14.12 14.12a3 3 0 1 1-4.24-4.24"/><path d="M1 1l22 22"/>
+                        <path d="M17.94 17.94A10.94 10.94 0 0 1 12 19c-7 0-11-7-11-7a20.6 20.6 0 0 1 5.06-5.94M9.9 4.24A10.94 10.94 0 0 1 12 5c7 0 11 7 11 7a20.6 20.6 0 0 1-2.16 3.19M14.12 14.12a3 3 0 1 1-4.24-4.24" />
+                        <path d="M1 1l22 22" />
                       </>
                     ) : (
                       <>
-                        <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7Z"/><circle cx="12" cy="12" r="3"/>
+                        <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7Z" />
+                        <circle cx="12" cy="12" r="3" />
                       </>
                     )}
                   </svg>
                 </button>
               </div>
-              <div className={`err-msg ${passError ? 'show' : ''}`}>Password must be at least 6 characters</div>
+              <div className={`err-msg ${passError ? "show" : ""}`}>
+                {isEnglish
+                  ? "Password must be at least 6 characters"
+                  : "पासवर्ड कम से कम 6 अक्षरों का होना चाहिए"}
+              </div>
             </div>
 
-            <div className="row-between" style={{ visibility: isSignup ? 'hidden' : 'visible' }}>
-              <a className="link" onClick={handleForgot}>Forgot password?</a>
+            <div className="row-between" style={{ visibility: isSignup ? "hidden" : "visible" }}>
+              <a className="link" onClick={handleForgot}>
+                {isEnglish ? "Forgot password?" : "पासवर्ड भूल गए?"}
+              </a>
             </div>
 
-            <button type="submit" className={`submit-btn ${isLoading ? 'loading' : ''}`} disabled={isLoading}>
+            <button
+              type="submit"
+              className={`submit-btn ${isLoading ? "loading" : ""}`}
+              disabled={isLoading}
+            >
               <span className="spinner"></span>
-              <span className="btn-text">{isSignup ? 'Sign up' : 'Login'}</span>
+              <span className="btn-text">
+                {isSignup ? (isEnglish ? "Sign up" : "साइन अप") : isEnglish ? "Login" : "लॉगिन"}
+              </span>
             </button>
           </form>
 
           <div className="footer-line">
             {isSignup ? (
-              <>Already have an account? <a className="link" onClick={handleToggleMode}>Login</a></>
+              <>
+                {isEnglish ? "Already have an account? " : "क्या आपके पास पहले से खाता है? "}
+                <a className="link" onClick={handleToggleMode}>
+                  {isEnglish ? "Login" : "लॉगिन"}
+                </a>
+              </>
             ) : (
-              <>Don't have an account? <a className="link" onClick={handleToggleMode}>Sign up</a></>
+              <>
+                {isEnglish ? "Don't have an account? " : "क्या आपके पास खाता नहीं है? "}
+                <a className="link" onClick={handleToggleMode}>
+                  {isEnglish ? "Sign up" : "साइन अप"}
+                </a>
+              </>
             )}
           </div>
         </div>
 
-        <div className={`success-view ${successView ? 'show' : ''}`}>
+        <div className={`success-view ${successView ? "show" : ""}`}>
           <div className="check-wrap">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#12b76a" strokeWidth={2.4} strokeLinecap="round" strokeLinejoin="round">
-              <path d="M20 6 9 17l-5-5"/>
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#12b76a"
+              strokeWidth={2.4}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M20 6 9 17l-5-5" />
             </svg>
           </div>
-          <h2>{isSignup ? 'Account created!' : 'Welcome back!'}</h2>
-          <p>{isSignup ? 'आपका खाता सफलतापूर्वक बन गया है' : 'आपने सफलतापूर्वक लॉगिन कर लिया है'}</p>
-          
+          <h2>
+            {isSignup
+              ? isEnglish
+                ? "Account created!"
+                : "खाता बन गया!"
+              : isEnglish
+                ? "Welcome back!"
+                : "वापसी पर स्वागत है!"}
+          </h2>
+          <p>
+            {isEnglish
+              ? isSignup
+                ? "Your account has been created successfully"
+                : "You have successfully logged in"
+              : isSignup
+                ? "आपका खाता सफलतापूर्वक बन गया है"
+                : "आपने सफलतापूर्वक लॉगिन कर लिया है"}
+          </p>
+
           <button className="ghost-btn" onClick={handleLogoutTryAgain}>
-            Log out and try again
+            {isEnglish ? "Log out and try again" : "लॉग आउट करें और पुनः प्रयास करें"}
           </button>
         </div>
       </div>

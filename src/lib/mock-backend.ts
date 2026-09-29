@@ -1,11 +1,18 @@
 /**
- * Mock Backend Service
- * 
- * This service simulates a real backend (e.g. Supabase, Firebase).
- * It stores users and session tokens in localStorage.
- * Passwords are very lightly hashed (btoa) to demonstrate we are not storing plain-text passwords,
- * but this is purely for local development simulation.
+ * Backend Service (Migrated to real backend logic)
+ *
+ * This service connects the frontend to the backend server functions.
+ * The session token is stored temporarily in localStorage for the active session,
+ * but all account validation and database persistence happens on the server.
  */
+
+import {
+  registerUserFn,
+  loginUserFn,
+  getSessionUserFn,
+  logoutUserFn,
+  resetPasswordFn,
+} from "./auth-api";
 
 export interface User {
   id: string;
@@ -14,116 +21,78 @@ export interface User {
   createdAt: string;
 }
 
-interface UserRecord extends User {
-  passwordHash: string;
-}
-
-const USERS_KEY = "mock_db_users";
 const SESSION_KEY = "mock_session_token";
 
-const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
-
-// Simple mock hash (Base64 encoding - NOT secure for production, just for dev simulation)
-const mockHash = (str: string) => btoa(str).split('').reverse().join('');
-
-const getUsers = (): UserRecord[] => {
-  try {
-    const data = localStorage.getItem(USERS_KEY);
-    return data ? JSON.parse(data) : [];
-  } catch {
-    return [];
-  }
-};
-
-const saveUsers = (users: UserRecord[]) => {
-  localStorage.setItem(USERS_KEY, JSON.stringify(users));
-};
-
 export const mockBackend = {
-  async register(name: string, email: string, password: string): Promise<{ user: User | null; error: string | null }> {
-    await delay(600); // Simulate network latency
-    const users = getUsers();
-    
-    if (users.find(u => u.email.toLowerCase() === email.toLowerCase())) {
-      return { user: null, error: "An account with this email already exists." };
+  async register(
+    name: string,
+    email: string,
+    password: string,
+  ): Promise<{ user: User | null; error: string | null }> {
+    try {
+      const result = await registerUserFn({ data: { name, email, password } });
+      if (result.user && result.sessionToken) {
+        localStorage.setItem(SESSION_KEY, result.sessionToken);
+      }
+      return { user: result.user, error: result.error };
+    } catch (error) {
+      console.error("Registration failed:", error);
+      return { user: null, error: "An unexpected error occurred during registration." };
     }
-    
-    // We use the user's name as their internal ID to maintain backward compatibility 
-    // with existing XP and lesson records which are keyed by the user's name.
-    // In a real app, this would be a UUID.
-    const internalId = name.trim();
-    
-    const newUser: UserRecord = {
-      id: internalId,
-      name: name.trim(),
-      email: email.trim(),
-      passwordHash: mockHash(password),
-      createdAt: new Date().toISOString()
-    };
-    
-    users.push(newUser);
-    saveUsers(users);
-    
-    // Auto login
-    const sessionToken = btoa(newUser.id + ":" + Date.now());
-    localStorage.setItem(SESSION_KEY, sessionToken);
-    
-    const { passwordHash, ...user } = newUser;
-    return { user, error: null };
   },
 
-  async login(email: string, password: string): Promise<{ user: User | null; error: string | null }> {
-    await delay(500); // Simulate network latency
-    const users = getUsers();
-    
-    const userRecord = users.find(u => u.email.toLowerCase() === email.toLowerCase());
-    
-    if (!userRecord || userRecord.passwordHash !== mockHash(password)) {
-      return { user: null, error: "Invalid email or password." };
+  async login(
+    email: string,
+    password: string,
+  ): Promise<{ user: User | null; error: string | null }> {
+    try {
+      const result = await loginUserFn({ data: { email, password } });
+      if (result.user && result.sessionToken) {
+        localStorage.setItem(SESSION_KEY, result.sessionToken);
+      }
+      return { user: result.user, error: result.error };
+    } catch (error) {
+      console.error("Login failed:", error);
+      return { user: null, error: "An unexpected error occurred during login." };
     }
-    
-    const sessionToken = btoa(userRecord.id + ":" + Date.now());
-    localStorage.setItem(SESSION_KEY, sessionToken);
-    
-    const { passwordHash, ...user } = userRecord;
-    return { user, error: null };
   },
 
   async logout(): Promise<void> {
-    await delay(300);
+    const token = localStorage.getItem(SESSION_KEY);
+    if (token) {
+      try {
+        await logoutUserFn({ data: { sessionToken: token } });
+      } catch (error) {
+        console.error("Logout failed on server:", error);
+      }
+    }
     localStorage.removeItem(SESSION_KEY);
   },
 
   async getSessionUser(): Promise<User | null> {
-    await delay(200);
     const token = localStorage.getItem(SESSION_KEY);
     if (!token) return null;
-    
+
     try {
-      const decoded = atob(token);
-      const [userId] = decoded.split(":");
-      const users = getUsers();
-      const userRecord = users.find(u => u.id === userId);
-      
-      if (userRecord) {
-        const { passwordHash, ...user } = userRecord;
-        return user;
+      const result = await getSessionUserFn({ data: { sessionToken: token } });
+      if (!result.user) {
+        // Token is invalid or expired according to the backend
+        localStorage.removeItem(SESSION_KEY);
       }
-    } catch {
+      return result.user;
+    } catch (error) {
+      console.error("Failed to fetch session user:", error);
       return null;
     }
-    
-    return null;
   },
-  
+
   async resetPassword(email: string): Promise<{ success: boolean; error: string | null }> {
-    await delay(600);
-    const users = getUsers();
-    if (!users.find(u => u.email.toLowerCase() === email.toLowerCase())) {
-      return { success: false, error: "No account found with that email address." };
+    try {
+      const result = await resetPasswordFn({ data: { email } });
+      return result;
+    } catch (error) {
+      console.error("Reset password failed:", error);
+      return { success: false, error: "An unexpected error occurred." };
     }
-    
-    // In a real system, send an email. For mock, just return success.
-    return { success: true, error: null };
-  }
+  },
 };
